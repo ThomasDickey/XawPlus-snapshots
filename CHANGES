@@ -1,3 +1,7 @@
+2003-11-29  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* install-sh: RCS_BASE
+
 2002-09-13  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* doc/AsciiSource.html, doc/Command.html, doc/Dialog.html, doc/DrawingArea.html, doc/Form.html, doc/Grip.html, doc/IconList.html:
