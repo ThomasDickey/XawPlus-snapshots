@@ -1,0 +1,710 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The Paned Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The Paned Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/Paned.h&gt;<BR>
+&lt;X11/XawPlus/PanedP.h&gt;<BR>
+panedWidgetClass<BR>
+Paned<BR>
+Constraint</TD>
+</TR>
+</TABLE>
+
+<P>The Paned widget manages children in a vertically or horizontally
+tiled fashion. The panes may be dynamically resized by the user by
+using the <B>grips</B> that appear near the right or bottom edge of the
+border between two panes.<BR>
+The Paned widget may accept any widget class as a pane <B>except</B>
+Grip. Grip widgets have a special meaning for the Paned widget, and
+adding a Grip as its own pane will confuse the Paned widget.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>The Paned widget uses the new color resources <I>intBorderHighlight</I> and
+<I>intBorderShadow</I> to draw a 3D styled separator line between the managed
+children. The resource <I>internalBorderColor</I> is not longer supported.</P>
+
+<H3>Using the Paned widget</H3>
+
+<P>The grips allow the panes to be resized by the user. The semantics of
+how these panes resize is somewhat complicated, and warrants further
+explanation here. When the mouse pointer is positioned on a grip and
+pressed, an arrow is displayed that indicates the pane that is to be to
+be resized.  While keeping the mouse button down, the user can move the
+grip up and down (or left and right).  This, in turn, changes the size
+of the pane. The size of the Paned widget will not change. Instead,
+it chooses another pane (or panes) to resize. For more details on which
+pane it chooses to resize, see <B>Layout Semantics</B>.</P>
+
+<P>One pointer binding allows the border between two panes to be moved,
+without affecting any of the other panes. When this occurs the pointer
+will change to an arrow that points along the pane border.</P>
+
+<P>The default bindings for the Paned widget's grips are:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"> </TD>
+<TD BGCOLOR="#E0E0E0"><B>Pane to Resize</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Pane to Resize</B></TD>
+</TR>
+
+<TR>
+<TD>Mouse button<BR>
+1 (left)<BR>
+2 (middle)<BR>
+3 (right)</TD>
+
+<TD>Vertical<BR>
+above the grip<BR>
+adjust border<BR>
+below the grip</TD>
+
+<TD>Horizontal<BR>
+left of the grip<BR>
+adjust border<BR>
+right of the grip</TD>
+</TR>
+</TABLE>
+
+<H3>Resources</H3>
+
+<P>When creating a Form widget instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>1<BR>
+Space for all children<BR>
+True<BR>
+Space for all children<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">PANED:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>orientation<BR>
+refigureMode<BR>
+intBorderHighlight<BR>
+intBorderShadow<BR>
+gripIndent<BR>
+betweenCursor<BR>
+cursor<BR>
+gripCursor<BR>
+leftCursor<BR>
+lowerCursor<BR>
+rightCursor<BR>
+upperCursor<BR>
+verticalGripCursor<BR>
+verticalBetweenCursor<BR>
+horizontalGripCursor<BR>
+horizontalBetweencursor</TD>
+
+<TD>Orientation<BR>
+Boolean<BR>
+BorderColor<BR>
+BorderColor<BR>
+GripIndent<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor</TD>
+
+<TD>XtOrientation<BR>
+Boolean<BR>
+Pixel<BR>
+Pixel<BR>
+Position<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor<BR>
+Cursor</TD>
+
+<TD>XtorientVertical<BR>
+On<BR>
+grey90<BR>
+grey40<BR>
+10<BR>
+**<BR>
+None<BR>
+**<BR>
+sb_left_arrow<BR>
+sb_down_arrow<BR>
+sb_right_arrow<BR>
+sb_up_arrow<BR>
+sb_v_double_arrow<BR>
+sb_left_arrow<BR>
+sb_h_double_arrow<BR>
+sb_up_arrow</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<P>** These resources now are set to the vertical or horizontal cursor
+depending upon orientation, by default. If a value is specified here
+then that cursor will be used reguardless of orientation.</P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>orientation</B></TD>
+<TD>The orientation to stack the panes. This value can be either
+<I>XtorientVertical</I> or <I>XtorientHorizontal</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>refigureMode</B></TD>
+<TD>This resource allows pane layout to be suspended. If this value is
+<B>False</B>, then no layout actions will be taken. This may improve
+efficiency when adding or removing more than one pane from the Paned
+widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>internalBorderWidth</B></TD>
+<TD>The width of each line of the internal borders. This is the amount of space left
+between the panes. The class name of this resource allows
+<I>Paned*BorderWidth: 3</I> to set the total internal border width to 6 for the
+Paned widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>intBorderHighlight<BR>
+intBorderShadow</B></TD>
+<TD>A pixel value which indexes the widget's colormap to derive the internal
+border colors of the widget's window. The class name of this resource
+allows to set the internal border colors for the Paned widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>gripIndent</B></TD>
+<TD>The amount of space left between the right (or bottom) edge of the
+Paned widget and all the grips.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>cursor</B></TD>
+<TD>The cursor to use when the mouse pointer is over the Paned widget, but
+not in any of its children (children may also inherit this cursor). It
+should be noted that the internal borders are actually part of the Paned
+widget, not the children.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>gripCursor</B></TD>
+<TD>The cursor to use when the grips are not active. The default value is
+<I>verticalGripCursor</I> or <I>horizontalGripCursor</I> depending on
+the orientation of the Paned widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>gripTranslation</B></TD>
+<TD>Translation table that will be applied to all grips.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>horizontalBetweenCursor<BR>
+verticalBetweenCursor</B></TD>
+<TD>The cursor to be used for the grip when changing the boundary between
+two panes. These resources allow the cursors to be different
+depending on the orientation of the Paned widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>horizontalGripCursor<BR>
+verticalGripCursor</B></TD>
+<TD>The cursor to be used for the grips when they are not active. These
+resources allow the cursors to be different depending on the
+orientation of the Paned widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>leftCursor<BR>
+rightCursor</B></TD>
+<TD>The cursor used to indicate which is the <B>important</B> pane to resize
+when the Paned widget is oriented horizontally.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>lowerCursor<BR>
+upperCursor</B></TD>
+<TD>The cursor used to indicate which is the <B>important</B> pane to resize
+when the Paned widget is oriented vertically.
+This is not the same as the number of panes, since this also contains a
+grip for some of the panes, use <I>XawPanedGetNumSub()</I> to retrieve the
+number of panes.</TD>
+</TR>
+</TABLE>
+
+<H3>Constraint Resources</H3>
+
+<P>Each child of the Paned widget may request special layout resources
+be applied to it. These <I>constraint</I> resources allow the Form
+widget's children to specify individual layout requirements.</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>RepType</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD>allowResize<BR>
+max<BR>
+min<BR>
+preferredPaneSize<BR>
+resizeToPreferred<BR>
+showGrip<BR>
+skipAdjust</TD>
+
+<TD>Boolean<BR>
+Max<BR>
+Min<BR>
+PerferredPaneSize<BR>
+Boolean<BR>
+ShowGrip<BR>
+Boolean</TD>
+
+<TD>Boolean<BR>
+Dimension<BR>
+Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Boolean<BR>
+Boolean</TD>
+
+<TD>False<BR>
+unlimited<BR>
+Grip Size<BR>
+PANED_ASK_CHILD<BR>
+False<BR>
+True<BR>
+False</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>allowResize</B></TD>
+<TD>If this value is <B>False</B> the the Paned widget will disallow all
+geometry requests from this child.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>max, min</B></TD>
+<TD>The absolute maximum or minimum size for this pane. These values will
+never be overridden by the Paned widget. This may cause some panes to be
+pushed off the bottom (or right) edge of the paned widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>preferredPaneSize</B></TD>
+<TD>Normally the paned widget makes a QueryGeometry call on a child to
+determine the preferred size of the child's pane. There are times
+when the application programmer or the user has a better idea of the
+preferred size of a pane. Setting this resource causes the value
+passed to be interpreted as the preferred size, in pixels, of this pane.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>resizeToPreferred</B></TD>
+<TD>Determines whether or not to resize each pane to its preferred size
+when the Paned widget is resized. See <B>Layout Semantics</B> for details.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>showGrip</B></TD>
+<TD>If <B>True</B> then a grip will be shown for this pane. The grip
+associated with a pane is either below or to the right of the pane. No
+grip is ever shown for the last pane.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>skipAdjust</B></TD>
+<TD>This resource is used to determine which pane is forced to be resized.
+Setting this value to <B>True</B> makes this pane less likely to be
+forced to be resized. See <B>Layout Semantics</B> for details.</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Layout Semantics</H3>
+
+<P>In order to make effective use of the Paned widget it is helpful to know
+the rules it uses to determine which child will be resized in any given
+situation. There are three rules used to determine which child is
+resized. While these rules are always the same, the panes that are
+searched can change depending upon what caused the relayout.</P>
+
+<H3>Layout Rules</H3>
+
+<UL>
+<LI>Do not let a pane grow larger than its <B>max</B> or smaller than its
+<B>min</B>.</LI>
+<LI>Do not adjust panes with <B>skipAdjust</B> set.</LI>
+<LI>Do not adjust panes away from their preferred size, although moving one
+closer to its preferred size is fine.</LI>
+</UL>
+
+<P>When searching the children the Paned widget looks for panes that
+satisfy all the rules, and if unsuccessful then it eliminates rule 3
+and then 2. Rule 1 is always enforced.</P>
+
+<P>If the relayout is due to a resize or change in management then the
+panes are searched from bottom to top.  If the relayout is due to grip
+movement then they are searched from the grip selected in the direction
+opposite the pane selected.</P>
+
+<H3>Resizing Panes from a Grip Action</H3>
+
+<P>The pane above the grip is resized by invoking the GripAction with 
+<B>UpLeftPane</B> specified. The panes below the grip are each checked
+against all rules, then rules 2 and 1 and finally against rule 1 only.
+No pane above the chosen pane will ever be resized.</P>
+
+<P>The pane below the grip is resized by invoking the GripAction with 
+<B>LowRightPane</B> specified. The panes above the grip are each
+checked in this case. No pane below the chosen pane will ever be resized.</P>
+
+<P>Invoking GripAction with <B>ThisBorderOnly</B> specified just moves the
+border between the panes. No other panes are ever resized.</P>
+
+<H3>Resizing Panes after the Paned widget is resized</H3>
+
+<P>When the Pane widget is resized it must determine a new size for each
+pane.  There are two methods of doing this.  The Paned widget can either
+give each pane its preferred size and then resize the panes to fit, or
+it can use the current sizes and then resize the panes to fit.  The
+<I>resizeToPreferred</I> resource allows the application to tell the
+Paned widget whether to query the child about its preferred size
+(subject to the the <I>preferredPaneSize</I>) or to use the current size
+when refiguring the pane locations after the pane has been resized.</P>
+
+<P>There is one special case. All panes assume they should resize to
+their preferred size until the Paned widget becomes visible to the user.</P>
+
+<H3>Managing Children and Geometry Management</H3>
+
+<P>The Paned widget always resizes its children to their preferred sizes when
+a new child is managed, or a geometry management request is honored.
+The Paned widget will first attempt to resize itself to contain its
+panes exactly.  If this is not possible then it will hunt through the
+children, from bottom to top (right to left), for a pane to resize.</P>
+
+<H3>Special Considerations</H3>
+
+<P>When a user resizes a pane with the grips, the Paned widget assumes that
+this new size is the preferred size of the pane.</P>
+
+<H3>Grip Translations</H3>
+
+<P>The Paned widget has no action routines of its own, as all actions are
+handled through the grips. The grips are each assigned a default
+Translation table.</P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH=90% >
+<TR>
+<TD><I>&lt;Btn1Down&gt;<BR>
+&lt;Btn2Down&gt;<BR>
+&lt;Btn3Down&gt;<BR>
+&lt;Btn1Motion&gt;<BR>
+&lt;Btn2Motion&gt;<BR>
+&lt;Btn3Motion&gt;<BR>
+&lt;AnyBtnUp&gt;</I></TD>
+
+<TD><I>GripAction(Start, UpLeftPane)<BR>
+GripAction(Start, ThisBorderOnly)<BR>
+GripAction(Start, LowRightPane)<BR>
+GripAction(Move, UpLeftPane)<BR>
+GripAction(Move, ThisBorderOnly)<BR>
+GripAction(Move, LowRightPane)<BR>
+GripAction(Commit)</I></TD>
+</TR>
+</TABLE>
+
+<P>The Paned widget interprets the <I>GripAction</I> as taking two arguments.
+The first argument may be any of the following:</P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>Start</B></TD>
+<TD>Sets up the Paned widget for resizing and changes the cursor of the
+grip.  The second argument determines which pane will be resized, and
+can take on any of the three values shown above.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>Move</B></TD>
+<TD>The internal borders are drawn over the current pane locations to
+animate where the borders would actually be placed if you were to move
+this border as shown. The second argument must match the second argument
+that was passed to the <B>Start</B> action, that began this process. If
+these arguments are not passed, the behavior is undefined.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>Commit</B></TD>
+<TD>This argument causes the Paned widget to commit the changes selected
+by the previously started action. The cursor is changed back to the
+grip's inactive cursor. No second argument is needed in this case.</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Convenience Routines</H3>
+
+<P>To enable or disable a child's request for pane resizing,
+use XawPanedAllowResize():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawPanedAllowResize(w, allow_resize)<BR>
+Widget w;<BR>
+Boolean allow_resize;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the child pane.</TD>
+</TR>
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>allow_resize</B></TD>
+<TD>Specifies whether or not resizing requests for this child will be
+granted by the Paned widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>If allow_resize is <B>True</B>, the Paned widget allows geometry
+requests from the child to change the pane's height. If allow_resize
+is <B>False</B>, the Paned widget ignores geometry requests from the
+child to change the pane's height. The default state is <B>True</B>
+before the Pane is realized and <B>False</B> after it is realized.
+This procedure is equivalent to changing the <B>allowResize</B>
+constraint resource for the child.</P>
+
+<P>To change the minimum and maximum height settings for a pane, use
+XawPanedSetMinMax():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawPanedSetMinMax(w, min, max)<BR>
+Widget w;<BR>
+int min, max;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the child pane.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>min</B></TD>
+<TD>Specifies the new minimum height of the child, expressed in pixels.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>max</B></TD>
+<TD>Specifies new maximum height of the child, expressed in pixels.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<P>This procedure is equivalent to setting the <B>min</B> and <B>max</B>
+constraint resources for the child.</P>
+
+<P>To retrieve the minimum and maximum height settings for a pane, use
+XawPanedGetMinMax():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawPanedGetMinMax(w, min_return, max_return)<BR>
+Widget w;<BR>
+int *min_return, *max_return;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the child pane.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>min_return</B></TD>
+<TD>Returns the minimum height of the child, expressed in pixels.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>max_return</B></TD>
+<TD>Returns the maximum height of the child, expressed in pixels.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<P>This procedure is equivalent to getting the <B>min</B> and <B>max</B>
+resources for this child.</P>
+
+<P>To enable or disable automatic recalculation of pane sizes and positions,
+use XawPanedSetRefigureMode():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawPanedSetRefigureMode(w, mode)<BR>
+Widget w;<BR>
+Boolean mode;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Paned widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>mode</B></TD>
+<TD>Specifies whether the layout of the Paned widget is enabled (True)
+or disabled (False).</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>When making several changes to the children of a Paned widget
+after the Paned has been realized, it is a good idea to disable
+relayout until after all changes have been made.</P>
+
+<P>To retrieve the number of panes in a paned widget use
+XawPanedGetNumSub():</P>
+
+<BLOCKQUOTE>
+<P><I>int XawPanedGetNumSub(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=0 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Paned widget,</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function returns the number of panes in the Paned widget. This is
+<B>not</B> the same as the number of children, since the grips are also
+children of the Paned widget.</P>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

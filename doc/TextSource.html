@@ -1,0 +1,440 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The Text Source Object</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The Text Source Object</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/TextSrc.h&gt;<BR>
+&lt;X11/XawPlus/TextSrcP.h&gt;<BR>
+textSrcObjectClass<BR>
+TextSource<BR>
+Object</TD>
+</TR>
+</TABLE>
+
+<P>The TextSrc object is the root object for all text sources. Any new text
+source objects should be subclasses of the TextSrc Object. The
+TextSrc Class contains all methods the Text widget expects a text
+source to export.<BR>
+Since all text sources will have some resources in common the
+TextSrc defines a few new resources.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>None.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a TextSrc object instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">TEXTSRC OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>editType</TD>
+<TD>EditType</TD>
+<TD>XawTextEditType</TD>
+<TD>XawtextRead</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Subclassing the TextSrc</H3>
+
+<P>The only purpose of the TextSrc Object is to be subclassed. It contains
+the minimum set of class methods that all text sources must have. All
+class methods of the TextSrc must be defined, as the Text widget uses
+them all. While all may be inherited, the direct descendant of TextSrc
+<B>must</B> specify some of them as TextSrc does not contain enough
+information to be a valid text source by itself. Do not try to use the
+TextSrc as a valid source for the Text widget; it is not intended to be
+used as a source by itself and bad things will probably happen.</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Function</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Public Interface</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>must specify</B></TD>
+</TR>
+
+<TR>
+<TD>Read<BR>
+Replace<BR>
+Scan<BR>
+Search<BR>
+SetSelection<BR>
+ConvertSelection</TD>
+
+<TD>XawTextSourceRead<BR>
+XawTextSourceReplace<BR>
+XawTextSourceScan<BR>
+XawTextSourceSearch<BR>
+XawTextSourceSetSelection<BR>
+XawTextSourceConvertSelection</TD>
+
+<TD>yes<BR>
+no<BR>
+yes<BR>
+no<BR>
+no<BR>
+no</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Reading Text</H3>
+
+<P>To read the text in a text source use the Read() function:</P>
+
+<BLOCKQUOTE>
+<P><I>XawTextPosition Read(w, pos, text_return, length)<BR>
+Widget w;<BR>
+XawTextPosition pos;<BR>
+XawTextBlock *text_return;<BR>
+int length;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH=80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSrc object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>pos</B></TD>
+<TD>Specifies the position of the first character to be read from the text buffer.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>text</B></TD>
+<TD>Returns the text read from the source.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>length</B></TD>
+<TD>Specifies the maximum number of characters the TextSrc should
+return to the application in <I>text_return</I>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function returns the actual number of characters read from the
+text buffer. The function is not required to return <I>length</I>
+characters if that many characters are in the file, it may break at
+any point that is convenient to the internal structure of the
+source. It may take several calls to <I>Read()</I> before the desired
+portion of the text buffer is fully retrieved.</P>
+
+<H3>Replacing Text</H3>
+
+<P>To replace or edit the text in a text buffer use the Replace() function:</P>
+
+<BLOCKQUOTE>
+<P><I>XawTextPosition Replace(w, start, end, text)<BR>
+Widget w;<BR>
+XawTextPosition start, end;<BR>
+XawTextBlock *text;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH=80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSrc object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>start</B></TD>
+<TD>Specifies the position of the first character to be removed from the text
+buffer. This is also the location to begin inserting the new text.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>end</B></TD>
+<TD>Specifies the position immediately after the last character to be
+removed from the text buffer.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>text</B></TD>
+<TD>Specifies the text to be added to the text source.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function can return any of the following values:</P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH=90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>XawEditDone</B></TD>
+<TD>The text replacement was successful.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>XawPositionError</B></TD>
+<TD>The edit mode is <B>XawtextAppend</B> and <I>start</I> is not the last
+character of the source.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>XawEditError</B></TD>
+<TD>Either the Source was read-only or the range to be deleted is larger
+than the length of the Source. </TD>
+</TR>
+</TABLE>
+
+<P>The <B>Replace</B> arguments <I>start</I> and <I>end</I> represent the
+text source character positions for the existing text that is to be
+replaced by the text in the text block. The characters from
+<I>start</I> up to but not including <I>end</I> are deleted, and the
+buffer specified by the text block is inserted in their
+place. If <I>start</I> and <I>end</I> are equal, no text is deleted and
+the new text is inserted after <I>start</I>.</P>
+
+
+<H3>Scanning the TextSrc</H3>
+
+<P>To search the text source for one of the predefined boundary types use
+the Scan() function:</P>
+
+<BLOCKQUOTE>
+<P><I>XawTextPosition Scan(w, position, type, dir, count, include)<BR>
+Widget w;<BR>
+XawTextPosition position;<BR>
+XawTextScanType type;<BR>
+XawTextScanDirection dir;<BR>
+int count;<BR>
+Boolean include;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH=80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSrc object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>position</B></TD>
+<TD>Specifies the position to begin scanning the source.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>type</B></TD>
+<TD>Specifies the type of boundary to scan for, may be one of:
+<I>XawstPosition, XawstWhiteSpace, XawstEOL,
+XawstParagraph, XawstAll</I>. The exact meaning of these
+boundaries is left up to the individual text source.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>dir</B></TD>
+<TD>Specifies the direction to scan, may be either <I>XawsdLeft</I> to search
+backward, or <I>XawsdRight</I> to search forward.
+</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>count</B></TD>
+<TD>Specifies the number of boundaries to scan for.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>include</B></TD>
+<TD>Specifies whether the boundary itself should be included in the scan.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The Scan() function returns the position in the text source of the desired
+boundary. It is expected to return a valid address for
+all calls made to it, thus if a particular request is made that would take
+the text widget beyond the end of the source it must return the
+position of that end.</P>
+
+<H3>Searching through a TextSrc</H3>
+
+<P>To search for a particular string use the Search() function.</P>
+
+<BLOCKQUOTE>
+<P><I>XawTextPosition Search(w, position, dir, text)<BR>
+Widget w;<BR>
+XawTextPosition position;<BR>
+XawTextScanDirection dir;<BR>
+XawTextBlock *text;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH=80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSrc object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>position</B></TD>
+<TD>Specifies the position to begin the search.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>dir</B></TD>
+<TD>Specifies the direction to search, may be either <I>XawsdLeft</I> to search
+backward, or <I>XawsdRight</I> to search forward.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>text</B></TD>
+<TD>Specifies a text block containing the text to search for.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function will search through the text buffer attempting to find a
+match for the string in the text block. If a match is found in the
+direction specified, then the character location of the first character
+in the string is returned. If no text was found then
+<I>XawTextSearchError</I> is returned.</P>
+
+<H3>Text Selections</H3>
+
+<P>While many selection types are handled by the Text widget, text sources
+may have selection types unknown to the Text widget. When a selection
+conversion is requested by the X server the Text widget will first call
+the <I>ConvertSelection</I> function, to attempt the selection
+conversion.</P>
+
+<BLOCKQUOTE>
+<P><I>Boolean ConvertSelections(w, selection, target, type, value_return, length_return, format_return)<BR>
+Widget w;<BR>
+Atom *selection, *target, *type;<BR>
+caddr_t *value_return;<BR>
+unsigned long *length_return;<BR>
+int *format_return;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH=80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSrc object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>selection</B></TD>
+<TD>Specifies the type of selection that was requested (e.g. PRIMARY).</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>target</B></TD>
+<TD>Specifies the type of the selection that has been requested, which
+indicates the desired information about the selection (e.g. Filename,
+Text, Window).</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>type</B></TD>
+<TD>Specifies a pointer to the atom into which the property type of the converted
+value of the selection is to be stored.  For instance, either file
+name or text might have property type XA_STRING.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>value_return</B></TD>
+<TD>Returns a pointer into which a pointer to the converted value of the
+selection is to be stored. The selection owner is responsible for allocating
+this storage. The memory is considered owned by the toolkit, and is
+freed by XtFree when the Intrinsics selection mechanism is done with it.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>length_return</B></TD>
+<TD>Returns a pointer into which the number of elements in value is to be stored.
+The size of each element is determined by <I>format</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>format_return</B></TD>
+<TD>Returns a pointer into which the size in bits of the data elements of the
+selection value is to be stored.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>If this function returns <B>True</B> then the Text widget will assume
+that the source has taken care of converting the selection, Otherwise the
+Text widget will attempt to convert the selection itself.</P>
+
+<P>If the source needs to know when the text selection is modified it
+should define a SetSelection() procedure:</P>
+
+<BLOCKQUOTE>
+<P><I>void SetSelection(w, start, end, selection)<BR>
+Widget w;<BR>
+XawTextPosition start, end;<BR>
+Atom selection;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH=80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSrc object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>start</B></TD>
+<TD>Specifies the character position of the beginning of the new text selection.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>end</B></TD>
+<TD>Specifies the character position of the end of the new text selection.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>selection</B></TD>
+<TD>Specifies the type of selection that was requested (e.g. PRIMARY).</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

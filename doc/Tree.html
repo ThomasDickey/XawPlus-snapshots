@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The Tree Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The Tree Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/Tree.h&gt;<BR>
+&lt;X11/XawPlus/TreeP.h&gt;<BR>
+treeWidgetClass<BR>
+Tree<BR>
+Constraint</TD>
+</TR>
+</TABLE>
+
+<P>The Tree widget provides geometry management of arbitrary widgets arranged
+in a directed, acyclic graph (i.e., a tree). The hierarchy is contructed by
+attaching a constraint resource called <I>treeParent</I> to each widget
+indicating which other node in the tree should be treated as the widget's
+superior. The structure of the tree is shown by laying out the nodes
+in the standard format for tree diagrams with lines drawn connecting each
+node with its children.</P>
+
+<P>The Tree sizes itself according to the needs of its children and is not
+intended to be resized by its parent. Instead, it should be placed inside
+another composite widget (such as the <B>Porthole</B> or <B>Viewport</B>)
+that can be used to scroll around in the tree.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>None.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a Tree widget instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>1<BR>
+Space for all children<BR>
+True<BR>
+Space for all children<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">TREE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>autoReconfigure<BR>
+foreground<BR>
+gravity<BR>
+hSpace<BR>
+lineWidth<BR>
+vSpace</TD>
+
+<TD>AutoReconfigure<BR>
+Foreground<BR>
+Gravity<BR>
+HSpace<BR>
+LineWidth<BR>
+VSpace</TD>
+
+<TD>Boolean<BR>
+Pixel<BR>
+XtGravity<BR>
+Dimension<BR>
+Dimension<BR>
+Dimension</TD>
+
+<TD>FALSE<BR>
+XtDefaultForeground<BR>
+West<BR>
+20<BR>
+0<BR>
+6</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>autoReconfigure</B></TD>
+<TD>Whether or not to layout the tree every time a node is added or removed.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>gravity</B></TD>
+<TD>Specifies the side of the widget from which the tree should grow. Valid
+values include <I>WestGravity</I>, <I>NorthGravity</I>, <I>EastGravity</I>, and
+<I>SouthGravity</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>hSpace<BR>
+vSpace</B></TD>
+<TD>The amount of space, in pixels, to leave between the children. This
+resource specifies the amount of space left between the outermost
+children and the edge of the box.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>lineWidth</B></TD>
+<TD>The width of the lines from nodes that do not have a <I>treeGC</I>
+constraint resource to their children.
+</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Layout Semantics</H3>
+
+<P>Each time a child is managed or unmanaged, the Tree widget will attempt
+to reposition the remaining children to fix the shape of the tree if the
+<B>autoReconfigure</B> resource is set. Children at the top (most superior)
+of the tree are drawn at the side specified by the <B>gravity</B> resource.</P>
+
+<P>After positioning all children, the Tree widget attempts to shrink its
+own size to the minimum dimensions required for the layout.</P>
+
+<H3>Convenience Routines</H3>
+
+<P>The most efficient way to layout a tree is to set
+<B>autoReconfigure</B> to <I>False</I> and then use <I>XawTreeForceLayout()</I>
+to arrange the children:</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTreeForceLayout(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Tree widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

@@ -1,0 +1,497 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Text Functions</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>Text Functions</I></H3>
+
+<P>The following functions are provided as convenience routines for use with
+the Text widget. Although many of these actions can be performed by
+modifying resources, these interfaces are frequently more efficient.</P>
+
+<P>These data structures are defined in the Text widget's public header file,
+&lt;X11/Xaw/Text.h&gt;.</P>
+
+<P><I>typedef long XawTextPosition;</I></P>
+
+<P>Character positions in the Text widget begin at 0 and end at n+1, where
+n is the number of characters in the Text source widget.</P>
+
+<BLOCKQUOTE>
+<P><I>typedef struct {</I></P>
+<BLOCKQUOTE>
+<P><I>int firstPos;<BR>
+int length;<BR>
+char *ptr;<BR>
+unsigned long format;</I></P>
+</BLOCKQUOTE>
+<P><I>} XawTextBlock, *XawTextBlockPtr;</I></P>
+</BLOCKQUOTE>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH=90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>firstPos</B></TD>
+<TD>The first position, or index, to use within the <I>ptr</I> field.
+The value is commonly zero.
+</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>length</B></TD>
+<TD>The number of characters to be used from the <I>ptr</I> field.
+The number of characters used is commonly the number of characters
+in <I>ptr</I>, and must not be greater than the length of the string
+in <I>ptr</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>ptr</B></TD>
+<TD>Contains the string to be referenced by the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>format</B></TD>
+<TD>This field is not currently used, but should be specified as
+<I>XawFmt8Bit</I>.</TD>
+</TR>
+</TABLE>
+
+<H3>Selecting Text</H3>
+
+<P>To select a piece of text, use XawTextSetSelection():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextSetSelection(w, left, right)<BR>
+Widget w;<BR>
+XawTextPosition left, right;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>left</B></TD>
+<TD>Specifies the character position at which the selection begins.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>right</B></TD>
+<TD>Specifies the character position at which the selection ends.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>If redisplay is enabled, this function highlights the text and
+makes it the <I>PRIMARY</I> selection. This function does not have any
+effect on <I>CUT_BUFFER0</I>.</P>
+
+<H3>Unhighlighting Text</H3>
+
+<P>To unhighlight previously highlighted text in a widget, use
+XawTextUnsetSelection():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextUnsetSelection(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<H3>Getting Current Text Selection</H3>
+
+<P>To retrieve the text that has been selected by this
+text widget use XawTextGetSelectionPos():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextGetSelectionPos(w, begin_return, end_return)<BR>
+Widget w;<BR>
+XawTextPosition *begin_return, *end_return;</I></P> 
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>begin_return</B></TD>
+<TD>Returns the beginning of the text selection.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>end_return</B></TD>
+<TD>Returns the end of the text selection.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>If the returned values are equal, no text is currently selected.</P>
+
+<H3>Replacing Text</H3>
+
+<P>To modify the text in an editable Text widget use XawTextReplace():</P>
+
+<BLOCKQUOTE>
+<P><I>int XawTextReplace(w, start, end, text)<BR>
+Widget w;<BR>
+XawTextPosition start, end;<BR>
+XawTextBlock *text;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>start</B></TD>
+<TD>Specifies the starting character position of the text replacement.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>end</B></TD>
+<TD>Specifies the ending character position of the text replacement.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>text</B></TD>
+<TD>Specifies the text to be inserted into the file. This function will not
+be able to replace text in read-only text widgets. It will also only
+be able to append text to an append-only text widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function may return the following values:</P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>XawEditDone</B></TD>
+<TD>The text replacement was successful.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>XawPositionError</B></TD>
+<TD>The edit mode is <I>XawtextAppend</I> and <I>start</I> is not the position of
+the last character of the source.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>XawEditError</B></TD>
+<TD>Either the Source was read-only or the range to be deleted is larger
+than the length of the Source.</TD>
+</TR>
+</TABLE>
+
+<P>The <I>XawTextReplace</I> arguments <I>start</I> and
+<I>end</I> represent the text source character positions for the
+existing text that is to be replaced by the text in the text block.
+The characters from <I>start</I> up to
+but not including <I>end</I> are deleted, and the characters
+specified on the text block are inserted in their place. If
+<I>start</I> and <I>end</I> are equal, no text is deleted and the new
+text is inserted after <I>start</I>.</P>
+
+<H3>Searching for Text</H3>
+
+<P>To search for a string in the Text widget, use XawTextSearch():</P>
+
+<BLOCKQUOTE>
+<P><I>XawTextPosition XawTextSearch(w, dir, text)<BR>
+Widget w;<BR>
+XawTextScanDirection dir;<BR>
+XawTextBlock *text;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>dir</B></TD>
+<TD>Specifies the direction to search in. Legal values are
+<I>XawsdLeft</I> and <I>XawsdRight</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>text</B></TD>
+<TD>Specifies a text block structure that contains the text to search for.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The XawTextSearch() function will begin at the insertion point
+and search in the 
+direction specified for a string that matches the one passed in 
+<I>text</I>. If the string is found the location of the first
+character in the string is returned. If the string could not be
+found then the value <I>XawTextSearchError</I> is returned.</P>
+
+<H3>Redisplaying Text</H3>
+
+<P>To redisplay a range of characters, use XawTextInvalidate():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextInvalidate(w, from, to)<BR>
+Widget w;<BR>
+XawTextPosition from, to;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>from</B></TD>
+<TD>Specifies the start of the text to redisplay.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>to</B></TD>
+<TD>Specifies the end of the text to redisplay.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The <I>XawTextInvalidate</I>
+function causes the specified range of characters to be redisplayed
+immediately if redisplay is enabled or the next time that redisplay is
+enabled.</P>
+
+<P>To enable redisplay, use XawTextEnableRedisplay():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextEnableRedisplay(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The XawTextEnableRedisplay() function flushes any changes due to
+batched updates when XawTextDisableRedisplay()
+was called and allows future changes to be reflected immediately.</P>
+
+<P>To disable redisplay while making several changes, use
+XawTextDisableRedisplay().</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextDisableRedisplay(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The XawTextDisableRedisplay() function causes all changes to be
+batched until either XawTextDisplay() or XawTextEnableRedisplay()
+is called. To display batched updates, use XawTextDisplay():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextDisplay(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The XawTextDisplay() function forces any accumulated updates to be
+displayed.</P>
+
+<H3>Resources Convenience Routines</H3>
+
+<P>To obtain the character position of the left-most character on the
+first line displayed in the widget (the value of the
+<I>displayPosition</I> resource), use XawTextTopPosition().</P>
+
+<BLOCKQUOTE>
+<P><I>XawTextPosition XawTextTopPosition(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>To assign a new selection array to a text widget use
+XawTextSetSelectionArray():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextSetSelectionArray(w, sarray)<BR>
+Widget w;<BR>
+XawTextSelectType *sarray;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>sarray</B></TD>
+<TD>Specifies a selection array as defined in the section called <I>Text
+Selections for Application Programmers</I>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>Calling this function is equivalent to setting the value of the
+<I>selectionTypes</I> resource.</P>
+
+<P>To move the insertion point to the specified source position, use
+XawTextSetInsertionPoint():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextSetInsertionPoint(w, position)<BR>
+Widget w;<BR>
+XawTextPosition position;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>position</B></TD>
+<TD>Specifies the new position for the insertion point.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The text will be scrolled vertically if necessary to make the line
+containing the insertion point visible. Calling this function is
+equivalent to setting the <I>insertPosition</I> resource.</P>
+
+<P>To obtain the current position of the insertion point, use
+XawTextGetInsertionPoint():</P>
+
+<BLOCKQUOTE>
+<P><I>XawTextPosition XawTextGetInsertionPoint(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The result is equivalent to retrieving the value of the
+<I>insertPosition</I> resource.</P>
+
+<P>To replace the text source in the specified widget, use
+XawTextSetSource():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextSetSource(w, source, position)<BR>
+Widget w;<BR>
+Widget source;<BR>
+XawTextPosition position;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>source</B></TD>
+<TD>Specifies the text source object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>position</B></TD>
+<TD>Specifies character position that will become the upper left hand corner
+of the displayed text. This is usually set to zero.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>A display update will be performed if redisplay is enabled.</P>
+
+<P>To obtain the current text source for the specified widget, use
+XawTextGetSource():</P>
+
+<BLOCKQUOTE>
+<P><I>Widget XawTextGetSource(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function returns the text source that this Text widget is currently
+using.</P>
+
+<P>To enable and disable the insertion point, use
+XawTextDisplayCaret():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawTextDisplayCaret(w, visible)<BR>
+Widget w;<BR>
+Boolean visible;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Text widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>visible</B></TD>
+<TD>Specifies whether or not the caret should be displayed.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>If <I>visible</I> is <I>False</I> the insertion point will be disabled.
+The marker is re-enabled either by setting <I>visible</I> to <I>True</I>, by
+calling <I>XtSetValues()</I>, or by executing the <I>display-caret</I>
+action routine.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>None.</P>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

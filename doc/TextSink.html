@@ -1,0 +1,580 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The TextSink Object</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The TextSink Object</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/TextSink.h&gt;<BR>
+&lt;X11/XawPlus/TextSinkP.h&gt;<BR>
+textSinkObjectClass<BR>
+TextSink<BR>
+Object</TD>
+</TR>
+</TABLE>
+
+<P>The TextSink object is the root object for all text sinks. Any new text
+sink objects should be subclasses of the TextSink Object. The TextSink
+Class contains all methods that the Text widget expects a text sink to
+export.</P>
+
+<P>Since all text sinks will have some resources in common, the TextSink
+defines a few new resources.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>The default background color changes from <I>XtDefaultBackground</I> to
+<I>grey75</I>.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a TextSink object instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">TEXTSINK:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>foreground<BR>
+background</TD>
+
+<TD>Foreground<BR>
+Background</TD>
+
+<TD>Pixel<BR>
+Pixel</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Subclassing the TextSink</H3>
+
+<P>The only purpose of the TextSink Object is to be subclassed. It
+contains the minimum set of class methods that all text sinks must have.
+While all may be inherited, the direct descendant of TextSink <B>must
+specify</B> some of them as TextSink does contain enough information to
+be a valid text sink by itself. Do not try to use 
+the TextSink as a valid sink for the Text widget, it is not intended
+to be used as a sink by itself and bad things will probably happen.</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Function</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Public Interface</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>must specify</B></TD>
+</TR>
+
+<TR>
+<TD>DisplayText<BR>
+InsertCursor<BR>
+ClearToBackground<BR>
+FindPosition<BR>
+FindDistance<BR>
+Resolve<BR>
+MaxLines<BR>
+MaxHeight<BR>
+SetTabs<BR>
+GetCursorBounds</TD>
+
+<TD>XawTextSinkDisplayText<BR>
+XawTextSinkInsertCursor<BR>
+XawTextSinkClearToBackground<BR>
+XawTextSinkFindPosition<BR>
+XawTextSinkFindDistance<BR>
+XawTextSinkResolve<BR>
+XawTextSinkMaxLines<BR>
+XawTextSinkMaxHeight<BR>
+XawTextSinkSetTabs<BR>
+XawTextSinkGetCursorBounds</TD>
+
+<TD>yes<BR>
+yes<BR>
+no<BR>
+yes<BR>
+yes<BR>
+yes<BR>
+no<BR>
+no<BR>
+no<BR>
+yes</TD>
+</TR>
+</TABLE>
+
+<H3>Displaying Text</H3>
+
+<P>To display a section of the text buffer contained in the text source
+use the function DisplayText():</P>
+
+<BLOCKQUOTE>
+<P><I>void DisplayText(w, x, y, pos1, pos2, highlight)<BR>
+Widget w;<BR>
+Position x, y;<BR>
+XawTextPosition pos1, pos2;<BR>
+Boolean highlight;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>x</B></TD>
+<TD>Specifies the x location to start drawing the text.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>y</B></TD>
+<TD>Specifies the y location to start drawing text.</TD>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>pos1</B></TD>
+<TD>Specifies the location within the text source of the first character
+to be printed.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>pos2</B></TD>
+<TD>Specifies the location within the text source of the last character
+to be printed.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>highlight</B></TD>
+<TD>Specifies whether or not to paint the text region highlighted.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<P>The Text widget will only pass one line at a time to the text sink, so
+this function does not need to know how to line feed the text. It is
+acceptable for this function to just ignore Carriage Returns. <I>x</I>
+and <I>y</I> denote the upper left hand corner of the first character to
+be displayed.</P>
+
+<H3>Displaying the Insert Point</H3>
+
+<P>The function that controls the display of the text cursor is
+<I>InsertCursor</I>. This function will be called whenever the text
+widget desires to change the state of, or move the insert point.</P>
+
+<BLOCKQUOTE>
+<P><I>void InsertCursor(w, x, y, state)<BR>
+Widget w;<BR>
+Position x, y;<BR>
+XawTextInsertState state;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>x</B></TD>
+<TD>Specifies the x location of the cursor in Pixels.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>y</B></TD>
+<TD>Specifies the y location of the cursor in Pixels.<TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>state</B></TD>
+<TD>Specifies the state of the cursor, may be one of <I>XawisOn</I> or
+<I>XawisOff</I>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P><I>x</I> and <I>y</I> denote the upper left hand corner of the insert point.</P>
+
+<H3>Clearing Portions of the Text window</H3>
+
+<P>To clear a portion of the Text window to its background color, the Text
+widget will call ClearToBackground(). The TextSink object already
+defines this function as calling <I>XClearArea()</I> on the region passed.
+This behavior will be used if you specify
+<I>XtInheritClearToBackground</I> for this method.</P>
+
+<BLOCKQUOTE>
+<P><I>void ClearToBackground(w, x, y, width, height)<BR>
+Widget w;<BR>
+Position x, y;<BR>
+Dimension width, height;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>x</B></TD>
+<TD>Specifies the x location, in pixels, of the Region to clear.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>y</B></TD>
+<TD>Specifies the y location, in pixels, of the Region to clear.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>width</B></TD>
+<TD>Specifies the width, in pixels, of the Region to clear.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>height</B></TD>
+<TD>Specifies the height, in pixels, of the Region to clear.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P><I>x</I> and <I>y</I> denote the upper left hand corner of region to
+clear.</P>
+
+
+<H3>Finding a Text Position Given Pixel Values</H3>
+
+<P>To find the text character position that will be rendered at a given x
+location the Text widget uses the function FindPosition():</P>
+
+<BLOCKQUOTE>
+<P><I>void FindPosition(w, fromPos, fromX, width, stopAtWordBreak,
+pos_return, width_return, height_return)<BR>
+Widget w;<BR>
+XawTextPosition fromPos;<BR>
+int fromX, width;<BR>
+Boolean stopAtWordBreak;<BR>
+XawTextPosition *pos_return;<BR>
+int *width_return, *height_return;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>fromPos</B></TD>
+<TD>Specifies a reference position, usually the first character in this line.
+This character is always to the left of the desired character location.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>fromX</B></TD>
+<TD>Specifies the distance that the left edge of <I>fromPos</I> is from the
+left edge of the window. This is the reference x location for the
+reference position.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>width</B></TD>
+<TD>Specifies the distance, in pixels, from the reference position to the
+desired character position.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>stopAtWordBreak</B></TD>
+<TD>Specifies whether or not the position that is returned should be forced
+to be on a word boundary.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>pos_return</B></TD>
+<TD>Returns the character position that corresponds to the location that has
+been specified, or the work break immediately to the left of the
+position if <I>stopAtWordBreak</I> is <I>True</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>width_return</B></TD>
+<TD>Returns the actual distance between <I>fromPos</I> and <I>pos_return</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>height_return</B></TD>
+<TD>Returns the maximum height of the text between <I>fromPos</I> and
+<I>pos_return</I>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function need make no attempt to deal with line feeds. The text
+widget will only call it one line at a time.</P>
+
+<P>Another means of finding a text position is provided by the Resolve()
+function:</P>
+
+<BLOCKQUOTE>
+<P><I>void Resolve(w, fromPos, fromX, width, pos_return)<BR>
+Widget w;<BR>
+XawTextPosition fromPos;<BR>
+int fromX, width;<BR>
+XawTextPosition *pos_return;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>fromPos</B></TD>
+<TD>Specifies a reference position, usually the first character in this line.
+This character is always to the left of the desired character location.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>fromX</B></TD>
+<TD>Specifies the distance that the left edge of <I>fromPos</I> is from the
+left edge of the window. This is the reference x location for the
+reference position.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>width</B></TD>
+<TD>Specifies the distance, in pixels, from the reference position to the
+desired character position.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>pos_return</B></TD>
+<TD>Returns the character position that corresponds to the
+location that has been specified, or the word break immediately to the left
+if <I>stopAtWordBreak</I> is <I>True</I>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function need make no attempt to deal with line feeds. The text
+widget will only call it one line at a time. This is a more convenient
+interface to the <I>FindPosition</I> function, and provides a subset of its
+functionality.</P>
+
+<H3>Finding the Distance Between two Text Positions</H3>
+
+<P>To find the distance in pixels between two text positions on the same
+line use the function FindDistance().</P>
+
+<BLOCKQUOTE>
+<P><I>void FindDistance(w, fromPos, fromX, toPos,
+width_return, pos_return, height_return)<BR>
+Widget w;<BR>
+XawTextPosition fromPos, toPos;<BR>
+int fromX;<BR>
+XawTextPosition *pos_return;<BR>
+int *width_return, *height_return;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>fromPos</B></TD>
+<TD>Specifies the text buffer position, in characters, of the first position.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>fromX</B></TD>
+<TD>Specifies the distance that the left edge of <I>fromPos</I> is from the
+left edge of the window. This is the reference x location for the
+reference position.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>toPos</B></TD>
+<TD>Specifies the text buffer position, in characters, of the second position.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>resWidth</B></TD>
+<TD>Return the actual distance between <I>fromPos</I>
+and <I>pos_return</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>resPos</B></TD>
+<TD>Returns the character position that corresponds to the actual character
+position used for <I>toPos</I> in the calculations. This may be
+different than <I>toPos</I>, for example if <I>fromPos</I> and <I>toPos</I>
+are on different lines in the file.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>height_return</B></TD>
+<TD>Returns the maximum height of the text between <I>fromPos</I> and
+<I>pos_return</I>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function need make no attempt to deal with line feeds. The Text
+widget will only call it one line at a time.</P>
+
+
+<H3>Finding the Size of the Drawing area</H3>
+
+<P>To find the maximum number of lines that will fit into the current Text
+widget, use the function MaxLines(). The TextSink already defines
+this function to compute the maximum number of lines by using the height
+of <I>font</I>.</P>
+
+<BLOCKQUOTE>
+<P><I>int MaxLines(w, height)<BR>
+Widget w;<BR>
+Dimension height;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>height</B></TD>
+<TD>Specifies the height of the current drawing area.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>Returns the maximum number of lines that will fit in <I>height</I>.</P>
+
+<P>To find the height required for a given number of text lines, use
+the function MaxHeight(). The TextSink already defines this
+function to compute the maximum height of the window by using the
+height of <I>font</I>.</P>
+
+<BLOCKQUOTE>
+<P><I>int MaxHeight(w, lines)<BR>
+Widget w;<BR>
+int lines;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>height</B></TD>
+<TD>Specifies the height of the current drawing area.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>Returns the height that will be taken up by the number of lines passed.</P>
+
+<H3>Setting the Tab Stops</H3>
+
+<P>To set the tab stops for a text sink use the SetTabs() function.
+The TextSink already defines this function to set the tab x location in
+pixels to be the number of characters times the figure width of
+<I>font</I>.</P>
+
+<BLOCKQUOTE>
+<P><I>void SetTabs(w, tab_count, tabs)<BR>
+Widget w;<BR>
+int tab_count, *tabs;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>tab_count</B></TD>
+<TD>Specifies the number of tabs passed in <I>tabs</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>tabs</B></TD>
+<TD>Specifies the position, in characters, of the tab stops.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function is responsible for the converting character positions passed
+to it into whatever internal positions the TextSink uses for tab placement.</P>
+
+<H3>Getting the Insert Point's Size and Location</H3>
+
+<P>To get the size and location of the insert point use the
+GetCursorBounds() function.</P>
+
+<BLOCKQUOTE>
+<P><I>void GetCursorBounds(w, rect_return)<BR>
+Widget w;<BR>
+XRectangle *rect_return;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the TextSink object.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>rect_return</B></TD>
+<TD>Returns the location and size of the insert point.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P><I>Rect</I> will be filled with the current size and location of the
+insert point.</P>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

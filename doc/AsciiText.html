@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The AsciiText Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The AsciiText Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/AsciiText.h&gt;<BR>
+&lt;X11/XawPlus/AsciiTextP.h&gt;<BR>
+asciiTextWidgetClass<BR>
+AsciiText<BR>
+Text</TD>
+</TR>
+</TABLE>
+
+<P>The AsciiText widget is really a collection of smaller parts. It
+includes the Text widget, an <I>AsciiSrc</I>, and an <I>AsciiSink</I> for ASCII
+locales or a <I>MultiSrc</I>, and an <I>MultiSink</I> for non-ASCII locales.
+This is dependent on the <I>international</I> resource.</P>
+
+<P>If you want to specify resources for <I>AsciiSrc</I> or <I>AsciiSink</I>
+in a resource file be sure to use <B>*AsciiText*resource_name</B> instead of
+<B>*AsciiText.resource_name</B>, since they actually belong to the
+children of the AsciiText widget, and not the AsciiText widget itself.
+However, these resources may be set directly on the AsciiText widget at
+widget creation time, or via <I>XtSetValues()</I>.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>Since the 3D extensions of <I>Simple</I> are inserted, the
+AsciiText widget has the additional (but at this time not used) resources
+<I>highlightColor,</I> <I>shadowColor</I> and <I>buttonBorderWidth</I>.
+The default <I>background</I> color is now grey75.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a AsciiText widget instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>0<BR>
+12<BR>
+True<BR>
+100<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>cursor
+<BR>cursorName
+<BR>pointerColor
+<BR>pointerColorBackground
+<BR>insensitiveBorder
+<BR>international
+<BR>highlightColor
+<BR>shadowColor
+<BR>buttonBorderWidth</TD>
+
+<TD>Cursor
+<BR>Cursor
+<BR>Foreground
+<BR>Background
+<BR>Insensitive
+<BR>International
+<BR>Background
+<BR>Background
+<BR>Width</TD>
+
+<TD>Cursor
+<BR>String
+<BR>Pixel
+<BR>Pixel
+<BR>Pixmap
+<BR>Boolean
+<BR>Pixel
+<BR>Pixel
+<BR>Dimension</TD>
+
+<TD>None
+<BR>NULL
+<BR>XtDefaultForeground
+<BR>XtDefaultBackground
+<BR>NULL
+<BR>False
+<BR>grey90
+<BR>grey40
+<BR>2</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">TEXT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>autoFill<BR>
+bottomMargin<BR>
+topMargin<BR>
+leftMargin<BR>
+rightMargin<BR>
+displayPosition<BR>
+insertPosition<BR>
+resize<BR>
+scrollHorizontal<BR>
+scrollVertical<BR>
+selectTypes<BR>
+textSink<BR>
+textSource<BR>
+unrealizeCallback<BR>
+wrap<BR>
+displayCaret</TD>
+
+<TD>AutoFill<BR>
+Margin<BR>
+Margin<BR>
+Margin<BR>
+Margin<BR>
+TextPosition<BR>
+TextPosition<BR>
+Resize<BR>
+Scroll<BR>
+Scroll<BR>
+SelectTypes<BR>
+TextSink<BR>
+TextSource<BR>
+Callback<BR>
+Wrap<BR>
+Output</TD>
+
+<TD>Boolean<BR>
+Position<BR>
+Position<BR>
+Position<BR>
+Position<BR>
+XawTextPosition<BR>
+XawTextPosition<BR>
+XawTextResizeMode<BR>
+XawTextScrollMode<BR>
+XawTextScrollMode<BR>
+Pointer<BR>
+Widget<BR>
+Widget<BR>
+Callback<BR>
+XawTextWrapMode<BR>
+Boolean</TD>
+
+<TD>False<BR>
+2<BR>
+2<BR>
+2<BR>
+4<BR>
+0<BR>
+0<BR>
+XawTextResizeNever<BR>
+XawtextScrollNever<BR>
+XawtextScrollNever<BR>
+see documentation<BR>
+NULL<BR>
+NULL<BR>
+NULL<BR>
+XawTextWrapNever<BR>
+True</TD>
+</TR>
+
+</TABLE>
+
+<P></P>
+
+<P>Note, that the AsciiText widget class don't add any resources to the
+Text widget class.</P>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

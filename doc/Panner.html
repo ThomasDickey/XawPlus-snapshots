@@ -1,0 +1,423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The Panner Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The Panner Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/Panner.h&gt;<BR>
+&lt;X11/XawPlus/PannerP.h&gt;<BR>
+pannerWidgetClass<BR>
+Panner<BR>
+Simple</TD>
+</TR>
+</TABLE>
+
+<P>The Panner widget represents a rectangular region (called the ``canvas'') of 
+which only a smaller, enclosed rectangular region (called the ``slider'') by
+is visible at any given time.  It is typically
+used with a Porthole widget to scroll a third widget in two dimensions.</P>
+
+<P>When a Panner is created, it is drawn with the slider in a contrasting
+color.  The slider may be moved around the canvas by pressing, dragging,
+and then releasing Button1.
+While scrolling is in progress, the application receives notification
+through callback procedures which it may use to update any associated 
+widgets. Notification may be done either continuously whenever the slider
+moves or discretely whenever the slider has been given a new location.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>Since the 3D extensions of <I>Simple</I> are inserted, the
+Panner widget has the additional resources <I>highlightColor, shadowColor</I>
+and <I>buttonBorderWidth</I>. The color resources and the border width resource
+are used to display a three dimensional styled slider. The default <I>background</I>
+color is now grey75.</P>
+
+<P>The <I>backgroundStipple,
+lineWidth, rubberBand, shadowThickness</I> and <I>foreground</I> resources are
+not longer used. The old <I>shadowColor</I> resource is replaced by <I>Simple</I>
+with a different meaning.</P>
+
+<P>The <I>set()</I> action is not supported by the XawPlus version of this widget.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a Panner widget instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+
+<TD>Callback</TD>
+
+<TD>Pointer</TD>
+
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>0<BR>
+12<BR>
+True<BR>
+12<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>cursor
+<BR>cursorName
+<BR>pointerColor
+<BR>pointerColorBackground
+<BR>insensitiveBorder
+<BR>international
+<BR>highlightColor
+<BR>shadowColor
+<BR>buttonBorderWidth</TD>
+
+<TD>Cursor
+<BR>Cursor
+<BR>Foreground
+<BR>Background
+<BR>Insensitive
+<BR>International
+<BR>Background
+<BR>Background
+<BR>Width</TD>
+
+<TD>Cursor
+<BR>String
+<BR>Pixel
+<BR>Pixel
+<BR>Pixmap
+<BR>Boolean
+<BR>Pixel
+<BR>Pixel
+<BR>Dimension</TD>
+
+<TD>None
+<BR>NULL
+<BR>XtDefaultForeground
+<BR>XtDefaultBackground
+<BR>NULL
+<BR>False
+<BR>grey90
+<BR>grey40
+<BR>2</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">PANNER:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>allowOff<BR>
+canvasWidth<BR>
+canvasHeight<BR>
+defaultScale<BR>
+internalSpace<BR>
+reportCallback<BR>
+resize<BR>
+sliderX<BR>
+sliderY<BR>
+sliderWidth<BR>
+sliderHeight</TD>
+
+<TD>AllowOff<BR>
+CanvasWidth<BR>
+CanvasHeight<BR>
+DefaultScale<BR>
+InternalSpace<BR>
+ReportCallback<BR>
+Resize<BR>
+SliderX<BR>
+SliderY<BR>
+SliderWidth<BR>
+SliderHeight</TD>
+
+<TD>Boolean<BR>
+Dimension<BR>
+Dimension<BR>
+Dimension<BR>
+Dimension<BR>
+XtCallbackList<BR>
+Boolean<BR>
+Position<BR>
+Position<BR>
+Dimension<BR>
+Dimension</TD>
+
+<TD>FALSE<BR>
+0<BR>
+0<BR>
+8 percent<BR>
+4<BR>
+NULL<BR>
+TRUE<BR>
+0<BR>
+0<BR>
+0<BR>
+0</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>allowOff</B></TD>
+<TD>Whether to allow the edges of the slider to go off the edges of the canvas.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>canvasHeight<BR>
+canvasWidth</B></TD>
+<TD>The size of the canvas.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>defaultScale</B></TD>
+<TD>The percentage size that the Panner widget should have relative
+to the size of the canvas.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>internalSpace</B></TD>
+<TD>The width of internal border in pixels between a slider representing the 
+full size of the canvas and the edge of the Panner widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>reportCallback</B></TD>
+<TD>All functions on this callback list are called when the
+<I>notify</I> action is invoked. See the <B>Panner Actions</B> section 
+for details.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>resize</B></TD>
+<TD>Whether or not to resize the panner whenever the canvas size is changed so
+that the <I>defaultScale</I> is maintained.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>sliderX<BR>
+sliderY</B></TD>
+<TD>The location of the slider in the coordinates of the canvas.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>sliderHeight<BR>
+sliderWidth</B></TD>
+<TD>The size of the slider.</TD>
+</TR>
+</TABLE>
+
+<H3>Panner Actions</H3>
+
+<P>The actions supported by the Panner widget are:</P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>start</B>()</TD>
+<TD>This action begins movement of the slider.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>stop</B>()</TD>
+<TD>This action ends movement of the slider.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>abort</B>()</TD>
+<TD>This action ends movement of the slider and restores it to the position it
+held when the <I>start</I> action was invoked.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>move</B>()</TD>
+<TD>This action moves the slider.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>page</B>(xamount,yamount)</TD>
+<TD>This action moves the slider by the specified amounts. The format
+for the amounts is a signed or unsigned floating-point number (e.g., +1.0
+or -0.5) followed
+by either <I>p</I> indicating pages (slider sizes), or <I>c</I> indicating
+canvas sizes.  Thus, <I>page(+0, +0.5p)</I> represents vertical movement down
+one-half the height of the slider and <I>page(0, 0)</I> represents moving to
+the upper left corner of the canvas.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>notify</B>()</TD>
+<TD>This action informs the application of the slider's current position by 
+invoking the <I>reportCallback</I> functions registered by the application.</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<P>The default bindings for Panner are:</P>
+
+<TABLE>
+<TR>
+<TD><I>&lt;Btn1Down&gt;:<BR>
+&lt;Btn1Motion&gt;:<BR>
+&lt;Btn1Up&gt;:<BR>
+&lt;Btn2Down&gt;:<BR>
+&lt;Key&gt;space:<BR>
+&lt;Key&gt;Delete:<BR>
+&lt;Key&gt;BackSpace:<BR>
+&lt;Key&gt;Left:<BR>
+&lt;Key&gt;Right:<BR>
+&lt;Key&gt;Up:<BR>
+&lt;Key&gt;Down:<BR>
+&lt;Key&gt;Home:</I></TD>
+
+<TD><I>start()<BR>
+move()<BR>
+notify(), stop()<BR>
+abort()<BR>
+page(1p, 1p)<BR>
+page(-1p, -1p)<BR>
+page(-1p, -1p)<BR>
+page(-0.5p, 0)<BR>
+page(0.5p, 0)<BR>
+page(0, -0.5p)<BR>
+page(0, 0.5p)<BR>
+page(0, 0)</I></TD>
+</TR>
+</TABLE>
+
+<H3>Panner Callbacks</H3>
+
+<P>The functions registered on the <I>reportCallback</I> list are invoked by
+the <I>notify</I> action as follows:</P>
+
+<BLOCKQUOTE>
+<P><I>void ReportProc(panner, client_data, report)<BR>
+Widget panner;<BR>
+XtPointer client_data;<BR>
+XtPointer report;    /* (XawPannerReport *) */</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>panner</B></TD>
+<TD>Specifies the Panner widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>client_data</B></TD>
+<TD>Specifies the client data.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>report</B></TD>
+<TD>Specifies a pointer to an <I>XawPannerReport</I> structure containing
+the location and size of the slider and the size of the canvas.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

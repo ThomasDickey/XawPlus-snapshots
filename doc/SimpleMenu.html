@@ -1,0 +1,528 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The SimpleMenu Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The SimpleMenu Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/SimpleMenu.h&gt;<BR>
+&lt;X11/XawPlus/SimpleMenP.h&gt;<BR>
+simpleMenuWidgetClass<BR>
+SimpleMenu<BR>
+OverrideShell</TD>
+</TR>
+</TABLE>
+
+<P>The SimpleMenu widget is a container for the menu entries. It is a
+direct subclass of shell, and is usually created with
+<I>XtCreatePopupShell()</I>. This is the only part of the menu that
+actually contains a window. The SimpleMenu serves as the glue to bind
+the individual menu entries together into a menu.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>In XawPlus the menus entries (the Sme objects) are drawn in a 3D styled menu
+window, supplied by this widget. For this feature SimpleMenu has some new resources
+described below.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a Simple widget instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>0<BR>
+12<BR>
+True<BR>
+12<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SHELL:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+<TR>
+<TD>allowShellResize<BR>
+geometry<BR>
+overrideRedirect<BR>
+popdownCallback<BR>
+popupCallback<BR>
+saveUnder</TD>
+
+<TD>AllowShellResize<BR>
+Geometry<BR>
+OverrideRedirect<BR>
+Callback<BR>
+Callback<BR>
+SaveUnder</TD>
+
+<TD>Boolean<BR>
+String<BR>
+Boolean<BR>
+Callback<BR>
+Callback<BR>
+Boolean</TD>
+
+<TD>True<BR>
+NULL<BR>
+see above<BR>
+see above<BR>
+see above<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SIMPLEMENU:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>backingStore<BR>
+menuOnScreen<BR>
+popupOnEntry<BR>
+cursor<BR>
+label<BR>
+labelClass<BR>
+rowHeight<BR>
+bottomMargin<BR>
+topMargin<BR>
+highlightColor<BR>
+shadowColor<BR>
+buttonBorderWidth</TD>
+
+<TD>BackingStore<BR>
+MenuOnScreen<BR>
+PopupOnEntry<BR>
+Cursor<BR>
+Label<BR>
+LabelClass<BR>
+RowHeight<BR>
+VerticalMargins<BR>
+VerticalMargins<BR>
+Background<BR>
+Background<BR>
+Width</TD>
+
+<TD>BackingStore<BR>
+Boolean<BR>
+Widget<BR>
+Cursor<BR>
+String<BR>
+Pointer<BR>
+Dimension<BR>
+Dimension<BR>
+Dimension<BR>
+Pixel<BR>
+Pixel<BR>
+Dimension</TD>
+
+<TD>default<BR>
+True<BR>
+NULL<BR>
+None<BR>
+NULL (No label)<BR>
+smeBSBObjectClass<BR>
+Height of Font<BR>
+VerticalSpace<BR>
+VerticalSpace<BR>
+grey90<BR>
+grey40<BR>
+2</TD>
+</TR>
+
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>backingStore</B></TD>
+<TD>Determines what type of backing store will be used for the menu. Legal
+values for this resource are <I>NotUseful</I>, <I>WhenMapped</I>, and
+<I>Always</I>. These values are the backing store integers defined in
+<X11/X.h>. If <I>default</I> is specified (the default behavior) the server
+will use whatever it thinks is appropriate.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>bottomMargin,<BR>
+topMargin</B></TD>
+<TD>The amount of space between the top or bottom of the menu and the menu entry
+closest to that edge.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>cursor</B></TD>
+<TD>The shape of the mouse pointer whenever it is in this widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>geometry</B></TD>
+<TD>If this resource is specified it will override the x, y, width and
+height of this widget. The format of this string is
+[&lt;width&gt;x&lt;height&gt;][{+ -} &lt;xoffset&gt; {+ -}&lt;yoffset&gt;].</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>label</B></TD>
+<TD>This label will be placed at the top of the SimpleMenu, and may not be
+highlighted. The name of the label object is <I>menuLabel</I>. Using this name it
+is possible to modify the label's attributes through the resource database.
+When the label is created, the <I>label</I> is hard coded to the value of
+<I>label</I>, and <I>justify</I> is hard coded as <I>XtJustifyCenter</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>labelClass</B></TD>
+<TD>Specifies the type of Sme object created as the menu label.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>menuOnScreen</B></TD>
+<TD>If the menu is automatically positioned under the cursor with the
+<I>XawPositionSimpleMenu</I> action, and this resource is <I>True</I>,
+then the menu will always be fully visible on the screen.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>overrideRedirect</B></TD>
+<TD>Determines the value of the <I>override_redirect</I> attribute of the
+SimpleMenu's window. The <I>override_redirect</I> attribute of a window
+determines whether or not a window manager may interpose itself between
+this window and the root window of the display. For more information
+see the <I>Interclient Communications Conventions Manual</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>popdownCallback,<BR>
+popupCallback</B></TD>
+<TD>These callback functions are called by the Xt Intrinsics whenever the
+shell is popped up or down (See Xt for details).</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>popupOnEntry</B></TD>
+<TD>The <I>XawPositionSimpleMenu</I> action will, by default, popup the
+SimpleMenu with its label (or first entry) directly under the 
+pointer. To popup the menu under
+another entry, set this resource to the menu entry that should be
+under the pointer, when the menu is popped up. This allows the
+application to offer the user a default menu entry that can be selected
+with out moving the pointer.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>rowHeight</B></TD>
+<TD>If this resources is zero (the default) then each menu entry will be
+given its desired height. If this resource has any other value then
+all menu entries will be forced to be <I>rowHeight</I> pixels high.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>saveUnder</B></TD>
+<TD>If this is <B>True</B> then save unders will be active on the menu's window.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>highlightColor</B></TD>
+
+<TD>This color is used for the highlighted part of the menu border.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>shadowColor</B></TD>
+
+<TD>This color is used for the shadowed part of the menu border.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>buttonBorderWidth</B></TD>
+
+<TD>The border width of the menu. The reason for the name
+is compatibility with the resource of the <I>Simple</I> widget.</TD>
+</TR>
+
+</TABLE>
+
+<P></P>
+
+<H3>SimpleMenu Actions</H3>
+
+<P>The SimpleMenu widget supports the following actions:</P>
+
+<UL>
+<LI>Switching the entry under the mouse pointer between the foreground and
+background colors with <I>highlight</I> and <I>unhighlight</I></LI>
+<LI>Processing menu entry callbacks with <I>notify</I></LI>
+</UL>
+
+<P>The following are the default translation bindings used 
+by the SimpleMenu widget:</P>
+
+<BLOCKQUOTE>
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD><I>&lt;EnterWindow&gt;:<BR>
+&lt;LeaveWindow&gt;:<BR>
+&lt;BtnMotion&gt;:<BR>
+&lt;BtnUp&gt;:</I></TD>
+
+<TD><I>highlight()<BR>
+unhighlight()<BR>
+highlight()<BR>
+MenuPopdown() notify() unhighlight()</I></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The user can pop down the menu without activating any of the callback
+functions by releasing the pointer button when no menu item is
+highlighted.</P>
+
+<P>The full list of actions supported by SimpleMenu is:</P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>highlight</B>()</TD>
+<TD>Highlight the menu entry that is currently under the pointer.
+Only a item that is highlighted will be notified when the <I>notify()</I>
+action is invoked. The look of a highlighted entry is determined by
+the menu entry.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>unhighlight</B>()</TD>
+<TD>Unhighlights the currently highlighted menu item, and returns it to
+its normal look.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>notify</B>()</TD>
+<TD>Notifies the menu entry that is currently highlighted that is has been
+selected. It is the responsibility of the menu entry to take the
+appropriate action.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>MenuPopdown</B>(menu)</TD>
+<TD>This action is defined in Xt.</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Positioning the SimpleMenu</H3>
+
+<P>If the SimpleMenu widget is to be used as a pulldown menu then the
+MenuButton widget, or some other outside means should be used to place
+the menu when it is popped up.</P>
+
+<P>If popup menus are desired it will be necessary to add the
+<I>XawPositionSimpleMenu()</I> and <I>MenuPopup()</I> actions to the
+translation table of the widget that will be popping up the menu. The
+<I>MenuPopup()</I> action is described in Xt.
+<I>XawPositionSimpleMenu()</I> is a global action procedure registered by
+the SimpleMenu widget when the first one is created or the convenience
+routine <I>XawSimpleMenuAddGlobalActions()</I> is called.</P>
+
+<P>Translation writers should be aware that Xt does not register grabs on
+<I>don't care</I> modifiers, and therefore the left hand side of the
+production should be written to exclude unspecified modifiers.
+For example these are the translations needed to popup some of
+<B>xterm's</B> menus:</P>
+
+<BLOCKQUOTE>
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD><I>!Ctrl&lt;Btn1Down&gt;:<BR>
+!Ctrl&lt;Btn2Down&gt;:</I></TD>
+
+<TD><I>XawPositionSimpleMenu(xterm) MenuPopup(xterm)<BR>
+XawPositionSimpleMenu(modes) MenuPopup(modes)</I></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>XawPositionSimpleMenu</B>(menu)</TD>
+<TD>The <I>XawPositionSimpleMenu()</I> routine will search for the menu name
+passed to it using <I>XtNameToWidget()</I> starting with the widget
+invoking the action as the reference widget. If it is unsuccessful it
+will continue up the widget tree using each of the invoking widget's
+ancestors as the reference widget. If it is still unsuccessful it will
+print a warning message and give up. <I>XawPositionSimpleMenu</I> will
+position the menu directly under the pointer cursor. The menu will be
+placed so that the pointer cursor is centered on the entry named by the
+<I>popupOnEntry</I> resource. If the <I>menuOnScreen</I> resource is
+<B>True</B> then the menu will always be fully visible on the screen.</TD>
+</TR>
+</TABLE>
+
+<H3>Convenience Routines</H3>
+
+<H4>Registering the Global Action Routines</H4>
+
+<P>The XawPositionSimpleMenu() action routine may often be invoked
+before any menus have been created. This can occur when an
+application uses dynamic menu creation. In these cases an application will
+need to register this global action routine by calling
+XawSimpleMenuAddGlobalActions():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawSimpleMenuAddGlobalActions(app_con)<BR>
+XtAppContext app_con;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>app_con</B></TD>
+<TD>Specifies the application context in which this action should be registered.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function need only be called once per application and must be
+called before any widget that uses XawPositionSimpleMenu() action
+is realized.</P>
+
+<H4>Getting and Clearing the Current Menu Entry</H4>
+
+<P>To get the currently highlighted menu entry use
+XawSimpleMenuGetActiveEntry():</P>
+
+<BLOCKQUOTE>
+<P><I>Widget XawSimpleMenuGetActiveEntry(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the SimpleMenu widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function returns the menu entry that is
+currently highlighted, or NULL if no entry is highlighted.</P>
+
+<P>To clear the SimpleMenu widget's internal information about the
+currently highlighted menu entry use XawSimpleMenuClearActiveEntry():</P>
+
+<BLOCKQUOTE>
+<P><I>Widget XawSimpleMenuClearActiveEntry(w)<BR>
+Widget w;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the SimpleMenu widget.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>This function unsets all internal references to the currently
+highlighted menu entry. It does not <I>unhighlight</I> or otherwise
+alter the appearance of the active entry. This function is primarily
+for use by implementors of menu entries.</P>
+
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

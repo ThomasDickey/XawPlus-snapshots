@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The Grip Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The Grip Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/Grip.h&gt;<BR>
+&lt;X11/XawPlus/GripP.h&gt;<BR>
+gripWidgetClass<BR>
+Grip<BR>
+Simple</TD>
+</TR>
+</TABLE>
+
+<P>The Grip widget provides a small rectangular region in which user input
+events (such as ButtonPress or ButtonRelease) may be handled. The most
+common use for the Grip widget is as an attachment point for visually repositioning
+an object, such as the pane border in a Paned widget.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>The resource <I>foreground</I> is not needed by XawPlus and therefore
+deleted . Since the core extension class <I>Add3dExt</I> is inserted, the
+Grip widget has the additional resources <I>highlightColor,</I> <I>shadowColor</I>
+and <I>buttonBorderWidth</I>. The default <I>background</I> color is now
+grey75.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a Grip widget instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+
+<TD>Callback</TD>
+
+<TD>Pointer</TD>
+
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>0<BR>
+12<BR>
+True<BR>
+12<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>cursor<BR>
+cursorName<BR>
+pointerColor<BR>
+pointerColorBackground<BR>
+insensitiveBorder<BR>
+international<BR>
+highlightColor<BR>
+shadowColor<BR>
+buttonBorderWidth</TD>
+
+<TD>Cursor<BR>
+Cursor<BR>
+Foreground<BR>
+Background<BR>
+Insensitive<BR>
+International<BR>
+Background<BR>
+Background<BR>
+Width</TD>
+
+<TD>Cursor<BR>
+String<BR>
+Pixel<BR>
+Pixel<BR>
+Pixmap<BR>
+Boolean<BR>
+Pixel<BR>
+Pixel<BR>
+Dimension</TD>
+
+<TD>None<BR>
+NULL<BR>
+XtDefaultForeground<BR>
+XtDefaultBackground<BR>
+NULL<BR>
+False<BR>
+grey90<BR>
+grey40<BR>
+2</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">GRIP:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>callback</TD>
+
+<TD>Callback</TD>
+
+<TD>Pointer</TD>
+
+<TD>NULL</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>callback</B></TD>
+
+<TD>All routines on this list are called whenever the <B>GripAction</B>
+action routine is invoked. The <I>call_data</I> contains all information
+passed to the action routine. A more thorough description is given below
+in the <B>Grip Actions</B> section.</TD>
+</TR>
+</TABLE>
+
+<H3>Grip Actions</H3>
+
+<P>The Grip widget does not declare any default event translation bindings,
+but it does declare a single action routine named <B>GripAction</B>. The
+client specifies an arbitrary event translation table, optionally giving
+parameters to the <B>GripAction</B> routine.</P>
+
+<P>The <B>GripAction</B> routine executes the callbacks on the <B>callback</B>
+list, passing as <I>call_data</I> a pointer to a <B>XawGripCallData</B>
+structure, defined in the Grip widget's application header file.</P>
+
+<BLOCKQUOTE>
+<PRE>
+typedef struct _XawGripCallData
+{
+	XEvent *event;
+	String *params;
+	Cardinal num_params;
+}
+XawGripCallDataRec, *XawGripCallData, GripCallDataRec, *GripCallData;
+</PRE>
+</BLOCKQUOTE>
+
+<P>In this structure, the <I>event</I> is a pointer to the input event
+that triggered the action. <I>params</I> and <I>num_params</I> give the
+string parameters specified in the translation table for the particular
+event binding.</P>
+
+<P>The following is an example of a translation table that uses the
+GripAction:</P>
+
+<BLOCKQUOTE>
+<TABLE>
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP>
+<P><I>&lt;Btn1Down&gt; :<BR>
+&lt;Btn1Motion&gt; :<BR>
+&lt;Btn1Up&gt; :</I></P>
+</TD>
+
+<TD ALIGN=LEFT VALIGN=TOP><I>GripAction(press)<BR>
+GripAction(move)<BR>
+GripAction(release)</I></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>
