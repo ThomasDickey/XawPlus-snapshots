@@ -1,0 +1,295 @@
+
+ * What is XawPlus ?
+
+XawPlus is a clone of the original Xaw library, providing a more up to date
+look and some extensions to the original Athena widget set. This library is
+as compatible as possible to the original. It should  be possible to compile
+the source code of an Xaw client without any changes (except the include path
+of the XawPlus header files) to get the new look of XawPlus to this client.
+
+XawPlus makes it possible to use XPM pixmaps, tooltips, a truncate mechanism
+for too long label strings and UTF8 coded UNICODE labels without changing the
+code of your application.
+
+XawPlus comes with a set of adapted applications using also the new
+features of XawPlus.
+
+If you need further and more up to date informations please visit
+http://people.freenet.de/kra/XawPlus.
+
+
+ * License
+
+Pay attention to the corresponding license agreements (GPL or Open Group).
+In general it is permitted to modify and distribute the sources if the
+copyright notice remains in ALL sources. There is absolutely no warranty.
+The usage of this software is in your own resposibility. 
+
+
+ * History of changes for XawPlus:
+
+
+Version		Comment
+--------------------------------------------------------------------
+1.0		First release based on Xaw sources of the X11R5
+		distribution. 3D extensions and XPM support for the
+		label widget and all his children added.
+--------------------------------------------------------------------
+1.1		3D extensions for the panel widget implemented.
+		Default background color set to grey75 for all
+		widgets. Scrollbar got a sunken border.
+--------------------------------------------------------------------
+1.1.1		Some bugfixes in LocPixmap.c. LocPixmap.c was
+		compilable with gcc 2.5 under Linux with X11R5
+		but not with gcc 2.7.2 under linux with XFree3.2A
+		(X11R6).
+--------------------------------------------------------------------
+1.2		Parameter list of the initialize, the set values and
+		the constraint set values method in all widget
+		sources completed.
+		Most (but not all) compiler warnings fixed.
+		The SimpleMenu widget is now 3D styled.
+		The SmeLine widget now draw a 3D styled line.
+--------------------------------------------------------------------
+1.3		Representation of insensitive text labels in
+		the label widget changed to a 3D styled shaded text.
+		Description of resources in the header files of the
+		simple widget and its children completed
+		(insensitiveBorder).
+		Cleaned up the header files of the sme object group.
+		New highlight an shadow color resources for the
+		Sme object implemented: These resources are required
+		for the SmeLine and SmeBSB objects.
+		Representation of insensitive text labels in
+		the SmeBSB object changed to a 3D styled shaded text.
+--------------------------------------------------------------------
+1.4		Vertical scrollbar in Text widgets moved from the
+		left to the right side.
+		The scrollbars of the Viewport are now placed on the
+		right side and the bottom of the window by default.
+		Bug in the IconList widget fixed: The selection was
+		too large in multi column mode.
+		Width of the selection in the List widget changed:
+		The selection has now a fixed length like in the
+		IconList widget.
+		The default background color of the Porthole widget
+		is now grey75 (as described).
+		The SmeBSB widget now provides bitmap and pixmap
+		support for the left and right bitmaps. New
+		resources for the required clip masks added.
+--------------------------------------------------------------------
+1.4.1		Bugfixes:
+		Resize problem in the Command widget fixed. Since
+		the underlying Label don't know about the real width
+		and height of the widget, setting a label resource
+		if the Command widget is realized, shrinks the widget.
+		Command handles this problem now through resizing
+		in its set values method.
+		The Label widget now displays multiline text labels
+		correctly.
+--------------------------------------------------------------------
+1.5		Tooltip function for the Command widget and its
+		children added. Command becomes a set of new
+		resources to supply this facility.
+--------------------------------------------------------------------
+1.5.1		Extension of the makefile to create a shared XawPlus
+		library on ELF systems.
+		Tooltip positioning optimized.
+--------------------------------------------------------------------
+2.0		Bugfixes in Add3dExt and Command to draw buttons
+		correctly. QueryGeometry method for the Command
+		widget implemented.
+		New KDE like style of the Command widget.
+		Add3dExt becomes the new methods XawFlatButton() and
+		XawFlatRectangle() for the new Command style.
+		Changes for the Toggle widget to
+		support the new highlight style of Command.
+		Concept to call Add3dExt drawing methods changed:
+		All widgets call the methods now directly and not
+		via pointer in the instance record. 
+		Integration of the Scrollbar widget from Xaw3d
+		Release 1.4: Adaption to XawPlus, a few but not all
+		bugs fixed, the arrows now have a sunken shape when
+		pressed.
+--------------------------------------------------------------------
+2.0.1		Bugfixes in AsciiSrc.c and TextPop.c: External
+		declaration of errno, sys_nerr and sys_errlist[] are
+		not required (and for some systems wrong) because
+		they are already declared in stdio.h.
+		Bugfix in Scrollbar.c: The type definition of
+		valueMask in function Realize() was incomplete.
+		Function _Reposition() in Label cleaned up: The
+		variables dy and dy are unused.
+		XawInit.c:
+		Initalization of XawPlus specific widget
+		classes removed.
+--------------------------------------------------------------------
+2.0.2		Data type for the system time in Clock.c changed
+		from 'long' to 'time_t'. Data type long could be
+		wrong on 64 bit systems.
+		TextSrc.c: The formal return values are missed in
+		function Read() and Scan(): Completed.
+		Option -Wall for gcc activated to get more warnings.
+		Everything fixed which looks like a bug.
+
+		Implementation of LocPixmap.c and StrToPmap.c
+		cleaned up, this was very buggy code.
+
+		Geometry handling of the Command widget redesigned:
+		Label got a new private resource lbm_x. Now Command
+		is able to calculate the position of the label text,
+		the left bitmap or the bitmap/pixmap correctly.
+
+		Bug in Label fixed: SetValues() now calculate the
+		bitmap offsets correctly, if a new bitmap/pixmap
+		is set into the widget.
+
+--------------------------------------------------------------------
+2.1.0		AllWidgets.h moved to viewres: It looks like only
+		viewres needs this file. Since AllWidgets.c was
+		never a part of XawPlus, AllWidgets.h is also not
+		needed here.
+
+		The selection of a list entry was too long in a
+		multi column list. Calculation of the width fixed.
+		Sources of the old Scrollbar removed: Since the new
+		Scrollbar works fine, the old Scrollbar code is not
+		longer needed.
+
+		Redisplay method of Label optimized. Only the covered
+		parts now becomes redisplayed.
+
+		String to Pixmap conversion in Label redesigned:
+		There are now two converters which make the conversion
+		for the pixmap and for the clip mask. Now it is
+		possible to set a bitmap or pixmap via XtSetValues().
+		In the past XawPlus crashes because of an uninitialized
+		variable in label.
+
+		Pixmap converters are now installed for the SmeBSB
+		object. Type of the clip mask resources changed to
+		ClipMask (required to use the new converters).
+
+		The Pixmap converters are now installed for the
+		Dialog widget. Dialog now has a class initialize
+		method to install the required converters.
+
+		Label strings are now truncated, if they does not
+		fit into the label window except it is a multi
+		line string. The algorithm truncates the label
+		string from the left side or from the right side,
+		dependent on the resource 'truncLeftSide'.
+		Handling of UNICODE is currently not implemented.
+
+--------------------------------------------------------------------
+3.0		XawPlus port to X11R6.4:
+		All sources for the widgets Clock, Logo, and
+		Mailbox removed as in the original library.
+		New files of X11R6 added: XawI18n.h, XawI18n.c,
+		XawIm.c, MultiSrc.c, MultiSink.c, MultiSink.h,
+		MultiSinkP.h, MultiSrc.h, MultiSrcP.h, VendorEP.h,
+		XawImP.h For all other files the XawPlus extensions
+		are merged into the new sources.
+
+		For the Tree widget the default background color is
+		now grey75 as described.
+
+		Class Add3dExt for better source compatibility to the
+		original library removed: All features and resources
+		are moved to the Simple widget class.
+
+		Resource helpEncoding from Command removed, resource
+		is not required.
+
+		Label.c: Handling of 'encoded' strings enhanced:
+		It is now possible (and required) to use UTF8 coded
+		label strings. This makes it possible to use the full
+		range of the UNICODE/UCS2 character set. This mechanism
+		works independent of the locale settings.
+ 
+		The truncate mechanism now also works fine in UNICODE
+		mode (resource encoding) and in international mode.
+
+		IconList and List are now merged together into one
+		widget. For compatibility there is still an IconList
+		header and source compatibility for applications is given.
+		If a programmer create an IconList, he really
+		create a List widget and will use the advanced
+		features of List.
+
+		Thanks to Markus G. Kuhn <http://www.cl.cam.ac.uk/~mgk25/>
+		for his UNICODE fonts and his introduction into UTF8 and
+		Gaspar Sinai for his Yudit UNICODE/UTF8 editor.
+
+--------------------------------------------------------------------
+
+3.0.1		Bug in function XawListShowCurrent() in source
+		List.c fixed: if there is no entry selected, the
+		return structure now will be initialized correctly.
+
+--------------------------------------------------------------------
+
+3.1.0		Problem in SimpleMenu fixed: For any reason the menu
+		window of SimpleMenu got no pointer events if
+		modifiers like NumLock or CapsLock are set. Now the
+		redisplay method grabs the pointer to make shure,
+		the widget get all necessary events.
+		New resource encoding to the SmeBSB object added:
+		Menu's are now able to handle UTF8 coded strings like
+		the label widget. This makes it possible to use the full
+		range of the UNICODE/UCS2 character set, using the
+		ISO 10646 fonts. The mechanism works independent of the
+		locale settings.
+		The new module UTF8.c added to deal with UTF8/UCS2
+		coded strings independent of the locale settings.
+		This code was previously located in Label.c and is
+		now meant to share between all widgets/objects.
+		DrawingArea: Some but not all missed string drawing
+		functions added.
+		Problem in SmeBSB fixed: If the left or right bitmap
+		is higher than the font height, the object height
+		was calculated wrong and the bitmaps are truncated.
+		Now the calculation respects the bitmap height.
+
+		XawPlus port to X11R6.6: XawPlus now based upon the
+		X11R6.6 sources of Xaw. Not much happens since X11R6.4!
+
+--------------------------------------------------------------------
+
+I prefer the following resources in my .Xdefaults :
+
+!
+! General
+!
+*Box.borderWidth:		0
+!
+! Xaw[3d|Plus] widgets
+!
+*Text*background:			grey96
+*Text.Scrollbar*background:		grey75
+*Text.TransientShell*background:	grey75
+*Text.TransientShell*Text*background:	grey96
+*Text.TransientShell*Command.background:grey75
+*Text.TransientShell*Toggle.background: grey75
+
+*Porthole.background:		grey75
+*Tree.background:		grey75
+*SimpleMenu.background:		grey80
+*DrawingArea.background:	grey96
+*List.background:		grey96
+*Form.background:		grey75
+*Box.background:		grey75
+*Paned.background:		grey75
+*Label.background:		grey75
+*Dialog.background:		grey75
+!
+! Application specific widgets
+!
+*FontGrid.background:		grey96
+*Ghostview.background:		grey96
+*Bitmap.background:		grey96
+*Clock.background:		grey96
+*vt100.background:		grey96
+*ScrollByLine.background:	grey96
+*Scrollbar*background:		grey75
+

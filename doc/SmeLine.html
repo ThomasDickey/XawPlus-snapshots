@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The SmeLine Object</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The SmeLine Object</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/SmeLine.h&gt;<BR>
+&lt;X11/XawPlus/SmeLineP.h&gt;<BR>
+smeLineObjectClass<BR>
+SmeLine<BR>
+Sme</TD>
+</TR>
+</TABLE>
+
+<P>The SmeLine object is used to add a horizontal line or menu separator to
+a menu. Since each menu entry is an independent object, the application
+is able to change the color, height, and other attributes of the menu
+entries, on an entry by entry basis. This entry is not selectable, and
+will not highlight when the pointer cursor is over it.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>The menu separator of XawPlus is now 3D styled. That is the reason why
+the resources <I>foreground</I> and <I>stipple</I> are not longer used.
+Instead of this, the SmeLine object uses the resources <I>highlightColor</I>
+and <I>shadowColor</I> inherited from Sme, to draw the horizontal lines.</P>
+
+<H3>Resources</H3>
+
+<P>The resources associated with the SmeLine object are defined in this
+section, and affect only the single menu entry specified by this object.</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+
+<TD>Callback</TD>
+
+<TD>Pointer</TD>
+
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>0<BR>
+0<BR>
+True<BR>
+0<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SME:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>callback<BR>
+highlightColor<BR>
+shadowColor<BR>
+international</TD>
+
+<TD>Callback<BR>
+Background<BR>
+Background<BR>
+International</TD>
+
+<TD>Pointer<BR>
+Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>NULL<BR>
+grey90<BR>
+grey40<BR>
+False</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SMELINE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>lineWidth</TD>
+<TD>Width</TD>
+<TD>Dimension</TD>
+<TD>1</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>lineWidth</B></TD>
+
+<TD>This is the width of the horizontal line that is to be displayed.
+Since this object is displayed with a highlighted and a shadowed line
+and this object draw each line with the width <I>lineWidth</I>,
+the total width becomes <I>2 * lineWidth</I>.</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

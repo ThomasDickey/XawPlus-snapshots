@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The SmeBSB Object</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The SmeBSB Object</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/SmeBSB.h&gt;<BR>
+&lt;X11/XawPlus/SmeBSBP.h&gt;<BR>
+smeBSBObjectClass<BR>
+SmeBSB<BR>
+Sme</TD>
+</TR>
+</TABLE>
+
+<P>The SmeBSB object is used to create a menu entry that contains a string,
+and optional bitmaps in its left and right margins. Since each menu
+entry is an independent object, the application is able to change the
+font, color, height, and other attributes of the menu entries, on an
+entry by entry basis.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>Insensitive entries are shown embossed using the color resources
+inherited from the Sme object. The left and
+right bitmaps may be color pixmaps. Support of clip masks for nonrectangular
+pixmaps is available. Installed converters for the left
+and right bitmaps and its clip masks are available.</P>
+
+<P>With release 3.1 of XawPlus full UNICODE support is available using the
+new <I>encoding</I> resource as in the label widget. UNICODE support works
+independent of the locale settings and requires UTF8 coded label strings.
+Since it is not possible to put UNICODE directly in resource files, UTF8 code
+is used to avoid problems with the resource manager.</P>
+
+<H3>Resources</H3>
+
+<P>The resources associated with the SmeBSB object are defined in this section,
+and affect only the single menu entry specified by this object.</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>0<BR>
+0<BR>
+True<BR>
+0<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SME:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>callback<BR>
+highlightColor<BR>
+shadowColor<BR>
+international</TD>
+
+<TD>Callback<BR>
+Background<BR>
+Background<BR>
+International</TD>
+
+<TD>Pointer<BR>
+Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>NULL<BR>
+grey90<BR>
+grey40<BR>
+False</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SMEBSB:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>foreground<BR>
+font<BR>
+fontSet<BR>
+encoding<BR>
+label<BR>
+justify<BR>
+vertSpace<BR>
+leftMargin<BR>
+rightMargin<BR>
+leftBitmap<BR>
+leftClipMask<BR>
+rightBitmap<BR>
+rightClipMask</TD>
+
+<TD>Foreground<BR>
+Font<BR>
+FontSet<BR>
+Encoding<BR>
+Label<BR>
+Justify<BR>
+VertSpace<BR>
+HorizontalMargins<BR>
+HorizontalMargins<BR>
+LeftBitmap<BR>
+LeftBitmap<BR>
+RightBitmap<BR>
+RightBitmap</TD>
+
+<TD>Pixel<BR>
+XFontStruct *<BR>
+FontSet<BR>
+unsigned char<BR>
+String<BR>
+Justify<BR>
+int<BR>
+Dimension<BR>
+Dimension<BR>
+Bitmap<BR>
+ClipMask<BR>
+Bitmap<BR>
+ClipMask</TD>
+
+<TD>XtDefaultForeground<BR>
+XtDefaultFont<BR>
+XtDefaultFontSet<BR>
+XawTextEncoding8bit<BR>
+Name of entry<BR>
+XtJustifyLeft<BR>
+25<BR>
+4<BR>
+4<BR>
+None<BR>
+None<BR>
+None<BR>
+None</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>foreground</B></TD>
+
+<TD>A pixel value which indexes the SimpleMenu's colormap to derive the
+foreground color of the menu entry's window. This color is also 
+used to render all 1's in the left and right <I>bitmaps</I>.
+Keep in mind that the SimpleMenu widget will force the width of all
+menu entries to be the width of the longest entry.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>font</B></TD>
+
+<TD>The font used to display the text label.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>fontSet</B></TD>
+
+<TD>The fontSet used to display the text label, if the <I>international</I>
+resource is set.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>encoding</B></TD>
+<TD>Two types of encoding are available, the default 8 bit encoding and
+the 16 bit encoding (unicode). With 16 bit encoding the label string is
+expected in UTF8 and displayed with the font found in the <I>font</I> resource.
+The handling of UNICODE is independent of the locale
+settings. Note that the character codes from <I>0x00</I> to <I>0x7f</I> are also
+valid as UTF8 code. For this range of characters every editor is usable
+to edit label strings. If you need character codes in the range from <I>0x80</I>
+to <I>0xffff</I> a special editor like <B><I>yudit</I></B> is required.<BR>
+If any malformed UTF8 code is found, it is displayed as an asterix <B>*</B>.
+If the UTF8 code of a character is out of range (higher than 0xffff), it is displayed
+as a tilde sign.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>justify</B></TD>
+
+<TD>How the label is to be rendered between the left and right margins when
+the space is wider than the actual text. This resource may be
+specified with the values <I>XtJustifyLeft</I>, <I>XtJustifyCenter</I>,
+or <I>XtJustifyRight</I>. When specifying the justification from a
+resource file the values <I>left</I>, <I>center</I>, or <I>right</I> may be.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>label</B></TD>
+
+<TD>This is a the string that will be displayed in the menu entry. The
+exact location of this string within the bounds of the menu entry is
+controlled by the <I>leftMargin</I>, <I>rightMargin</I>, <I>vertSpace</I>,
+and <I>justify</I> resources.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>vertSpace</B></TD>
+
+<TD>This is the amount of vertical padding, expressed as a percentage of
+the height of the font, that is to be placed around the label of a
+menu entry. The label and bitmaps are always centered vertically
+within the menu. The default value for this
+resource (25) causes the default height to be 125% of the height of the
+font.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>leftMargin,<BR>
+rightMargin</B></TD>
+
+<TD>This is the amount of space (in pixels) that will be left between the
+edge of the menu entry and the label string.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>leftBitmap,<BR>
+leftClipMask,<BR>
+rightBitmap,<BR>
+rightClipMask</B></TD>
+
+<TD>This is a name of a bitmap or pixmap to display in the left or
+right margin of the menu entry. All 1's of a bitmap will be rendered
+in the foreground color, and all 0's will be drawn in the background
+color of the SimpleMenu widget.
+Color pixmaps support works a little different. The color values are copied
+directly into the rectangular area, reserved for the pixmap. Support of
+nonrectangular areas is available using the left and right clip masks.
+These clip masks have no meaning to normal bitmaps. It is the
+programmers responsibility to make sure that the menu entry is tall
+enough, and the appropriate margin wide enough to accept the bitmap.
+If care is not taken the bitmap may extend into another menu entry, or
+into this entry's label.</TD>
+</TR>
+</TABLE>
+
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

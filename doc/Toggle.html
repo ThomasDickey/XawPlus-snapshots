@@ -1,0 +1,643 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The Toggle Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The Toggle Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/Toggle.h&gt;<BR>
+&lt;X11/XawPlus/ToggleP.h&gt;<BR>
+toggleWidgetClass<BR>
+Toggle<BR>
+Command</TD>
+</TR>
+</TABLE>
+
+<P>The Toggle widget is an rectangular area, containing a text label
+or bitmap image. This widget maintains a Boolean state (e.g.
+True/False or On/Off) and changes state whenever it is selected.  When
+the pointer is on the toggle, its shape may become highlighted.
+This highlighting indicates
+that the toggle is now ready for selection. When pointer button 1 is
+pressed and released, the Toggle widget indicates that it has changed
+state by displaying itself as a sunken button and its
+<B>notify</B> action is invoked, calling all functions on its callback
+list. If the pointer is moved out of the widget before the toggle is
+released, the widget display itself as an unpressed button and releasing
+the button has no effect. This behavior allows the user to cancel an action.</P>
+
+<P>Toggle buttons may also be part of a radio group. A radio group is a
+list of at least two Toggle buttons in which no more than one Toggle may 
+be set at any time. A radio group is identified by the widget ID of any one of
+its members. The convenience routine <I>XawToggleGetCurrent</I> will
+return information about the Toggle button in the radio group.
+Toggle widget state is preserved across changes in sensitivity.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>Since the 3D extensions of <I>Simple</I> are inserted, the Toggle
+widget has the additional resources <I>highlightColor,</I> <I>shadowColor</I>
+and <I>buttonBorderWidth</I>. The default <I>background</I> color is now
+grey75. These three colors and the width of the button border are used
+to draw the shape of a button with the inherited methods of the <I>Simple</I>
+widget class. Since XawPlus only supply rectangular buttons, the resources
+<I>shapeStyle</I> and <I>cornerRoundPercent</I> has no meaning.</P>
+
+<P>The <I>bitmap</I> and <I>leftBitmap</I> resources now also provide support
+of XPM styled pixmaps. These resources are inherited from the <I>Label</I>
+widget class. Look there for a description of this new feature.</P>
+
+<P>Toggle provides tooltips. If a help text and <I>useHelp</I> is set in the
+resources, a help window is popped up afer 1.2 seconds when the mouse pointer
+stay over the widgets window. This feature is inherited from the <I>Command</I>
+widget class.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a Toggle widget instance, the following resources are
+retrieved from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>0<BR>
+12<BR>
+True<BR>
+12<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>cursor
+<BR>cursorName
+<BR>pointerColor
+<BR>pointerColorBackground
+<BR>insensitiveBorder
+<BR>international
+<BR>highlightColor
+<BR>shadowColor
+<BR>buttonBorderWidth</TD>
+
+<TD>Cursor
+<BR>Cursor
+<BR>Foreground
+<BR>Background
+<BR>Insensitive
+<BR>International
+<BR>Background
+<BR>Background
+<BR>Width</TD>
+
+<TD>Cursor
+<BR>String
+<BR>Pixel
+<BR>Pixel
+<BR>Pixmap
+<BR>Boolean
+<BR>Pixel
+<BR>Pixel
+<BR>Dimension</TD>
+
+<TD>None
+<BR>NULL
+<BR>XtDefaultForeground
+<BR>XtDefaultBackground
+<BR>NULL
+<BR>False
+<BR>grey90
+<BR>grey40
+<BR>2</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">LABEL:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>font
+<BR>fontset
+<BR>encoding
+<BR>foreground
+<BR>internalHeight
+<BR>internalWidth
+<BR>justify
+<BR>resize
+<BR>truncateLabel
+<BR>truncLeftSide
+<BR>label
+<BR>leftBitmap
+<BR>leftClipMask
+<BR>bitmap
+<BR>clipMask</TD>
+
+<TD>Font
+<BR>FontSet
+<BR>Encoding
+<BR>Foreground
+<BR>Height
+<BR>Width
+<BR>Justify
+<BR>Resize
+<BR>Truncate
+<BR>Truncate
+<BR>Label
+<BR>LeftBitmap
+<BR>LeftBitmap
+<BR>Pixmap
+<BR>Pixmap</TD>
+
+<TD>XFontStruct*
+<BR>FontSet
+<BR>unsigned char
+<BR>Pixel
+<BR>Dimension
+<BR>Dimension
+<BR>XtJustify
+<BR>Boolean
+<BR>Boolean
+<BR>Boolean
+<BR>String
+<BR>Bitmap
+<BR>ClipMask
+<BR>Bitmap
+<BR>ClipMask</TD>
+
+<TD>XtDefaultFont
+<BR>XtDefaultFontSet
+<BR>XawTextEncoding8bit
+<BR>XtDefaultForeground
+<BR>2
+<BR>4
+<BR>XtJustifyCenter
+<BR>True
+<BR>True
+<BR>False
+<BR>NULL
+<BR>None
+<BR>None
+<BR>None
+<BR>None</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">COMMAND:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>helpText
+<BR>helpBackground
+<BR>useHelp
+<BR>highlightThickness
+<BR>highlightMode
+<BR>callback
+<BR>translations
+<BR>accelerators
+<BR>ancestorSensitive</TD>
+
+<TD>Label
+<BR>Background
+<BR>Boolean
+<BR>Thickness
+<BR>Boolean
+<BR>Callback
+<BR>Translations
+<BR>Accelerators
+<BR>AncestorSensitive</TD>
+
+<TD>String
+<BR>Pixel
+<BR>Boolean
+<BR>Dimension
+<BR>Boolean
+<BR>XtCallbackList
+<BR>TranslationTable
+<BR>AcceleratorTable
+<BR>Boolean</TD>
+
+<TD>NULL
+<BR>LightGoldenrodYellow
+<BR>True
+<BR>2
+<BR>True
+<BR>NULL
+<BR>see doc or source
+<BR>NULL
+<BR>True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">TOGGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>radioGroup<BR>
+radioData<BR>
+state</TD>
+
+<TD>RadioGroup<BR>
+RadioData<BR>
+State</TD>
+
+<TD>Widget<BR>
+Pointer<BR>
+Boolean</TD>
+
+<TD>NULL *)<BR>
+(caddr_t)Widget **)<BR>
+Off</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP>*)</TD>
+<TD>To use the toggle as a radio toggle button, set this resource to point to
+any other widget in the radio group.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP>**)</TD>
+<TD>This is the data returned from a call to <I>XtToggleGetCurrent</I>, by default
+this is set to the name of toggle widget.</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>radioData</B></TD>
+<TD>Specifies the data that will be returned by <I>XawToggleGetCurrent()</I>
+when this is the currently <I>set</I> widget in the radio group. This
+value is also used to identify the Toggle that will be set by a call to
+<I>XawToggleSetCurrent()</I>. The value NULL will be returned by
+<I>XawToggleGetCurrent()</I> if no widget in a radio group is currently
+set. Programmers must not specify NULL (or Zero) as <B>radioData</B>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>radioGroup</B></TD>
+<TD>Specifies another Toggle widget that is in the radio group to which this
+Toggle widget should be added.  A radio group is a group of at least two Toggle
+widgets, only one of which may be <I>set</I> at a time. If this value is
+NULL (the default) then the Toggle will not be part of any radio group
+and can change state without affecting any other Toggle widgets. If the
+widget specified in this resource is not already in a radio group then a
+new radio group will be created containing these two Toggle widgets. No
+Toggle widget can be in multiple radio groups. The behavior of a radio
+group of one toggle is undefined.  A converter is registered which will
+convert widget names to widgets without caching.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>state</B></TD>
+<TD>Specifies whether the Toggle widget is set (<I>True</I>) or unset
+(<I>False</I>).</TD>
+</TR>
+</TABLE>
+
+<H3>Toggle Actions</H3>
+
+<P>The Toggle widget supports the following actions:</P>
+
+<UL>
+<LI>Switching the button between raised or sunken shape with
+<I>set, unset</I> and <I>toggle</I>.</LI>
+
+<LI>Processing application callbacks with <I>notify</I></LI>
+
+<LI>Switching between highlighted and unhighlighted states with
+<I>highlight</I> and <I>unhighlight</I>.</LI>
+</UL>
+
+<P>The following are the default translation bindings used by the
+Toggle widget:</P>
+
+<TABLE>
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP>
+<P><I>&lt;EnterWindow&gt;<BR>
+&lt;LeaveWindow&gt;<BR>
+&lt;Btn1Down&gt;,<BR>
+&lt;Btn1Up&gt;</I></P>
+</TD>
+
+<TD ALIGN=LEFT VALIGN=TOP><I>highlight()<BR>
+unhighlight()<BR>
+toggle(), notify()</I></TD>
+</TR>
+</TABLE>
+
+<P>The full list of actions supported by Toggle is:</P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>highlight</B>()</TD>
+
+<TD>Displays the interior of the toggle in the raised button style, if
+<I>highlightMode</I> is set to <I>True</I>. If not, the toggle is always displayed
+in the raised button style. In this case <I>highlight()</I> has no meaning.
+Since XawPlus 2.0 the conditions <I>WhenUnset</I> and <I>Always</I> are
+not longer supported.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>unhighlight</B>()</TD>
+
+<TD>Displays a flat border if <I>highlightMode</I> is set to
+<I>True</I>. If not, the toggle is displayed in the raised style. In this
+case <I>unhighlight()</I> has no meaning.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>set</B>()</TD>
+
+<TD>Enters the <I>set</I> state, in which <I>notify</I> is possible. This
+action causes the toggle to display its interior in the sunken style.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>unset</B>()</TD>
+
+<TD>Cancels the <I>set</I> state and displays the interior as a raised button.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>toggle</B>()</TD>
+
+<TD>Changes the current state of the Toggle widget, causing to be set
+if it was previously unset, and unset if it was previously set.
+If the widget is to be set, and is in a radio group then this procedure may 
+unset another Toggle widget causing all routines on its callback list
+to be invoked. The callback routines for the Toggle that
+is to be unset will be called before the one that is to be set.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>reset</B>()</TD>
+<TD>Cancels any <I>set</I> or <I>highlight</I> and displays the interior
+of the toggle in the flat style if <I>highlightMode</I> is set to
+<I>True</I>. If not, the toggle is displayed in the raised style.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>notify</B>()</TD>
+
+<TD>When the button is in the <I>set</I> state this action calls all functions in
+the callback list named by the <I>callback</I> resource. The value of
+the <I>call_data</I> argument in these callback functions is undefined.</TD>
+</TR>
+</TABLE>
+
+<P>In contrast to Xaw with XawPlus the <I>set(), unset()</I>, and <I>reset()</I>
+actions have the same effect with a multi-plane XPM pixmap.</P>
+
+
+<H3>Radio Groups</H3>
+
+<P>There are typically two types of radio groups desired by applications.
+The default translations for the Toggle widget implement a "zero or one
+of many" radio group. This means that there may be no more than one
+button active, but there need not be any buttons active.</P>
+
+<P>The other type of radio group is "one of many" and has the more strict
+policy that there will always be exactly one radio button active.
+Toggle widgets can be used to provide this interface with a slight
+modification to the translation table of each Toggle in the group.</P>
+
+<TABLE>
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP>
+<P><I>&lt;EnterWindow&gt;<BR>
+&lt;LeaveWindow&gt;<BR>
+&lt;Btn1Down&gt;,<BR>
+&lt;Btn1Up&gt;</I></P>
+</TD>
+
+<TD ALIGN=LEFT VALIGN=TOP><I>highlight()<BR>
+unhighlight()<BR>
+set(), notify()</I></TD>
+</TR>
+</TABLE>
+
+<P>This translation table will not allow any Toggle to be <I>unset</I>
+except as a result of another Toggle becoming <I>set</I>. It is
+the application programmer's responsibility to choose an initial
+state for the radio group by setting the <I>state</I> resource of one of
+its member widgets to <I>True</I>.</P>
+
+<H3>Convenience Routines</H3>
+
+<P>The following functions allow easy access to the Toggle widget's radio
+group functionality.</P>
+
+<P>To enable an application to change the Toggle's radio group, add
+the Toggle to a radio group, or remove the Toggle from a radio group, use 
+XawToggleChangeRadioGroup():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawToggleChangeRadioGroup(w, radio_group)<BR>
+Widget w, radio_group;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Toggle widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>radio_group</B></TD>
+<TD>Specifies any Toggle in the new radio group. If NULL then the Toggle
+will be removed from any radio group of which it is a member.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>If a Toggle is already <I>set</I> in the new radio group,
+and the Toggle to be added is also <I>set</I> then the previously
+<I>set</I> Toggle in the radio group is <I>unset</I> and its callback
+procedures are invoked.</P>
+
+<P>To find the currently selected Toggle in a radio group of Toggle widgets
+use XawToggleGetCurrent():</P>
+
+<BLOCKQUOTE>
+<P><I>XtPointer XawToggleGetCurrent(radio_group);<BR>
+Widget radio_group;</I></P>
+
+<TABLE CELLSPACING=0 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>radio_group</B></TD>
+<TD>Specifies any Toggle widget in the radio group.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The value returned by this function is the <I>radioData</I>
+of the Toggle in this radio group that is currently set. The default
+value for <I>radioData</I> is the name of that Toggle widget.
+If no Toggle is set in the radio group specified then NULL is returned.</P>
+
+<P>To change the Toggle that is currently set in a radio group use 
+XawToggleSetCurrent():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawToggleSetCurrent(radio_group, radio_data);<BR>
+Widget radio_group;<BR>
+XtPointer radio_data;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>radio_group</B></TD>
+<TD>Specifies any Toggle widget in the radio group.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>radio_data</B></TD>
+<TD>Specifies the <I>radioData</I>
+identifying the Toggle that should be set in the radio group specified
+by the <I>radio_group</I> argument.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P><I>XawToggleSetCurrent()</I> locates the Toggle widget to be set by
+matching <I>radio_data</I> against the <I>radioData</I> for each Toggle in
+the radio group. If none match, <I>XawToggleSetCurrent()</I> returns
+without making any changes. If more than one Toggle matches,
+<I>XawToggleSetCurrent()</I> will choose a Toggle to set arbitrarily. If
+this causes any Toggle widgets to change state, all routines in their
+callback lists will be invoked. The callback routines for a Toggle that
+is to be unset will be called before the one that is to be set.</P>
+
+<P>To unset all Toggle widgets in a radio group use
+XawToggleUnsetCurrent():</P>
+
+<BLOCKQUOTE>
+<P><I>void XawToggleUnsetCurrent(radio_group);<BR>
+Widget radio_group;</I></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>radio_group</B></TD>
+<TD>Specifies any Toggle widget in the radio group.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>If this causes a Toggle widget to change state, all routines on its
+callback list will be invoked.</P>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus__________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

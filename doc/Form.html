@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The Form Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The Form Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/Form.h&gt;<BR>
+&lt;X11/XawPlus/FormP.h&gt;<BR>
+formWidgetClass<BR>
+Form<BR>
+Constraint</TD>
+</TR>
+</TABLE>
+
+<P>The Form widget can contain an arbitrary number of children or
+subwidgets. The Form provides geometry management for its children,
+which allows individual control of the position of each child.  Any
+combination of children can be added to a Form. The initial positions
+of the children may be computed relative to the positions of previously
+created children. When the Form is resized, it computes new positions and
+sizes for its children. This computation is based upon information
+provided when a child is added to the Form.</P>
+
+<P>The default width of the Form is the minimum width needed to
+enclose the children after computing their initial layout, with a
+margin of <I>defaultDistance</I>
+at the right and bottom edges. If a width and height is assigned
+to the Form that is too small for the layout, the children will
+be clipped by the right and bottom edges of the Form.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>The default background color is <I>grey75</I>.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a Form widget instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>1<BR>
+Space for all children<BR>
+True<BR>
+Space for all children<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">FORM:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>defaultDistance</TD>
+<TD>Thickness</TD>
+<TD>int</TD>
+<TD>4</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>defaultDistance</B></TD>
+<TD>The default internal spacing for the children. This is the default
+value for constrained resources <I>horizDistance</I> and <I>vertDistance</I>.</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Constraint Resources</H3>
+
+<P>Each child of the Form widget may request special layout resources
+be applied to it. These <I>constraint</I> resources allow the Form
+widget's children to specify individual layout requirements.</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>RepType</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD>bottom<BR>
+fromHoriz<BR>
+fromVert<BR>
+horizDistance<BR>
+left<BR>
+resizable<BR>
+right<BR>
+top<BR>
+vertDistance</TD>
+
+<TD>Edge<BR>
+Widget<BR>
+Widget<BR>
+Thickness<BR>
+Edge<BR>
+Boolean<BR>
+Edge<BR>
+Edge<BR>
+Thickness</TD>
+
+<TD>XtEdgeType<BR>
+Widget<BR>
+Widget<BR>
+int<BR>
+XtEdgeType<BR>
+Boolean<BR>
+XtEdgeType<BR>
+XtEdgeType<BR>
+int</TD>
+
+<TD>XtRubber<BR>
+(left edge of form)<BR>
+(top of form)<BR>
+defaultDistance<BR>
+XtRubber<BR>
+False<BR>
+XtRubber<BR>
+XtRubber<BR>
+defaultDistance</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Layout Semantics</H3>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Edge Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Resource Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Description</B></TD>
+</TR>
+
+<TR>
+<TD>XawChainBottom</TD>
+<TD>ChainBottom</TD>
+<TD>Edge remains a fixed distance from bottom of Form</TD>
+</TR>
+
+<TR>
+<TD>XawChainLeft</TD>
+<TD>ChainLeft</TD>
+<TD>Edge remains a fixed distance from left of Form</TD>
+</TR>
+
+<TR>
+<TD>XawChainRight</TD>
+<TD>ChainRight</TD>
+<TD>Edge remains a fixed distance from right of Form</TD>
+</TR>
+
+<TR>
+<TD>XawChainTop</TD>
+<TD>ChainTop</TD>
+<TD>Edge remains a fixed distance from top of Form</TD>
+</TR>
+
+<TR>
+<TD>XawRubber</TD>
+<TD>Rubber</TD>
+<TD>Edges will move a proportional distance</TD>
+</TR>
+</TABLE>
+
+<H3>Example</H3>
+
+<P>If you wish to force the Form to never resize one or more of its
+children, then set <B>left</B> and <B>right</B> to <I>XawChainLeft</I> and
+<B>top</B> and <B>bottom</B> to <I>XawChainTop</I>. This will cause the
+child to remain a fixed distance from the top and left edges of the
+Form, and never to resize.</P>
+
+<H3>Convenience Routines</H3>
+
+<P>To force or defer a re-layout of the Form, use XawFormDoLayout().</P>
+
+<BLOCKQUOTE>
+<P><I>void XawFormDoLayout(w, do_layout)<BR>
+Widget w;<BR>
+Boolean do_layout;</I><P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
+<TD>Specifies the Form widget.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>do_layout</B></TD>
+<TD>Specifies whether the layout of the Form widget is enabled (<I>True</I>)
+or disabled (<I>False</I>).</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>When making several changes to the children of a Form widget
+after the Form has been realized, it is a good idea to disable
+relayout until after all changes have been made.</P>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

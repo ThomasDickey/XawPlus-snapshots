@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The Viewport Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The Viewport Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/Viewport.h&gt;<BR>
+&lt;X11/XawPlus/ViewportP.h&gt;<BR>
+viewportWidgetClass<BR>
+Viewport<BR>
+Form</TD>
+</TR>
+</TABLE>
+
+<P>The Viewport widget consists of a frame window, one or two Scrollbars,
+and an inner window. The size of the frame window is determined by the
+viewing size of the data that is to be displayed and the dimensions to
+which the Viewport is created. The inner window is the full size of the
+data that is to be displayed and is clipped by the frame window. The
+Viewport widget controls the scrolling of the data directly. No
+application callbacks are required for scrolling.</P>
+
+<P>When the geometry of the frame window is equal in size to the inner
+window, or when the data does not require scrolling, the Viewport widget
+automatically removes any scrollbars. The <I>forceBars</I> option causes
+the Viewport widget to display all scrollbars permanently.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>Since XawPlus release 1.4 the scrollbars are placed at bottom and right
+side of the window. The default values of the resources <I>useBottom</I> and
+<I>useRight</I> changes from <B>False</B> to <B>True</B>.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a Viewport widget instance, the following resources are retrieved
+from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>1<BR>
+Space for all children<BR>
+True<BR>
+Space for all children<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">FORM:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>defaultDistance</TD>
+<TD>Thickness</TD>
+<TD>int</TD>
+<TD>4</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">VIEWPORT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>allowHoriz<BR>
+allowVert<BR>
+foreceBars<BR>
+reportCallback<BR>
+useBottom<BR>
+useRight</TD>
+
+<TD>Boolean<BR>
+Boolean<BR>
+Boolean<BR>
+ReportCallback<BR>
+Boolean<BR>
+Boolean</TD>
+
+<TD>Boolean<BR>
+Boolean<BR>
+Boolean<BR>
+Pointer<BR>
+Boolean<BR>
+Boolean</TD>
+
+<TD>False<BR>
+False<BR>
+False<BR>
+NULL<BR>
+True<BR>
+True</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>allowHoriz<BR>
+allowVert</B></TD>
+<TD>If these resources are <I>False</I> then the Viewport will never create
+a scrollbar in this direction. If it is <I>True</I> then the scrollbar will
+only appear when it is needed, unless <B>forceBars</B> is <I>True</I>.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>forceBars</B></TD>
+<TD>When this resource ist set to <I>True</I>, the scrollbars that have been
+allowed will always be visible on the screen. If <I>False</I> the scrollbars
+will be visible only when the inner window is larger than the frame.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>reportCallback</B></TD>
+<TD>These callbacks will be executed whenever the Viewport adjusts the viewed
+area of the child. The call_data parameter is a pointer to an <I>XawPannerReport</I>
+structure.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>useBottom<BR>
+useRight</B></TD>
+<TD>By default the scrollbars appear on the right and bottom of the screen.
+These resources allow the vertical scrollbar to be placed on the left
+edge of the Viewport, and the horizontal scrollbar on the top edge of
+the Viewport.</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3>Layout Semantics</H3>
+
+<P>The Viewport widget manages a single child widget. When the size of the
+child is larger than the size of the Viewport, the user can interactively
+move the child within the Viewport by repositioning the scrollbars.</P>
+
+<P>The default size of the Viewport before it is realized is the width and/or
+height of the child. After it is realized, the Viewport will allow its
+child to grow vertically or horizontally if <B>allowVert</B> or
+<B>allowHoriz</B> are set, respectively. If the corresponding vertical
+or horizontal scrollbar is not enabled, the Viewport will propagate the
+geometry request to its own parent and the child will be allowed to change
+size only if the Viewport's parent allows it. Regardless of whether or not
+scrollbars are enabled in the corresponding direction, if the child requests
+a new size smaller than the Viewport size, the change will be allowed only
+if the parent of the Viewport allows the Viewport to shrink to the
+appropriate dimension.</P>
+
+<P>The scrollbar children of the Viewport are named <B>horizontal</B> and
+<B>vertical</B>. By using these names the programmer can specify resources
+for the individual scrollbars. <I>XtSetValues()</I> can be used to modify
+the resources dynamically once the widget ID has been obtained with
+<I>XtNameToWidget()</I>.</P>
+
+<P>Although the Viewport is a Subclass of the Form, no resources for the Form
+may be supplied for any of the children of the Viewport. These constraints
+are managed internally, and are not meant for public consumption.</P>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

@@ -1,0 +1,462 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The MenuButton Widget</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The MenuButton Widget</I></H3>
+
+<TABLE>
+<TR>
+<TD>Application Header file<BR>
+Class Header file<BR>
+Class<BR>
+Class Name<BR>
+Superclass</TD>
+
+<TD>&lt;X11/XawPlus/MenuButton.h&gt;<BR>
+&lt;X11/XawPlus/MenuButtonP.h&gt;<BR>
+menuButtonWidgetClass<BR>
+MenuButton<BR>
+Command</TD>
+</TR>
+</TABLE>
+
+<P>The MenuButton widget is an rectangular area, that contains a text label
+or bitmap image. When the pointer cursor is on the button, the button becomes
+highlighted. This highlighting
+indicates that the button is ready for selection. When a pointer button
+is pressed, the MenuButton widget will pop up the menu that has been named
+in the <I>menuName</I> resource.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>Since the 3D extensions of <I>Simple</I> are inserted, the MenuButton
+widget has the additional resources <I>highlightColor,</I> <I>shadowColor</I>
+and <I>buttonBorderWidth</I>. The default <I>background</I> color is now
+grey75. These three colors and the width of the button border are used
+to draw the shape of a button with an inherited method of the <I>Simple</I>
+class. Since XawPlus only supply rectangular buttons, the resources <I>shapeStyle</I>
+and <I>cornerRoundPercent</I> (inherited from the <I>Command</I> widget
+class) lost their meaning.</P>
+
+<P>The <I>bitmap</I> and <I>leftBitmap</I> resources now also provide support
+of XPM styled pixmaps. These resources are inherited from the <I>Label</I>
+widget class. Look there for a description of this new feature.</P>
+
+<P>Since <I>Command</I> provides tooltips, this feature is also available in
+<I>MenuButton</I>. If a help text and <I>useHelp</I> is set in the
+resources, a help window is popped up afer 1.2 seconds when the mouse pointer
+stay over the widgets window.</P>
+
+
+<H3>Resources</H3>
+
+<P>When creating a MenuButton widget instance, the following resources
+are retrieved from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+
+<TD>Callback</TD>
+
+<TD>Pointer</TD>
+
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>borderWidth<BR>
+height<BR>
+sensitive<BR>
+width<BR>
+x<BR>
+y</TD>
+
+<TD>BorderWidth<BR>
+Height<BR>
+Sensitive<BR>
+Width<BR>
+Position<BR>
+Position</TD>
+
+<TD>Dimension<BR>
+Dimension<BR>
+Boolean<BR>
+Dimension<BR>
+Position<BR>
+Position</TD>
+
+<TD>0<BR>
+12<BR>
+True<BR>
+12<BR>
+0<BR>
+0</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">CORE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>border<BR>
+background<BR>
+mappedWhenManaged</TD>
+
+<TD>BorderColor<BR>
+Background<BR>
+MappedWhenManaged</TD>
+
+<TD>Pixel<BR>
+Pixel<BR>
+Boolean</TD>
+
+<TD>XtDefaultForeground<BR>
+grey75<BR>
+True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>cursor
+<BR>cursorName
+<BR>pointerColor
+<BR>pointerColorBackground
+<BR>insensitiveBorder
+<BR>international
+<BR>highlightColor
+<BR>shadowColor
+<BR>buttonBorderWidth</TD>
+
+<TD>Cursor
+<BR>Cursor
+<BR>Foreground
+<BR>Background
+<BR>Insensitive
+<BR>International
+<BR>Background
+<BR>Background
+<BR>Width</TD>
+
+<TD>Cursor
+<BR>String
+<BR>Pixel
+<BR>Pixel
+<BR>Pixmap
+<BR>Boolean
+<BR>Pixel
+<BR>Pixel
+<BR>Dimension</TD>
+
+<TD>None
+<BR>NULL
+<BR>XtDefaultForeground
+<BR>XtDefaultBackground
+<BR>NULL
+<BR>False
+<BR>grey90
+<BR>grey40
+<BR>2</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">LABEL:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>font
+<BR>fontset
+<BR>encoding
+<BR>foreground
+<BR>internalHeight
+<BR>internalWidth
+<BR>justify
+<BR>resize
+<BR>truncateLabel
+<BR>truncLeftSide
+<BR>label
+<BR>leftBitmap
+<BR>leftClipMask
+<BR>bitmap
+<BR>clipMask</TD>
+
+<TD>Font
+<BR>FontSet
+<BR>Encoding
+<BR>Foreground
+<BR>Height
+<BR>Width
+<BR>Justify
+<BR>Resize
+<BR>Truncate
+<BR>Truncate
+<BR>Label
+<BR>LeftBitmap
+<BR>LeftBitmap
+<BR>Pixmap
+<BR>Pixmap</TD>
+
+<TD>XFontStruct*
+<BR>FontSet
+<BR>unsigned char
+<BR>Pixel
+<BR>Dimension
+<BR>Dimension
+<BR>XtJustify
+<BR>Boolean
+<BR>Boolean
+<BR>Boolean
+<BR>String
+<BR>Bitmap
+<BR>ClipMask
+<BR>Bitmap
+<BR>ClipMask</TD>
+
+<TD>XtDefaultFont
+<BR>XtDefaultFontSet
+<BR>XawTextEncoding8bit
+<BR>XtDefaultForeground
+<BR>2
+<BR>4
+<BR>XtJustifyCenter
+<BR>True
+<BR>True
+<BR>False
+<BR>NULL
+<BR>None
+<BR>None
+<BR>None
+<BR>None</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">COMMAND:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>helpText
+<BR>helpBackground
+<BR>useHelp
+<BR>highlightThickness
+<BR>highlightMode
+<BR>callback
+<BR>translations
+<BR>accelerators
+<BR>ancestorSensitive</TD>
+
+<TD>Label
+<BR>Background
+<BR>Boolean
+<BR>Thickness
+<BR>Boolean
+<BR>Callback
+<BR>Translations
+<BR>Accelerators
+<BR>AncestorSensitive</TD>
+
+<TD>String
+<BR>Pixel
+<BR>Boolean
+<BR>Dimension
+<BR>Boolean
+<BR>XtCallbackList
+<BR>TranslationTable
+<BR>AcceleratorTable
+<BR>Boolean</TD>
+
+<TD>NULL
+<BR>LightGoldenrodYellow
+<BR>True
+<BR>2
+<BR>True
+<BR>NULL
+<BR>see doc or source
+<BR>NULL
+<BR>True</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">MENUBUTTON:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>menuName</TD>
+
+<TD>MenuName</TD>
+
+<TD>String</TD>
+
+<TD>&quot;menu&quot;</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>menuName</B></TD>
+
+<TD>The name of a popup shell to popup as a menu. The MenuButton will search
+for this name using <I>XtNameToWidget</I> starting with itself as the reference
+widget. If it is unsuccessful it will continue up the widget tree using
+each of its ancestors as the reference widget. If it is still unsuccessful
+it will print a warning message and give up. When the menu is found it
+will be popped up exclusive and spring_loaded. The MenuButton widget does
+not copy the value of this resource into newly allocated memory. The application
+programmer must pass the resource value in nonvolatile memory.</TD>
+</TR>
+</TABLE>
+
+<H3>MenuButton Actions</H3>
+
+<P>The MenuButton widget supports the following actions:</P>
+
+<UL>
+<LI>Switching the button's interior between raised and sunken button shape
+with <B>set,<BR>
+unset</B> and <B>reset</B>.</LI>
+
+<LI>Processing application callbacks with <B>notify</B></LI>
+
+<LI>Switching the internal border between highlighted and unhighlighted
+states with<BR>
+<B>highlight</B> and <B>unhighlight</B>.</LI>
+
+<LI>Popping up a menu with <B>PopupMenu</B></LI>
+</UL>
+
+<P>The following are the default translation bindings used by the MenuButton
+widget:</P>
+
+<BLOCKQUOTE>
+<TABLE>
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP>
+<P><I>&lt;EnterWindow&gt;<BR>
+&lt;LeaveWindow&gt;<BR>
+&lt;BtnDown&gt;</I></P>
+</TD>
+
+<TD ALIGN=LEFT VALIGN=TOP><I>highlight()<BR>
+reset()<BR>
+reset(), PopupMenu()</I></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>The full list of actions supported by MenuButton is:</P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>highlight</B>()</TD>
+
+<TD>Displays the interior of the button in the raised style, if
+<I>highlightMode</I> is set to <I>True</I>. If not, the button is always displayed
+in the raised style. In this case <I>highlight()</I> has no meaning.
+Since XawPlus 2.0 the conditions <I>WhenUnset</I> and <I>Always</I> are
+not longer supported.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>unhighlight</B>()</TD>
+
+<TD>Displays a flat border if <I>highlightMode</I> is set to
+<I>True</I>. If not, the button is displayed in the raised style. In this
+case <I>unhighlight()</I> has no meaning.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>set</B>()</TD>
+
+<TD>Enters the <I>set</I> state, in which <I>notify</I> is possible. This
+action causes the button to display its interior in the sunken button style.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>unset</B>()</TD>
+
+<TD>Cancels the <I>set</I> state and displays the interior of the button
+in the raised button style</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>reset</B>()</TD>
+
+<TD>Cancels any <I>set</I> or <I>highlight</I> and displays the interior
+of the toggle in the flat style if <I>highlightMode</I> is set to
+<I>True</I>. If not, the toggle is displayed in the raised style.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>notify</B>()</TD>
+
+<TD>When the button is in the <I>set</I> state this action calls all functions
+in the callback list named by the <I>callback</I> resource. The value of
+the <I>call_data</I> argument passed to these functions is undefined.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>PopupMenu</B>()</TD>
+
+<TD>Pops up the menu specified by the <I>menuName</I> resource.</TD>
+</TR>
+</TABLE>
+
+<P>The MenuButton widget does not place a server grab on itself. Instead,
+PopupMenu is registered as a grab action. As a result, clients which popup
+menus without using <I>XtMenuPopup</I> or MenuPopup or PopupMenu in translations
+will fail to have a grab active. They should make a call to <I>XtRegisterGrabAction</I>
+on the appropriate action in the application initialization routine, or
+use a different translation.</P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>

@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The Ascii Sink and Mulit Sink Objects</TITLE>
+   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
+   <META NAME="Description" CONTENT="Documentation to XawPlus">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+
+<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+
+<H3><I>The Ascii Sink and Multi Sink Objects</I></H3>
+
+<TABLE>
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP>Application Header file</TD>
+<TD>&lt;X11/XawPlus/AsciiSink.h&gt; or<BR>
+&lt;X11/XawPlus/MultiSink.h&gt;</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP>Class Header file</TD>
+<TD>&lt;X11/XawPlus/AsciiSinkP.h&gt; or<BR>
+&lt;X11/XawPlus/MultiSinkP.h&gt;</TD>
+</TR>
+
+<TR>
+<TD>Class</TD>
+<TD>asciiSinkObjectClass or multiSinkObjectClass</TD>
+</TR>
+
+<TR>
+<TD>Class Name</TD>
+<TD>AsciiSink or MultiSink</TD>
+</TR>
+
+<TR>
+<TD>Superclass</TD>
+<TD>TextSink</TD>
+</TR>
+
+</TABLE>
+
+<P>The AsciiSink or MultiSink object is used by a text widget to render the text.
+Depending on its <I>international</I> resource, a AsciiText will create one or the other
+of these when the AsciiText itself is created. Both types are nearly identical; the
+following discussion applies to both, with MultiSink differences noted only as they occur.</P>
+
+<P>The AsciiText will display all characters in an 8 bit font, along with handling Tab and
+Carriage Return. The name has left as <I>AsciiSink</I> for compatibility. The MultiSink
+will display all printing characters in a font set, along with handling Tab and Carriage
+Return. These objects also reports the text window metrics to the text widgets.</P>
+
+<H3>Differences between Xaw and XawPlus</H3>
+
+<P>The background color is changed from <I>XtDefaultBackground</I> to <I>grey75</I>.</P>
+
+<H3>Resources</H3>
+
+<P>When creating a AsciiSink or MultiSink object instance, the following resources are
+retrieved from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
+or from the resource database:</P>
+
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
+<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>destroyCallback</TD>
+<TD>Callback</TD>
+<TD>Pointer</TD>
+<TD>NULL</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">TEXTSINK OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>foreground<BR>
+background</TD>
+
+<TD>Foreground<BR>
+Background</TD>
+
+<TD>Pixel<BR>
+Pixel</TD>
+
+<TD>
+XtDefaultForeground<BR>
+grey75</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="#C0C0C0">ASCIISINK OBJECT:</TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+<TD BGCOLOR="#C0C0C0"></TD>
+</TR>
+
+<TR>
+<TD>font<BR>
+fontSet<BR>
+echo<BR>
+displayNonprinting</TD>
+
+<TD>Font<BR>
+FontSet<BR>
+Output<BR>
+Output</TD>
+
+<TD>XFontStruct *<BR>
+XFontSet<BR>
+Boolean<BR>
+Boolean</TD>
+
+<TD>XtDefaultFont<BR>
+XtDefaultFontSet<BR>
+True<BR>
+True</TD>
+<TR>
+</TABLE>
+
+<P></P>
+
+<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>font</B></TD>
+<TD>Only in AsciiSink: The text <I>font</I> to use when displaying the string.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>fontSet</B></TD>
+<TD>Only in MultiSink: The text <I>font set</I> to use when displaying the string.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>echo</B></TD>
+<TD>Whether or not to echo characters to the screen. The buffer can still be
+edited but nothing is displayed. This mode is useful for entering passwords or
+other sensitive information.</TD>
+</TR>
+
+<TR>
+<TD ALIGN=LEFT VALIGN=TOP><B>displayNonprinting</B></TD>
+<TD>If this resource is <B>True</B>, the Sink object will display all non-printable
+characters as the string ^@. Otherwise the Sink object will just leave a blank space.</TD>
+</TR>
+</TABLE>
+
+<P></P>
+
+<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+
+</BODY>
+</HTML>
