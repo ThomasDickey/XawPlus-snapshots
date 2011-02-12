@@ -22,14 +22,17 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
+prefix	= /usr/local
+
 LIB_PATH =	-L/usr/X11/lib			# Libraries for X
 INC_PATH =	-I. -I/usr/X11/include 		# Header files for X
-INST_LIBS=	/usr/X11/lib
+INST_INCS=	${prefix}/include/X11/XawPlus
+INST_LIBS=	${prefix}/lib
 
 XAW=		./X11/XawPlus
 
 CC =		gcc
-FLAGS =		-fPIC -DHAS_WCHAR_H -O2 -mpentiumpro
+FLAGS =		-fPIC -DHAS_WCHAR_H -O2
 
 OBJS=		XawInit.o Vendor.o XawI18n.o UTF8.o StrToPmap.o LocPixmap.o \
 		Box.o Paned.o Viewport.o Form.o Porthole.o \
@@ -40,11 +43,12 @@ OBJS=		XawInit.o Vendor.o XawI18n.o UTF8.o StrToPmap.o LocPixmap.o \
 		Grip.o Scrollbar.o List.o \
  		Tree.o DrawingArea.o StripChart.o Dialog.o
 
-all:		lib install
+all:		lib
 lib:		libXawPlus.a libXawPlus.so.3.1 libXaw.so.6.6 libXaw.so.7.0
 
 clean:
 		rm -f *.o *.a *.so*
+distclean:	clean
 
 # -- Build the libraries
 
@@ -66,9 +70,9 @@ libXaw.so.7.0: $(OBJS)
 # --- This only works as superuser root
 
 install:
-		rm -rf /usr/X11/include/X11/XawPlus
-		mkdir -p /usr/X11/include/X11/XawPlus
-		cp ./X11/XawPlus/*.h /usr/X11/include/X11/XawPlus
+		rm -rf $(INST_INCS)
+		mkdir -p $(INST_INCS)
+		cp ./X11/XawPlus/*.h $(INST_INCS)
 		cp libXawPlus.a $(INST_LIBS)
 		rm -f $(INST_LIBS)/libXawPlus.so.3 $(INST_LIBS)/libXawPlus.so
 		cp libXawPlus.so.3.1 $(INST_LIBS)
