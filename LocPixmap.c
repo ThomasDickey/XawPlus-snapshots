@@ -67,8 +67,7 @@ static char	**PIXMAPFILEPATHCACHE = NULL;
  * split_path_string - split a colon-separated list into its constituent
  * parts; to release, free list[0] and list.
  */
-static char **split_path_string (src)
-    register char *src;
+static char **split_path_string (char *src)
 {
     int nelems = 1;
     register char *dst;
@@ -195,7 +194,6 @@ Pixmap *clipmask;		/* RETURN */
     char **file_paths = NULL;
     char filename[MAXPATHLEN];
     int i;
-    static char **split_path_string();
     char *name;
 
     XpmAttributes attributes;

@@ -1,3 +1,15 @@
+2011-02-12  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* makefile.in: RCS_BASE
+
+	* Makefile: fix typo
+
+	* Makefile: workable install-rule for Debian 5.0
+
+	* Makefile: build-fixes to work with Debian 5.0 and gcc 4.3.2
+
+	* LocPixmap.c: build-fix for gcc 4.3.2
+
 2010-12-30  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/source/format: build-script
