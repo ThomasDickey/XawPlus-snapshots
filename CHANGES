@@ -1,3 +1,7 @@
+2014-04-19  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.guess: RCS_BASE
+
 2011-02-12  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* makefile.in: RCS_BASE
