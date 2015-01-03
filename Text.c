@@ -2,6 +2,7 @@
 
 /***********************************************************
 
+Copyright 2015	Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -3408,11 +3409,7 @@ Widget w;
 void
 #if NeedFunctionPrototypes
 XawTextDisplayCaret (Widget w,
-#if NeedWidePrototypes
-		    /* Boolean */ int display_caret)
-#else
 		    Boolean display_caret)
-#endif
 #else
 XawTextDisplayCaret (w, display_caret)
 Widget w;
@@ -3445,11 +3442,7 @@ Boolean display_caret;
 XawTextPosition
 #if NeedFunctionPrototypes
 XawTextSearch(Widget w,
-#if NeedWidePrototypes
-	    /* XawTextScanDirection */ int dir,
-#else
 	    XawTextScanDirection dir,
-#endif
 	    XawTextBlock *text)
 #else
 XawTextSearch(w, dir, text) 

@@ -1,0 +1,21 @@
+Source: xawplus
+Maintainer: Thomas E. Dickey <dickey@invisible-island.net>
+Section: misc
+Priority: optional
+Standards-Version: 3.8.4
+Build-Depends: debhelper (>= 5), libncursesw5-dev (>= 5.3), groff-base
+Homepage: http://invisible-island.net/dialog/
+
+Package: xawplus
+Architecture: any
+Depends: libncursesw5 (>= 5.3)
+Description: XawPlus widget set development package
+ XawPlus is a clone of the original Xaw library, providing a more up to date
+ look and some extensions to the original Athena widget set. This library is
+ as compatible as possible to the original. It should  be possible to compile
+ the source code of an Xaw client without any changes (except the include path
+ of the XawPlus header files) to get the new look of XawPlus to this client.
+ .
+ XawPlus makes it possible to use XPM pixmaps, tooltips, a truncate mechanism
+ for too long label strings and UTF8 coded UNICODE labels without changing the
+ code of your application.

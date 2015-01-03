@@ -2,6 +2,7 @@
 
 /*
 
+Copyright 2015 Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -946,15 +947,17 @@ AsciiSrcObject src;
   String string;
   XawTextPosition first;
   Piece * piece;
+  char *result;
 
-  string = XtMalloc((unsigned) sizeof(unsigned char) * 
+  result = XtMalloc((unsigned) sizeof(unsigned char) * 
 		    src->ascii_src.length + 1);
   
   for (first = 0, piece = src->ascii_src.first_piece ; piece != NULL; 
        first += piece->used, piece = piece->next) 
-    strncpy(string + first, piece->text, piece->used);
+    strncpy(result + first, piece->text, piece->used);
 
-  string[src->ascii_src.length] = '\0';	/* NULL terminate this sucker. */
+  result[src->ascii_src.length] = '\0';	/* NULL terminate this sucker. */
+  string = result;
 
 /*
  * This will refill all pieces to capacity. 

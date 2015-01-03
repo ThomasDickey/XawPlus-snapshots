@@ -1,3 +1,72 @@
+2015-01-02  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/XawPlus.spec, package/debian/rules: build-script
+
+	* configure: regen
+
+	* makefile.in: use libtool-clean
+
+	* configure.in: add check for LIB_PREFIX
+
+	* aclocal.m4: add CF_LIB_PREFIX
+
+	* package/debian/control, package/debian/watch, package/debian/copyright, package/debian/changelog:
+	build-script
+
+	* X11/XawPlus/SimpleP.h, X11/XawPlus/XawInit.h, X11/XawPlus/TextP.h:
+	gcc-warnings
+
+	* X11/XawPlus/Form.h, X11/XawPlus/List.h, X11/XawPlus/Paned.h, X11/XawPlus/Scrollbar.h, X11/XawPlus/Text.h, X11/XawPlus/TextSink.h, X11/XawPlus/TextSrc.h, X11/XawPlus/Viewport.h, Form.c, Paned.c, Text.c, TextSink.c, TextSrc.c, Viewport.c:
+	rip out ifdef's for wide-function prototypes (Xorg-hackers broke that long ago)
+		http://invisible-island.net/xterm/xterm.faq.html#narrowproto
+
+	* makefile.in: add install/uninstall rules for headers
+
+	* X11/XawPlus/List.h: make a prototype unambiguous, build-fix
+
+	* List.c: build-fix (String is not necessarily "char *")
+
+	* AsciiSrc.c: in my environment, "String" is const.  fix build.
+
+	* makefile.in:
+	don't try to build static and shared libs at the same time
+
+	* makefile.in: convert library construction to form I used in dialog
+
+	* configure: RCS_BASE
+
+	* configure.in: add variables used by internal macros
+
+	* aclocal.m4: resync with my-autoconf
+
+	* makefile.in: fix a typo
+
+	* aclocal.m4: add internal macros used for shlib-rules
+
+	* makefile.in: make compiler warnings work
+
+	* configure.in: add internal macros for shlib-rules
+
+	* aclocal.m4: RCS_BASE
+
+	* configure.in: keep CF_X_EXT used in CF_X_ATHENA
+
+	* makefile.in: implement --disable-echo
+
+	* configure.in: incoporate options for shared- vs libtool-libraries
+
+	* makefile.in:
+	simplify, using suffix-rule and reorganizing for readability
+
+	* VERSION: RCS_BASE
+
+	* configure.in: use CF_PROG_LINT
+
+	* makefile.in: drop "installxaw" rule
+	start merging in definitions from my other programs to autoconf this...
+
+	* configure.in, config_h.in: RCS_BASE
+
 2014-09-01  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* config.sub: RCS_BASE

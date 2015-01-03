@@ -1,312 +1,435 @@
-#
-# Makefile for libXawPlus, styled for LINUX.
-# An extended Xaw library with 3 D styled widgets, XPM support for all
-# widgets and two new widgets: The IconList and the DrawingArea widget.
-# This is a X11R6.6 based version but it also works fine for other X11R6
-# releases.
-#
-# Copyright (c) Roland Krause 2002, roland_krause@freenet.de
-#
-# This module is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-#
+# $Id: makefile.in,v 1.10 2015/01/03 01:42:15 tom Exp $
 
-prefix	= /usr/local
+SHELL		= /bin/sh
 
-LIB_PATH =	-L/usr/X11/lib			# Libraries for X
-INC_PATH =	-I. -I/usr/X11/include 		# Header files for X
-INST_INCS=	${prefix}/include/X11/XawPlus
-INST_LIBS=	${prefix}/lib
+#### Start of system configuration section. ####
 
-XAW=		./X11/XawPlus
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+datarootdir	= @datarootdir@
 
-CC =		gcc
-FLAGS =		-fPIC -DHAS_WCHAR_H -O2
+THIS		= XawPlus
 
-OBJS=		XawInit.o Vendor.o XawI18n.o UTF8.o StrToPmap.o LocPixmap.o \
-		Box.o Paned.o Viewport.o Form.o Porthole.o \
-		XawIm.o TextSrc.o TextSink.o TextAction.o TextPop.o TextTr.o Text.o \
-		MultiSrc.o MultiSink.o AsciiSrc.o AsciiSink.o AsciiText.o \
-		Sme.o SmeBSB.o SmeLine.o SimpleMenu.o Simple.o Label.o \
-		MenuButton.o Toggle.o Panner.o Command.o Repeater.o \
-		Grip.o Scrollbar.o List.o \
- 		Tree.o DrawingArea.o StripChart.o Dialog.o
+CFG_ROOTNAME	= @CFG_ROOTNAME@
+HDR_ROOTNAME	= @HDR_ROOTNAME@
+LIB_ROOTNAME	= @LIB_ROOTNAME@
+LIB_SUFFIX	= @LIB_SUFFIX@
 
-all:		lib
-lib:		libXawPlus.a libXawPlus.so.3.1 libXaw.so.6.6 libXaw.so.7.0
+VERSION_MAJOR	= @VERSION_MAJOR@
+VERSION_MINOR	= @VERSION_MINOR@
+VERSION		= $(VERSION_MAJOR).$(VERSION_MINOR)
+REL_VERSION	= @REL_VERSION@
+ABI_VERSION	= @ABI_VERSION@
+LIB_ROOTNAME	= @LIB_ROOTNAME@
+@SET_SHLIB_VARS@
 
-clean:
-		rm -f *.o *.a *.so*
+includedir	= @includedir@
+libdir		= @libdir@
+
+top_srcdir	= @top_srcdir@
+srcdir		= @srcdir@
+VPATH		= @srcdir@
+
+CFLAGS		= @CFLAGS@ -fPIC 
+CPPFLAGS	= -I. -I$(srcdir) @CPPFLAGS@ @DEFS@ -DHAS_WCHAR_H
+EXTRA_CFLAGS	= @EXTRA_CFLAGS@
+CC		= @CC@
+CPP		= @CPP@
+LINK		= $(CC) $(CFLAGS)
+INSTALL		= @INSTALL@
+INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+INSTALL_SCRIPT	= @INSTALL_SCRIPT@
+INSTALL_DATA	= @INSTALL_DATA@
+
+LIBS		= @LIBS@
+RANLIB		= @LIB_PREP@
+
+RM		= rm -f
+LN_S		= @LN_S@
+
+LINT		= @LINT@
+LINT_OPTS	= @LINT_OPTS@
+
+CTAGS		= @CTAGS@
+ETAGS		= @ETAGS@
+
+LIBTOOL		= @LIBTOOL@ @ECHO_LT@
+LIBTOOL_OPTS	= @LIBTOOL_OPTS@
+LIBTOOL_CLEAN	= @LIB_CLEAN@
+LIBTOOL_COMPILE	= @LIB_COMPILE@
+LIBTOOL_CREATE	= @LIB_CREATE@
+LIBTOOL_LINK	= @LIB_LINK@
+LIBTOOL_INSTALL	= @LIB_INSTALL@
+LIBTOOL_UNINSTALL = @LIB_UNINSTALL@
+LIBTOOL_VERSION = @LIBTOOL_VERSION@
+
+x		= @EXEEXT@
+o		= .@OBJEXT@
+
+#### End of system configuration section. ####
+
+INCLUDEDIR	= ${DESTDIR}${includedir}/X11/XawPlus
+LIBDIR		= ${DESTDIR}${libdir}
+
+MY_INCS		= ${srcdir}/X11/XawPlus
+
+LIB_OBJECT =	\
+	AsciiSink.o \
+	AsciiSrc.o \
+	AsciiText.o \
+	Box.o \
+	Command.o \
+	Dialog.o \
+	DrawingArea.o \
+	Form.o \
+	Grip.o \
+	Label.o \
+	List.o \
+	LocPixmap.o \
+	MenuButton.o \
+	MultiSink.o \
+	MultiSrc.o \
+	Paned.o \
+	Panner.o \
+	Porthole.o \
+	Repeater.o \
+	Scrollbar.o \
+	Simple.o \
+	SimpleMenu.o \
+	Sme.o \
+	SmeBSB.o \
+	SmeLine.o \
+	StrToPmap.o \
+	StripChart.o \
+	Text.o \
+	TextAction.o \
+	TextPop.o \
+	TextSink.o \
+	TextSrc.o \
+	TextTr.o \
+	Toggle.o \
+	Tree.o \
+	UTF8.o \
+	Vendor.o \
+	Viewport.o \
+	XawI18n.o \
+	XawIm.o \
+	XawInit.o
+
+LIB	= @LIB_TARGET@
+
+all:	$(LIB)
+
+clean::
+	@- $(RM) -r autom4te.cache
+	- $(RM) *.*cov *.da *.bb *.bbg
+	- $(LIBTOOL_CLEAN) $(RM) *.i *$o *.a *.so*
+	- $(RM) core *~ tags TAGS
+
 distclean:	clean
+	$(RM) makefile config.h config.cache config.log config.status
 
-# -- Build the libraries
-
-libXawPlus.a:	$(OBJS)
-		ranlib libXawPlus.a
-
-libXawPlus.so.3.1: $(OBJS)
-		$(CC) -shared -Wl,-soname,libXawPlus.so.3 \
-		-o libXawPlus.so.3.1 $(OBJS)
-
-libXaw.so.6.6: $(OBJS)
-		$(CC) -shared -Wl,-soname,libXaw.so.6 \
-		-o libXaw.so.6.6 $(OBJS)
-
-libXaw.so.7.0: $(OBJS)
-		$(CC) -shared -Wl,-soname,libXaw.so.7 \
-		-o libXaw.so.7.0 $(OBJS)
-
-# --- This only works as superuser root
-
-install:
-		rm -rf $(INST_INCS)
-		mkdir -p $(INST_INCS)
-		cp ./X11/XawPlus/*.h $(INST_INCS)
-		cp libXawPlus.a $(INST_LIBS)
-		rm -f $(INST_LIBS)/libXawPlus.so.3 $(INST_LIBS)/libXawPlus.so
-		cp libXawPlus.so.3.1 $(INST_LIBS)
-		ldconfig
-		ln -s $(INST_LIBS)/libXawPlus.so.3.1 $(INST_LIBS)/libXawPlus.so
-
-installxaw:
-		rm -f	$(INST_LIBS)/libXaw.so.6 \
-			$(INST_LIBS)/libXaw.so.7 \
-			$(INST_LIBS)/libXaw.so
-		cp libXaw.so.6.6 $(INST_LIBS)
-		cp libXaw.so.7.0 $(INST_LIBS)
-		ldconfig
-		ln -s $(INST_LIBS)/libXaw.so.6.6 $(INST_LIBS)/libXaw.so
+.c.o:
+	@RULE_CC@
+	@ECHO_CC@$(LIBTOOL_COMPILE) $(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
 # --- Common
 
-XawInit.o:	XawInit.c $(XAW)/XawInit.h
-		$(CC) $(FLAGS) $(INC_PATH) -c XawInit.c
-		ar r libXawPlus.a XawInit.o
-
-Vendor.o:	Vendor.c $(XAW)/VendorEP.h $(XAW)/XawImP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Vendor.c
-		ar r libXawPlus.a Vendor.o
+XawInit.o:	XawInit.c \
+		$(MY_INCS)/XawInit.h
+Vendor.o:	Vendor.c \
+		$(MY_INCS)/VendorEP.h \
+		$(MY_INCS)/XawImP.h
 
 # --- Internationalization (I18n)
 
-XawI18n.o:	XawI18n.c XawI18n.h
-		$(CC) $(FLAGS) $(INC_PATH) -c XawI18n.c
-		ar r libXawPlus.a XawI18n.o
-
-UTF8.o:		UTF8.c UTF8.h
-		$(CC) $(FLAGS) $(INC_PATH) -c UTF8.c
-		ar r libXawPlus.a UTF8.o
+XawI18n.o:	XawI18n.c \
+		XawI18n.h
+UTF8.o:		UTF8.c \
+		UTF8.h
 
 # --- XPM support
 
 LocPixmap.o:	LocPixmap.c
-		$(CC) $(FLAGS) $(INC_PATH) -c LocPixmap.c
-		ar r libXawPlus.a LocPixmap.o
-
 StrToPmap.o:	StrToPmap.c
-		$(CC) $(FLAGS) $(INC_PATH) -c StrToPmap.c
-		ar r libXawPlus.a StrToPmap.o
 
 # --- Manager widgets
 
-Box.o:		Box.c $(XAW)/XawInit.h $(XAW)/Box.h $(XAW)/BoxP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Box.c
-		ar r libXawPlus.a Box.o
-
-Paned.o:	Paned.c $(XAW)/XawInit.h $(XAW)/Grip.h \
-		$(XAW)/Paned.h $(XAW)/PanedP.h $(XAW)/XawImP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Paned.c
-		ar r libXawPlus.a Paned.o
-
-Viewport.o:	Viewport.c $(XAW)/XawInit.h $(XAW)/Scrollbar.h \
-		$(XAW)/Form.h $(XAW)/FormP.h $(XAW)/Viewport.h $(XAW)/ViewportP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Viewport.c
-		ar r libXawPlus.a Viewport.o
-
-Form.o:		Form.c $(XAW)/XawInit.h $(XAW)/Form.h $(XAW)/FormP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Form.c
-		ar r libXawPlus.a Form.o
-
-Porthole.o:	Porthole.c $(XAW)/XawInit.h $(XAW)/Porthole.h $(XAW)/PortholeP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Porthole.c
-		ar r libXawPlus.a Porthole.o
+Box.o:		Box.c \
+		$(MY_INCS)/Box.h \
+		$(MY_INCS)/BoxP.h \
+		$(MY_INCS)/XawInit.h
+Paned.o:	Paned.c \
+		$(MY_INCS)/Grip.h \
+		$(MY_INCS)/Paned.h \
+		$(MY_INCS)/PanedP.h \
+		$(MY_INCS)/XawImP.h \
+		$(MY_INCS)/XawInit.h
+Viewport.o:	Viewport.c \
+		$(MY_INCS)/Form.h \
+		$(MY_INCS)/FormP.h \
+		$(MY_INCS)/Scrollbar.h \
+		$(MY_INCS)/Viewport.h \
+		$(MY_INCS)/ViewportP.h \
+		$(MY_INCS)/XawInit.h
+Form.o:		Form.c \
+		$(MY_INCS)/Form.h \
+		$(MY_INCS)/FormP.h \
+		$(MY_INCS)/XawInit.h
+Porthole.o:	Porthole.c \
+		$(MY_INCS)/Porthole.h \
+		$(MY_INCS)/PortholeP.h \
+		$(MY_INCS)/XawInit.h
 
 # --- Text widget
 
-XawIm.o:	XawIm.c $(XAW)/TextP.h $(XAW)/MultiSrc.h $(XAW)/MultiSinkP.h \
-		$(XAW)/MultiSink.h $(XAW)/TextSinkP.h $(XAW)/TextSink.h \
-		$(XAW)/XawImP.h XawI18n.h
-		$(CC) $(FLAGS) $(INC_PATH) -c XawIm.c
-		ar r libXawPlus.a XawIm.o
-
-TextSrc.o:	TextSrc.c $(XAW)/XawInit.h $(XAW)/TextSrc.h $(XAW)/TextSrcP.h \
-		$(XAW)/TextP.h $(XAW)/Text.h XawI18n.h
-		$(CC) $(FLAGS) $(INC_PATH) -c TextSrc.c
-		ar r libXawPlus.a TextSrc.o
-
-TextSink.o:	TextSink.c $(XAW)/XawInit.h $(XAW)/TextP.h $(XAW)/Text.h \
-		$(XAW)/TextSink.h $(XAW)/TextSinkP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c TextSink.c
-		ar r libXawPlus.a TextSink.o
-
-TextAction.o:	TextAction.c $(XAW)/TextP.h $(XAW)/Text.h $(XAW)/MultiSrc.h \
-		$(XAW)/MultiSrcP.h $(XAW)/XawImP.h XawI18n.h
-		$(CC) $(FLAGS) $(INC_PATH) -c TextAction.c
-		ar r libXawPlus.a TextAction.o
-
+XawIm.o:	XawIm.c \
+		$(MY_INCS)/MultiSink.h \
+		$(MY_INCS)/MultiSinkP.h \
+		$(MY_INCS)/MultiSrc.h \
+		$(MY_INCS)/TextP.h \
+		$(MY_INCS)/TextSink.h \
+		$(MY_INCS)/TextSinkP.h \
+		$(MY_INCS)/XawImP.h \
+		XawI18n.h
+TextSrc.o:	TextSrc.c \
+		$(MY_INCS)/Text.h \
+		$(MY_INCS)/TextP.h \
+		$(MY_INCS)/TextSrc.h \
+		$(MY_INCS)/TextSrcP.h \
+		$(MY_INCS)/XawInit.h \
+		XawI18n.h
+TextSink.o:	TextSink.c \
+		$(MY_INCS)/Text.h \
+		$(MY_INCS)/TextP.h \
+		$(MY_INCS)/TextSink.h \
+		$(MY_INCS)/TextSinkP.h \
+		$(MY_INCS)/XawInit.h
+TextAction.o:	TextAction.c \
+		$(MY_INCS)/MultiSrc.h \
+		$(MY_INCS)/MultiSrcP.h \
+		$(MY_INCS)/Text.h \
+		$(MY_INCS)/TextP.h \
+		$(MY_INCS)/XawImP.h \
+		XawI18n.h
 TextTr.o:	TextTr.c
-		$(CC) $(FLAGS) $(INC_PATH) -c TextTr.c
-		ar r libXawPlus.a TextTr.o
-
-Text.o:		Text.c $(XAW)/XawInit.h $(XAW)/Simple.h $(XAW)/SimpleP.h \
-		$(XAW)/Scrollbar.h $(XAW)/TextP.h $(XAW)/Text.h $(XAW)/MultiSink.h \
-		$(XAW)/MultiSinkP.h $(XAW)/XawImP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Text.c
-		ar r libXawPlus.a Text.o
+Text.o:		Text.c \
+		$(MY_INCS)/MultiSink.h \
+		$(MY_INCS)/MultiSinkP.h \
+		$(MY_INCS)/Scrollbar.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/Text.h \
+		$(MY_INCS)/TextP.h \
+		$(MY_INCS)/XawImP.h \
+		$(MY_INCS)/XawInit.h
 
 # --- AsciiText widget
 
-AsciiSrc.o:	AsciiSrc.c $(XAW)/XawInit.h \
-		$(XAW)/TextSrc.h $(XAW)/TextSrcP.h $(XAW)/AsciiSrc.h $(XAW)/AsciiSrcP.h \
-		$(XAW)/MultiSrc.h $(XAW)/MultiSrcP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c AsciiSrc.c
-		ar r libXawPlus.a AsciiSrc.o
+AsciiSrc.o:	AsciiSrc.c \
+		$(MY_INCS)/AsciiSrc.h \
+		$(MY_INCS)/AsciiSrcP.h \
+		$(MY_INCS)/MultiSrc.h \
+		$(MY_INCS)/MultiSrcP.h \
+		$(MY_INCS)/TextSrc.h \
+		$(MY_INCS)/TextSrcP.h \
+		$(MY_INCS)/XawInit.h
+AsciiSink.o:	AsciiSink.c \
+		$(MY_INCS)/AsciiSink.h \
+		$(MY_INCS)/AsciiSinkP.h \
+		$(MY_INCS)/AsciiSrc.h \
+		$(MY_INCS)/AsciiSrcP.h \
+		$(MY_INCS)/Text.h \
+		$(MY_INCS)/TextP.h \
+		$(MY_INCS)/TextSink.h \
+		$(MY_INCS)/TextSinkP.h \
+		$(MY_INCS)/XawInit.h
+AsciiText.o:	AsciiText.c \
+		$(MY_INCS)/AsciiSink.h \
+		$(MY_INCS)/AsciiSrc.h \
+		$(MY_INCS)/AsciiText.h \
+		$(MY_INCS)/AsciiTextP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/Text.h \
+		$(MY_INCS)/TextP.h \
+		$(MY_INCS)/XawImP.h \
+		$(MY_INCS)/XawInit.h
+MultiSrc.o:	MultiSrc.c \
+		$(MY_INCS)/MultiSrc.h \
+		$(MY_INCS)/MultiSrcP.h \
+		$(MY_INCS)/XawImP.h \
+		$(MY_INCS)/XawInit.h \
+		XawI18n.h
+MultiSink.o:	MultiSink.c \
+		$(MY_INCS)/MultiSink.h \
+		$(MY_INCS)/MultiSinkP.h \
+		$(MY_INCS)/MultiSrc.h \
+		$(MY_INCS)/MultiSrcP.h \
+		$(MY_INCS)/Text.h \
+		$(MY_INCS)/TextP.h \
+		$(MY_INCS)/XawInit.h \
+		XawI18n.h
+TextPop.o:	TextPop.c \
+		$(MY_INCS)/AsciiText.h \
+		$(MY_INCS)/Command.h \
+		$(MY_INCS)/Form.h \
+		$(MY_INCS)/Text.h \
+		$(MY_INCS)/TextP.h \
+		$(MY_INCS)/Toggle.h \
+		XawI18n.h
 
-AsciiSink.o:	AsciiSink.c $(XAW)/XawInit.h $(XAW)/AsciiSrcP.h $(XAW)/AsciiSrc.h \
-		$(XAW)/TextP.h $(XAW)/Text.h $(XAW)/TextSink.h $(XAW)/TextSinkP.h \
-		$(XAW)/AsciiSink.h $(XAW)/AsciiSinkP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c AsciiSink.c
-		ar r libXawPlus.a AsciiSink.o
+# --- Simple menu widget
 
-AsciiText.o:	AsciiText.c $(XAW)/XawInit.h $(XAW)/XawImP.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/TextP.h $(XAW)/Text.h \
-		$(XAW)/AsciiSrc.h $(XAW)/AsciiSink.h $(XAW)/AsciiText.h $(XAW)/AsciiTextP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c AsciiText.c
-		ar r libXawPlus.a AsciiText.o
-
-MultiSrc.o:	MultiSrc.c $(XAW)/XawInit.h $(XAW)/MultiSrc.h $(XAW)/MultiSrcP.h \
-		$(XAW)/XawImP.h XawI18n.h
-		$(CC) $(FLAGS) $(INC_PATH) -c MultiSrc.c
-		ar r libXawPlus.a MultiSrc.o
-
-MultiSink.o:	MultiSink.c $(XAW)/XawInit.h $(XAW)/TextP.h $(XAW)/Text.h \
-		$(XAW)/MultiSrc.h $(XAW)/MultiSrcP.h \
-		$(XAW)/MultiSink.h $(XAW)/MultiSinkP.h XawI18n.h
-		$(CC) $(FLAGS) $(INC_PATH) -c MultiSink.c
-		ar r libXawPlus.a MultiSink.o
-
-TextPop.o:	TextPop.c $(XAW)/TextP.h $(XAW)/Text.h $(XAW)/AsciiText.h \
-		$(XAW)/Command.h $(XAW)/Form.h $(XAW)/Toggle.h XawI18n.h
-		$(CC) $(FLAGS) $(INC_PATH) -c TextPop.c
-		ar r libXawPlus.a TextPop.o
-
-# --- Simple menue widget
-
-Sme.o:		Sme.c $(XAW)/XawInit.h $(XAW)/Sme.h $(XAW)/SmeP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Sme.c
-		ar r libXawPlus.a Sme.o
-
-SmeBSB.o:	SmeBSB.c $(XAW)/StrToPmap.h $(XAW)/XawInit.h $(XAW)/Cardinals.h $(XAW)/SimpleMenu.h \
-		$(XAW)/SmeBSB.h $(XAW)/SmeBSBP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c SmeBSB.c
-		ar r libXawPlus.a SmeBSB.o
-
-SmeLine.o:	SmeLine.c $(XAW)/XawInit.h $(XAW)/Sme.h $(XAW)/SmeP.h \
-		$(XAW)/SmeLine.h $(XAW)/SmeLineP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c SmeLine.c
-		ar r libXawPlus.a SmeLine.o
-
-SimpleMenu.o:	SimpleMenu.c $(XAW)/XawInit.h UTF8.h $(XAW)/SmeBSB.h \
-		$(XAW)/SimpleMenu.h $(XAW)/SimpleMenP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c SimpleMenu.c
-		ar r libXawPlus.a SimpleMenu.o
+Sme.o:		Sme.c \
+		$(MY_INCS)/Sme.h \
+		$(MY_INCS)/SmeP.h \
+		$(MY_INCS)/XawInit.h
+SmeBSB.o:	SmeBSB.c \
+		$(MY_INCS)/Cardinals.h \
+		$(MY_INCS)/SimpleMenu.h \
+		$(MY_INCS)/SmeBSB.h \
+		$(MY_INCS)/SmeBSBP.h \
+		$(MY_INCS)/StrToPmap.h \
+		$(MY_INCS)/XawInit.h
+SmeLine.o:	SmeLine.c \
+		$(MY_INCS)/Sme.h \
+		$(MY_INCS)/SmeLine.h \
+		$(MY_INCS)/SmeLineP.h \
+		$(MY_INCS)/SmeP.h \
+		$(MY_INCS)/XawInit.h
+SimpleMenu.o:	SimpleMenu.c \
+		$(MY_INCS)/SimpleMenP.h \
+		$(MY_INCS)/SimpleMenu.h \
+		$(MY_INCS)/SmeBSB.h \
+		$(MY_INCS)/XawInit.h \
+		UTF8.h
 
 # --- Toggles, buttons, lists ...
 
-Simple.o:	Simple.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Simple.c
-		ar r libXawPlus.a Simple.o
+Simple.o:	Simple.c \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/XawInit.h
+Label.o:	Label.c \
+		$(MY_INCS)/Label.h \
+		$(MY_INCS)/LabelP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/StrToPmap.h \
+		$(MY_INCS)/XawInit.h \
+		UTF8.h
+Command.o:	Command.c \
+		$(MY_INCS)/Command.h \
+		$(MY_INCS)/CommandP.h \
+		$(MY_INCS)/Label.h \
+		$(MY_INCS)/LabelP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/XawInit.h
+MenuButton.o:	MenuButton.c \
+		$(MY_INCS)/Command.h \
+		$(MY_INCS)/CommandP.h \
+		$(MY_INCS)/Label.h \
+		$(MY_INCS)/LabelP.h \
+		$(MY_INCS)/MenuButtoP.h \
+		$(MY_INCS)/MenuButton.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/XawInit.h
+Toggle.o:	Toggle.c \
+		$(MY_INCS)/Command.h \
+		$(MY_INCS)/CommandP.h \
+		$(MY_INCS)/Label.h \
+		$(MY_INCS)/LabelP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/Toggle.h \
+		$(MY_INCS)/ToggleP.h \
+		$(MY_INCS)/XawInit.h
+Repeater.o:	Repeater.c \
+		$(MY_INCS)/Command.h \
+		$(MY_INCS)/CommandP.h \
+		$(MY_INCS)/Label.h \
+		$(MY_INCS)/LabelP.h \
+		$(MY_INCS)/Repeater.h \
+		$(MY_INCS)/RepeaterP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/XawInit.h
+Panner.o:	Panner.c \
+		$(MY_INCS)/Panner.h \
+		$(MY_INCS)/PannerP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/XawInit.h
+Grip.o:		Grip.c \
+		$(MY_INCS)/Grip.h \
+		$(MY_INCS)/GripP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/XawInit.h
+Scrollbar.o:	Scrollbar.c \
+		$(MY_INCS)/Scrollbar.h \
+		$(MY_INCS)/ScrollbarP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/XawInit.h
+List.o:		List.c \
+		$(MY_INCS)/List.h \
+		$(MY_INCS)/ListP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/XawInit.h
 
-Label.o:	Label.c $(XAW)/StrToPmap.h $(XAW)/XawInit.h UTF8.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/Label.h $(XAW)/LabelP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Label.c
-		ar r libXawPlus.a Label.o
+# --- Miscellaneous
 
-Command.o:	Command.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/Label.h $(XAW)/LabelP.h \
-		$(XAW)/Command.h $(XAW)/CommandP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Command.c
-		ar r libXawPlus.a Command.o
+Tree.o:		Tree.c \
+		$(MY_INCS)/Tree.h \
+		$(MY_INCS)/TreeP.h \
+		$(MY_INCS)/XawInit.h
+DrawingArea.o:	DrawingArea.c \
+		$(MY_INCS)/DrawingArea.h \
+		$(MY_INCS)/DrawingAreaP.h \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/XawInit.h
+StripChart.o:	StripChart.c \
+		$(MY_INCS)/Simple.h \
+		$(MY_INCS)/SimpleP.h \
+		$(MY_INCS)/StripCharP.h \
+		$(MY_INCS)/StripChart.h \
+		$(MY_INCS)/XawInit.h
+Dialog.o:	Dialog.c \
+		$(MY_INCS)/AsciiText.h \
+		$(MY_INCS)/Command.h \
+		$(MY_INCS)/Dialog.h \
+		$(MY_INCS)/DialogP.h \
+		$(MY_INCS)/Form.h \
+		$(MY_INCS)/FormP.h \
+		$(MY_INCS)/Label.h \
+		$(MY_INCS)/StrToPmap.h \
+		$(MY_INCS)/XawInit.h
 
-MenuButton.o:	MenuButton.c  $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/Label.h $(XAW)/LabelP.h \
-		$(XAW)/Command.h $(XAW)/CommandP.h $(XAW)/MenuButton.h $(XAW)/MenuButtoP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c MenuButton.c
-		ar r libXawPlus.a MenuButton.o
+$(INCLUDEDIR) \
+$(LIBDIR) : ; mkdir -p $@
 
-Toggle.o:	Toggle.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/Label.h $(XAW)/LabelP.h \
-		$(XAW)/Command.h $(XAW)/CommandP.h $(XAW)/Toggle.h $(XAW)/ToggleP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Toggle.c
-		ar r libXawPlus.a Toggle.o
+@MAKE_LOWER_TAGS@tags :
+@MAKE_LOWER_TAGS@	$(CTAGS) $(SRCS) $(HDRS)
 
-Repeater.o:	Repeater.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/Label.h $(XAW)/LabelP.h \
-		$(XAW)/Command.h $(XAW)/CommandP.h $(XAW)/Repeater.h $(XAW)/RepeaterP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Repeater.c
-		ar r libXawPlus.a Repeater.o
+@MAKE_LOWER_TAGS@TAGS :
+@MAKE_LOWER_TAGS@	$(ETAGS) $(SRCS) $(HDRS)
 
-Panner.o:	Panner.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/Panner.h $(XAW)/PannerP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Panner.c
-		ar r libXawPlus.a Panner.o
+lint:
+	$(LINT) $(LINT_OPTS) $(CPPFLAGS) *.c
 
-Grip.o:		Grip.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/Grip.h $(XAW)/GripP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Grip.c
-		ar r libXawPlus.a Grip.o
+install::	$(INCLUDEDIR)
+	@echo "** installing headers"
+	$(INSTALL) $(MY_INCS)/*.h $(INCLUDEDIR)
+	@echo "...done"
 
-Scrollbar.o:	Scrollbar.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/Scrollbar.h $(XAW)/ScrollbarP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Scrollbar.c
-		ar r libXawPlus.a Scrollbar.o
-
-List.o:		List.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/List.h $(XAW)/ListP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c List.c
-		ar r libXawPlus.a List.o
-
-# --- Miscelaneous
-
-Tree.o:		Tree.c $(XAW)/XawInit.h $(XAW)/Tree.h $(XAW)/TreeP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Tree.c
-		ar r libXawPlus.a Tree.o
-
-DrawingArea.o:	DrawingArea.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/DrawingArea.h $(XAW)/DrawingAreaP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c DrawingArea.c
-		ar r libXawPlus.a DrawingArea.o
-
-StripChart.o:	StripChart.c $(XAW)/XawInit.h \
-		$(XAW)/Simple.h $(XAW)/SimpleP.h $(XAW)/StripChart.h $(XAW)/StripCharP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c StripChart.c
-		ar r libXawPlus.a StripChart.o
-
-Dialog.o:	Dialog.c $(XAW)/StrToPmap.h $(XAW)/XawInit.h \
-		$(XAW)/Form.h $(XAW)/FormP.h $(XAW)/AsciiText.h $(XAW)/Command.h $(XAW)/Label.h \
-		$(XAW)/Dialog.h $(XAW)/DialogP.h
-		$(CC) $(FLAGS) $(INC_PATH) -c Dialog.c
-		ar r libXawPlus.a Dialog.o
-
+uninstall::
+	@echo "** uninstalling headers"
+	-sh -c 'for n in $(MY_INCS)/*.h; do p=`basename $$n`; $(RM) $(INCLUDEDIR)/$$p; done'
+	-rmdir $(INCLUDEDIR)
+	@echo "...done"

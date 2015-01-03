@@ -1,6 +1,7 @@
 /* $Xorg: TextSrc.c,v 1.5 2001/02/09 02:03:47 xorgcvs Exp $ */
 /*
 
+Copyright 2015	Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -411,17 +412,9 @@ XawTextBlock *text;
 XawTextPosition
 #if NeedFunctionPrototypes
 XawTextSourceScan(Widget w, XawTextPosition position,
-#if NeedWidePrototypes
-		  int type, int dir,
-#else
 		  XawTextScanType type, XawTextScanDirection dir,
-#endif
 		  int count,
-#if NeedWidePrototypes
-		  int include)
-#else
 		  Boolean include)
-#endif
 #else
 XawTextSourceScan(w, position, type, dir, count, include)
 Widget                w;
@@ -455,11 +448,7 @@ Boolean	              include;
 XawTextPosition 
 #if NeedFunctionPrototypes
 XawTextSourceSearch(Widget w, XawTextPosition position,
-#if NeedWidePrototypes
-		    int dir,
-#else
 		    XawTextScanDirection dir,
-#endif
 		    XawTextBlock *text)
 #else
 XawTextSourceSearch(w, position, dir, text)

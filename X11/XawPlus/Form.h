@@ -2,6 +2,7 @@
 
 /**************************************************************************
 
+Copyright 2015	Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -162,11 +163,7 @@ _XFUNCPROTOBEGIN
 extern void XawFormDoLayout(
 #if NeedFunctionPrototypes
     Widget		/* w */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* do_layout */
-#else
     Boolean		/* do_layout */
-#endif
 #endif
 );
 

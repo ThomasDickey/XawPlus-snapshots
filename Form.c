@@ -2,6 +2,7 @@
 
 /**************************************************************************
 
+Copyright 2015	Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -808,11 +809,7 @@ static XtGeometryResult PreferredGeometry( widget, request, reply  )
 void
 #if NeedFunctionPrototypes
 XawFormDoLayout(Widget w,
-#if NeedWidePrototypes
-		int doit)
-#else
 		Boolean doit)
-#endif
 #else
 XawFormDoLayout(w, doit)
 Widget w;

@@ -1,6 +1,7 @@
 /* $Xorg: List.h,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $ */
 
 /*
+Copyright 2015	Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -236,11 +237,7 @@ extern void XawListChange(
     String*		/* list */,
     int			/* nitems */,
     int			/* longest */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* resize */
-#else
     Boolean		/* resize */
-#endif
 #endif
 );
 
@@ -311,11 +308,7 @@ extern void XawIconListChange(
     int			/* icon width  */,
     int			/* icon height */,
     int			/* icon depth  */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* resize */
-#else
     Boolean		/* resize */
-#endif
 #endif
 );
 

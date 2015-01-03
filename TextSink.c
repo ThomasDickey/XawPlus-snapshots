@@ -1,6 +1,7 @@
 /* $Xorg: TextSink.c,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $ */
 /*
 
+Copyright 2015	Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -503,17 +504,9 @@ XRectangle * rect;
 void
 #if NeedFunctionPrototypes
 XawTextSinkDisplayText(Widget w,
-#if NeedWidePrototypes
-		       /* Position */ int x, /* Position */ int y,
-#else
 		       Position x, Position y,
-#endif
 		       XawTextPosition pos1, XawTextPosition pos2,
-#if NeedWidePrototypes
-		       /* Boolean */ int highlight)
-#else
 		       Boolean highlight)
-#endif
 #else
 XawTextSinkDisplayText(w, x, y, pos1, pos2, highlight)
 Widget w;
@@ -542,11 +535,7 @@ XawTextPosition pos1, pos2;
 void
 #if NeedFunctionPrototypes
 XawTextSinkInsertCursor(Widget w,
-#if NeedWidePrototypes
-			int x, int y, int state)
-#else
 			Position x, Position y, XawTextInsertState state)
-#endif
 #else    
 XawTextSinkInsertCursor(w, x, y, state)
 Widget w;
@@ -575,12 +564,8 @@ XawTextInsertState state;
 void
 #if NeedFunctionPrototypes
 XawTextSinkClearToBackground (Widget w,
-#if NeedWidePrototypes
-			      int x, int y, int width, int height)
-#else
 			      Position x, Position y, 
 			      Dimension width, Dimension height)
-#endif
 #else
 XawTextSinkClearToBackground (w, x, y, width, height)
 Widget w;
@@ -611,11 +596,7 @@ void
 #if NeedFunctionPrototypes
 XawTextSinkFindPosition(Widget w, XawTextPosition fromPos, int fromx,
 			int width,
-#if NeedWidePrototypes
-			/* Boolean */ int stopAtWordBreak,
-#else
 			Boolean stopAtWordBreak,
-#endif
 			XawTextPosition *resPos, int *resWidth, int *resHeight)
 #else
 XawTextSinkFindPosition(w, fromPos, fromx, width, stopAtWordBreak, 
@@ -706,11 +687,7 @@ XawTextPosition *resPos;
 int
 #if NeedFunctionPrototypes
 XawTextSinkMaxLines(Widget w,
-#if NeedWidePrototypes
-		    /* Dimension */ int height)
-#else
 		    Dimension height)
-#endif
 #else
 XawTextSinkMaxLines(w, height)
 Widget w;
