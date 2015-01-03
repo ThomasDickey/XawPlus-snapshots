@@ -4,6 +4,7 @@
 
 /***********************************************************
 
+Copyright 2015	Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -152,19 +153,10 @@ extern XawTextPosition XawTextSourceScan(
 #if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* position */,
-#if NeedWidePrototypes
-    /* XawTextScanType */ int		/* type */,
-    /* XawTextScanDirection */ int	/* dir */,
-#else
     XawTextScanType	/* type */,
     XawTextScanDirection /* dir */,
-#endif
     int			/* count */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* include */
-#else
     Boolean		/* include */
-#endif
 #endif
 );
 
@@ -182,11 +174,7 @@ extern XawTextPosition XawTextSourceSearch(
 #if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* position */,
-#if NeedWidePrototypes
-    /* XawTextScanDirection */ int	/* dir */,
-#else
     XawTextScanDirection /* dir */,
-#endif
     XawTextBlock*	/* text */
 #endif
 );

@@ -57,7 +57,7 @@ Note that the resources of Add3dExt in XawPlus 2.x are moved into this widget!
 #include <X11/XawPlus/Simple.h>
 
 typedef struct {
-    Boolean	(*change_sensitive)(/* widget */);
+    Boolean	(*change_sensitive)(Widget);
 } SimpleClassPart;
 
 #define XtInheritChangeSensitive ((Boolean (*)())_XtInherit)

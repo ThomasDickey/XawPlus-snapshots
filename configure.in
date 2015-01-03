@@ -1,0 +1,131 @@
+dnl $XTermId: configure.in,v 1.7 2015/01/03 01:39:59 tom Exp $
+dnl
+dnl -----------------------------------------------------------------------------
+dnl this file is part of XawPlus
+dnl
+dnl Copyright 2015 by Thomas E. Dickey
+dnl 
+dnl                         All Rights Reserved
+dnl 
+dnl Permission is hereby granted, free of charge, to any person obtaining a
+dnl copy of this software and associated documentation files (the
+dnl "Software"), to deal in the Software without restriction, including
+dnl without limitation the rights to use, copy, modify, merge, publish,
+dnl distribute, sublicense, and/or sell copies of the Software, and to
+dnl permit persons to whom the Software is furnished to do so, subject to
+dnl the following conditions:
+dnl 
+dnl The above copyright notice and this permission notice shall be included
+dnl in all copies or substantial portions of the Software.
+dnl 
+dnl THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+dnl OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+dnl MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+dnl IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT HOLDER(S) BE LIABLE FOR ANY
+dnl CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+dnl TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+dnl SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+dnl 
+dnl Except as contained in this notice, the name(s) of the above copyright
+dnl holders shall not be used in advertising or otherwise to promote the
+dnl sale, use or other dealings in this Software without prior written
+dnl authorization.
+dnl ---------------------------------------------------------------------------
+dnl Process this file with autoconf to produce a configure script.
+dnl
+AC_PREREQ(2.52.20121002)
+AC_INIT
+AC_CONFIG_SRCDIR([XawPlusLogo.xpm])
+AC_CONFIG_HEADER(config.h:config_h.in)
+CF_CHECK_CACHE
+
+###	checks for alternative programs
+
+CF_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+AC_ARG_PROGRAM
+CF_PROG_LINT
+CF_MAKEFLAGS
+
+###	checks for compiler characteristics
+CF_LIB_PREFIX
+CF_XOPEN_SOURCE
+
+CF_X_TOOLKIT
+CF_X_EXT
+CF_WITH_XPM
+
+dnl Allow library to be renamed.
+AC_MSG_CHECKING(for this package's name)
+AC_ARG_WITH(package,
+	[  --with-package=XXX      rename library to libXXX.a, etc],
+	[PACKAGE=$withval],
+	[PACKAGE=XawPlus])
+AC_MSG_RESULT($PACKAGE)
+CF_VERSION_INFO(XawPlus,$PACKAGE)
+
+CFG_ROOTNAME=$PACKAGE
+HDR_ROOTNAME=$PACKAGE
+LIB_ROOTNAME=$PACKAGE
+
+AC_SUBST(CFG_ROOTNAME)
+AC_SUBST(HDR_ROOTNAME)
+AC_SUBST(LIB_ROOTNAME)
+
+###############################################################################
+CF_HELP_MESSAGE(Testing/development Options:)
+
+AC_MSG_CHECKING(if you want debugging traces)
+CF_ARG_ENABLE(trace,
+	[  --enable-trace          test: set to enable debugging traces],
+	[enable_trace=yes],
+	[enable_trace=no])
+AC_MSG_RESULT($enable_trace)
+if test "$enable_trace" = yes ; then
+	AC_DEFINE(OPT_TRACE,1,[Define to 1 to enable debugging traces])
+	EXTRASRCS="$EXTRASRCS trace.c"
+	EXTRAOBJS="$EXTRAOBJS trace.o"
+fi
+
+CF_DISABLE_LEAKS
+CF_DISABLE_ECHO
+
+if test -n "$GCC" ; then
+AC_MSG_CHECKING(if you want to turn on gcc warnings)
+CF_ARG_ENABLE(warnings,
+	[  --enable-warnings       test: turn on GCC compiler warnings],
+	[with_warnings=yes],
+	[with_warnings=no])
+AC_MSG_RESULT($with_warnings)
+if test "$with_warnings" = yes
+then
+	CF_GCC_ATTRIBUTES
+	CF_GCC_WARNINGS(Wdeclaration-after-statement Wextra Wno-unknown-pragmas Wswitch-enum)
+fi
+fi
+
+AC_SUBST(EXTRA_CFLAGS)
+
+CF_MAKE_TAGS
+
+CF_ENABLE_RPATH
+CF_WITH_SHARED_OR_LIBTOOL(XAWPLUS,${VERSION_MAJOR}.${VERSION_MINOR},`echo "$VERSION" |sed -e 's/:/./g'`)
+CF_DISABLE_RPATH_HACK
+
+CF__DEFINE_SHLIB_VARS
+
+###	output xtermcfg.h, etc
+AC_OUTPUT(
+	makefile,[
+CF__ADD_SHLIB_RULES(
+	makefile,
+	$LIB_MODEL,
+	[\${LIB_OBJECT}],
+	[\${LIBS} \${LDFLAGS}])
+],[
+CF__INIT_SHLIB_RULES
+],[cat])

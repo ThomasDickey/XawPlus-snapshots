@@ -5,6 +5,7 @@
 
 /*************************************************************************
 
+Copyright 2015	Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -224,11 +225,7 @@ extern void XawPanedGetMinMax(
 extern void XawPanedSetRefigureMode(
 #if NeedFunctionPrototypes
     Widget		/* w */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* mode */
-#else
     Boolean		/* mode */
-#endif
 #endif
 );
 
@@ -254,11 +251,7 @@ extern int XawPanedGetNumSub(
 extern void XawPanedAllowResize(
 #if NeedFunctionPrototypes
     Widget		/* w */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* allow_resize */
-#else
     Boolean		/* allow_resize */
-#endif
 #endif
 );
 

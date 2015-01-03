@@ -4,6 +4,7 @@
 
 /***********************************************************
 
+Copyright 2015	Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -104,20 +105,11 @@ _XFUNCPROTOBEGIN
 extern void XawTextSinkDisplayText(
 #if NeedFunctionPrototypes
     Widget		/* w */,
-#if NeedWidePrototypes
-    /* Position */ int	/* x */,
-    /* Position	*/ int	/* y */,
-#else
     Position		/* x */,
     Position		/* y */,
-#endif
     XawTextPosition	/* pos1 */,
     XawTextPosition	/* pos2 */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* highlight */
-#else
     Boolean		/* highlight */
-#endif
 #endif
 );
 
@@ -135,15 +127,9 @@ extern void XawTextSinkDisplayText(
 extern void XawTextSinkInsertCursor(
 #if NeedFunctionPrototypes
     Widget		/* w */,
-#if NeedWidePrototypes
-    /* Position */ int	/* x */,
-    /* Position	*/ int	/* y */,
-    /* XawTextInsertState */ int /* state */
-#else
     Position		/* x */,
     Position		/* y */,
     XawTextInsertState	/* state */
-#endif
 #endif
 );
 
@@ -161,17 +147,10 @@ extern void XawTextSinkInsertCursor(
 extern void XawTextSinkClearToBackground(
 #if NeedFunctionPrototypes
     Widget		/* w */,
-#if NeedWidePrototypes
-    /* Position */ int	/* x */,
-    /* Position */ int	/* y */,
-    /* Dimension */ int	/* width */,
-    /* Dimension */ int	/* height */
-#else
     Position		/* x */,
     Position		/* y */,
     Dimension		/* width */,
     Dimension		/* height */
-#endif
 #endif
 );
 
@@ -194,11 +173,7 @@ extern void XawTextSinkFindPosition(
     XawTextPosition	/* fromPos */,
     int			/* fromX */,
     int			/* width */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* stopAtWordBreak */,
-#else
     Boolean		/* stopAtWordBreak */,
-#endif
     XawTextPosition*	/* pos_return */,
     int*		/* width_return */,
     int*		/* height_return */
@@ -260,11 +235,7 @@ extern void XawTextSinkResolve(
 extern int XawTextSinkMaxLines(
 #if NeedFunctionPrototypes
     Widget		/* w */,
-#if NeedWidePrototypes
-    /* Dimension */ int	/* height */
-#else
     Dimension		/* height */
-#endif
 #endif
 );
 

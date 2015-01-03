@@ -3,6 +3,7 @@
 
 /**************************************************************************
 
+Copyright 2015	Thomas E. Dickey
 Copyright 1987, 1988, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -134,13 +135,8 @@ _XFUNCPROTOBEGIN
 extern void XawScrollbarSetThumb(
 #if NeedFunctionPrototypes
     Widget		/* scrollbar */,
-#if NeedWidePrototypes
-    /* float */ double	/* top */,
-    /* float */	double	/* shown */
-#else
     float		/* top */,
     float		/* shown */
-#endif
 #endif		 
 );
 
