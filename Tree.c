@@ -2,6 +2,7 @@
  * $Xorg: Tree.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  *
 
+Copyright 2015 Thomas E. Dickey
 Copyright 1990, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -1008,12 +1009,7 @@ static void layout_tree (tw, insetvalues)
  *****************************************************************************/
 
 void
-#if NeedFunctionPrototypes
 XawTreeForceLayout (Widget tree)
-#else
-XawTreeForceLayout (tree)
-    Widget tree;
-#endif
 {
     layout_tree ((TreeWidget) tree, FALSE);
 }

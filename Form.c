@@ -807,14 +807,8 @@ static XtGeometryResult PreferredGeometry( widget, request, reply  )
  */
 
 void
-#if NeedFunctionPrototypes
 XawFormDoLayout(Widget w,
 		Boolean doit)
-#else
-XawFormDoLayout(w, doit)
-Widget w;
-Boolean doit;
-#endif
 {
     Widget *childP;
     FormWidget fw = (FormWidget)w;

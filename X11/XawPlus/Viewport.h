@@ -3,6 +3,7 @@
 /************************************************************
 
 Copyright 2015	Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1987, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -45,8 +46,6 @@ ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
 WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
-
-This file contains modifications for XawPlus, Roland Krause 2002
 
 ************************************************************************/
 
@@ -106,19 +105,15 @@ typedef struct _ViewportRec  *ViewportWidget;
 _XFUNCPROTOBEGIN
 
 extern void XawViewportSetLocation (
-#if NeedFunctionPrototypes
     Widget		/* gw */,
     float		/* xoff */,
     float		/* yoff */
-#endif
 );
 
 extern void XawViewportSetCoordinates (
-#if NeedFunctionPrototypes
     Widget		/* gw */,
     Position		/* x */,
     Position		/* y */
-#endif
 );
 
 _XFUNCPROTOEND

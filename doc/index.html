@@ -1,329 +1,449 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>Index of the XawPlus documentation</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#EF0000" VLINK="#55188A" ALINK="#FF0000">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<H1><I>The XawPlus 3.1.0 Documentation</I></H1>
+  <title>Index of the XawPlus documentation</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+</head>
 
-<P>This set of documents describes the features and usage of XawPlus. This
-is no introduction in how to develop applications for X11 using XawPlus
-in general. It is meant for programmers, who are familiar in programming
-with the original Xaw or Motif library. The main idea is to describe all
-features and the deviations to the original Xaw library, because there
-are no new features without deviations to the original ;-)</P>
+<body text="#000000" bgcolor="#FFFFFF" link="#EF0000" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
 
-<P>This documentation based completely on documents that comes with the
-X distribution. The description of the widgets based on the manual set
-and the rest is partial borrowed from a postscript document, found in the
-document path of the <I>xc</I> archives.</P>
+  <h1><i>The XawPlus 3.1.0 Documentation</i></h1>
 
-<H2>1. What is XawPlus and what is new ?</H2>
+  <p>This set of documents describes the features and usage of
+  XawPlus. This is no introduction in how to develop applications
+  for X11 using XawPlus in general. It is meant for programmers,
+  who are familiar in programming with the original Xaw or Motif
+  library. The main idea is to describe all features and the
+  deviations to the original Xaw library, because there are no new
+  features without deviations to the original ;-)</p>
 
-<P>XawPlus 3.1.0 is a clone of the original Xaw library, providing a more up
-to date look to the original Athena widget set. This library is as compatible
-as possible to the original in its X11R6.6 version. It should be
-possible to compile the source code of any Xaw client without any changes
-(except the include path of the XawPlus header files) to get the new look
-of XawPlus to this client. A lot of applications also works fine without
-recompilation, if the original Xaw library is replaced with XawPlus.</P>
+  <p>This documentation based completely on documents that comes
+  with the X distribution. The description of the widgets based on
+  the manual set and the rest is partial borrowed from a postscript
+  document, found in the document path of the <i>xc</i>
+  archives.</p>
 
-<P>XawPlus make it possible to use XPM pixmaps in labels, toggles or buttons
-without changing the code of your application via setting the <I>bitmap</I>
-resource. A transparent background is provided. XawPlus also provide tooltips
-for buttons, toggles, repeaters and menu buttons without changes of the
-source code.</P>
+  <h2>1. What is XawPlus and what is new ?</h2>
 
-<P>XawPlus comes with a set of adapted applications, using also the new
-features and widgets.</P>
+  <p>XawPlus 3.1.0 is a clone of the original Xaw library,
+  providing a more up to date look to the original Athena widget
+  set. This library is as compatible as possible to the original in
+  its X11R6.6 version. It should be possible to compile the source
+  code of any Xaw client without any changes (except the include
+  path of the XawPlus header files) to get the new look of XawPlus
+  to this client. A lot of applications also works fine without
+  recompilation, if the original Xaw library is replaced with
+  XawPlus.</p>
 
-<H2>2. What is different to XawPlus 3.0.1 ?</H2>
+  <p>XawPlus make it possible to use XPM pixmaps in labels, toggles
+  or buttons without changing the code of your application via
+  setting the <i>bitmap</i> resource. A transparent background is
+  provided. XawPlus also provide tooltips for buttons, toggles,
+  repeaters and menu buttons without changes of the source
+  code.</p>
 
-<H4>Port to X11R6.6:</H4>
-<BLOCKQUOTE>XawPlus now based completely on the X11R6.6 sources of Xaw.
-All extensions of XawPlus are merged into these sources.</BLOCKQUOTE>
+  <p>XawPlus comes with a set of adapted applications, using also
+  the new features and widgets.</p>
 
-<H4>Full UNICODE support for menu's:</H4>
-<BLOCKQUOTE><I>SmeBSB</I> now has as <I>Label</I> full UNICODE support,
-independent of the locale settings, using <B>UTF8</B> coded strings.</BLOCKQUOTE>
+  <h2>2. What is different to XawPlus 3.0.1 ?</h2>
 
-<H4>Selection of menu entries if <I>NumLock</I> or <I>CapsLock</I> is set:</H4>
-<BLOCKQUOTE>In previous versions of XawPlus menu entries are not highlighted
-and not selectible, if <I>NumLock</I> or <I>CapsLock</I> is activated. This
-bug is now fixed.</BLOCKQUOTE>
+  <h4>Port to X11R6.6:</h4>
 
-<P></P>
+  <blockquote>
+    XawPlus now based completely on the X11R6.6 sources of Xaw. All
+    extensions of XawPlus are merged into these sources.
+  </blockquote>
 
-<HR>
+  <h4>Full UNICODE support for menu's:</h4>
 
-<H2>3. Short description of the widgets</H2>
+  <blockquote>
+    <i>SmeBSB</i> now has as <i>Label</i> full UNICODE support,
+    independent of the locale settings, using <b>UTF8</b> coded
+    strings.
+  </blockquote>
 
-<H3>3.1 Simple Widgets</H3>
+  <h4>Selection of menu entries if <i>NumLock</i> or
+  <i>CapsLock</i> is set:</h4>
 
-<P>Each of these widgets performs a specific user interface function. They
-are <I>simple</I> because they cannot have widget children like <I>manager</I>
-widgets. These widgets display information or take user input.</P>
+  <blockquote>
+    In previous versions of XawPlus menu entries are not
+    highlighted and not selectible, if <i>NumLock</i> or
+    <i>CapsLock</i> is activated. This bug is now fixed.
+  </blockquote>
+  <hr>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Command.html">Command</A></B></TD>
-<TD>A push button that, when selected, may cause a specific action to take
-place. This widget can display a multi-line string or a bitmap or pixmap
-image.</TD>
-</TR>
+  <h2>3. Short description of the widgets</h2>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="DrawingArea.html">DrawingArea</A></B></TD>
-<TD>This widget adds a backing store an a set of drawing functions to the
-<I>Simple</I> widget. It is posssible to draw in it using the drawing functions.
-<I>DrawingArea</I> then handle the redisplay of its area while popup the
-window of your application or when the window was partial or completely hidden.</TD>
-</TR>
+  <h3>3.1 Simple Widgets</h3>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Grip.html">Grip</A></B></TD>
-<TD>A rectangle that, when selected, will cause an moving action to take
-place.</TD>
-</TR>
+  <p>Each of these widgets performs a specific user interface
+  function. They are <i>simple</i> because they cannot have widget
+  children like <i>manager</i> widgets. These widgets display
+  information or take user input.</p>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="IconList.html">IconList</A></B></TD>
-<TD>A list of text strings and/or pixmaps or bitmaps presented in a row
-column format, that may be individually selected. If an element is selected
-an action may take place.</TD>
-</TR>
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Command.html">Command</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Label.html">Label</A></B></TD>
-<TD>A rectangular area, that can display a multi-line string, a bitmap
-or pixmap image.</TD>
-</TR>
+      <td>A push button that, when selected, may cause a specific
+      action to take place. This widget can display a multi-line
+      string or a bitmap or pixmap image.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="List.html">List</A></B></TD>
-<TD>A list of text strings presented in a row column format, that may be
-individually selected. If an element is selected an action may take place.</TD>
-</TR>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "DrawingArea.html">DrawingArea</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Panner.html">Panner</A></B></TD>
-<TD>A rectangular area containing a slider that may be moved in two dimensions.
-This widget is almost used with a <I>porthole</I> widget to control the
-visible area in it.</TD>
-</TR>
+      <td>This widget adds a backing store an a set of drawing
+      functions to the <i>Simple</i> widget. It is posssible to
+      draw in it using the drawing functions. <i>DrawingArea</i>
+      then handle the redisplay of its area while popup the window
+      of your application or when the window was partial or
+      completely hidden.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Repeater.html">Repeater</A></B></TD>
-<TD>A push button that triggers an action at an increasing rate when selected
-like a fire button. This widget can display a multi-line string, a bitmap
-or a pixmap image.</TD>
-</TR>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Grip.html">Grip</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Scrollbar.html">Scrollbar</A></B></TD>
-<TD>A rectangular area containing a <I>thumb</I> that when slid along one
-dimension may cause a specific action to take place. The scrollbar may
-be oriented horizontally or vertically</TD>
-</TR>
+      <td>A rectangle that, when selected, will cause an moving
+      action to take place.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Simple.html">Simple</A></B></TD>
-<TD>The base class for most of the simple widgets described here. It provides
-a rectangular area with a settable mouse cursor and special border.</TD>
-</TR>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "IconList.html">IconList</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="StripChart.html">StripChart</A></B></TD>
-<TD>A simple real time graph that will automatically update and scroll.</TD>
-</TR>
+      <td>A list of text strings and/or pixmaps or bitmaps
+      presented in a row column format, that may be individually
+      selected. If an element is selected an action may take
+      place.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Toggle.html">Toggle</A></B></TD>
-<TD>A push button that contains state information. Toggles may also be
-used as <I>radio buttons</I> to implement a `one of many' or `zero or more
-of many' group of buttons. This widget can display a multi-line string,
-a bitmap or a pixmap image.</TD>
-</TR>
-</TABLE>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Label.html">Label</a></b></td>
 
-<H3>3.2 Menus</H3>
+      <td>A rectangular area, that can display a multi-line string,
+      a bitmap or pixmap image.</td>
+    </tr>
 
-<P>The Athena Widget Set provides support for single paned non-hirarchical
-popup and pulldown menus. Since menus are such a common user interface
-tool, support for must be provided in even the most basic widget sets.</P>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "List.html">List</a></b></td>
 
-<P>Menus are implemented as a menu container (the SimpleMenu widget) and
-a collection of objects that comprise the menu entries. The SimpleMenu
-widget is itself a direct subclass of the OverrideShell widget class, so
-no other shell is necessary when creating a menu. The managed children
-of a SimpleMenu must be subclasses of the Sme (Simple Menu Entry) object.</P>
+      <td>A list of text strings presented in a row column format,
+      that may be individually selected. If an element is selected
+      an action may take place.</td>
+    </tr>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="MenuButton.html">MenuButton</A></B></TD>
-<TD>A push button, that pops up an override shell containing the menu.
-</TR>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Panner.html">Panner</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="SimpleMenu.html">SimpleMenu</A></B></TD>
-<TD>The override shell containing the menu entries.
-These entries are <I>SmeBSB</I> or <I>SmeLine</I> objects.</TD>
-</TR>
+      <td>A rectangular area containing a slider that may be moved
+      in two dimensions. This widget is almost used with a
+      <i>porthole</i> widget to control the visible area in
+      it.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Sme.html">Sme</A></B></TD>
-<TD>The base class of all menu entries. It may be used as a menu entry
-itself to provide blank space in an menu. `Sme' means `Simple Menu Entry'.</TD>
-</TR>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Repeater.html">Repeater</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="SmeBSB.html">SmeBSB</A></B></TD>
-<TD>This menu entry provides a selectable entry containing a text string.
-A bitmap or a pixmap may also be placed in the left and right margins.
-BSB means `Bitmap String Bitmap'.</TD>
-</TR>
+      <td>A push button that triggers an action at an increasing
+      rate when selected like a fire button. This widget can
+      display a multi-line string, a bitmap or a pixmap image.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="SmeLine.html">SmeLine</A></B></TD>
-<TD>This menu entry provides an unselectable entry containing a separator
-line.</TD>
-</TR>
-</TABLE>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Scrollbar.html">Scrollbar</a></b></td>
 
-<H3>3.3 Text Widgets</H3>
+      <td>A rectangular area containing a <i>thumb</i> that when
+      slid along one dimension may cause a specific action to take
+      place. The scrollbar may be oriented horizontally or
+      vertically</td>
+    </tr>
 
-<P>The Text widget provides a window that will allow an application to
-display and edit one or more lines of text. Options are provided to allow
-the user to add Scrollbars to its window, search for a specific string
-and modify the text in the buffer.</P>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Simple.html">Simple</a></b></td>
 
-<P>The Text widget is made up of a number of pieces; it was modularize
-to ease customization. The AsciiText widget class (not limited to ascii
-but so named for compatibility) is be general enough to most needs. This
-is the widget, which is meant to instantiate directly from an application.
-If more features are needed as provided in AsciiText, they can be be added
-by creating a new widget, subclassing the Text widget. </P>
+      <td>The base class for most of the simple widgets described
+      here. It provides a rectangular area with a settable mouse
+      cursor and special border.</td>
+    </tr>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="AsciiText.html">AsciiText widget</A></B></TD>
-<TD>This widget implements complete text editor capabilities. It can be
-used as line editor or as an text editor. Since X11R6 this widget is able to
-handle simple ascii text using the <B><I>AsciiSource</I></B> and <B><I>AsciiSink</I></B>
-objects or multi byte coded international text using the <B><I>MultiSource</I></B> and
-<B><I>MultiSink</I></B> objects.</TD>
-</TR>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "StripChart.html">StripChart</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="AsciiSource.html">AsciiSource object</A></B></TD>
-<TD>Handle the ascii source (file or memory buffer) for the AsciiText widget.
-This object is part of the AsciiText widget.</TD>
-</TR>
+      <td>A simple real time graph that will automatically update
+      and scroll.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="AsciiSink.html">AsciiSink object</A></B></TD>
-<TD>Handles the <I>ascii sink</I> (the output in a window) for the AsciiText
-widget. This object is part of the AsciiText widget.</TD>
-</TR>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Toggle.html">Toggle</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="AsciiSource.html">MultiSource object</A></B></TD>
-<TD>Handle the multi byte source (file or memory buffer) for the AsciiText widget.
-This object is part of the AsciiText widget.</TD>
-</TR>
+      <td>A push button that contains state information. Toggles
+      may also be used as <i>radio buttons</i> to implement a `one
+      of many' or `zero or more of many' group of buttons. This
+      widget can display a multi-line string, a bitmap or a pixmap
+      image.</td>
+    </tr>
+  </table>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="AsciiSink.html">MultiSink object</A></B></TD>
-<TD>Handles the <I>smuli byte sink</I> (the output in a window) for the AsciiText
-widget. This object is part of the AsciiText widget.</TD>
-</TR>
+  <h3>3.2 Menus</h3>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="TextActions.html">Text Actions</A></B></TD>
-<TD>A list of actions, defined in an AsciiText window.</TD>
-</TR>
+  <p>The Athena Widget Set provides support for single paned
+  non-hirarchical popup and pulldown menus. Since menus are such a
+  common user interface tool, support for must be provided in even
+  the most basic widget sets.</p>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="TextFuncs.html">Text functions</A></B></TD>
-<TD>For programmmers: A description of functions usable for the text widget.</TD>
-</TR>
+  <p>Menus are implemented as a menu container (the SimpleMenu
+  widget) and a collection of objects that comprise the menu
+  entries. The SimpleMenu widget is itself a direct subclass of the
+  OverrideShell widget class, so no other shell is necessary when
+  creating a menu. The managed children of a SimpleMenu must be
+  subclasses of the Sme (Simple Menu Entry) object.</p>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Text.html">Text widget</A></B></TD>
-<TD>The superclass of the AsciiText widget. This is the base class for
-the implementation of new Text widgets.</TD>
-</TR>
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "MenuButton.html">MenuButton</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="TextSink.html">Text sink</A></B></TD>
-<TD>The base class for the AsciiSink and MultiSink object.</TD>
-</TR>
+      <td>A push button, that pops up an override shell containing
+      the menu.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="TextSource.html">Text source</A></B></TD>
-<TD>The base class for the AsciiSource and MultiSource object.</TD>
-</TR>
-</TABLE>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "SimpleMenu.html">SimpleMenu</a></b></td>
 
-<H3>3.4 Manager Widgets</H3>
+      <td>The override shell containing the menu entries. These
+      entries are <i>SmeBSB</i> or <i>SmeLine</i> objects.</td>
+    </tr>
 
-<P>Manager widgets contains other widgets and controls the size and position
-of their location. The managed widgets can either be simple widgets like labels,
-buttons and lists or other manager widgets. These manager widgets differs in the
-way they handle the <I>geometry management</I> of their children. Geometry management
-means how to organize the position and possibly defined depencies between the childrens
-position in the managed area.</P>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Sme.html">Sme</a></b></td>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Box.html">Box widget</A></B></TD>
-<TD>This widget will its children as tightly as possible in non-overlapping rows
-or columns.</TD>
-</TR>
+      <td>The base class of all menu entries. It may be used as a
+      menu entry itself to provide blank space in an menu. `Sme'
+      means `Simple Menu Entry'.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Dialog.html">Dialog widget</A></B></TD>
-<TD>This is not really a manager widget but a complete simple dialog, derived
-from the form widget. So it is described here.</TD>
-</TR>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "SmeBSB.html">SmeBSB</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Form.html">Form widget</A></B></TD>
-<TD>A more sophisticated layout widget that allows the children to specify their
-position relative to the other children, or to the edges of the form.</TD>
-</TR>
+      <td>This menu entry provides a selectable entry containing a
+      text string. A bitmap or a pixmap may also be placed in the
+      left and right margins. BSB means `Bitmap String
+      Bitmap'.</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Paned.html">Paned widget</A></B></TD>
-<TD>This manager organizes its children tiled vertically or horizontally. Controls
-are also provided to allow the user to resize dynamically the individual panes.</TD>
-</TR>
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "SmeLine.html">SmeLine</a></b></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Porthole.html">Porthole widget</A></B></TD>
-<TD>Allows viewing of a managed child which is as large as, or lager than its parent,
-typically under control of a Panner widget.</TD>
-</TR>
+      <td>This menu entry provides an unselectable entry containing
+      a separator line.</td>
+    </tr>
+  </table>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Tree.html">Tree widget</A></B></TD>
-<TD>Provides geometry management of widgets arranged in a horizontal or vertical
-tree.</TD>
-</TR>
+  <h3>3.3 Text Widgets</h3>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B><A HREF="Viewport.html">Viewport widget</A></B></TD>
-<TD>This widget consists of a frame, one or two scrollbars and an inner window.
-The inner window will be clipped by the frame. With the scrollbar the user can
-control which part of this inner window is visible.</TD>
-</TR>
-</TABLE>
+  <p>The Text widget provides a window that will allow an
+  application to display and edit one or more lines of text.
+  Options are provided to allow the user to add Scrollbars to its
+  window, search for a specific string and modify the text in the
+  buffer.</p>
 
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+  <p>The Text widget is made up of a number of pieces; it was
+  modularize to ease customization. The AsciiText widget class (not
+  limited to ascii but so named for compatibility) is be general
+  enough to most needs. This is the widget, which is meant to
+  instantiate directly from an application. If more features are
+  needed as provided in AsciiText, they can be be added by creating
+  a new widget, subclassing the Text widget.</p>
 
-</BODY>
-</HTML>
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "AsciiText.html">AsciiText widget</a></b></td>
+
+      <td>This widget implements complete text editor capabilities.
+      It can be used as line editor or as an text editor. Since
+      X11R6 this widget is able to handle simple ascii text using
+      the <b><i>AsciiSource</i></b> and <b><i>AsciiSink</i></b>
+      objects or multi byte coded international text using the
+      <b><i>MultiSource</i></b> and <b><i>MultiSink</i></b>
+      objects.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "AsciiSource.html">AsciiSource object</a></b></td>
+
+      <td>Handle the ascii source (file or memory buffer) for the
+      AsciiText widget. This object is part of the AsciiText
+      widget.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "AsciiSink.html">AsciiSink object</a></b></td>
+
+      <td>Handles the <i>ascii sink</i> (the output in a window)
+      for the AsciiText widget. This object is part of the
+      AsciiText widget.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "AsciiSource.html">MultiSource object</a></b></td>
+
+      <td>Handle the multi byte source (file or memory buffer) for
+      the AsciiText widget. This object is part of the AsciiText
+      widget.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "AsciiSink.html">MultiSink object</a></b></td>
+
+      <td>Handles the <i>smuli byte sink</i> (the output in a
+      window) for the AsciiText widget. This object is part of the
+      AsciiText widget.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "TextActions.html">Text Actions</a></b></td>
+
+      <td>A list of actions, defined in an AsciiText window.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "TextFuncs.html">Text functions</a></b></td>
+
+      <td>For programmmers: A description of functions usable for
+      the text widget.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href="Text.html">Text
+      widget</a></b></td>
+
+      <td>The superclass of the AsciiText widget. This is the base
+      class for the implementation of new Text widgets.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href="TextSink.html">Text
+      sink</a></b></td>
+
+      <td>The base class for the AsciiSink and MultiSink
+      object.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "TextSource.html">Text source</a></b></td>
+
+      <td>The base class for the AsciiSource and MultiSource
+      object.</td>
+    </tr>
+  </table>
+
+  <h3>3.4 Manager Widgets</h3>
+
+  <p>Manager widgets contains other widgets and controls the size
+  and position of their location. The managed widgets can either be
+  simple widgets like labels, buttons and lists or other manager
+  widgets. These manager widgets differs in the way they handle the
+  <i>geometry management</i> of their children. Geometry management
+  means how to organize the position and possibly defined depencies
+  between the childrens position in the managed area.</p>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b><a href="Box.html">Box
+      widget</a></b></td>
+
+      <td>This widget will its children as tightly as possible in
+      non-overlapping rows or columns.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href="Dialog.html">Dialog
+      widget</a></b></td>
+
+      <td>This is not really a manager widget but a complete simple
+      dialog, derived from the form widget. So it is described
+      here.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href="Form.html">Form
+      widget</a></b></td>
+
+      <td>A more sophisticated layout widget that allows the
+      children to specify their position relative to the other
+      children, or to the edges of the form.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href="Paned.html">Paned
+      widget</a></b></td>
+
+      <td>This manager organizes its children tiled vertically or
+      horizontally. Controls are also provided to allow the user to
+      resize dynamically the individual panes.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Porthole.html">Porthole widget</a></b></td>
+
+      <td>Allows viewing of a managed child which is as large as,
+      or lager than its parent, typically under control of a Panner
+      widget.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href="Tree.html">Tree
+      widget</a></b></td>
+
+      <td>Provides geometry management of widgets arranged in a
+      horizontal or vertical tree.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b><a href=
+      "Viewport.html">Viewport widget</a></b></td>
+
+      <td>This widget consists of a frame, one or two scrollbars
+      and an inner window. The inner window will be clipped by the
+      frame. With the scrollbar the user can control which part of
+      this inner window is visible.</td>
+    </tr>
+  </table>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

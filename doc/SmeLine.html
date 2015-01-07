@@ -1,172 +1,198 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>The SmeLine Object</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<H3><I>The SmeLine Object</I></H3>
+  <title>The SmeLine Object</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
 
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
 
-<TD>&lt;X11/XawPlus/SmeLine.h&gt;<BR>
-&lt;X11/XawPlus/SmeLineP.h&gt;<BR>
-smeLineObjectClass<BR>
-SmeLine<BR>
-Sme</TD>
-</TR>
-</TABLE>
+  <h3><i>The SmeLine Object</i></h3>
 
-<P>The SmeLine object is used to add a horizontal line or menu separator to
-a menu. Since each menu entry is an independent object, the application
-is able to change the color, height, and other attributes of the menu
-entries, on an entry by entry basis. This entry is not selectable, and
-will not highlight when the pointer cursor is over it.</P>
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
 
-<H3>Differences between Xaw and XawPlus</H3>
+      <td>&lt;X11/XawPlus/SmeLine.h&gt;<br>
+      &lt;X11/XawPlus/SmeLineP.h&gt;<br>
+      smeLineObjectClass<br>
+      SmeLine<br>
+      Sme</td>
+    </tr>
+  </table>
 
-<P>The menu separator of XawPlus is now 3D styled. That is the reason why
-the resources <I>foreground</I> and <I>stipple</I> are not longer used.
-Instead of this, the SmeLine object uses the resources <I>highlightColor</I>
-and <I>shadowColor</I> inherited from Sme, to draw the horizontal lines.</P>
+  <p>The SmeLine object is used to add a horizontal line or menu
+  separator to a menu. Since each menu entry is an independent
+  object, the application is able to change the color, height, and
+  other attributes of the menu entries, on an entry by entry basis.
+  This entry is not selectable, and will not highlight when the
+  pointer cursor is over it.</p>
 
-<H3>Resources</H3>
+  <h3>Differences between Xaw and XawPlus</h3>
 
-<P>The resources associated with the SmeLine object are defined in this
-section, and affect only the single menu entry specified by this object.</P>
+  <p>The menu separator of XawPlus is now 3D styled. That is the
+  reason why the resources <i>foreground</i> and <i>stipple</i> are
+  not longer used. Instead of this, the SmeLine object uses the
+  resources <i>highlightColor</i> and <i>shadowColor</i> inherited
+  from Sme, to draw the horizontal lines.</p>
 
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
+  <h3>Resources</h3>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+  <p>The resources associated with the SmeLine object are defined
+  in this section, and affect only the single menu entry specified
+  by this object.</p>
 
-<TR>
-<TD>destroyCallback</TD>
+  <table border="1" cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
 
-<TD>Callback</TD>
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
 
-<TD>Pointer</TD>
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
 
-<TD>NULL</TD>
-</TR>
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
 
-<TR>
-<TD>borderWidth<BR>
-height<BR>
-sensitive<BR>
-width<BR>
-x<BR>
-y</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>BorderWidth<BR>
-Height<BR>
-Sensitive<BR>
-Width<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>Dimension<BR>
-Dimension<BR>
-Boolean<BR>
-Dimension<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>0<BR>
-0<BR>
-True<BR>
-0<BR>
-0<BR>
-0</TD>
-</TR>
+    <tr>
+      <td>destroyCallback</td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">SME:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td>Callback</td>
 
-<TR>
-<TD>callback<BR>
-highlightColor<BR>
-shadowColor<BR>
-international</TD>
+      <td>Pointer</td>
 
-<TD>Callback<BR>
-Background<BR>
-Background<BR>
-International</TD>
+      <td>NULL</td>
+    </tr>
 
-<TD>Pointer<BR>
-Pixel<BR>
-Pixel<BR>
-Boolean</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
 
-<TD>NULL<BR>
-grey90<BR>
-grey40<BR>
-False</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">SMELINE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD>lineWidth</TD>
-<TD>Width</TD>
-<TD>Dimension</TD>
-<TD>1</TD>
-</TR>
-</TABLE>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<P></P>
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      sensitive<br>
+      width<br>
+      x<br>
+      y</td>
 
-<TABLE CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>lineWidth</B></TD>
+      <td>BorderWidth<br>
+      Height<br>
+      Sensitive<br>
+      Width<br>
+      Position<br>
+      Position</td>
 
-<TD>This is the width of the horizontal line that is to be displayed.
-Since this object is displayed with a highlighted and a shadowed line
-and this object draw each line with the width <I>lineWidth</I>,
-the total width becomes <I>2 * lineWidth</I>.</TD>
-</TR>
-</TABLE>
+      <td>Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Dimension<br>
+      Position<br>
+      Position</td>
 
-<P></P>
+      <td>0<br>
+      0<br>
+      True<br>
+      0<br>
+      0<br>
+      0</td>
+    </tr>
 
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+    <tr>
+      <td bgcolor="#C0C0C0">SME:</td>
 
-</BODY>
-</HTML>
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>callback<br>
+      highlightColor<br>
+      shadowColor<br>
+      international</td>
+
+      <td>Callback<br>
+      Background<br>
+      Background<br>
+      International</td>
+
+      <td>Pointer<br>
+      Pixel<br>
+      Pixel<br>
+      Boolean</td>
+
+      <td>NULL<br>
+      grey90<br>
+      grey40<br>
+      False</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">SMELINE:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>lineWidth</td>
+
+      <td>Width</td>
+
+      <td>Dimension</td>
+
+      <td>1</td>
+    </tr>
+  </table>
+
+  <table cellspacing="0" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>lineWidth</b></td>
+
+      <td>This is the width of the horizontal line that is to be
+      displayed. Since this object is displayed with a highlighted
+      and a shadowed line and this object draw each line with the
+      width <i>lineWidth</i>, the total width becomes <i>2 *
+      lineWidth</i>.</td>
+    </tr>
+  </table>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

@@ -2,6 +2,8 @@
 
 /*
 
+Copyright 2015 Thomas E. Dickey
+Copyright 2002 Roland Krause
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -24,10 +26,7 @@ Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
-This file contains modifications for XawPlus, Roland Krause 2002
-
 */
-
 
 /*
  * AsciiSrc.h - Public Header file for Ascii Text Source.
@@ -114,9 +113,7 @@ _XFUNCPROTOBEGIN
  */
 
 extern void XawAsciiSourceFreeString(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 /*	Function Name: XawAsciiSave
@@ -126,9 +123,7 @@ extern void XawAsciiSourceFreeString(
  */
 
 extern Boolean XawAsciiSave(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 /*	Function Name: XawAsciiSaveAsFile
@@ -139,10 +134,8 @@ extern Boolean XawAsciiSave(
  */
 
 extern Boolean XawAsciiSaveAsFile(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     _Xconst char*	/* name */
-#endif 
 );
 
 /*	Function Name: XawAsciiSourceChanged
@@ -152,9 +145,7 @@ extern Boolean XawAsciiSaveAsFile(
  */
 
 extern Boolean XawAsciiSourceChanged(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 _XFUNCPROTOEND

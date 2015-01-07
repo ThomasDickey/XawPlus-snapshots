@@ -6,6 +6,7 @@
 /*************************************************************************
 
 Copyright 2015	Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -61,8 +62,6 @@ SOFTWARE.
  * By:      Chris D. Peterson
  *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
- *
- * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
 #ifndef _XawPaned_h
@@ -192,11 +191,9 @@ _XFUNCPROTOBEGIN
  */
 
 extern void XawPanedSetMinMax(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     int			/* min */,
     int			/* max */
-#endif
 );
 
 /*	Function Name: XawPanedGetMinMax
@@ -207,11 +204,9 @@ extern void XawPanedSetMinMax(
  */
 
 extern void XawPanedGetMinMax(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     int *		/* min_return */,
     int *		/* max_return */
-#endif
 );
 
 /*	Function Name: XawPanedSetRefigureMode
@@ -223,10 +218,8 @@ extern void XawPanedGetMinMax(
  */
 
 extern void XawPanedSetRefigureMode(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Boolean		/* mode */
-#endif
 );
 
 /*	Function Name: XawPanedGetNumSub
@@ -236,9 +229,7 @@ extern void XawPanedSetRefigureMode(
  */
 
 extern int XawPanedGetNumSub(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 /*	Function Name: XawPanedAllowResize
@@ -249,10 +240,8 @@ extern int XawPanedGetNumSub(
  */
 
 extern void XawPanedAllowResize(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Boolean		/* allow_resize */
-#endif
 );
 
 _XFUNCPROTOEND

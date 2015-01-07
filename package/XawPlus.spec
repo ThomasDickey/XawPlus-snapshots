@@ -1,9 +1,9 @@
 Summary: XawPlus widget set development package
 %define AppProgram XawPlus
 %define AppVersion 3.1.0
-%define AppRelease 20150102
+%define AppRelease 20150106
 %define ActualProg c%{AppProgram}
-# $XTermId: XawPlus.spec,v 1.1 2015/01/03 02:09:44 tom Exp $
+# $XTermId: XawPlus.spec,v 1.2 2015/01/07 00:29:28 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: %{AppRelease}

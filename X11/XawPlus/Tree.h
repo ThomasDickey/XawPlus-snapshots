@@ -2,6 +2,8 @@
  * $Xorg: Tree.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  *
 
+Copyright 2015 Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1990, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -47,8 +49,6 @@ in this Software without prior written authorization from The Open Group.
  * with Xt OSF/Motif Edition."  The layout code has been rewritten to use
  * additional blank space to make the structure of the graph easier to see
  * as well as to support vertical trees.
- *
- * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
 
@@ -130,9 +130,7 @@ typedef struct _TreeRec      *TreeWidget;
 _XFUNCPROTOBEGIN
 
 extern void XawTreeForceLayout (
-#if NeedFunctionPrototypes
     Widget /* tree */
-#endif
 );
 
 _XFUNCPROTOEND

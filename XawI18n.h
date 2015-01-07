@@ -2,6 +2,7 @@
 
 /************************************************************************
 
+Copyright 2015 Thomas E. Dickey
 Copyright 1993, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -69,9 +70,7 @@ extern int _Xaw_iswspace(wchar_t);
 #endif
 
 extern wchar_t _Xaw_atowc (
-#if NeedFunctionPrototypes
     unsigned char	c
-#endif
 );
 
 #ifndef HAS_ISW_FUNCS

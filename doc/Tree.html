@@ -1,241 +1,271 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>The Tree Widget</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<H3><I>The Tree Widget</I></H3>
+  <title>The Tree Widget</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
 
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
 
-<TD>&lt;X11/XawPlus/Tree.h&gt;<BR>
-&lt;X11/XawPlus/TreeP.h&gt;<BR>
-treeWidgetClass<BR>
-Tree<BR>
-Constraint</TD>
-</TR>
-</TABLE>
+  <h3><i>The Tree Widget</i></h3>
 
-<P>The Tree widget provides geometry management of arbitrary widgets arranged
-in a directed, acyclic graph (i.e., a tree). The hierarchy is contructed by
-attaching a constraint resource called <I>treeParent</I> to each widget
-indicating which other node in the tree should be treated as the widget's
-superior. The structure of the tree is shown by laying out the nodes
-in the standard format for tree diagrams with lines drawn connecting each
-node with its children.</P>
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
 
-<P>The Tree sizes itself according to the needs of its children and is not
-intended to be resized by its parent. Instead, it should be placed inside
-another composite widget (such as the <B>Porthole</B> or <B>Viewport</B>)
-that can be used to scroll around in the tree.</P>
+      <td>&lt;X11/XawPlus/Tree.h&gt;<br>
+      &lt;X11/XawPlus/TreeP.h&gt;<br>
+      treeWidgetClass<br>
+      Tree<br>
+      Constraint</td>
+    </tr>
+  </table>
 
-<H3>Differences between Xaw and XawPlus</H3>
+  <p>The Tree widget provides geometry management of arbitrary
+  widgets arranged in a directed, acyclic graph (i.e., a tree). The
+  hierarchy is contructed by attaching a constraint resource called
+  <i>treeParent</i> to each widget indicating which other node in
+  the tree should be treated as the widget's superior. The
+  structure of the tree is shown by laying out the nodes in the
+  standard format for tree diagrams with lines drawn connecting
+  each node with its children.</p>
 
-<P>None.</P>
+  <p>The Tree sizes itself according to the needs of its children
+  and is not intended to be resized by its parent. Instead, it
+  should be placed inside another composite widget (such as the
+  <b>Porthole</b> or <b>Viewport</b>) that can be used to scroll
+  around in the tree.</p>
 
-<H3>Resources</H3>
+  <h3>Differences between Xaw and XawPlus</h3>
 
-<P>When creating a Tree widget instance, the following resources are retrieved
-from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
-or from the resource database:</P>
+  <p>None.</p>
 
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
+  <h3>Resources</h3>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+  <p>When creating a Tree widget instance, the following resources
+  are retrieved from the argument list of <i>XtSetValues()</i> or
+  <i>XtVaSetValues()</i> or from the resource database:</p>
 
-<TR>
-<TD>destroyCallback</TD>
-<TD>Callback</TD>
-<TD>Pointer</TD>
-<TD>NULL</TD>
-</TR>
+  <table border="1" cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
 
-<TR>
-<TD>borderWidth<BR>
-height<BR>
-sensitive<BR>
-width<BR>
-x<BR>
-y</TD>
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
 
-<TD>BorderWidth<BR>
-Height<BR>
-Sensitive<BR>
-Width<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
 
-<TD>Dimension<BR>
-Dimension<BR>
-Boolean<BR>
-Dimension<BR>
-Position<BR>
-Position</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
 
-<TD>1<BR>
-Space for all children<BR>
-True<BR>
-Space for all children<BR>
-0<BR>
-0</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">CORE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD>border<BR>
-background<BR>
-mappedWhenManaged</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>BorderColor<BR>
-Background<BR>
-MappedWhenManaged</TD>
+    <tr>
+      <td>destroyCallback</td>
 
-<TD>Pixel<BR>
-Pixel<BR>
-Boolean</TD>
+      <td>Callback</td>
 
-<TD>XtDefaultForeground<BR>
-grey75<BR>
-True</TD>
-</TR>
+      <td>Pointer</td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">TREE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td>NULL</td>
+    </tr>
 
-<TR>
-<TD>autoReconfigure<BR>
-foreground<BR>
-gravity<BR>
-hSpace<BR>
-lineWidth<BR>
-vSpace</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
 
-<TD>AutoReconfigure<BR>
-Foreground<BR>
-Gravity<BR>
-HSpace<BR>
-LineWidth<BR>
-VSpace</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>Boolean<BR>
-Pixel<BR>
-XtGravity<BR>
-Dimension<BR>
-Dimension<BR>
-Dimension</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>FALSE<BR>
-XtDefaultForeground<BR>
-West<BR>
-20<BR>
-0<BR>
-6</TD>
-</TR>
-</TABLE>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<P></P>
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      sensitive<br>
+      width<br>
+      x<br>
+      y</td>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>autoReconfigure</B></TD>
-<TD>Whether or not to layout the tree every time a node is added or removed.</TD>
-</TR>
+      <td>BorderWidth<br>
+      Height<br>
+      Sensitive<br>
+      Width<br>
+      Position<br>
+      Position</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>gravity</B></TD>
-<TD>Specifies the side of the widget from which the tree should grow. Valid
-values include <I>WestGravity</I>, <I>NorthGravity</I>, <I>EastGravity</I>, and
-<I>SouthGravity</I>.</TD>
-</TR>
+      <td>Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Dimension<br>
+      Position<br>
+      Position</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>hSpace<BR>
-vSpace</B></TD>
-<TD>The amount of space, in pixels, to leave between the children. This
-resource specifies the amount of space left between the outermost
-children and the edge of the box.</TD>
-</TR>
+      <td>1<br>
+      Space for all children<br>
+      True<br>
+      Space for all children<br>
+      0<br>
+      0</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>lineWidth</B></TD>
-<TD>The width of the lines from nodes that do not have a <I>treeGC</I>
-constraint resource to their children.
-</TD>
-</TR>
-</TABLE>
+    <tr>
+      <td bgcolor="#C0C0C0">CORE:</td>
 
-<P></P>
+      <td bgcolor="#C0C0C0"></td>
 
-<H3>Layout Semantics</H3>
+      <td bgcolor="#C0C0C0"></td>
 
-<P>Each time a child is managed or unmanaged, the Tree widget will attempt
-to reposition the remaining children to fix the shape of the tree if the
-<B>autoReconfigure</B> resource is set. Children at the top (most superior)
-of the tree are drawn at the side specified by the <B>gravity</B> resource.</P>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<P>After positioning all children, the Tree widget attempts to shrink its
-own size to the minimum dimensions required for the layout.</P>
+    <tr>
+      <td>border<br>
+      background<br>
+      mappedWhenManaged</td>
 
-<H3>Convenience Routines</H3>
+      <td>BorderColor<br>
+      Background<br>
+      MappedWhenManaged</td>
 
-<P>The most efficient way to layout a tree is to set
-<B>autoReconfigure</B> to <I>False</I> and then use <I>XawTreeForceLayout()</I>
-to arrange the children:</P>
+      <td>Pixel<br>
+      Pixel<br>
+      Boolean</td>
 
-<BLOCKQUOTE>
-<P><I>void XawTreeForceLayout(w)<BR>
-Widget w;</I></P>
+      <td>XtDefaultForeground<br>
+      grey75<br>
+      True</td>
+    </tr>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
-<TD>Specifies the Tree widget.</TD>
-</TR>
-</TABLE>
-</BLOCKQUOTE>
+    <tr>
+      <td bgcolor="#C0C0C0">TREE:</td>
 
-<P></P>
+      <td bgcolor="#C0C0C0"></td>
 
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+      <td bgcolor="#C0C0C0"></td>
 
-</BODY>
-</HTML>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>autoReconfigure<br>
+      foreground<br>
+      gravity<br>
+      hSpace<br>
+      lineWidth<br>
+      vSpace</td>
+
+      <td>AutoReconfigure<br>
+      Foreground<br>
+      Gravity<br>
+      HSpace<br>
+      LineWidth<br>
+      VSpace</td>
+
+      <td>Boolean<br>
+      Pixel<br>
+      XtGravity<br>
+      Dimension<br>
+      Dimension<br>
+      Dimension</td>
+
+      <td>FALSE<br>
+      XtDefaultForeground<br>
+      West<br>
+      20<br>
+      0<br>
+      6</td>
+    </tr>
+  </table>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>autoReconfigure</b></td>
+
+      <td>Whether or not to layout the tree every time a node is
+      added or removed.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>gravity</b></td>
+
+      <td>Specifies the side of the widget from which the tree
+      should grow. Valid values include <i>WestGravity</i>,
+      <i>NorthGravity</i>, <i>EastGravity</i>, and
+      <i>SouthGravity</i>.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>hSpace<br>
+      vSpace</b></td>
+
+      <td>The amount of space, in pixels, to leave between the
+      children. This resource specifies the amount of space left
+      between the outermost children and the edge of the box.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>lineWidth</b></td>
+
+      <td>The width of the lines from nodes that do not have a
+      <i>treeGC</i> constraint resource to their children.</td>
+    </tr>
+  </table>
+
+  <h3>Layout Semantics</h3>
+
+  <p>Each time a child is managed or unmanaged, the Tree widget
+  will attempt to reposition the remaining children to fix the
+  shape of the tree if the <b>autoReconfigure</b> resource is set.
+  Children at the top (most superior) of the tree are drawn at the
+  side specified by the <b>gravity</b> resource.</p>
+
+  <p>After positioning all children, the Tree widget attempts to
+  shrink its own size to the minimum dimensions required for the
+  layout.</p>
+
+  <h3>Convenience Routines</h3>
+
+  <p>The most efficient way to layout a tree is to set
+  <b>autoReconfigure</b> to <i>False</i> and then use
+  <i>XawTreeForceLayout()</i> to arrange the children:</p>
+
+  <blockquote>
+    <p><i>void XawTreeForceLayout(w)<br>
+    Widget w;</i></p>
+
+    <table cellspacing="4" cellpadding="0" width="80%" summary="">
+      <tr>
+        <td align="left" valign="top"><b>w</b></td>
+
+        <td>Specifies the Tree widget.</td>
+      </tr>
+    </table>
+  </blockquote>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

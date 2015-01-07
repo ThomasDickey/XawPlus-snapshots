@@ -1,406 +1,463 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>The Label Widget</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<H3><I>The Label Widget</I></H3>
+  <title>The Label Widget</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
 
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
 
-<TD>&lt;X11/XawPlus/Label.h&gt;<BR>
-&lt;X11/XawPlus/LabelP.h&gt;<BR>
-labelWidgetClass<BR>
-Label<BR>
-Simple</TD>
-</TR>
-</TABLE>
+  <h3><i>The Label Widget</i></h3>
 
-<P>A Label widget is a text string or bitmap displayed within a rectangular
-region of the screen. The <B>label</B> may contain multiple lines of
-characters. The Label widget will allow its string to be left, right, or
-center justified. Normally, this widget can be neither selected nor directly
-edited by the user. It is intended for use as an output device only.</P>
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
 
-<H3>Differences between Xaw and XawPlus</H3>
+      <td>&lt;X11/XawPlus/Label.h&gt;<br>
+      &lt;X11/XawPlus/LabelP.h&gt;<br>
+      labelWidgetClass<br>
+      Label<br>
+      Simple</td>
+    </tr>
+  </table>
 
-<P>Since the 3D extensions of <I>Simple</I> are inserted, the Label
-widget has the additional resources <I>highlightColor,</I> <I>shadowColor</I>
-and <I>buttonBorderWidth</I>. The default <I>background</I> color is
-grey75. The <I>bitmap</I> and <I>leftBitmap</I> resources also provides
-support of XPM styled pixmaps. These pixmaps may be nonrectangular, using
-the <I>clipMask</I> or the <I>leftClipMask</I> resource. <I>Label</I> has
-installed converters to supply these resources from the resource database.</P>
+  <p>A Label widget is a text string or bitmap displayed within a
+  rectangular region of the screen. The <b>label</b> may contain
+  multiple lines of characters. The Label widget will allow its
+  string to be left, right, or center justified. Normally, this
+  widget can be neither selected nor directly edited by the user.
+  It is intended for use as an output device only.</p>
 
-<P><I>Label</I> has a truncate mechanism for label strings, which are too
-long for the labels window. Those strings will be truncated from
-the left or from the right side, dependent on the resource <I>truncLeftSide</I>.
-Default is to truncate from the right side. It is possible to deactivate this
-mechanism with the the resource <I>truncateLabel</I>. This feature is not very
-useful for multiline labels and therefore not supported.</P>
+  <h3>Differences between Xaw and XawPlus</h3>
 
-<P>With release 3.0 of XawPlus full UNICODE support is available using the
-<I>encoding</I> resource. UNICODE support works independent of the locale settings
-and requires UTF8 coded label strings. Since it is not possible to put
-UNICODE directly in resource files, UTF8 code is used to avoid problems
-with the resource manager.</P>
+  <p>Since the 3D extensions of <i>Simple</i> are inserted, the
+  Label widget has the additional resources <i>highlightColor,</i>
+  <i>shadowColor</i> and <i>buttonBorderWidth</i>. The default
+  <i>background</i> color is grey75. The <i>bitmap</i> and
+  <i>leftBitmap</i> resources also provides support of XPM styled
+  pixmaps. These pixmaps may be nonrectangular, using the
+  <i>clipMask</i> or the <i>leftClipMask</i> resource. <i>Label</i>
+  has installed converters to supply these resources from the
+  resource database.</p>
 
-<H3>Resources</H3>
+  <p><i>Label</i> has a truncate mechanism for label strings, which
+  are too long for the labels window. Those strings will be
+  truncated from the left or from the right side, dependent on the
+  resource <i>truncLeftSide</i>. Default is to truncate from the
+  right side. It is possible to deactivate this mechanism with the
+  the resource <i>truncateLabel</i>. This feature is not very
+  useful for multiline labels and therefore not supported.</p>
 
-<P>When creating a Label widget instance, the following resources are retrieved
-from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
-or from the resource database:</P>
+  <p>With release 3.0 of XawPlus full UNICODE support is available
+  using the <i>encoding</i> resource. UNICODE support works
+  independent of the locale settings and requires UTF8 coded label
+  strings. Since it is not possible to put UNICODE directly in
+  resource files, UTF8 code is used to avoid problems with the
+  resource manager.</p>
 
-<BR>
-<TABLE BORDER CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
+  <h3>Resources</h3>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+  <p>When creating a Label widget instance, the following resources
+  are retrieved from the argument list of <i>XtSetValues()</i> or
+  <i>XtVaSetValues()</i> or from the resource database:</p><br>
 
-<TR>
-<TD>destroyCallback</TD>
-<TD>Callback</TD>
-<TD>Pointer</TD>
-<TD>NULL</TD>
-</TR>
+  <table border cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
 
-<TR>
-<TD>borderWidth
-<BR>height
-<BR>sensitive
-<BR>width
-<BR>x
-<BR>y</TD>
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
 
-<TD>BorderWidth
-<BR>Height
-<BR>Sensitive
-<BR>Width
-<BR>Position
-<BR>Position</TD>
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
 
-<TD>Dimension
-<BR>Dimension
-<BR>Boolean
-<BR>Dimension
-<BR>Position
-<BR>Position</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
 
-<TD>0
-<BR>12
-<BR>True
-<BR>12
-<BR>0
-<BR>0</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">CORE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD>border
-<BR>background
-<BR>mappedWhenManaged</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>BorderColor
-<BR>Background
-<BR>MappedWhenManaged</TD>
+    <tr>
+      <td>destroyCallback</td>
 
-<TD>Pixel
-<BR>Pixel
-<BR>Boolean</TD>
+      <td>Callback</td>
 
-<TD>XtDefaultForeground
-<BR>grey75
-<BR>True</TD>
-</TR>
+      <td>Pointer</td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td>NULL</td>
+    </tr>
 
-<TR>
-<TD>cursor
-<BR>cursorName
-<BR>pointerColor
-<BR>pointerColorBackground
-<BR>insensitiveBorder
-<BR>international
-<BR>highlightColor
-<BR>shadowColor
-<BR>buttonBorderWidth</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
 
-<TD>Cursor
-<BR>Cursor
-<BR>Foreground
-<BR>Background
-<BR>Insensitive
-<BR>International
-<BR>Background
-<BR>Background
-<BR>Width</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>Cursor
-<BR>String
-<BR>Pixel
-<BR>Pixel
-<BR>Pixmap
-<BR>Boolean
-<BR>Pixel
-<BR>Pixel
-<BR>Dimension</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>None
-<BR>NULL
-<BR>XtDefaultForeground
-<BR>XtDefaultBackground
-<BR>NULL
-<BR>False
-<BR>grey90
-<BR>grey40
-<BR>2</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">LABEL:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      sensitive<br>
+      width<br>
+      x<br>
+      y</td>
 
-<TR>
-<TD>font
-<BR>fontset
-<BR>encoding
-<BR>foreground
-<BR>internalHeight
-<BR>internalWidth
-<BR>justify
-<BR>resize
-<BR>truncateLabel
-<BR>truncLeftSide
-<BR>label
-<BR>leftBitmap
-<BR>leftClipMask
-<BR>bitmap
-<BR>clipMask</TD>
+      <td>BorderWidth<br>
+      Height<br>
+      Sensitive<br>
+      Width<br>
+      Position<br>
+      Position</td>
 
-<TD>Font
-<BR>FontSet
-<BR>Encoding
-<BR>Foreground
-<BR>Height
-<BR>Width
-<BR>Justify
-<BR>Resize
-<BR>Truncate
-<BR>Truncate
-<BR>Label
-<BR>LeftBitmap
-<BR>LeftBitmap
-<BR>Pixmap
-<BR>Pixmap</TD>
+      <td>Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Dimension<br>
+      Position<br>
+      Position</td>
 
-<TD>XFontStruct*
-<BR>FontSet
-<BR>unsigned char
-<BR>Pixel
-<BR>Dimension
-<BR>Dimension
-<BR>XtJustify
-<BR>Boolean
-<BR>Boolean
-<BR>Boolean
-<BR>String
-<BR>Bitmap
-<BR>ClipMask
-<BR>Bitmap
-<BR>ClipMask</TD>
+      <td>0<br>
+      12<br>
+      True<br>
+      12<br>
+      0<br>
+      0</td>
+    </tr>
 
-<TD>XtDefaultFont
-<BR>XtDefaultFontSet
-<BR>XawTextEncoding8bit
-<BR>XtDefaultForeground
-<BR>2
-<BR>4
-<BR>XtJustifyCenter
-<BR>True
-<BR>True
-<BR>False
-<BR>NULL
-<BR>None
-<BR>None
-<BR>None
-<BR>None</TD>
-</TR>
-</TABLE>
+    <tr>
+      <td bgcolor="#C0C0C0">CORE:</td>
 
-<P></P>
+      <td bgcolor="#C0C0C0"></td>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>internalHeight,<BR>
-internalWidth</B></TD>
-<TD>These resources defines the internal border width between the label
-string or the bitmap and the border of this widget.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>justify</B></TD>
-<TD>Defines how to jusify a label string in a label widget (left, right
-or centered).</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>resize</B></TD>
-<TD>Defines how to handle a resize event after creation of the widget.
-Default is to handle every resize event and to justify the labels interiors.</TD>
-</TR>
+    <tr>
+      <td>border<br>
+      background<br>
+      mappedWhenManaged</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>truncateLabel</B></TD>
-<TD>Defines what to do with a label string, if it is too long. Default is to
-truncate the string until it fits into the widgets window.</TD>
-</TR>
+      <td>BorderColor<br>
+      Background<br>
+      MappedWhenManaged</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>truncateLeftSide</B></TD>
-<TD>Defines to truncate a too long label string from the left side.
-In this case the strings starts with two dots and the end of the string
-remains visible. Default ist to cut it from the right side.</TD>
-</TR>
+      <td>Pixel<br>
+      Pixel<br>
+      Boolean</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>font</B></TD>
-<TD>With this resource it is possible to set any available <I>font</I>
-to display the <I>label</I> text.</TD>
-</TR>
+      <td>XtDefaultForeground<br>
+      grey75<br>
+      True</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>fontset</B></TD>
-<TD>A set of fonts which will be used, if the <I>international</I>
-resource is set.</TD>
-</TR>
+    <tr>
+      <td bgcolor="#C0C0C0">SIMPLE:</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>encoding</B></TD>
-<TD>Two types of encoding are available, the default 8 bit encoding and
-the 16 bit encoding (unicode). With 16 bit encoding the label string is
-expected in UTF8 and displayed with the font found in the <I>font</I> resource.
-The handling of UNICODE is independent of the locale
-settings. Note that the character codes from <I>0x00</I> to <I>0x7f</I> are also
-valid as UTF8 code. For this range of characters every editor is usable
-to edit label strings. If you need character codes in the range from <I>0x80</I>
-to <I>0xffff</I> a special editor like <B><I>yudit</I></B> is required.<BR>
-If any malformed UTF8 code is found, it is displayed as an asterix <B>*</B>.
-If the UTF8 code of a character is out of range (higher than 0xffff), it is displayed
-as a tilde sign.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>foreground</B></TD>
-<TD>This is the foreground color, used to display a <I>label</I> text.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>label</B></TD>
-<TD>Defines the label text. It is not possible to use both a <I>label</I>
-and a <I>bitmap</I>, but it is possible to use a <I>label</I> with a <I>leftBitmap</I>.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>leftBitmap</B></TD>
-<TD>This resource defines a bitmap or a XPM styled pixmap, placed left
-of the label text. XPM pixmaps are detected through their filename extension
-<I>.xpm</I>.</TD>
-</TR>
+    <tr>
+      <td>cursor<br>
+      cursorName<br>
+      pointerColor<br>
+      pointerColorBackground<br>
+      insensitiveBorder<br>
+      international<br>
+      highlightColor<br>
+      shadowColor<br>
+      buttonBorderWidth</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>leftClipMask</B></TD>
-<TD>This resource defines a bitmap or a XPM styled pixmap, used as a clip mask
-for the <I>leftBitmap</I> resource. If the background color of an XPM pixmap is defined
-as <I>None</I>, it is usable as bitmap and as a clip mask. Otherwise the user
-needs a second bitmap, if a clip mask is required.
-</TD>
-</TR>
+      <td>Cursor<br>
+      Cursor<br>
+      Foreground<br>
+      Background<br>
+      Insensitive<br>
+      International<br>
+      Background<br>
+      Background<br>
+      Width</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>bitmap</B></TD>
-<TD>Defines a bitmap or a XPM styled pixmap to display in the label widget.
-It is not possible to use a <I>bitmap</I> together with a <I>label </I>or
-a <I>leftBitmap</I>.</TD>
-</TR>
+      <td>Cursor<br>
+      String<br>
+      Pixel<br>
+      Pixel<br>
+      Pixmap<br>
+      Boolean<br>
+      Pixel<br>
+      Pixel<br>
+      Dimension</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>clipMask</B></TD>
-<TD>This resource defines a bitmap or a XPM styled pixmap, used as a clip mask
-for the <I>bitmap</I> resource.</TD>
-</TR>
+      <td>None<br>
+      NULL<br>
+      XtDefaultForeground<br>
+      XtDefaultBackground<br>
+      NULL<br>
+      False<br>
+      grey90<br>
+      grey40<br>
+      2</td>
+    </tr>
 
-</TABLE>
+    <tr>
+      <td bgcolor="#C0C0C0">LABEL:</td>
 
-<H3>Convenience Routines</H3>
+      <td bgcolor="#C0C0C0"></td>
 
-<P>Since XawPlus 2.1 there is a new function to control the truncate mechanism.
-In Label the truncate mechanism is only activated, if it is a Label itself and not the
-superclass of another widget. The reason is, that derived widgets have another idea how
-to place the label interiors correctly.</P>
+      <td bgcolor="#C0C0C0"></td>
 
-<BLOCKQUOTE>
-<P><I>void TruncateLabelString(lw, usableWidth)<BR>
-LabelWidget lw;<BR>
-int usableWidth;</I></P>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TABLE CELLSPACING=0 CELLPADDING=0 WIDTH="80%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>lw</B></TD>
-<TD>Specifies the Label widget.</TD>
-</TR>
+    <tr>
+      <td>font<br>
+      fontset<br>
+      encoding<br>
+      foreground<br>
+      internalHeight<br>
+      internalWidth<br>
+      justify<br>
+      resize<br>
+      truncateLabel<br>
+      truncLeftSide<br>
+      label<br>
+      leftBitmap<br>
+      leftClipMask<br>
+      bitmap<br>
+      clipMask</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>usableWidth</B></TD>
-<TD>Specifies the usable window width inside of the label.</TD>
-</TR>
-</TABLE>
-</BLOCKQUOTE>
+      <td>Font<br>
+      FontSet<br>
+      Encoding<br>
+      Foreground<br>
+      Height<br>
+      Width<br>
+      Justify<br>
+      Resize<br>
+      Truncate<br>
+      Truncate<br>
+      Label<br>
+      LeftBitmap<br>
+      LeftBitmap<br>
+      Pixmap<br>
+      Pixmap</td>
 
+      <td>XFontStruct*<br>
+      FontSet<br>
+      unsigned char<br>
+      Pixel<br>
+      Dimension<br>
+      Dimension<br>
+      XtJustify<br>
+      Boolean<br>
+      Boolean<br>
+      Boolean<br>
+      String<br>
+      Bitmap<br>
+      ClipMask<br>
+      Bitmap<br>
+      ClipMask</td>
 
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+      <td>XtDefaultFont<br>
+      XtDefaultFontSet<br>
+      XawTextEncoding8bit<br>
+      XtDefaultForeground<br>
+      2<br>
+      4<br>
+      XtJustifyCenter<br>
+      True<br>
+      True<br>
+      False<br>
+      NULL<br>
+      None<br>
+      None<br>
+      None<br>
+      None</td>
+    </tr>
+  </table>
 
-</BODY>
-</HTML>
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>internalHeight,<br>
+      internalWidth</b></td>
+
+      <td>These resources defines the internal border width between
+      the label string or the bitmap and the border of this
+      widget.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>justify</b></td>
+
+      <td>Defines how to jusify a label string in a label widget
+      (left, right or centered).</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>resize</b></td>
+
+      <td>Defines how to handle a resize event after creation of
+      the widget. Default is to handle every resize event and to
+      justify the labels interiors.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>truncateLabel</b></td>
+
+      <td>Defines what to do with a label string, if it is too
+      long. Default is to truncate the string until it fits into
+      the widgets window.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>truncateLeftSide</b></td>
+
+      <td>Defines to truncate a too long label string from the left
+      side. In this case the strings starts with two dots and the
+      end of the string remains visible. Default ist to cut it from
+      the right side.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>font</b></td>
+
+      <td>With this resource it is possible to set any available
+      <i>font</i> to display the <i>label</i> text.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>fontset</b></td>
+
+      <td>A set of fonts which will be used, if the
+      <i>international</i> resource is set.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>encoding</b></td>
+
+      <td>Two types of encoding are available, the default 8 bit
+      encoding and the 16 bit encoding (unicode). With 16 bit
+      encoding the label string is expected in UTF8 and displayed
+      with the font found in the <i>font</i> resource. The handling
+      of UNICODE is independent of the locale settings. Note that
+      the character codes from <i>0x00</i> to <i>0x7f</i> are also
+      valid as UTF8 code. For this range of characters every editor
+      is usable to edit label strings. If you need character codes
+      in the range from <i>0x80</i> to <i>0xffff</i> a special
+      editor like <b><i>yudit</i></b> is required.<br>
+      If any malformed UTF8 code is found, it is displayed as an
+      asterix <b>*</b>. If the UTF8 code of a character is out of
+      range (higher than 0xffff), it is displayed as a tilde
+      sign.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>foreground</b></td>
+
+      <td>This is the foreground color, used to display a
+      <i>label</i> text.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>label</b></td>
+
+      <td>Defines the label text. It is not possible to use both a
+      <i>label</i> and a <i>bitmap</i>, but it is possible to use a
+      <i>label</i> with a <i>leftBitmap</i>.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>leftBitmap</b></td>
+
+      <td>This resource defines a bitmap or a XPM styled pixmap,
+      placed left of the label text. XPM pixmaps are detected
+      through their filename extension <i>.xpm</i>.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>leftClipMask</b></td>
+
+      <td>This resource defines a bitmap or a XPM styled pixmap,
+      used as a clip mask for the <i>leftBitmap</i> resource. If
+      the background color of an XPM pixmap is defined as
+      <i>None</i>, it is usable as bitmap and as a clip mask.
+      Otherwise the user needs a second bitmap, if a clip mask is
+      required.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>bitmap</b></td>
+
+      <td>Defines a bitmap or a XPM styled pixmap to display in the
+      label widget. It is not possible to use a <i>bitmap</i>
+      together with a <i>label</i> or a <i>leftBitmap</i>.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>clipMask</b></td>
+
+      <td>This resource defines a bitmap or a XPM styled pixmap,
+      used as a clip mask for the <i>bitmap</i> resource.</td>
+    </tr>
+  </table>
+
+  <h3>Convenience Routines</h3>
+
+  <p>Since XawPlus 2.1 there is a new function to control the
+  truncate mechanism. In Label the truncate mechanism is only
+  activated, if it is a Label itself and not the superclass of
+  another widget. The reason is, that derived widgets have another
+  idea how to place the label interiors correctly.</p>
+
+  <blockquote>
+    <p><i>void TruncateLabelString(lw, usableWidth)<br>
+    LabelWidget lw;<br>
+    int usableWidth;</i></p>
+
+    <table cellspacing="0" cellpadding="0" width="80%" summary="">
+      <tr>
+        <td align="left" valign="top"><b>lw</b></td>
+
+        <td>Specifies the Label widget.</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><b>usableWidth</b></td>
+
+        <td>Specifies the usable window width inside of the
+        label.</td>
+      </tr>
+    </table>
+  </blockquote>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

@@ -4,6 +4,8 @@
 
 /***********************************************************
 
+Copyright 2015 Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -46,8 +48,6 @@ ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
 WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
-
-This file contains modifications for XawPlus, Roland Krause 2002
 
 **************************************************************************/
 
@@ -125,19 +125,15 @@ typedef struct _TextSrcRec {
  ******************************************************************/
 
 char* _XawTextWCToMB(
-#if NeedFunctionPrototypes
     Display* /* d */,
     wchar_t* /* wstr */,
     int*     /* len_in_out */
-#endif
 );
 
 wchar_t* _XawTextMBToWC(
-#if NeedFunctionPrototypes
     Display*  /* d */,
     char*     /* str */,
     int*      /* len_in_out */
-#endif
 );
 
 /************************************************************

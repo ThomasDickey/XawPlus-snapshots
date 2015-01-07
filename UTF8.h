@@ -17,6 +17,7 @@
  * int mbStrLen()	Calc # of characters in an UTF8 string
  * char16 *UTF8toUCS2() Convert UTF8 string to UCS2/UNICODE
  *
+ * Copyright 2015 Thomas E. Dickey
  * Copyright (c) Roland Krause 2002, roland_krause@freenet.de
  *
  * This module is free software; you can redistribute it and/or modify
@@ -53,9 +54,7 @@ typedef unsigned short char16;
  *	Returns:	Length in char16's
  */
 extern int str16len(
-#if NeedFunctionPrototypes
 	char16 *	/* str16 */
-#endif
 );
 
 /*	Function Name:	str16chr
@@ -67,10 +66,8 @@ extern int str16len(
  *			in str16 or NULL.
  */
 extern char16 *str16chr(
-#if NeedFunctionPrototypes
 	char16 *,	/* str16 */
 	char		/* ch */
-#endif
 );
 
 /*	Function Name:	str16cpy
@@ -80,10 +77,8 @@ extern char16 *str16chr(
  *	Returns:	None
  */
 extern void str16cpy(
-#if NeedFunctionPrototypes
 	char16 *,	/* dest */
 	char16 *	/* src */
-#endif
 );
 
 /*	Function Name:	str16ncpy
@@ -95,11 +90,9 @@ extern void str16cpy(
  *	Returns:	None	
  */
 extern void str16ncpy(
-#if NeedFunctionPrototypes
 	char16 *,	/* dest */
 	char16 *,	/* src */
 	size_t		/* n */
-#endif
 );
 
 /*	Function Name:	str16cat
@@ -109,10 +102,8 @@ extern void str16ncpy(
  *	Returns:	None
  */
 extern void str16cat(
-#if NeedFunctionPrototypes
 	char16 *,	/* dest */
 	char16 *	/* src */
-#endif
 );
 
 /*	Function Name:	mbCharLen
@@ -123,9 +114,7 @@ extern void str16cat(
  *			or 0 in case of an error.
  */
 extern int mbCharLen(
-#if NeedFunctionPrototypes
 	char *		/* str */
-#endif
 );
 
 /*	Function Name:	mbStrLen
@@ -137,9 +126,7 @@ extern int mbCharLen(
  *			See UTF8toUCS2() for the reason!
  */
 extern int mbStrLen(
-#if NeedFunctionPrototypes
 	char *		/* str */
-#endif
 );
 
 /*	Function Name:	UTF8toUCS2
@@ -158,9 +145,7 @@ extern int mbStrLen(
  *			char16 is used to increase the performance.
  */
 extern char16 *UTF8toUCS2(
-#if NeedFunctionPrototypes
 	char *		/* str */
-#endif
 );
 
 

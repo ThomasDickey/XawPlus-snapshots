@@ -2,6 +2,7 @@
 
 /*
 
+Copyright 2015 Thomas E. Dickey
 Copyright 1991, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -29,12 +30,7 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/IntrinsicP.h>
 #include "XawI18n.h"
 
-#if NeedFunctionPrototypes
 wchar_t _Xaw_atowc(unsigned char c)
-#else
-wchar_t _Xaw_atowc(c)
-unsigned char c;
-#endif
 {
     wchar_t  wc;
     char str[2];

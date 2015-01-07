@@ -5,6 +5,7 @@
 /***********************************************************
 
 Copyright 2015	Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -47,8 +48,6 @@ ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
 WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
-
-This file contains modifications for XawPlus, Roland Krause 2002
 
 **************************************************************************/
 
@@ -110,12 +109,10 @@ _XFUNCPROTOBEGIN
  */
 
 extern XawTextPosition XawTextSourceRead(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* pos */,
     XawTextBlock*	/* text_return */,
     int			/* length */
-#endif
 );
 
 /*	Function Name: XawTextSourceReplace.
@@ -127,12 +124,10 @@ extern XawTextPosition XawTextSourceRead(
  */
 
 extern int XawTextSourceReplace (
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* start */,
     XawTextPosition	/* end */,
     XawTextBlock*	/* text */
-#endif
 );
 
 /*	Function Name: XawTextSourceScan
@@ -150,14 +145,12 @@ extern int XawTextSourceReplace (
  */
 
 extern XawTextPosition XawTextSourceScan(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* position */,
     XawTextScanType	/* type */,
     XawTextScanDirection /* dir */,
     int			/* count */,
     Boolean		/* include */
-#endif
 );
 
 /*	Function Name: XawTextSourceSearch
@@ -171,12 +164,10 @@ extern XawTextPosition XawTextSourceScan(
  */
 
 extern XawTextPosition XawTextSourceSearch(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* position */,
     XawTextScanDirection /* dir */,
     XawTextBlock*	/* text */
-#endif
 );
 
 /*	Function Name: XawTextSourceConvertSelection
@@ -192,7 +183,6 @@ extern XawTextPosition XawTextSourceSearch(
  */
 
 extern Boolean XawTextSourceConvertSelection(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Atom*		/* selection */,
     Atom*		/* target */,
@@ -200,7 +190,6 @@ extern Boolean XawTextSourceConvertSelection(
     XtPointer*		/* value_return */,
     unsigned long*	/* length_return */,
     int*		/* format_return */
-#endif
 );
 
 /*	Function Name: XawTextSourceSetSelection
@@ -212,12 +201,10 @@ extern Boolean XawTextSourceConvertSelection(
  */
 
 extern void XawTextSourceSetSelection(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* start */,
     XawTextPosition	/* end */,
     Atom		/* selection */
-#endif
 );
 
 _XFUNCPROTOEND

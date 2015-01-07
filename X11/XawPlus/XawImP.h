@@ -1,6 +1,34 @@
 /* $Xorg: XawImP.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $ */
 
 /*
+
+Copyright 2015 Thomas E. Dickey
+Copyright 2002 Roland Krause
+Copyright 1994, 1998  The Open Group
+
+Permission to use, copy, modify, distribute, and sell this software and its
+documentation for any purpose is hereby granted without fee, provided that
+the above copyright notice appear in all copies and that both that
+copyright notice and this permission notice appear in supporting
+documentation.
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+OPEN GROUP BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Except as contained in this notice, the name of The Open Group shall not be
+used in advertising or otherwise to promote the sale, use or other dealings
+in this Software without prior written authorization from The Open Group.
+
+*/
+
+/*
  * Copyright 1991 by OMRON Corporation
  *
  * Permission to use, copy, modify, distribute, and sell this software and its
@@ -25,34 +53,6 @@
  *				kuwa@omron.co.jp
  *				kuwa%omron.co.jp@uunet.uu.net
  */				
-
-/*
-
-Copyright 1994, 1998  The Open Group
-
-Permission to use, copy, modify, distribute, and sell this software and its
-documentation for any purpose is hereby granted without fee, provided that
-the above copyright notice appear in all copies and that both that
-copyright notice and this permission notice appear in supporting
-documentation.
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-OPEN GROUP BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
-AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-Except as contained in this notice, the name of The Open Group shall not be
-used in advertising or otherwise to promote the sale, use or other dealings
-in this Software without prior written authorization from The Open Group.
-
-This file contains modifications for XawPlus, Roland Krause 2002
-
-*/
 
 #ifndef _XawImP_h
 #define _XawImP_h
@@ -128,98 +128,70 @@ typedef	struct _contextErrDataRec
 } contextErrDataRec;
 
 void _XawImResizeVendorShell( 
-#if NeedFunctionPrototypes
     Widget /* w */
-#endif
 );
 
 Dimension _XawImGetShellHeight( 
-#if NeedFunctionPrototypes
     Widget /* w */
-#endif
 );
 
 void _XawImRealize( 
-#if NeedFunctionPrototypes
     Widget /* w */
-#endif
 );
 
 void _XawImInitialize( 
-#if NeedFunctionPrototypes
     Widget, /* w */
     Widget  /* ext */
-#endif
 );
 
 void _XawImReconnect( 
-#if NeedFunctionPrototypes
     Widget  /* w */
-#endif
 );
 
 void _XawImRegister( 
-#if NeedFunctionPrototypes
     Widget  /* w */
-#endif
 );
 
 void _XawImUnregister( 
-#if NeedFunctionPrototypes
     Widget  /* w */
-#endif
 );
 
 void _XawImSetValues( 
-#if NeedFunctionPrototypes
     Widget,  /* w */
     ArgList, /* args */
     Cardinal /* num_args */
-#endif
 );
 
 void _XawImSetFocusValues( 
-#if NeedFunctionPrototypes
     Widget,  /* w */
     ArgList, /* args */
     Cardinal /* num_args */
-#endif
 );
 
 void _XawImUnsetFocus( 
-#if NeedFunctionPrototypes
     Widget  /* w */
-#endif
 );
 
 int  _XawImWcLookupString( 
-#if NeedFunctionPrototypes
     Widget,   /* w */
     XKeyPressedEvent*, /* event */
     wchar_t*, /* buffer_return */
     int,      /* bytes_buffer */
     KeySym*,  /* keysym_return */
     Status*   /* status return */
-#endif
 );
 
 int  _XawImGetImAreaHeight( 
-#if NeedFunctionPrototypes
     Widget  /* w */
-#endif
 );
 
 void _XawImCallVendorShellExtResize( 
-#if NeedFunctionPrototypes
     Widget  /* w */
-#endif
 );
 
 void _XawImDestroy( 
-#if NeedFunctionPrototypes
     Widget,  /* w */
     Widget   /* ext */
-#endif
 );
 
 #endif	/* _XawImP_h */

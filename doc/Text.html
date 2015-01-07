@@ -1,368 +1,422 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>The Text Widget</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<H3><I>The Text Widget</I></H3>
+  <title>The Text Widget</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
 
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
 
-<TD>&lt;X11/XawPlus/Text.h&gt;<BR>
-&lt;X11/XawPlus/TextP.h&gt;<BR>
-textWidgetClass<BR>
-Text<BR>
-Simple</TD>
-</TR>
-</TABLE>
+  <h3><i>The Text Widget</i></h3>
 
-<P>The Text widget is the glue that binds all the other pieces together, it
-maintains the internal state of the displayed text, and acts as a
-mediator between the text source and the text sink.</P>
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
 
-<P>This section lists the resources that are actually part of the 
-Text widget, and explains the functionality provided by each.</P>
+      <td>&lt;X11/XawPlus/Text.h&gt;<br>
+      &lt;X11/XawPlus/TextP.h&gt;<br>
+      textWidgetClass<br>
+      Text<br>
+      Simple</td>
+    </tr>
+  </table>
 
-<P>Note that the <I>Text</I> widget itself is not very useful. It is meant for
-subclassing to create other more specific text widgets like <I>AsciiText</I>.</P>
+  <p>The Text widget is the glue that binds all the other pieces
+  together, it maintains the internal state of the displayed text,
+  and acts as a mediator between the text source and the text
+  sink.</p>
 
-<H3>Differences between Xaw and XawPlus</H3>
+  <p>This section lists the resources that are actually part of the
+  Text widget, and explains the functionality provided by each.</p>
 
-<P>Since the 3D extensions of <I>Simple</I> are inserted, the
-Text widget has the additional (but at this time not used) resources
-<I>highlightColor,</I> <I>shadowColor</I> and <I>buttonBorderWidth</I>.
-The default <I>background</I> color is now grey75.
-The vertical scrollbar is always placed on the right side of the text window, if it is
-visible.</P>
+  <p>Note that the <i>Text</i> widget itself is not very useful. It
+  is meant for subclassing to create other more specific text
+  widgets like <i>AsciiText</i>.</p>
 
-<H3>Resources</H3>
+  <h3>Differences between Xaw and XawPlus</h3>
 
-<P>When creating a Text widget instance, the following resources are retrieved
-from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
-or from the resource database:</P>
+  <p>Since the 3D extensions of <i>Simple</i> are inserted, the
+  Text widget has the additional (but at this time not used)
+  resources <i>highlightColor,</i> <i>shadowColor</i> and
+  <i>buttonBorderWidth</i>. The default <i>background</i> color is
+  now grey75. The vertical scrollbar is always placed on the right
+  side of the text window, if it is visible.</p>
 
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
+  <h3>Resources</h3>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+  <p>When creating a Text widget instance, the following resources
+  are retrieved from the argument list of <i>XtSetValues()</i> or
+  <i>XtVaSetValues()</i> or from the resource database:</p>
 
-<TR>
-<TD>destroyCallback</TD>
-<TD>Callback</TD>
-<TD>Pointer</TD>
-<TD>NULL</TD>
-</TR>
+  <table border="1" cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
 
-<TR>
-<TD>borderWidth<BR>
-height<BR>
-sensitive<BR>
-width<BR>
-x<BR>
-y</TD>
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
 
-<TD>BorderWidth<BR>
-Height<BR>
-Sensitive<BR>
-Width<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
 
-<TD>Dimension<BR>
-Dimension<BR>
-Boolean<BR>
-Dimension<BR>
-Position<BR>
-Position</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
 
-<TD>0<BR>
-12<BR>
-True<BR>
-12<BR>
-0<BR>
-0</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">CORE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD>border<BR>
-background<BR>
-mappedWhenManaged</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>BorderColor<BR>
-Background<BR>
-MappedWhenManaged</TD>
+    <tr>
+      <td>destroyCallback</td>
 
-<TD>Pixel<BR>
-Pixel<BR>
-Boolean</TD>
+      <td>Callback</td>
 
-<TD>XtDefaultForeground<BR>
-grey75<BR>
-True</TD>
-</TR>
+      <td>Pointer</td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td>NULL</td>
+    </tr>
 
-<TR>
-<TD>cursor
-<BR>cursorName
-<BR>pointerColor
-<BR>pointerColorBackground
-<BR>insensitiveBorder
-<BR>international
-<BR>highlightColor
-<BR>shadowColor
-<BR>buttonBorderWidth</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
 
-<TD>Cursor
-<BR>Cursor
-<BR>Foreground
-<BR>Background
-<BR>Insensitive
-<BR>International
-<BR>Background
-<BR>Background
-<BR>Width</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>Cursor
-<BR>String
-<BR>Pixel
-<BR>Pixel
-<BR>Pixmap
-<BR>Boolean
-<BR>Pixel
-<BR>Pixel
-<BR>Dimension</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>None
-<BR>NULL
-<BR>XtDefaultForeground
-<BR>XtDefaultBackground
-<BR>NULL
-<BR>False
-<BR>grey90
-<BR>grey40
-<BR>2</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">TEXT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      sensitive<br>
+      width<br>
+      x<br>
+      y</td>
 
-<TR>
-<TD>autoFill<BR>
-bottomMargin<BR>
-topMargin<BR>
-leftMargin<BR>
-rightMargin<BR>
-displayPosition<BR>
-insertPosition<BR>
-resize<BR>
-scrollHorizontal<BR>
-scrollVertical<BR>
-selectTypes<BR>
-textSink<BR>
-textSource<BR>
-unrealizeCallback<BR>
-wrap<BR>
-displayCaret</TD>
+      <td>BorderWidth<br>
+      Height<br>
+      Sensitive<br>
+      Width<br>
+      Position<br>
+      Position</td>
 
-<TD>AutoFill<BR>
-Margin<BR>
-Margin<BR>
-Margin<BR>
-Margin<BR>
-TextPosition<BR>
-TextPosition<BR>
-Resize<BR>
-Scroll<BR>
-Scroll<BR>
-SelectTypes<BR>
-TextSink<BR>
-TextSource<BR>
-Callback<BR>
-Wrap<BR>
-Output</TD>
+      <td>Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Dimension<br>
+      Position<br>
+      Position</td>
 
-<TD>Boolean<BR>
-Position<BR>
-Position<BR>
-Position<BR>
-Position<BR>
-XawTextPosition<BR>
-XawTextPosition<BR>
-XawTextResizeMode<BR>
-XawTextScrollMode<BR>
-XawTextScrollMode<BR>
-Pointer<BR>
-Widget<BR>
-Widget<BR>
-Callback<BR>
-XawTextWrapMode<BR>
-Boolean</TD>
+      <td>0<br>
+      12<br>
+      True<br>
+      12<br>
+      0<br>
+      0</td>
+    </tr>
 
-<TD>False<BR>
-2<BR>
-2<BR>
-2<BR>
-4<BR>
-0<BR>
-0<BR>
-XawTextResizeNever<BR>
-XawtextScrollNever<BR>
-XawtextScrollNever<BR>
-see documentation<BR>
-NULL<BR>
-NULL<BR>
-NULL<BR>
-XawTextWrapNever<BR>
-True</TD>
-</TR>
-</TABLE>
+    <tr>
+      <td bgcolor="#C0C0C0">CORE:</td>
 
-<P></P>
+      <td bgcolor="#C0C0C0"></td>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>autoFill</B></TD>
-<TD>If this resource is <B>True</B> the text widget will automatically break a line
-when the user attempts to type into the right margin. The attribute has no effect on
-files or text inserted into the text widget. It only checks to see if the action should
-be taken when a user enters a new character via the <I>insert-character</I> action.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>bottomMargin, topMargin,<BR>leftMargin, rightMargin</B></TD>
-<TD>The amount of space, in pixels, between the edge of the window and the
-corresponding edge of the text within the window. If there is a scrollbar
-active on this edge, then this is the space between the text and the scrollbar.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>displayPosition</B></TD>
-<TD>The position in the text buffer of the character that is currently displayed
-in the upper left hand corner of the text display.</TD>
-</TR>
+    <tr>
+      <td>border<br>
+      background<br>
+      mappedWhenManaged</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>insertPosition</B></TD>
-<TD>This is the position of the insert point. It is expressed in characters from
-the beginning of the file. The cursor will always be forced to be on the screen.
-This resource may therefore be used to scroll the text display to a certain character
-position</TD>
-</TR>
+      <td>BorderColor<br>
+      Background<br>
+      MappedWhenManaged</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>resize</B></TD>
-<TD>Controls whether or not the text widget attempts to resize itself when it
-is no lonber able to display the full text buffer in the associated window.
-Any attempt by the text widget to resize itself is always subject to the
-constraints imposed by its parent. The Value <B>XawTextResizeNever,
-XawTextResizeWidth, XawTextResizeHeight</B> and <B>XawTextResizeBoth</B> are
-all acceptable for this resource. A converter is registered for this resource
-that will convert the following strings: <B>never, heght, width</B> and
-<B>both</B>.</TD>
-</TR>
+      <td>Pixel<br>
+      Pixel<br>
+      Boolean</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>scrollHorizontal, scrollVertical</B></TD>
-<TD>These resources control the the placement of scrollbars on the right and
-bottom edge of the text widget. These resources accept the values
-<B>XawtextScrollAlways, XawtextScrollWhenNeeded</B> and <B>XawtextScrollNever</B>.
-A converter is registered for this resource that will convert the strings
-<B>always, never</B> and <B>whenNeeded</B> into the corresponding values.
-If <B>XawtextScrollWhenNeeded</B> is specified, the appropriate scrollbar will
-only appear when there is text in the buffer that is not able to fit within
-the bounds of the widgets window. The scrollbar will disappear when the text
-again fits within the window.</TD>
-</TR>
+      <td>XtDefaultForeground<br>
+      grey75<br>
+      True</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>selectTypes</B></TD>
-<TD>Specifies the selection type array that is used when multi-click is activated.
-See <A HREF="TextActions.html#ProgSelection">Text Selection for Application Programmers</A>
-for details.</TD>
-</TR>
+    <tr>
+      <td bgcolor="#C0C0C0">SIMPLE:</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>textSink, textSource</B></TD>
-<TD>These are the TextSink and the TextSource objects used by this widgets. When
-using the Text widget these must be set by the application programmer.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>unrealizeCallback</B></TD>
-<TD>A list of callback functions which will be executed when the text widget is
-unrealized.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>wrap</B></TD>
-<TD>When a text in any line is wider than the window there are several possible
-actions. This resource allows the user to decide what will happen. The accepted
-values for this resource are <B>XawtextWrapNever, XawtextWrapLine</B> and
-<B>XawtextWrapWord</B>. With <B>XawtextWrapLine</B> all text that is beyond the
-right edge of the window will be display on the next line. With <B>XawtextWrapWord</B>
-the same action occurs but the text is broken at a word boundary if possible. If
-no wrapping is enabled then the text will extend off the edge of the window and a
-small rectangle will be painted in the right margin to alert the user that this line
-is too long. A converter is registered for this resource  that will convert the
-strings <B>never, word</B> and <B>line</B>.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>displayCaret</B></TD>
-<TD>Whether ot not to display the text insertion point.</TD>
-</TR>
+    <tr>
+      <td>cursor<br>
+      cursorName<br>
+      pointerColor<br>
+      pointerColorBackground<br>
+      insensitiveBorder<br>
+      international<br>
+      highlightColor<br>
+      shadowColor<br>
+      buttonBorderWidth</td>
 
-</TABLE>
+      <td>Cursor<br>
+      Cursor<br>
+      Foreground<br>
+      Background<br>
+      Insensitive<br>
+      International<br>
+      Background<br>
+      Background<br>
+      Width</td>
 
-<P></P>
+      <td>Cursor<br>
+      String<br>
+      Pixel<br>
+      Pixel<br>
+      Pixmap<br>
+      Boolean<br>
+      Pixel<br>
+      Pixel<br>
+      Dimension</td>
 
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+      <td>None<br>
+      NULL<br>
+      XtDefaultForeground<br>
+      XtDefaultBackground<br>
+      NULL<br>
+      False<br>
+      grey90<br>
+      grey40<br>
+      2</td>
+    </tr>
 
-</BODY>
-</HTML>
+    <tr>
+      <td bgcolor="#C0C0C0">TEXT:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>autoFill<br>
+      bottomMargin<br>
+      topMargin<br>
+      leftMargin<br>
+      rightMargin<br>
+      displayPosition<br>
+      insertPosition<br>
+      resize<br>
+      scrollHorizontal<br>
+      scrollVertical<br>
+      selectTypes<br>
+      textSink<br>
+      textSource<br>
+      unrealizeCallback<br>
+      wrap<br>
+      displayCaret</td>
+
+      <td>AutoFill<br>
+      Margin<br>
+      Margin<br>
+      Margin<br>
+      Margin<br>
+      TextPosition<br>
+      TextPosition<br>
+      Resize<br>
+      Scroll<br>
+      Scroll<br>
+      SelectTypes<br>
+      TextSink<br>
+      TextSource<br>
+      Callback<br>
+      Wrap<br>
+      Output</td>
+
+      <td>Boolean<br>
+      Position<br>
+      Position<br>
+      Position<br>
+      Position<br>
+      XawTextPosition<br>
+      XawTextPosition<br>
+      XawTextResizeMode<br>
+      XawTextScrollMode<br>
+      XawTextScrollMode<br>
+      Pointer<br>
+      Widget<br>
+      Widget<br>
+      Callback<br>
+      XawTextWrapMode<br>
+      Boolean</td>
+
+      <td>False<br>
+      2<br>
+      2<br>
+      2<br>
+      4<br>
+      0<br>
+      0<br>
+      XawTextResizeNever<br>
+      XawtextScrollNever<br>
+      XawtextScrollNever<br>
+      see documentation<br>
+      NULL<br>
+      NULL<br>
+      NULL<br>
+      XawTextWrapNever<br>
+      True</td>
+    </tr>
+  </table>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>autoFill</b></td>
+
+      <td>If this resource is <b>True</b> the text widget will
+      automatically break a line when the user attempts to type
+      into the right margin. The attribute has no effect on files
+      or text inserted into the text widget. It only checks to see
+      if the action should be taken when a user enters a new
+      character via the <i>insert-character</i> action.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>bottomMargin, topMargin,<br>
+      leftMargin, rightMargin</b></td>
+
+      <td>The amount of space, in pixels, between the edge of the
+      window and the corresponding edge of the text within the
+      window. If there is a scrollbar active on this edge, then
+      this is the space between the text and the scrollbar.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>displayPosition</b></td>
+
+      <td>The position in the text buffer of the character that is
+      currently displayed in the upper left hand corner of the text
+      display.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>insertPosition</b></td>
+
+      <td>This is the position of the insert point. It is expressed
+      in characters from the beginning of the file. The cursor will
+      always be forced to be on the screen. This resource may
+      therefore be used to scroll the text display to a certain
+      character position</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>resize</b></td>
+
+      <td>Controls whether or not the text widget attempts to
+      resize itself when it is no lonber able to display the full
+      text buffer in the associated window. Any attempt by the text
+      widget to resize itself is always subject to the constraints
+      imposed by its parent. The Value <b>XawTextResizeNever,
+      XawTextResizeWidth, XawTextResizeHeight</b> and
+      <b>XawTextResizeBoth</b> are all acceptable for this
+      resource. A converter is registered for this resource that
+      will convert the following strings: <b>never, heght,
+      width</b> and <b>both</b>.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>scrollHorizontal,
+      scrollVertical</b></td>
+
+      <td>These resources control the the placement of scrollbars
+      on the right and bottom edge of the text widget. These
+      resources accept the values <b>XawtextScrollAlways,
+      XawtextScrollWhenNeeded</b> and <b>XawtextScrollNever</b>. A
+      converter is registered for this resource that will convert
+      the strings <b>always, never</b> and <b>whenNeeded</b> into
+      the corresponding values. If <b>XawtextScrollWhenNeeded</b>
+      is specified, the appropriate scrollbar will only appear when
+      there is text in the buffer that is not able to fit within
+      the bounds of the widgets window. The scrollbar will
+      disappear when the text again fits within the window.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>selectTypes</b></td>
+
+      <td>Specifies the selection type array that is used when
+      multi-click is activated. See <a href=
+      "TextActions.html#ProgSelection">Text Selection for
+      Application Programmers</a> for details.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>textSink,
+      textSource</b></td>
+
+      <td>These are the TextSink and the TextSource objects used by
+      this widgets. When using the Text widget these must be set by
+      the application programmer.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>unrealizeCallback</b></td>
+
+      <td>A list of callback functions which will be executed when
+      the text widget is unrealized.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>wrap</b></td>
+
+      <td>When a text in any line is wider than the window there
+      are several possible actions. This resource allows the user
+      to decide what will happen. The accepted values for this
+      resource are <b>XawtextWrapNever, XawtextWrapLine</b> and
+      <b>XawtextWrapWord</b>. With <b>XawtextWrapLine</b> all text
+      that is beyond the right edge of the window will be display
+      on the next line. With <b>XawtextWrapWord</b> the same action
+      occurs but the text is broken at a word boundary if possible.
+      If no wrapping is enabled then the text will extend off the
+      edge of the window and a small rectangle will be painted in
+      the right margin to alert the user that this line is too
+      long. A converter is registered for this resource that will
+      convert the strings <b>never, word</b> and <b>line</b>.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>displayCaret</b></td>
+
+      <td>Whether ot not to display the text insertion point.</td>
+    </tr>
+  </table>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

@@ -1,6 +1,8 @@
 /*
  * $Xorg: SimpleMenu.h,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
  *
+Copyright 2015 Thomas E. Dickey
+Copyright 2002 Roland Krause
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -41,8 +43,6 @@ in this Software without prior written authorization from The Open Group.
  * By:      Chris D. Peterson
  *          MIT X Consortium 
  *          kit@expo.lcs.mit.edu
- *
- * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
 #ifndef _SimpleMenu_h
@@ -141,9 +141,7 @@ _XFUNCPROTOBEGIN
  */
 
 extern void XawSimpleMenuAddGlobalActions(
-#if NeedFunctionPrototypes
     XtAppContext	/* app_con */
-#endif
 );
  
 /*	Function Name: XawSimpleMenuGetActiveEntry
@@ -153,9 +151,7 @@ extern void XawSimpleMenuAddGlobalActions(
  */
 
 extern Widget XawSimpleMenuGetActiveEntry(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 /*	Function Name: XawSimpleMenuClearActiveEntry
@@ -165,9 +161,7 @@ extern Widget XawSimpleMenuGetActiveEntry(
  */
 
 extern void XawSimpleMenuClearActiveEntry(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 _XFUNCPROTOEND

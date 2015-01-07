@@ -1,462 +1,500 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>The Repeater Widget</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
-
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
-
-<H3><I>The Repeater Widget</I></H3>
-
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
-
-<TD>&lt;X11/XawPlus/Repeater.h&gt;<BR>
-&lt;X11/XawPlus/RepeaterP.h&gt;<BR>
-repeaterWidgetClass<BR>
-Repeater<BR>
-Command</TD>
-</TR>
-</TABLE>
-
-<P>The Repeater widget is a version of the Command button that triggers 
-at an increasing rate while it is held down. It is typically used to
-implement valuators or certain types of scrollbars.</P>
-
-<H3>Differences between Xaw and XawPlus</H3>
-
-<P>Since the 3D extensions of <I>Simple</I> are inserted, the Repeater
-widget has the additional resources <I>highlightColor,</I> <I>shadowColor</I>
-and <I>buttonBorderWidth</I>. The default <I>background</I> color is now
-grey75. These three colors and the width of the button border are used
-to draw the shape of a button with the inherited methods of the <I>Simple</I>
-class. Since XawPlus only supply rectangular buttons, the resources
-<I>shapeStyle</I> and <I>cornerRoundPercent</I> has no meaning.</P>
-
-<P>The <I>bitmap</I> and <I>leftBitmap</I> resources now also provide support
-of XPM styled pixmaps. These resources are inherited from the <I>Label</I>
-widget class. Look there for a description of this new feature.</P>
-
-<P><I>Repeater</I> provides tooltips, inherited from <I>Command</I>. If a help
-text and <I>useHelp</I> is set in the resources, a help window is popped up
-afer 1.2 seconds when the mouse pointer stay over the widgets window.</P>
-
-<H3>Resources</H3>
-
-<P>When creating a Command widget instance, the following resources are
-retrieved from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
-or from the resource database:</P>
-
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>destroyCallback</TD>
-
-<TD>Callback</TD>
-
-<TD>Pointer</TD>
-
-<TD>NULL</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>borderWidth<BR>
-height<BR>
-sensitive<BR>
-width<BR>
-x<BR>
-y</TD>
-
-<TD>BorderWidth<BR>
-Height<BR>
-Sensitive<BR>
-Width<BR>
-Position<BR>
-Position</TD>
-
-<TD>Dimension<BR>
-Dimension<BR>
-Boolean<BR>
-Dimension<BR>
-Position<BR>
-Position</TD>
-
-<TD>0<BR>
-12<BR>
-True<BR>
-12<BR>
-0<BR>
-0</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">CORE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>border<BR>
-background<BR>
-mappedWhenManaged</TD>
-
-<TD>BorderColor<BR>
-Background<BR>
-MappedWhenManaged</TD>
-
-<TD>Pixel<BR>
-Pixel<BR>
-Boolean</TD>
-
-<TD>XtDefaultForeground<BR>
-grey75<BR>
-True</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>cursor
-<BR>cursorName
-<BR>pointerColor
-<BR>pointerColorBackground
-<BR>insensitiveBorder
-<BR>international
-<BR>highlightColor
-<BR>shadowColor
-<BR>buttonBorderWidth</TD>
-
-<TD>Cursor
-<BR>Cursor
-<BR>Foreground
-<BR>Background
-<BR>Insensitive
-<BR>International
-<BR>Background
-<BR>Background
-<BR>Width</TD>
-
-<TD>Cursor
-<BR>String
-<BR>Pixel
-<BR>Pixel
-<BR>Pixmap
-<BR>Boolean
-<BR>Pixel
-<BR>Pixel
-<BR>Dimension</TD>
-
-<TD>None
-<BR>NULL
-<BR>XtDefaultForeground
-<BR>XtDefaultBackground
-<BR>NULL
-<BR>False
-<BR>grey90
-<BR>grey40
-<BR>2</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">LABEL:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>font
-<BR>fontset
-<BR>encoding
-<BR>foreground
-<BR>internalHeight
-<BR>internalWidth
-<BR>justify
-<BR>resize
-<BR>truncateLabel
-<BR>truncLeftSide
-<BR>label
-<BR>leftBitmap
-<BR>leftClipMask
-<BR>bitmap
-<BR>clipMask</TD>
-
-<TD>Font
-<BR>FontSet
-<BR>Encoding
-<BR>Foreground
-<BR>Height
-<BR>Width
-<BR>Justify
-<BR>Resize
-<BR>Truncate
-<BR>Truncate
-<BR>Label
-<BR>LeftBitmap
-<BR>LeftBitmap
-<BR>Pixmap
-<BR>Pixmap</TD>
-
-<TD>XFontStruct*
-<BR>FontSet
-<BR>unsigned char
-<BR>Pixel
-<BR>Dimension
-<BR>Dimension
-<BR>XtJustify
-<BR>Boolean
-<BR>Boolean
-<BR>Boolean
-<BR>String
-<BR>Bitmap
-<BR>ClipMask
-<BR>Bitmap
-<BR>ClipMask</TD>
-
-<TD>XtDefaultFont
-<BR>XtDefaultFontSet
-<BR>XawTextEncoding8bit
-<BR>XtDefaultForeground
-<BR>2
-<BR>4
-<BR>XtJustifyCenter
-<BR>True
-<BR>True
-<BR>False
-<BR>NULL
-<BR>None
-<BR>None
-<BR>None
-<BR>None</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">COMMAND:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>helpText
-<BR>helpBackground
-<BR>useHelp
-<BR>highlightThickness
-<BR>highlightMode
-<BR>callback
-<BR>translations
-<BR>accelerators
-<BR>ancestorSensitive</TD>
-
-<TD>Label
-<BR>Background
-<BR>Boolean
-<BR>Thickness
-<BR>Boolean
-<BR>Callback
-<BR>Translations
-<BR>Accelerators
-<BR>AncestorSensitive</TD>
-
-<TD>String
-<BR>Pixel
-<BR>Boolean
-<BR>Dimension
-<BR>Boolean
-<BR>XtCallbackList
-<BR>TranslationTable
-<BR>AcceleratorTable
-<BR>Boolean</TD>
-
-<TD>NULL
-<BR>LightGoldenrodYellow
-<BR>True
-<BR>2
-<BR>True
-<BR>NULL
-<BR>see doc or source
-<BR>NULL
-<BR>True</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">REPEATER:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>decay<BR>
-flash<BR>
-initialDelay<BR>
-minimumDelay<BR>
-repeatDelay<BR>
-startCallback<BR>
-stopCallback</TD>
-
-<TD>Decay<BR>
-Boolean<BR>
-Delay<BR>
-MinimumDelay<BR>
-Delay<BR>
-StartCallback<BR>
-StopCallback</TD>
-
-<TD>int<BR>
-Boolean<BR>
-int<BR>
-int<BR>
-int<BR>
-XtCallbackList<BR>
-XtCallbackList</TD>
-
-<TD>5 milliseconds<BR>
-FALSE<BR>
-200 milliseconds<BR>
-10 milliseconds<BR>
-50 milliseconds<BR>
-NULL<BR>
-NULL</TD>
-</TR>
-</TABLE>
-
-<P></P>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>decay</B></TD>
-
-<TD>The number of milliseconds that should be subtracted from each succeeding 
-interval while the Repeater button is being held down until the interval
-has reached <I>minimumDelay</I> milliseconds.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>flash</B></TD>
-
-<TD>Whether or not to flash the Repeater button whenever the timer goes off.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>initialDelay</B></TD>
-
-<TD>The number of milliseconds between the beginning of the Repeater button
-being held down and the first invocation of the <I>callback</I> function.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>minimumDelay</B></TD>
-
-<TD>The minimum time between callbacks in milliseconds.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>repeatDelay</B></TD>
-
-<TD>The number of milliseconds between each callback after the first
-(minus an increasing number of <I>decay</I>s).</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>startCallback</B></TD>
-
-<TD>The list of functions to invoke by the <I>start</I> action (typically
-when the Repeater button is first pressed). The callback data parameter
-is set to NULL.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>stopCallback</B></TD>
-
-<TD>The list of functions to invoke by the <I>stop</I> action (typically
-when the Repeater button is released).  The callback data parameter
-is set to NULL.</TD>
-</TR>
-</TABLE>
-
-<H3>Repeater Actions</H3>
-
-<P>The Repeater widget supports the following actions beyond those
-of the Command button:</P>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>start</B>()</TD>
-
-<TD>This invokes the functions on the <I>startCallback</I> and <I>callback</I> lists
-and sets a timer to go off in <I>initialDelay</I> milliseconds. The timer
-will cause the <I>callback</I> functions to be invoked with increasing
-frequency until the <I>stop</I> action occurs.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>stop</B>()</TD>
-
-<TD>This invokes the functions on the <I>stopCallback</I> list and prevents any
-further timers from occuring until the next <I>start</I> action.</TD>
-</TR>
-</TABLE>
-
-<P>The following are the default translation bindings used by the
-Repeater widget:</P>
-
-<BLOCKQUOTE>
-<TABLE CELLSPACING=4 CELLPADDING=0>
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP>
-<P><I>&lt;EnterWindow&gt;<BR>
-&lt;LeaveWindow&gt;<BR>
-&lt;Btn1Down&gt;<BR>
-&lt;Btn1Up&gt;</I></P>
-</TD>
-
-<TD ALIGN=LEFT VALIGN=TOP><I>highlight()<BR>
-unhighlight()<BR>
-set(), start()<BR>
-stop(), unset()</I></TD>
-</TR>
-</TABLE>
-</BLOCKQUOTE>
-
-<P></P>
-
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
-
-</BODY>
-</HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
+  <title>The Repeater Widget</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
+
+  <h3><i>The Repeater Widget</i></h3>
+
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
+
+      <td>&lt;X11/XawPlus/Repeater.h&gt;<br>
+      &lt;X11/XawPlus/RepeaterP.h&gt;<br>
+      repeaterWidgetClass<br>
+      Repeater<br>
+      Command</td>
+    </tr>
+  </table>
+
+  <p>The Repeater widget is a version of the Command button that
+  triggers at an increasing rate while it is held down. It is
+  typically used to implement valuators or certain types of
+  scrollbars.</p>
+
+  <h3>Differences between Xaw and XawPlus</h3>
+
+  <p>Since the 3D extensions of <i>Simple</i> are inserted, the
+  Repeater widget has the additional resources
+  <i>highlightColor,</i> <i>shadowColor</i> and
+  <i>buttonBorderWidth</i>. The default <i>background</i> color is
+  now grey75. These three colors and the width of the button border
+  are used to draw the shape of a button with the inherited methods
+  of the <i>Simple</i> class. Since XawPlus only supply rectangular
+  buttons, the resources <i>shapeStyle</i> and
+  <i>cornerRoundPercent</i> has no meaning.</p>
+
+  <p>The <i>bitmap</i> and <i>leftBitmap</i> resources now also
+  provide support of XPM styled pixmaps. These resources are
+  inherited from the <i>Label</i> widget class. Look there for a
+  description of this new feature.</p>
+
+  <p><i>Repeater</i> provides tooltips, inherited from
+  <i>Command</i>. If a help text and <i>useHelp</i> is set in the
+  resources, a help window is popped up afer 1.2 seconds when the
+  mouse pointer stay over the widgets window.</p>
+
+  <h3>Resources</h3>
+
+  <p>When creating a Command widget instance, the following
+  resources are retrieved from the argument list of
+  <i>XtSetValues()</i> or <i>XtVaSetValues()</i> or from the
+  resource database:</p>
+
+  <table border="1" cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
+
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
+
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
+
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>destroyCallback</td>
+
+      <td>Callback</td>
+
+      <td>Pointer</td>
+
+      <td>NULL</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      sensitive<br>
+      width<br>
+      x<br>
+      y</td>
+
+      <td>BorderWidth<br>
+      Height<br>
+      Sensitive<br>
+      Width<br>
+      Position<br>
+      Position</td>
+
+      <td>Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Dimension<br>
+      Position<br>
+      Position</td>
+
+      <td>0<br>
+      12<br>
+      True<br>
+      12<br>
+      0<br>
+      0</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">CORE:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>border<br>
+      background<br>
+      mappedWhenManaged</td>
+
+      <td>BorderColor<br>
+      Background<br>
+      MappedWhenManaged</td>
+
+      <td>Pixel<br>
+      Pixel<br>
+      Boolean</td>
+
+      <td>XtDefaultForeground<br>
+      grey75<br>
+      True</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">SIMPLE:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>cursor<br>
+      cursorName<br>
+      pointerColor<br>
+      pointerColorBackground<br>
+      insensitiveBorder<br>
+      international<br>
+      highlightColor<br>
+      shadowColor<br>
+      buttonBorderWidth</td>
+
+      <td>Cursor<br>
+      Cursor<br>
+      Foreground<br>
+      Background<br>
+      Insensitive<br>
+      International<br>
+      Background<br>
+      Background<br>
+      Width</td>
+
+      <td>Cursor<br>
+      String<br>
+      Pixel<br>
+      Pixel<br>
+      Pixmap<br>
+      Boolean<br>
+      Pixel<br>
+      Pixel<br>
+      Dimension</td>
+
+      <td>None<br>
+      NULL<br>
+      XtDefaultForeground<br>
+      XtDefaultBackground<br>
+      NULL<br>
+      False<br>
+      grey90<br>
+      grey40<br>
+      2</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">LABEL:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>font<br>
+      fontset<br>
+      encoding<br>
+      foreground<br>
+      internalHeight<br>
+      internalWidth<br>
+      justify<br>
+      resize<br>
+      truncateLabel<br>
+      truncLeftSide<br>
+      label<br>
+      leftBitmap<br>
+      leftClipMask<br>
+      bitmap<br>
+      clipMask</td>
+
+      <td>Font<br>
+      FontSet<br>
+      Encoding<br>
+      Foreground<br>
+      Height<br>
+      Width<br>
+      Justify<br>
+      Resize<br>
+      Truncate<br>
+      Truncate<br>
+      Label<br>
+      LeftBitmap<br>
+      LeftBitmap<br>
+      Pixmap<br>
+      Pixmap</td>
+
+      <td>XFontStruct*<br>
+      FontSet<br>
+      unsigned char<br>
+      Pixel<br>
+      Dimension<br>
+      Dimension<br>
+      XtJustify<br>
+      Boolean<br>
+      Boolean<br>
+      Boolean<br>
+      String<br>
+      Bitmap<br>
+      ClipMask<br>
+      Bitmap<br>
+      ClipMask</td>
+
+      <td>XtDefaultFont<br>
+      XtDefaultFontSet<br>
+      XawTextEncoding8bit<br>
+      XtDefaultForeground<br>
+      2<br>
+      4<br>
+      XtJustifyCenter<br>
+      True<br>
+      True<br>
+      False<br>
+      NULL<br>
+      None<br>
+      None<br>
+      None<br>
+      None</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">COMMAND:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>helpText<br>
+      helpBackground<br>
+      useHelp<br>
+      highlightThickness<br>
+      highlightMode<br>
+      callback<br>
+      translations<br>
+      accelerators<br>
+      ancestorSensitive</td>
+
+      <td>Label<br>
+      Background<br>
+      Boolean<br>
+      Thickness<br>
+      Boolean<br>
+      Callback<br>
+      Translations<br>
+      Accelerators<br>
+      AncestorSensitive</td>
+
+      <td>String<br>
+      Pixel<br>
+      Boolean<br>
+      Dimension<br>
+      Boolean<br>
+      XtCallbackList<br>
+      TranslationTable<br>
+      AcceleratorTable<br>
+      Boolean</td>
+
+      <td>NULL<br>
+      LightGoldenrodYellow<br>
+      True<br>
+      2<br>
+      True<br>
+      NULL<br>
+      see doc or source<br>
+      NULL<br>
+      True</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">REPEATER:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>decay<br>
+      flash<br>
+      initialDelay<br>
+      minimumDelay<br>
+      repeatDelay<br>
+      startCallback<br>
+      stopCallback</td>
+
+      <td>Decay<br>
+      Boolean<br>
+      Delay<br>
+      MinimumDelay<br>
+      Delay<br>
+      StartCallback<br>
+      StopCallback</td>
+
+      <td>int<br>
+      Boolean<br>
+      int<br>
+      int<br>
+      int<br>
+      XtCallbackList<br>
+      XtCallbackList</td>
+
+      <td>5 milliseconds<br>
+      FALSE<br>
+      200 milliseconds<br>
+      10 milliseconds<br>
+      50 milliseconds<br>
+      NULL<br>
+      NULL</td>
+    </tr>
+  </table>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>decay</b></td>
+
+      <td>The number of milliseconds that should be subtracted from
+      each succeeding interval while the Repeater button is being
+      held down until the interval has reached <i>minimumDelay</i>
+      milliseconds.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>flash</b></td>
+
+      <td>Whether or not to flash the Repeater button whenever the
+      timer goes off.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>initialDelay</b></td>
+
+      <td>The number of milliseconds between the beginning of the
+      Repeater button being held down and the first invocation of
+      the <i>callback</i> function.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>minimumDelay</b></td>
+
+      <td>The minimum time between callbacks in milliseconds.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>repeatDelay</b></td>
+
+      <td>The number of milliseconds between each callback after
+      the first (minus an increasing number of <i>decay</i>s).</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>startCallback</b></td>
+
+      <td>The list of functions to invoke by the <i>start</i>
+      action (typically when the Repeater button is first pressed).
+      The callback data parameter is set to NULL.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>stopCallback</b></td>
+
+      <td>The list of functions to invoke by the <i>stop</i> action
+      (typically when the Repeater button is released). The
+      callback data parameter is set to NULL.</td>
+    </tr>
+  </table>
+
+  <h3>Repeater Actions</h3>
+
+  <p>The Repeater widget supports the following actions beyond
+  those of the Command button:</p>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>start</b>()</td>
+
+      <td>This invokes the functions on the <i>startCallback</i>
+      and <i>callback</i> lists and sets a timer to go off in
+      <i>initialDelay</i> milliseconds. The timer will cause the
+      <i>callback</i> functions to be invoked with increasing
+      frequency until the <i>stop</i> action occurs.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>stop</b>()</td>
+
+      <td>This invokes the functions on the <i>stopCallback</i>
+      list and prevents any further timers from occuring until the
+      next <i>start</i> action.</td>
+    </tr>
+  </table>
+
+  <p>The following are the default translation bindings used by the
+  Repeater widget:</p>
+
+  <blockquote>
+    <table cellspacing="4" cellpadding="0" summary="">
+      <tr>
+        <td align="left" valign="top">
+          <p><i>&lt;EnterWindow&gt;<br>
+          &lt;LeaveWindow&gt;<br>
+          &lt;Btn1Down&gt;<br>
+          &lt;Btn1Up&gt;</i></p>
+        </td>
+
+        <td align="left" valign="top"><i>highlight()<br>
+        unhighlight()<br>
+        set(), start()<br>
+        stop(), unset()</i></td>
+      </tr>
+    </table>
+  </blockquote>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

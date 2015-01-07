@@ -2,6 +2,7 @@
 
 /*
 Copyright 2015	Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -34,9 +35,7 @@ in this Software without prior written authorization from The Open Group.
  *	By:		Chris D. Peterson
  *                      MIT X Consortium
  *
- * This file contains modifications for XawPlus, Roland Krause 2000
- * 
- * The following ressources are added:
+ * The following resources are added:
  *
  * list              List		XawIconList*    NULL
  * iconHeight	     Height		Dimension	0
@@ -232,13 +231,11 @@ _XFUNCPROTOBEGIN
  */
 
 extern void XawListChange(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     String*		/* list */,
     int			/* nitems */,
     int			/* longest */,
     Boolean		/* resize */
-#endif
 );
 
 /*	Function Name: XawListUnhighlight
@@ -248,9 +245,7 @@ extern void XawListChange(
  */
 
 extern void XawListUnhighlight(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 /*	Function Name: XawListHighlight
@@ -261,10 +256,8 @@ extern void XawListUnhighlight(
  */
 
 extern void XawListHighlight(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     int			/* item */
-#endif
 );
 
 /*	Function Name: XawListShowCurrent
@@ -274,9 +267,7 @@ extern void XawListHighlight(
  */
 
 extern XawListReturnStruct * XawListShowCurrent(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 
@@ -300,7 +291,6 @@ extern XawListReturnStruct * XawListShowCurrent(
  */
 
 extern void XawIconListChange(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawIconList*	/* list */,
     int			/* no of items in list */,
@@ -309,7 +299,6 @@ extern void XawIconListChange(
     int			/* icon height */,
     int			/* icon depth  */,
     Boolean		/* resize */
-#endif
 );
 
 #define XawIconListUnhighlight XawListUnhighlight

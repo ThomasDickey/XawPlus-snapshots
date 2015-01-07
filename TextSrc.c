@@ -344,16 +344,8 @@ XrmValuePtr	toVal;
  */
 
 XawTextPosition
-#if NeedFunctionPrototypes
 XawTextSourceRead(Widget w, XawTextPosition pos, XawTextBlock *text,
 		  int length)
-#else
-XawTextSourceRead(w, pos, text, length)
-Widget w;
-XawTextPosition pos;
-XawTextBlock *text;	
-int length;
-#endif
 {
   TextSrcObjectClass class = (TextSrcObjectClass) w->core.widget_class;
 
@@ -375,15 +367,8 @@ int length;
 
 /*ARGSUSED*/
 int
-#if NeedFunctionPrototypes
 XawTextSourceReplace (Widget w, XawTextPosition startPos, 
 		      XawTextPosition endPos, XawTextBlock *text)
-#else
-XawTextSourceReplace (w, startPos, endPos, text)
-Widget w;
-XawTextPosition startPos, endPos;
-XawTextBlock *text;
-#endif
 {
   TextSrcObjectClass class = (TextSrcObjectClass) w->core.widget_class;
 
@@ -410,20 +395,10 @@ XawTextBlock *text;
  */
 
 XawTextPosition
-#if NeedFunctionPrototypes
 XawTextSourceScan(Widget w, XawTextPosition position,
 		  XawTextScanType type, XawTextScanDirection dir,
 		  int count,
 		  Boolean include)
-#else
-XawTextSourceScan(w, position, type, dir, count, include)
-Widget                w;
-XawTextPosition       position;
-XawTextScanType       type;
-XawTextScanDirection  dir;
-int     	      count;
-Boolean	              include;
-#endif
 {
   TextSrcObjectClass class = (TextSrcObjectClass) w->core.widget_class;
 
@@ -446,17 +421,9 @@ Boolean	              include;
  */
 
 XawTextPosition 
-#if NeedFunctionPrototypes
 XawTextSourceSearch(Widget w, XawTextPosition position,
 		    XawTextScanDirection dir,
 		    XawTextBlock *text)
-#else
-XawTextSourceSearch(w, position, dir, text)
-Widget                w;
-XawTextPosition       position;
-XawTextScanDirection  dir;
-XawTextBlock *        text;
-#endif
 {
   TextSrcObjectClass class = (TextSrcObjectClass) w->core.widget_class;
 
@@ -481,19 +448,9 @@ XawTextBlock *        text;
  */
 
 Boolean
-#if NeedFunctionPrototypes
 XawTextSourceConvertSelection(Widget w, Atom *selection, Atom *target, 
 			      Atom *type, XtPointer *value,
 			      unsigned long *length, int *format)
-#else
-XawTextSourceConvertSelection(w, selection, 
-			      target, type, value, length, format)
-Widget w;
-Atom * selection, * target, * type;
-XtPointer * value;
-unsigned long * length;
-int * format;
-#endif
 {
   TextSrcObjectClass class = (TextSrcObjectClass) w->core.widget_class;
 
@@ -515,15 +472,8 @@ int * format;
  */
 
 void
-#if NeedFunctionPrototypes
 XawTextSourceSetSelection(Widget w, XawTextPosition left, 
 			  XawTextPosition right, Atom selection)
-#else
-XawTextSourceSetSelection(w, left, right, selection)
-Widget w;
-XawTextPosition left, right;
-Atom selection;
-#endif
 {
   TextSrcObjectClass class = (TextSrcObjectClass) w->core.widget_class;
 
@@ -547,12 +497,7 @@ Atom selection;
  *  
  */
 XrmQuark
-#if NeedFunctionPrototypes
 _XawTextFormat(TextWidget tw)
-#else
-_XawTextFormat(tw)
-    TextWidget tw;
-#endif
 {
   return (((TextSrcObject)(tw->text.source))->textSrc.text_format);
 }

@@ -1,221 +1,250 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>Box Widget</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<H3><I>The Box Widget</I></H3>
+  <title>Box Widget</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
 
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
 
-<TD>&lt;X11/XawPlus/Box.h&gt;<BR>
-&lt;X11/XawPlus/BoxP.h&gt;<BR>
-boxWidgetClass<BR>
-Box<BR>
-Composite</TD>
-</TR>
-</TABLE>
+  <h3><i>The Box Widget</i></h3>
 
-<P>The Box widget provides geometry management of arbitrary widgets in
-a box of a specified dimension. The children are rearranged when resizing
-events occur either on the Box or its children, or when children are managed
-or unmanaged. The Box widget always attempts to pack its children as tightly
-as possible within the geometry allowed by its parent.</P>
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
 
-<P>Box widgets are commonly used to manage a related set of buttons and
-are often called ButtonBox widgets, but the children are not limited to
-buttons. The Box's children are arranged on a background that has its own
-specified dimensions and color.</P>
+      <td>&lt;X11/XawPlus/Box.h&gt;<br>
+      &lt;X11/XawPlus/BoxP.h&gt;<br>
+      boxWidgetClass<br>
+      Box<br>
+      Composite</td>
+    </tr>
+  </table>
 
-<H3>Differences between Xaw and XawPlus</H3>
+  <p>The Box widget provides geometry management of arbitrary
+  widgets in a box of a specified dimension. The children are
+  rearranged when resizing events occur either on the Box or its
+  children, or when children are managed or unmanaged. The Box
+  widget always attempts to pack its children as tightly as
+  possible within the geometry allowed by its parent.</p>
 
-<P>The Background color is changed from <I>XtDefaultBackground</I> to <I>grey75</I>.</P>
+  <p>Box widgets are commonly used to manage a related set of
+  buttons and are often called ButtonBox widgets, but the children
+  are not limited to buttons. The Box's children are arranged on a
+  background that has its own specified dimensions and color.</p>
 
-<H3>Resources</H3>
+  <h3>Differences between Xaw and XawPlus</h3>
 
-<P>When creating a Box widget instance, the following resources are retrieved
-from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
-or from the resource database:</P>
+  <p>The Background color is changed from
+  <i>XtDefaultBackground</i> to <i>grey75</i>.</p>
 
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
+  <h3>Resources</h3>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+  <p>When creating a Box widget instance, the following resources
+  are retrieved from the argument list of <i>XtSetValues()</i> or
+  <i>XtVaSetValues()</i> or from the resource database:</p>
 
-<TR>
-<TD>destroyCallback</TD>
+  <table border="1" cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
 
-<TD>Callback</TD>
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
 
-<TD>Pointer</TD>
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
 
-<TD>NULL</TD>
-</TR>
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
 
-<TR>
-<TD>borderWidth<BR>
-height<BR>
-width<BR>
-sensitive<BR>
-x<BR>
-y</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>BorderWidth<BR>
-Height<BR>
-Width<BR>
-Sensitive<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>Dimension<BR>
-Dimension<BR>
-Dimension<BR>
-Boolean<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>1<BR>
-0<BR>
-0<BR>
-True<BR>
-0<BR>
-0</TD>
-</TR>
+    <tr>
+      <td>destroyCallback</td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">CORE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td>Callback</td>
 
-<TR>
-<TD>border<BR>
-background<BR>
-mappedWhenManaged</TD>
+      <td>Pointer</td>
 
-<TD>BorderColor<BR>
-Background<BR>
-MappedWhenManaged</TD>
+      <td>NULL</td>
+    </tr>
 
-<TD>Pixel<BR>
-Pixel<BR>
-Boolean</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
 
-<TD>XtDefaultForeground<BR>
-grey75<BR>
-True</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">BOX:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD>hSpace<BR>
-vSpace<BR>
-orientation</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>HSpace<BR>
-VSpace<BR>
-Orientation</TD>
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      width<br>
+      sensitive<br>
+      x<br>
+      y</td>
 
-<TD>Dimension<BR>
-Dimension<BR>
-XtOrientation</TD>
+      <td>BorderWidth<br>
+      Height<br>
+      Width<br>
+      Sensitive<br>
+      Position<br>
+      Position</td>
 
-<TD>4<BR>
-4<BR>
-vertical</TD>
-</TR>
-</TABLE>
+      <td>Dimension<br>
+      Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Position<br>
+      Position</td>
 
-<P></P>
+      <td>1<br>
+      0<br>
+      0<br>
+      True<br>
+      0<br>
+      0</td>
+    </tr>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>hSpace<BR>
-vSpace</B></TD>
+    <tr>
+      <td bgcolor="#C0C0C0">CORE:</td>
 
-<TD>The amount of space, in pixels, to leave between the children. This
-resource specifies the amount of space left between the outermost children
-and the edge of the box.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>orientation</B></TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>Specifies whether the preferred shape of the box (i.e. the result returned
-by the query_geometry class method) is tall and narrow <I>XtorientVertical</I>
-or short and wide <I>XtorientHorizontal</I>. When the Box is a child of
-a parent which enforces width constraints, it is usually better to specify
-<I>XtorientVertical</I> (the default). When the parent enforces height
-constraints, it is usually better to specify <I>XtorientHorizontal</I>.</TD>
-</TR>
-</TABLE>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<H3>Layout Semantic</H3>
+    <tr>
+      <td>border<br>
+      background<br>
+      mappedWhenManaged</td>
 
-<P>Each time a child is managed or unmanaged, the Box widget will attempt
-to reposition the remaining children to compact the box. Children are positioned
-in order left to right or top to bottom. The packing algorithm used depends
-on the <I>orientation</I> of the Box.</P>
+      <td>BorderColor<br>
+      Background<br>
+      MappedWhenManaged</td>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XtorientVertical</B></TD>
+      <td>Pixel<br>
+      Pixel<br>
+      Boolean</td>
 
-<TD>When the next child does not fit on the current row, a new row is started.
-If a child is wider than the width of the box, the box will request a larger
-width from its parent and will begin the layout process from the beginning
-if a new width is granted.</TD>
-</TR>
+      <td>XtDefaultForeground<br>
+      grey75<br>
+      True</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XtorientHorizontal</B></TD>
+    <tr>
+      <td bgcolor="#C0C0C0">BOX:</td>
 
-<TD>When the next child does not fit in the current column, a new column
-is started. If a child is taller than the height of the box, the box will
-request a larger height from its parent and will begin the layout process
-from the beginning if a new height is granted.</TD>
-</TR>
-</TABLE>
+      <td bgcolor="#C0C0C0"></td>
 
-<P>After positioning all children, the Box widget attempts to shrink its
-own size to the minimum dimensions required for the layout.</P>
+      <td bgcolor="#C0C0C0"></td>
 
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-</BODY>
-</HTML>
+    <tr>
+      <td>hSpace<br>
+      vSpace<br>
+      orientation</td>
+
+      <td>HSpace<br>
+      VSpace<br>
+      Orientation</td>
+
+      <td>Dimension<br>
+      Dimension<br>
+      XtOrientation</td>
+
+      <td>4<br>
+      4<br>
+      vertical</td>
+    </tr>
+  </table>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>hSpace<br>
+      vSpace</b></td>
+
+      <td>The amount of space, in pixels, to leave between the
+      children. This resource specifies the amount of space left
+      between the outermost children and the edge of the box.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>orientation</b></td>
+
+      <td>Specifies whether the preferred shape of the box (i.e.
+      the result returned by the query_geometry class method) is
+      tall and narrow <i>XtorientVertical</i> or short and wide
+      <i>XtorientHorizontal</i>. When the Box is a child of a
+      parent which enforces width constraints, it is usually better
+      to specify <i>XtorientVertical</i> (the default). When the
+      parent enforces height constraints, it is usually better to
+      specify <i>XtorientHorizontal</i>.</td>
+    </tr>
+  </table>
+
+  <h3>Layout Semantic</h3>
+
+  <p>Each time a child is managed or unmanaged, the Box widget will
+  attempt to reposition the remaining children to compact the box.
+  Children are positioned in order left to right or top to bottom.
+  The packing algorithm used depends on the <i>orientation</i> of
+  the Box.</p>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>XtorientVertical</b></td>
+
+      <td>When the next child does not fit on the current row, a
+      new row is started. If a child is wider than the width of the
+      box, the box will request a larger width from its parent and
+      will begin the layout process from the beginning if a new
+      width is granted.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>XtorientHorizontal</b></td>
+
+      <td>When the next child does not fit in the current column, a
+      new column is started. If a child is taller than the height
+      of the box, the box will request a larger height from its
+      parent and will begin the layout process from the beginning
+      if a new height is granted.</td>
+    </tr>
+  </table>
+
+  <p>After positioning all children, the Box widget attempts to
+  shrink its own size to the minimum dimensions required for the
+  layout.</p>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>
