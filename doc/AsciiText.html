@@ -1,277 +1,306 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>The AsciiText Widget</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<H3><I>The AsciiText Widget</I></H3>
+  <title>The AsciiText Widget</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
 
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
 
-<TD>&lt;X11/XawPlus/AsciiText.h&gt;<BR>
-&lt;X11/XawPlus/AsciiTextP.h&gt;<BR>
-asciiTextWidgetClass<BR>
-AsciiText<BR>
-Text</TD>
-</TR>
-</TABLE>
+  <h3><i>The AsciiText Widget</i></h3>
 
-<P>The AsciiText widget is really a collection of smaller parts. It
-includes the Text widget, an <I>AsciiSrc</I>, and an <I>AsciiSink</I> for ASCII
-locales or a <I>MultiSrc</I>, and an <I>MultiSink</I> for non-ASCII locales.
-This is dependent on the <I>international</I> resource.</P>
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
 
-<P>If you want to specify resources for <I>AsciiSrc</I> or <I>AsciiSink</I>
-in a resource file be sure to use <B>*AsciiText*resource_name</B> instead of
-<B>*AsciiText.resource_name</B>, since they actually belong to the
-children of the AsciiText widget, and not the AsciiText widget itself.
-However, these resources may be set directly on the AsciiText widget at
-widget creation time, or via <I>XtSetValues()</I>.</P>
+      <td>&lt;X11/XawPlus/AsciiText.h&gt;<br>
+      &lt;X11/XawPlus/AsciiTextP.h&gt;<br>
+      asciiTextWidgetClass<br>
+      AsciiText<br>
+      Text</td>
+    </tr>
+  </table>
 
-<H3>Differences between Xaw and XawPlus</H3>
+  <p>The AsciiText widget is really a collection of smaller parts.
+  It includes the Text widget, an <i>AsciiSrc</i>, and an
+  <i>AsciiSink</i> for ASCII locales or a <i>MultiSrc</i>, and an
+  <i>MultiSink</i> for non-ASCII locales. This is dependent on the
+  <i>international</i> resource.</p>
 
-<P>Since the 3D extensions of <I>Simple</I> are inserted, the
-AsciiText widget has the additional (but at this time not used) resources
-<I>highlightColor,</I> <I>shadowColor</I> and <I>buttonBorderWidth</I>.
-The default <I>background</I> color is now grey75.</P>
+  <p>If you want to specify resources for <i>AsciiSrc</i> or
+  <i>AsciiSink</i> in a resource file be sure to use
+  <b>*AsciiText*resource_name</b> instead of
+  <b>*AsciiText.resource_name</b>, since they actually belong to
+  the children of the AsciiText widget, and not the AsciiText
+  widget itself. However, these resources may be set directly on
+  the AsciiText widget at widget creation time, or via
+  <i>XtSetValues()</i>.</p>
 
-<H3>Resources</H3>
+  <h3>Differences between Xaw and XawPlus</h3>
 
-<P>When creating a AsciiText widget instance, the following resources are retrieved
-from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
-or from the resource database:</P>
+  <p>Since the 3D extensions of <i>Simple</i> are inserted, the
+  AsciiText widget has the additional (but at this time not used)
+  resources <i>highlightColor,</i> <i>shadowColor</i> and
+  <i>buttonBorderWidth</i>. The default <i>background</i> color is
+  now grey75.</p>
 
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
+  <h3>Resources</h3>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+  <p>When creating a AsciiText widget instance, the following
+  resources are retrieved from the argument list of
+  <i>XtSetValues()</i> or <i>XtVaSetValues()</i> or from the
+  resource database:</p>
 
-<TR>
-<TD>destroyCallback</TD>
-<TD>Callback</TD>
-<TD>Pointer</TD>
-<TD>NULL</TD>
-</TR>
+  <table border="1" cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
 
-<TR>
-<TD>borderWidth<BR>
-height<BR>
-sensitive<BR>
-width<BR>
-x<BR>
-y</TD>
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
 
-<TD>BorderWidth<BR>
-Height<BR>
-Sensitive<BR>
-Width<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
 
-<TD>Dimension<BR>
-Dimension<BR>
-Boolean<BR>
-Dimension<BR>
-Position<BR>
-Position</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
 
-<TD>0<BR>
-12<BR>
-True<BR>
-100<BR>
-0<BR>
-0</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">CORE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD>border<BR>
-background<BR>
-mappedWhenManaged</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>BorderColor<BR>
-Background<BR>
-MappedWhenManaged</TD>
+    <tr>
+      <td>destroyCallback</td>
 
-<TD>Pixel<BR>
-Pixel<BR>
-Boolean</TD>
+      <td>Callback</td>
 
-<TD>XtDefaultForeground<BR>
-grey75<BR>
-True</TD>
-</TR>
+      <td>Pointer</td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td>NULL</td>
+    </tr>
 
-<TR>
-<TD>cursor
-<BR>cursorName
-<BR>pointerColor
-<BR>pointerColorBackground
-<BR>insensitiveBorder
-<BR>international
-<BR>highlightColor
-<BR>shadowColor
-<BR>buttonBorderWidth</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
 
-<TD>Cursor
-<BR>Cursor
-<BR>Foreground
-<BR>Background
-<BR>Insensitive
-<BR>International
-<BR>Background
-<BR>Background
-<BR>Width</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>Cursor
-<BR>String
-<BR>Pixel
-<BR>Pixel
-<BR>Pixmap
-<BR>Boolean
-<BR>Pixel
-<BR>Pixel
-<BR>Dimension</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>None
-<BR>NULL
-<BR>XtDefaultForeground
-<BR>XtDefaultBackground
-<BR>NULL
-<BR>False
-<BR>grey90
-<BR>grey40
-<BR>2</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">TEXT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      sensitive<br>
+      width<br>
+      x<br>
+      y</td>
 
-<TR>
-<TD>autoFill<BR>
-bottomMargin<BR>
-topMargin<BR>
-leftMargin<BR>
-rightMargin<BR>
-displayPosition<BR>
-insertPosition<BR>
-resize<BR>
-scrollHorizontal<BR>
-scrollVertical<BR>
-selectTypes<BR>
-textSink<BR>
-textSource<BR>
-unrealizeCallback<BR>
-wrap<BR>
-displayCaret</TD>
+      <td>BorderWidth<br>
+      Height<br>
+      Sensitive<br>
+      Width<br>
+      Position<br>
+      Position</td>
 
-<TD>AutoFill<BR>
-Margin<BR>
-Margin<BR>
-Margin<BR>
-Margin<BR>
-TextPosition<BR>
-TextPosition<BR>
-Resize<BR>
-Scroll<BR>
-Scroll<BR>
-SelectTypes<BR>
-TextSink<BR>
-TextSource<BR>
-Callback<BR>
-Wrap<BR>
-Output</TD>
+      <td>Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Dimension<br>
+      Position<br>
+      Position</td>
 
-<TD>Boolean<BR>
-Position<BR>
-Position<BR>
-Position<BR>
-Position<BR>
-XawTextPosition<BR>
-XawTextPosition<BR>
-XawTextResizeMode<BR>
-XawTextScrollMode<BR>
-XawTextScrollMode<BR>
-Pointer<BR>
-Widget<BR>
-Widget<BR>
-Callback<BR>
-XawTextWrapMode<BR>
-Boolean</TD>
+      <td>0<br>
+      12<br>
+      True<br>
+      100<br>
+      0<br>
+      0</td>
+    </tr>
 
-<TD>False<BR>
-2<BR>
-2<BR>
-2<BR>
-4<BR>
-0<BR>
-0<BR>
-XawTextResizeNever<BR>
-XawtextScrollNever<BR>
-XawtextScrollNever<BR>
-see documentation<BR>
-NULL<BR>
-NULL<BR>
-NULL<BR>
-XawTextWrapNever<BR>
-True</TD>
-</TR>
+    <tr>
+      <td bgcolor="#C0C0C0">CORE:</td>
 
-</TABLE>
+      <td bgcolor="#C0C0C0"></td>
 
-<P></P>
+      <td bgcolor="#C0C0C0"></td>
 
-<P>Note, that the AsciiText widget class don't add any resources to the
-Text widget class.</P>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<P></P>
+    <tr>
+      <td>border<br>
+      background<br>
+      mappedWhenManaged</td>
 
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+      <td>BorderColor<br>
+      Background<br>
+      MappedWhenManaged</td>
 
-</BODY>
-</HTML>
+      <td>Pixel<br>
+      Pixel<br>
+      Boolean</td>
+
+      <td>XtDefaultForeground<br>
+      grey75<br>
+      True</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">SIMPLE:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>cursor<br>
+      cursorName<br>
+      pointerColor<br>
+      pointerColorBackground<br>
+      insensitiveBorder<br>
+      international<br>
+      highlightColor<br>
+      shadowColor<br>
+      buttonBorderWidth</td>
+
+      <td>Cursor<br>
+      Cursor<br>
+      Foreground<br>
+      Background<br>
+      Insensitive<br>
+      International<br>
+      Background<br>
+      Background<br>
+      Width</td>
+
+      <td>Cursor<br>
+      String<br>
+      Pixel<br>
+      Pixel<br>
+      Pixmap<br>
+      Boolean<br>
+      Pixel<br>
+      Pixel<br>
+      Dimension</td>
+
+      <td>None<br>
+      NULL<br>
+      XtDefaultForeground<br>
+      XtDefaultBackground<br>
+      NULL<br>
+      False<br>
+      grey90<br>
+      grey40<br>
+      2</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">TEXT:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>autoFill<br>
+      bottomMargin<br>
+      topMargin<br>
+      leftMargin<br>
+      rightMargin<br>
+      displayPosition<br>
+      insertPosition<br>
+      resize<br>
+      scrollHorizontal<br>
+      scrollVertical<br>
+      selectTypes<br>
+      textSink<br>
+      textSource<br>
+      unrealizeCallback<br>
+      wrap<br>
+      displayCaret</td>
+
+      <td>AutoFill<br>
+      Margin<br>
+      Margin<br>
+      Margin<br>
+      Margin<br>
+      TextPosition<br>
+      TextPosition<br>
+      Resize<br>
+      Scroll<br>
+      Scroll<br>
+      SelectTypes<br>
+      TextSink<br>
+      TextSource<br>
+      Callback<br>
+      Wrap<br>
+      Output</td>
+
+      <td>Boolean<br>
+      Position<br>
+      Position<br>
+      Position<br>
+      Position<br>
+      XawTextPosition<br>
+      XawTextPosition<br>
+      XawTextResizeMode<br>
+      XawTextScrollMode<br>
+      XawTextScrollMode<br>
+      Pointer<br>
+      Widget<br>
+      Widget<br>
+      Callback<br>
+      XawTextWrapMode<br>
+      Boolean</td>
+
+      <td>False<br>
+      2<br>
+      2<br>
+      2<br>
+      4<br>
+      0<br>
+      0<br>
+      XawTextResizeNever<br>
+      XawtextScrollNever<br>
+      XawtextScrollNever<br>
+      see documentation<br>
+      NULL<br>
+      NULL<br>
+      NULL<br>
+      XawTextWrapNever<br>
+      True</td>
+    </tr>
+  </table>
+
+  <p>Note, that the AsciiText widget class don't add any resources
+  to the Text widget class.</p>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

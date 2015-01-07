@@ -1,32 +1,9 @@
 /* $Xorg: MultiSinkP.h,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $ */
 
-/*
- * Copyright 1991 by OMRON Corporation
- *
- * Permission to use, copy, modify, distribute, and sell this software and its
- * documentation for any purpose is hereby granted without fee, provided that
- * the above copyright notice appear in all copies and that both that
- * copyright notice and this permission notice appear in supporting
- * documentation, and that the name OMRON not be used in
- * advertising or publicity pertaining to distribution of the software without
- * specific, written prior permission.  OMRON make no representations
- * about the suitability of this software for any purpose.  It is provided
- * "as is" without express or implied warranty.
- *
- * OMRON DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
- * INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
- * EVENT SHALL OMRON BE LIABLE FOR ANY SPECIAL, INDIRECT OR
- * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
- * DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
- * TORTUOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
- * PERFORMANCE OF THIS SOFTWARE.
- *
- *      Author: Li Yuhong	 OMRON Corporation
- */
-
-
 /*********************************************************************
 
+Copyright 2015 Thomas E. Dickey
+Copyright 2002 Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -70,13 +47,34 @@ WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
-This file contains modifications for XawPlus, Roland Krause 2002
-
 ***********************************************************************/
+
+/*
+ * Copyright 1991 by OMRON Corporation
+ *
+ * Permission to use, copy, modify, distribute, and sell this software and its
+ * documentation for any purpose is hereby granted without fee, provided that
+ * the above copyright notice appear in all copies and that both that
+ * copyright notice and this permission notice appear in supporting
+ * documentation, and that the name OMRON not be used in
+ * advertising or publicity pertaining to distribution of the software without
+ * specific, written prior permission.  OMRON make no representations
+ * about the suitability of this software for any purpose.  It is provided
+ * "as is" without express or implied warranty.
+ *
+ * OMRON DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+ * INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
+ * EVENT SHALL OMRON BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+ * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+ * DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+ * TORTUOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ * PERFORMANCE OF THIS SOFTWARE.
+ *
+ *      Author: Li Yuhong	 OMRON Corporation
+ */
 
 /* 
  * multiSinkP.h - Private definitions for multiSink object
- * 
  */
 
 #ifndef _XawMultiSinkP_h
@@ -146,12 +144,10 @@ typedef struct _MultiSinkRec {
  *******************************************/
 
 extern void _XawMultiSinkPosToXY(
-#if NeedFunctionPrototypes
     Widget			/* w */,
     XawTextPosition		/* pos */,
     Position *			/* x */,
     Position *			/*y */
-#endif
 );
 
 #endif /* _XawMultiSinkP_h */

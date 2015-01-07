@@ -1,6 +1,7 @@
 /* $Xorg: SimpleMenu.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $ */
 
 /*
+Copyright 2015 Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -815,12 +816,7 @@ Cardinal * num_params;
  */
 
 void
-#if NeedFunctionPrototypes
 XawSimpleMenuAddGlobalActions(XtAppContext app_con)
-#else
-XawSimpleMenuAddGlobalActions(app_con)
-XtAppContext app_con;
-#endif
 {
     XtInitializeWidgetClass(simpleMenuWidgetClass);
     XmuCallInitializers( app_con );
@@ -834,12 +830,7 @@ XtAppContext app_con;
  */
 
 Widget
-#if NeedFunctionPrototypes
 XawSimpleMenuGetActiveEntry(Widget w)
-#else
-XawSimpleMenuGetActiveEntry(w)
-Widget w;
-#endif
 {
     SimpleMenuWidget smw = (SimpleMenuWidget) w;
 
@@ -853,12 +844,7 @@ Widget w;
  */
 
 void
-#if NeedFunctionPrototypes
 XawSimpleMenuClearActiveEntry(Widget w)
-#else
-XawSimpleMenuClearActiveEntry(w)
-Widget w;
-#endif
 {
     SimpleMenuWidget smw = (SimpleMenuWidget) w;
 

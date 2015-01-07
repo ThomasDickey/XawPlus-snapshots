@@ -96,16 +96,12 @@ This file contains modifications for XawPlus, Roland Krause 2000
  *****************************************************/
  
 static XawIcTableList CurrentSharedIcTable( 
-#if NeedFunctionPrototypes
     XawVendorShellExtPart* /* ve */ 
-#endif
 );
 
 static void DestroyIC( 
-#if NeedFunctionPrototypes
     Widget /* w */, 
     XawVendorShellExtPart* /* ve */
-#endif
 );
 
 static XtResource resources[] =
@@ -1413,13 +1409,8 @@ static void Destroy( w, ve )
  ********************************************/
 
 void
-#if NeedFunctionPrototypes
 _XawImResizeVendorShell( 
     Widget w )
-#else
-_XawImResizeVendorShell( w )
-    Widget w;
-#endif
 {
     XawVendorShellExtPart *ve;
 
@@ -1430,13 +1421,8 @@ _XawImResizeVendorShell( w )
 
 
 Dimension
-#if NeedFunctionPrototypes
 _XawImGetShellHeight( 
     Widget w )
-#else
-_XawImGetShellHeight( w )
-    Widget	w;
-#endif
 {
     XawVendorShellExtPart *ve;
 
@@ -1448,13 +1434,8 @@ _XawImGetShellHeight( w )
 }
 
 void
-#if NeedFunctionPrototypes
 _XawImRealize( 
     Widget w )
-#else
-_XawImRealize( w )
-    Widget w;
-#endif
 {
     XawVendorShellExtPart	*ve;
     extern void XawVendorShellExtResize();
@@ -1468,14 +1449,9 @@ _XawImRealize( w )
 }
 
 void
-#if NeedFunctionPrototypes
 _XawImInitialize( 
     Widget w, 
     Widget ext )
-#else
-_XawImInitialize( w, ext )
-    Widget w, ext;
-#endif
 {
     XawVendorShellExtPart	*ve;
 
@@ -1488,13 +1464,8 @@ _XawImInitialize( w, ext )
 }
 
 void
-#if NeedFunctionPrototypes
 _XawImReconnect( 
     Widget inwidg )
-#else
-_XawImReconnect( inwidg )
-    Widget	inwidg;
-#endif
 {
     XawVendorShellExtPart	*ve;
     VendorShellWidget		vw;
@@ -1506,13 +1477,8 @@ _XawImReconnect( inwidg )
 }
 
 void
-#if NeedFunctionPrototypes
 _XawImRegister(
     Widget inwidg)
-#else
-_XawImRegister(inwidg)
-    Widget	inwidg;
-#endif
 {
     XawVendorShellExtPart	*ve;
     VendorShellWidget		vw;
@@ -1524,13 +1490,8 @@ _XawImRegister(inwidg)
 }
 
 void
-#if NeedFunctionPrototypes
 _XawImUnregister(
     Widget inwidg)
-#else
-_XawImUnregister(inwidg)
-    Widget	inwidg;
-#endif
 {
     XawVendorShellExtPart	*ve;
     VendorShellWidget		vw;
@@ -1542,51 +1503,31 @@ _XawImUnregister(inwidg)
 }
 
 void
-#if NeedFunctionPrototypes
 _XawImSetValues( 
     Widget inwidg, 
     ArgList args, 
     Cardinal num_args )
-#else
-_XawImSetValues( inwidg, args, num_args )
-    Widget	inwidg;
-    ArgList	args;
-    Cardinal	num_args;
-#endif
 {
     SetFocusValues( inwidg, args, num_args, FALSE );
 }
 
 void
-#if NeedFunctionPrototypes
 _XawImSetFocusValues(
     Widget inwidg, 
     ArgList args, 
     Cardinal num_args)
-#else
-_XawImSetFocusValues(inwidg, args, num_args)
-    Widget	inwidg;
-    ArgList	args;
-    Cardinal	num_args;
-#endif
 {
     SetFocusValues(inwidg, args, num_args, TRUE);
 }
 
 void
-#if NeedFunctionPrototypes
 _XawImUnsetFocus(
     Widget inwidg)
-#else
-_XawImUnsetFocus(inwidg)
-    Widget	inwidg;
-#endif
 {
     UnsetFocus(inwidg);
 }
 
 int
-#if NeedFunctionPrototypes
 _XawImWcLookupString( 
     Widget inwidg, 
     XKeyPressedEvent *event,
@@ -1594,16 +1535,6 @@ _XawImWcLookupString(
     int bytes_buffer,
     KeySym *keysym_return, 
     Status *status_return)
-#else
-_XawImWcLookupString( inwidg, event, buffer_return, bytes_buffer,
-		       keysym_return, status_return)
-    Widget	inwidg;
-    XKeyPressedEvent*	event;
-    wchar_t*	buffer_return;
-    int		bytes_buffer;
-    KeySym*	keysym_return;
-    Status*	status_return;
-#endif
 {
     XawVendorShellExtPart*	ve;
     VendorShellWidget		vw;
@@ -1626,13 +1557,8 @@ _XawImWcLookupString( inwidg, event, buffer_return, bytes_buffer,
 }
 
 int
-#if NeedFunctionPrototypes
 _XawImGetImAreaHeight(
     Widget w)
-#else
-_XawImGetImAreaHeight( w )
-    Widget w;
-#endif
 {
     XawVendorShellExtPart	*ve;
     VendorShellWidget		vw;
@@ -1644,13 +1570,8 @@ _XawImGetImAreaHeight( w )
 }
 
 void
-#if NeedFunctionPrototypes
 _XawImCallVendorShellExtResize(
     Widget w)
-#else
-_XawImCallVendorShellExtResize( w )
-    Widget w;
-#endif
 {
     XawVendorShellExtPart	*ve;
     VendorShellWidget		vw;
@@ -1668,15 +1589,9 @@ _XawImCallVendorShellExtResize( w )
  * core Destroy method.  Sheeran, Omron KK 93/08/05 */
 
 void
-#if NeedFunctionPrototypes
 _XawImDestroy( 
     Widget w, 
     Widget ext )
-#else
-_XawImDestroy( w, ext )
-    Widget w;
-    Widget ext;
-#endif
 {
     XawVendorShellExtPart        *ve;
 

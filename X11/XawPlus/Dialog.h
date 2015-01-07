@@ -2,6 +2,8 @@
 
 /************************************************************************
 
+Copyright 2015 Thomas E. Dickey
+Copyright 2002 Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -44,8 +46,6 @@ ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
 WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
-
-This file contains modifications for XawPlus, Roland Krause 2002
 
 ************************************************************************/
 
@@ -101,18 +101,14 @@ extern WidgetClass dialogWidgetClass;
 _XFUNCPROTOBEGIN
 
 extern void XawDialogAddButton(
-#if NeedFunctionPrototypes
     Widget		/* dialog */,
     String		/* name */,
     XtCallbackProc	/* function */,
     XtPointer		/* client_data */
-#endif
 );
 
 extern char *XawDialogGetValueString(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 _XFUNCPROTOEND

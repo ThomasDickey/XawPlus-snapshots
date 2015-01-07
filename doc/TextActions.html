@@ -1,585 +1,689 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>Text Widget Actions</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
-
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
-
-<H3><I>Text Widget Actions</I></H3>
-
-<P>All editing functions are performed by translation manager actions that may
-be specified through the <I>translations</I> resource in the Text widget.</P>
-
-<H3>Differences between Xaw and XawPlus</H3>
-
-<P>None.</P>
-
-<H3>Cursor Movement Actions</H3>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>forward-character</B>()<BR>
-<B>backward-character</B>()</TD>
-<TD>These actions move the insert point forward or backward one character in
-the buffer.  If the insert point is at the end or beginning of a line
-this action will move the insert point to the next (or previous) line.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>backward-character</B>()</TD>
-<TD>These actions move the insert point forward or backward one character in
-the buffer.  If the insert point is at the end or beginning of a line
-this action will move the insert point to the next (or previous) line.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>forward-word</B>()<BR>
-<B> backward-word</B>()</TD>
-<TD>These actions move the insert point to the next or previous word boundary.
-A word boundary is defined as a Space, Tab or Carriage Return.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>forward-paragraph</B>()<BR>
-<B>backward-paragraph</B>()</TD>
-<TD>These actions move the insert point to the next or previous paragraph boundary.
-A paragraph boundary is defined as two Carriage Returns in a row with only
-Spaces or Tabs between them.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>beginning-of-line</B>()<BR>
-<B>end-of-line</B>()</TD>
-<TD>These actions move to the beginning or end of the current line.  If the
-insert point is already at the end or beginning of the line then no action is taken.
-</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>next-line</B>()<BR>
-<B>previous-line</B>()</TD>
-<TD>These actions move the insert point up or down one line.  If the insert
-point is currently N characters from the beginning of the line then it
-will be N characters from the beginning of the next or previous line.
-If N is past the end of the line, the insert point is placed at the end
-of the line.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>next-page</B>()<BR>
-<B>previous-page</B>()</TD>
-<TD>These actions move the insert point up or down one page in the file.
-One page is defined as the current height of the text widget.  The
-insert point is always placed at the first character of the top line by
-this action.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>beginning-of-file</B>()<BR>
-<B>end-of-file</B>()</TD>
-<TD>These actions place the insert point at the beginning or end of the
-current text buffer.  The text widget is then scrolled the minimum
-amount necessary to make the new insert point location visible.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>scroll-one-line-up</B>()<BR>
-<B>scroll-one-line-down</B>()</TD>
-<TD>These actions scroll the current text field up or down by one line.
-They do not move the insert point.  Other than the scrollbars this is
-the only way that the insert point may be moved off of the visible text
-area.  The widget will be scrolled so that the insert point is back on
-the screen as soon as some other action is executed.</TD>
-</TR>
-</TABLE>
-
-<H3>Delete Actions</H3>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%">
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>delete-next-character</B>()<BR>
-<B>delete-previous-character</B>()</TD>
-<TD>These actions remove the character immediately before or after the 
-insert point.  If a Carriage Return is removed then the next line is
-appended to the end of the current line.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>delete-next-word</B>()<BR>
-<B>delete-previous-word</B>()</TD>
-<TD>These actions remove all characters between the insert point location and
-the next word boundary. A word boundary is defined as a Space, Tab or
-Carriage Return.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>delete-selection</B>()</TD>
-<TD>This action removes all characters in the current selection.
-The selection can be set with the selection actions.</TD>
-</TR>
-</TABLE>
-
-<H3>Selection Actions</H3>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>select-word</B>()</TD>
-<TD>This action selects the word in which the insert point is currently located.
-If the insert point is between words then it will select the previous word.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>select-all</B>()</TD>
-<TD>This action selects the entire text buffer.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>select-start</B>()</TD>
-<TD>This action sets the insert point to the current pointer location. It
-will then begin a selection at this location. If many of these
-selection actions occur quickly in succession then the selection count
-mechanism will be invoked (see the section titled <I>Text Selections for
-Application Programmers</I> for details).</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>select-adjust</B>()</TD>
-<TD>This action allows a selection started with the <I>select-start</I>
-action to be modified, as described above.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>select-end</B> (name[,name, ...])</TD>
-<TD>This action ends a text selection that began with the <I>select-start</I>
-action, and asserts ownership of the selection or selections specified.
-A <I>name</I> can be a selection (e.g. <I>PRIMARY</I>) or a cut buffer
-(e.g <I>CUT_BUFFER0</I>). Note that case is important. If no
-<I>names</I> are specified, <I>PRIMARY</I> is asserted.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>extend-start</B>()</TD>
-<TD>This action finds the nearest end of the current selection, and moves it
-to the current pointer location.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>extend-adjust</B>()</TD>
-<TD>This action allows a selection started with an <I>extend-start</I> action
-to be modified.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>extend-end</B> (name[,name, ...])</TD>
-<TD>This action ends a text selection that began with the <I>extend-start</I>
-action, and asserts ownership of the selection or selections specified.
-A <I>name</I> can be a selection (e.g. <I>PRIMARY</I>) or a cut buffer
-(e.g <I>CUT_BUFFER0</I>). Note that case is important. If no names are
-given, <I>PRIMARY</I> is asserted.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>insert-selection</B> (name[,name ,...])</TD>
-<TD>This action retrieves the value of the first (left-most) named selection
-that exists or the cut buffer that is not empty and inserts it into the
-Text widget at the current insert point location. A <I>name</I> can be a
-selection (e.g. <I>PRIMARY</I>) or a cut buffer (e.g <I>CUT_BUFFER0</I>).
-Note that case is important.</TD>
-</TR>
-</TABLE>
-
-<H3>New Line Actions</H3>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>newline-and-indent</B>()</TD>
-<TD>This action inserts a newline into the text and adds spaces to
-that line to indent it to match the previous line.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>newline-and-backup</B>()</TD>
-<TD>This action inserts a newline into the text <I>after</I> the insert point.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>newline</B>()</TD>
-<TD>This action inserts a newline into the text <I>before</I> the insert point.</TD>
-</TR>
-</TABLE>
-
-<H3>Kill Actions</H3>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>kill-word</B>()<BR>
-<B>backward-kill-word</B>()</TD>
-<TD>These actions act exactly like the <I>delete-next-word</I> and
-<I>delete-previous-word</I> actions, but they stuff the word that was
-killed into the kill buffer (<I>CUT_BUFFER_1</I>).</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>kill-selection</B>()</TD>
-<TD>This action deletes the current selection and stuffs the deleted text into
-the kill buffer (<I>CUT_BUFFER_1</I>).</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>kill-to-end-of-line</B>()</TD>
-<TD>This action deletes the entire line to the right of the insert point position,
-and stuffs the deleted text into the kill buffer (<I>CUT_BUFFER_1</I>).
-</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>kill-paragraph</B>()</TD>
-<TD>This action deletes the current paragraph, if between paragraphs it deletes
-the paragraph above the insert point, and stuffs the deleted text into
-the kill buffer (<I>CUT_BUFFER_1</I>).
-</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>kill-to-end-of-paragraph</B>()</TD>
-<TD>This action deletes everything between the current insert point location and
-the next paragraph boundary, and stuffs the deleted text into the kill
-buffer (<I>CUT_BUFFER_1</I>).</TD>
-</TR>
-</TABLE>
-
-<H3>Miscellaneous Actions</H3>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>redraw-display</B>()</TD>
-<TD>This action recomputes the location of all the text lines on the
-display, scrolls the text to vertically center the line containing the insert point
-on the screen, clears the entire screen, and redisplays it.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>insert-file</B>([filename])</TD>
-<TD>This action activates the insert file popup. The <I>filename</I>
-option specifies the default filename to put in the filename buffer of
-the popup.  If no <I>filename</I> is specified the buffer is empty
-at startup.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>insert-char</B>()</TD>
-<TD>This action may only be attached to a key event. It
-calls XLookupString to translate the event into a (rebindable) Latin-1
-character (sequence) and inserts that sequence into the text at the 
-insert point position.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>insert-string</B> (string[,string ,...])</TD>
-<TD>This action inserts each <I>string</I> into the text at the insert point
-location. Any <I>string</I> beginning with the characters "0x" and
-containing only valid hexadecimal digits in the remainder is interpreted
-as a hexadecimal constant and the corresponding single character is
-inserted instead.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>display-caret</B> (state,when)</TD>
-<TD>This action allows the insert point to be turned on and off.
-The <I>state</I> argument specifies the desired state of the insert point.
-This value may be any of the string
-values accepted for Boolean resources (e.g. <I>on, True,
-off, False</I>, etc.). If no arguments are specified, the
-default value is <I>True</I>. 
-The <I>when</I> argument specifies, for <I>EnterNotify</I> or <I>LeaveNotify</I>
-events whether or not the focus field in the event is to be examined.
-If the second argument is not specified, or specified as something other
-than <I>always</I> then if the action is bound to an <I>EnterNotify</I>
-or <I>LeaveNotify</I> event, the action will be taken only if the focus
-field is <I>True</I>. An augmented binding that might be useful is:<BR>
-<I>*Text.Translations: #override \\<BR>
-<FocusIn>: display-caret(on) \\n\\<BR>
-<FocusOut>: display-caret(off)</I></TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>focus-in</B>()<BR>
-<B>focus-out</B>()</TD>
-<TD>These actions do not currently do anything.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>search</B>(direction, [string])</TD>
-<TD>This action activates the search popup. The <I>direction</I> must be
-specified as either <I>forward</I> or <I>backward</I>. The string is
-optional and is used as an initial value for the <I>Search for</I>: string.
-For further explanation of the search widget see the section on
-<I>Text Searches</I>.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>multiply</B>(value)</TD>
-<TD>The multiply action allows the user to multiply the effects of many of
-the text actions. Thus the following action sequence
-<I>multiply(10) delete-next-word()</I> will delete 10 words. It does not
-matter whether these actions take place in one event or many events.
-Using the default translations the key sequence <I>Control-u,
-Control-d</I> will delete 4 characters.  
-Multiply actions can be chained, thus <I>multiply(5)
-multiply(5)</I> is the same as <I>multiply(25)</I>. If the string
-<I>reset</I> is passed to the multiply action the effects of all previous
-multiplies are removed and a beep is sent to the display.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>form-paragraph</B>()</TD>
-<TD>This action removes all the Carriage Returns from the current
-paragraph and reinserts them so that each line is as long as possible, while
-still fitting on the current screen.  Lines are broken at word boundaries if 
-at all possible. This action currently works only on Text widgets
-that use ASCII text.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>transpose-characters</B>()</TD>
-<TD>This action will swap the position of the character to the left of the
-insert point with the character to the right of the insert point.
-The insert point will then be advanced one character.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>no-op</B>([action])</TD>
-<TD>The no-op action makes no change to the text widget, and is mainly used
-to override translations. This action takes one optional argument. If
-this argument is <I>RingBell</I> then a beep is sent to the display.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XawWMProtocols</B> ([wm_protocol_name])</TD>
-<TD>This action is written specifically for the transient shells instantiated by
-the Text widget, which are the file insertion and the search and replace
-dialog boxes.  This action is attached to those shells by the Text widget,
-in order to handle ClientMessage events with the WM_PROTOCOLS atom in the
-detail field.  This action supports WM_DELETE_WINDOW on the Text widget
-popups, and may support other window manager protocols if necessary in 
-the future.  The popup will be dismissed if the window manager sends
-a WM_DELETE_WINDOW request and there are no parameters in the action
-call, which is the default.  The popup will also be dismissed if the
-parameters include the string "wm_delete_window", and the event is a
-ClientMessage event requesting dismissal or is not a ClientMessage event.
-This action is not sensitive to the case of the strings passed as parameters.</TD>
-</TR>
-</TABLE>
-
-<H3><A NAME="ProgSelection">Text Selections for Application Programmers</A></H3>
-
-<P>The default behavior of the text selection array is described in the
-section called <I>Text Selections for Users</I>. To modify the selections
-a programmer must construct a <I>XawTextSelectType</I> array (called the
-selection array), containing the selections desired, and pass this as
-the new value for the <I>selectionTypes</I> resource. The selection
-array may also be modified using the <I>XawTextSetSelectionArray</I>
-function. All selection arrays must end with the value
-<I>XawselectNull</I>. The <I>selectionTypes</I> resource has no converter
-registered and cannot be modified through the resource manager.</P>
-
-<P>The array contains a list of entries that will be called when the user
-attempts to select text in rapid succession with the <I>select-start</I>
-action (usually by clicking a pointer button). The first entry in the
-selection array will be used when the <I>select-start</I> action is
-initially called. The next entry will be used when <I>select-start</I>
-is called again, and so on. If a timeout value (1/10 of a second) is
-exceeded, the the next <I>select-start</I> action will begin at the top
-of the selection array. When <I>XawselectNull</I> is reached the array
-is recycled beginning with the first element.</P>
-
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XawselectAll</B></TD>
-<TD>Selects the contents of the entire buffer.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XawselectChar</B></TD>
-<TD>Selects text characters as the pointer moves over them.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XawselectLine</B></TD>
-<TD>Selects the entire line.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XawselectNull</B></TD>
-<TD>Indicates the end of the selection array.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XawselectParagraph</B></TD>
-<TD>Selects the entire paragraph.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XawselectPosition</B></TD>
-<TD>Selects the current pointer position.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>XawselectWord</B></TD>
-<TD>Selects whole words as the pointer moves onto them.</TD>
-</TR>
-</TABLE>
-
-<P>The default selectType array is:
-<I>{XawselectPosition, XawselectWord, XawselectLine, XawselectParagraph, XawselectAll,
-XawselectNull}</I></P>
-
-<P>The selection array is not copied by the text widgets. The
-application must allocate space for the array and cannot deallocate or
-change it until the text widget is destroyed or until a new selection
-array is set.</P>
-
-
-<H3>Default Translation Bindings</H3>
-
-<P>The following translations are defaults built into every Text widget.
-They can be overridden, or replaced by specifying a new value for the
-Text widget's <I>translations</I> resource.</P>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="95%" >
-<TR>
-<TD>Ctrl&lt;Key&gt;A:<BR>
-Ctrl&lt;Key&gt;B:<BR>
-Ctrl&lt;Key&gt;D:<BR>
-Ctrl&lt;Key&gt;E:<BR>
-Ctrl&lt;Key&gt;F:<BR>
-Ctrl&lt;Key&gt;G:<BR>
-Ctrl&lt;Key&gt;H:<BR>
-Ctrl&lt;Key&gt;J:<BR>
-Ctrl&lt;Key&gt;K:<BR>
-Ctrl&lt;Key&gt;L:<BR>
-Ctrl&lt;Key&gt;M:<BR>
-Ctrl&lt;Key&gt;N:<BR>
-Ctrl&lt;Key&gt;O:<BR>
-Ctrl&lt;Key&gt;P:<BR>
-Ctrl&lt;Key&gt;R:<BR>
-Ctrl&lt;Key&gt;S:<BR>
-Ctrl&lt;Key&gt;T:<BR>
-Ctrl&lt;Key&gt;U:<BR>
-Ctrl&lt;Key&gt;V:<BR>
-Ctrl&lt;Key&gt;W:<BR>
-Ctrl&lt;Key&gt;Y:<BR>
-Ctrl&lt;Key&gt;Z:<BR>
-Meta&lt;Key&gt;B:<BR>
-Meta&lt;Key&gt;F:<BR>
-Meta&lt;Key&gt;I:<BR>
-Meta&lt;Key&gt;K:<BR>
-Meta&lt;Key&gt;Q:<BR>
-Meta&lt;Key&gt;V:<BR>
-Meta&lt;Key&gt;Y:<BR>
-Meta&lt;Key&gt;Z:<BR>
-:Meta&lt;Key&gt;d:<BR>
-:Meta&lt;Key&gt;D:<BR>
-:Meta&lt;Key&gt;h:<BR>
-:Meta&lt;Key&gt;H:<BR>
-:Meta&lt;Key&gt;\\&lt;:<BR>
-:Meta&lt;Key&gt;\\&gt;:<BR>
-:Meta&lt;Key&gt;]:<BR>
-:Meta&lt;Key&gt;[:<BR>
-~Shift Meta&lt;Key&gt;Delete:<BR>
-\ Shift Meta&lt;Key&gt;Delete:<BR>
-~Shift Meta&lt;Key&gt;Backspace:<BR>
-\ Shift Meta&lt;Key&gt;Backspace:<BR>
-&lt;Key&gt;Right:<BR>
-&lt;Key&gt;Left:<BR>
-&lt;Key&gt;Down:<BR>
-&lt;Key&gt;Up:<BR>
-&lt;Key&gt;Delete:<BR>
-&lt;Key&gt;BackSpace:<BR>
-&lt;Key&gt;Linefeed:<BR>
-&lt;Key&gt;Return:<BR>
-&lt;Key&gt;:<BR>
-&lt;FocusIn&gt;:<BR>
-&lt;FocusOut&gt;:<BR>
-&lt;Btn1Down&gt;:<BR>
-&lt;Btn1Motion&gt;:<BR>
-&lt;Btn1Up&gt;:<BR>
-&lt;Btn2Down&gt;:<BR>
-&lt;Btn3Down&gt;:<BR>
-&lt;Btn3Motion&gt;:<BR>
-&lt;Btn3Up&gt;:</TD>
-
-<TD>beginning-of-line()<BR>
-backward-character()<BR>
-delete-next-character()<BR>
-end-of-line()<BR>
-forward-character()<BR>
-multiply(Reset)<BR>
-delete-previous-character()<BR>
-newline-and-indent()<BR>
-kill-to-end-of-line()<BR>
-redraw-display()<BR>
-newline()<BR>
-next-line()<BR>
-newline-and-backup()<BR>
-previous-line()<BR>
-search(backward)<BR>
-search(forward)<BR>
-transpose-characters()<BR>
-multiply(4)<BR>
-next-page()<BR>
-kill-selection()<BR>
-insert-selection(CUT_BUFFER1)<BR>
-scroll-one-line-up()<BR>
-backward-word()<BR>
-forward-word()<BR>
-insert-file()<BR>
-kill-to-end-of-paragraph()<BR>
-form-paragraph()<BR>
-previous-page()<BR>
-insert-selection(PRIMARY, CUT_BUFFER0)<BR>
-scroll-one-line-down()<BR>
-delete-next-word()<BR>
-kill-word()<BR>
-delete-previous-word()<BR>
-backward-kill-word()<BR>
-beginning-of-file()<BR>
-end-of-file()<BR>
-forward-paragraph()<BR>
-backward-paragraph()<BR>
-delete-previous-word()<BR>
-backward-kill-word()<BR>
-delete-previous-word()<BR>
-backward-kill-word()<BR>
-forward-character()<BR>
-backward-character()<BR>
-next-line()<BR>
-previous-line()<BR>
-delete-previous-character()<BR>
-delete-previous-character()<BR>
-newline-and-indent()<BR>
-newline()<BR>
-insert-char()<BR>
-focus-in()<BR>
-focus-out()<BR>
-select-start()<BR>
-extend-adjust()<BR>
-extend-end(PRIMARY, CUT_BUFFER0)<BR>
-insert-selection(PRIMARY, CUT_BUFFER0)<BR>
-extend-start()<BR>
-extend-adjust()<BR>
-extend-end(PRIMARY, CUT_BUFFER0)</TD>
-</TR>
-</TABLE>
-
-<P></P>
-
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
-
-</BODY>
-</HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
+
+  <title>Text Widget Actions</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
+
+  <h3><i>Text Widget Actions</i></h3>
+
+  <p>All editing functions are performed by translation manager
+  actions that may be specified through the <i>translations</i>
+  resource in the Text widget.</p>
+
+  <h3>Differences between Xaw and XawPlus</h3>
+
+  <p>None.</p>
+
+  <h3>Cursor Movement Actions</h3>
+
+  <table cellspacing="4" cellpadding="0" width="95%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>forward-character</b>()<br>
+      <b>backward-character</b>()</td>
+
+      <td>These actions move the insert point forward or backward
+      one character in the buffer. If the insert point is at the
+      end or beginning of a line this action will move the insert
+      point to the next (or previous) line.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">
+      <b>backward-character</b>()</td>
+
+      <td>These actions move the insert point forward or backward
+      one character in the buffer. If the insert point is at the
+      end or beginning of a line this action will move the insert
+      point to the next (or previous) line.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>forward-word</b>()<br>
+      <b>backward-word</b>()</td>
+
+      <td>These actions move the insert point to the next or
+      previous word boundary. A word boundary is defined as a
+      Space, Tab or Carriage Return.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>forward-paragraph</b>()<br>
+      <b>backward-paragraph</b>()</td>
+
+      <td>These actions move the insert point to the next or
+      previous paragraph boundary. A paragraph boundary is defined
+      as two Carriage Returns in a row with only Spaces or Tabs
+      between them.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>beginning-of-line</b>()<br>
+      <b>end-of-line</b>()</td>
+
+      <td>These actions move to the beginning or end of the current
+      line. If the insert point is already at the end or beginning
+      of the line then no action is taken.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>next-line</b>()<br>
+      <b>previous-line</b>()</td>
+
+      <td>These actions move the insert point up or down one line.
+      If the insert point is currently N characters from the
+      beginning of the line then it will be N characters from the
+      beginning of the next or previous line. If N is past the end
+      of the line, the insert point is placed at the end of the
+      line.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>next-page</b>()<br>
+      <b>previous-page</b>()</td>
+
+      <td>These actions move the insert point up or down one page
+      in the file. One page is defined as the current height of the
+      text widget. The insert point is always placed at the first
+      character of the top line by this action.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>beginning-of-file</b>()<br>
+      <b>end-of-file</b>()</td>
+
+      <td>These actions place the insert point at the beginning or
+      end of the current text buffer. The text widget is then
+      scrolled the minimum amount necessary to make the new insert
+      point location visible.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>scroll-one-line-up</b>()<br>
+      <b>scroll-one-line-down</b>()</td>
+
+      <td>These actions scroll the current text field up or down by
+      one line. They do not move the insert point. Other than the
+      scrollbars this is the only way that the insert point may be
+      moved off of the visible text area. The widget will be
+      scrolled so that the insert point is back on the screen as
+      soon as some other action is executed.</td>
+    </tr>
+  </table>
+
+  <h3>Delete Actions</h3>
+
+  <table cellspacing="4" cellpadding="0" width="95%" summary="">
+    <tr>
+      <td align="left" valign="top">
+      <b>delete-next-character</b>()<br>
+      <b>delete-previous-character</b>()</td>
+
+      <td>These actions remove the character immediately before or
+      after the insert point. If a Carriage Return is removed then
+      the next line is appended to the end of the current
+      line.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>delete-next-word</b>()<br>
+      <b>delete-previous-word</b>()</td>
+
+      <td>These actions remove all characters between the insert
+      point location and the next word boundary. A word boundary is
+      defined as a Space, Tab or Carriage Return.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>delete-selection</b>()</td>
+
+      <td>This action removes all characters in the current
+      selection. The selection can be set with the selection
+      actions.</td>
+    </tr>
+  </table>
+
+  <h3>Selection Actions</h3>
+
+  <table cellspacing="4" cellpadding="0" width="95%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>select-word</b>()</td>
+
+      <td>This action selects the word in which the insert point is
+      currently located. If the insert point is between words then
+      it will select the previous word.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>select-all</b>()</td>
+
+      <td>This action selects the entire text buffer.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>select-start</b>()</td>
+
+      <td>This action sets the insert point to the current pointer
+      location. It will then begin a selection at this location. If
+      many of these selection actions occur quickly in succession
+      then the selection count mechanism will be invoked (see the
+      section titled <i>Text Selections for Application
+      Programmers</i> for details).</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>select-adjust</b>()</td>
+
+      <td>This action allows a selection started with the
+      <i>select-start</i> action to be modified, as described
+      above.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>select-end</b> (name[,name,
+      ...])</td>
+
+      <td>This action ends a text selection that began with the
+      <i>select-start</i> action, and asserts ownership of the
+      selection or selections specified. A <i>name</i> can be a
+      selection (e.g. <i>PRIMARY</i>) or a cut buffer (e.g
+      <i>CUT_BUFFER0</i>). Note that case is important. If no
+      <i>names</i> are specified, <i>PRIMARY</i> is asserted.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>extend-start</b>()</td>
+
+      <td>This action finds the nearest end of the current
+      selection, and moves it to the current pointer location.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>extend-adjust</b>()</td>
+
+      <td>This action allows a selection started with an
+      <i>extend-start</i> action to be modified.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>extend-end</b> (name[,name,
+      ...])</td>
+
+      <td>This action ends a text selection that began with the
+      <i>extend-start</i> action, and asserts ownership of the
+      selection or selections specified. A <i>name</i> can be a
+      selection (e.g. <i>PRIMARY</i>) or a cut buffer (e.g
+      <i>CUT_BUFFER0</i>). Note that case is important. If no names
+      are given, <i>PRIMARY</i> is asserted.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>insert-selection</b>
+      (name[,name ,...])</td>
+
+      <td>This action retrieves the value of the first (left-most)
+      named selection that exists or the cut buffer that is not
+      empty and inserts it into the Text widget at the current
+      insert point location. A <i>name</i> can be a selection (e.g.
+      <i>PRIMARY</i>) or a cut buffer (e.g <i>CUT_BUFFER0</i>).
+      Note that case is important.</td>
+    </tr>
+  </table>
+
+  <h3>New Line Actions</h3>
+
+  <table cellspacing="4" cellpadding="0" width="95%" summary="">
+    <tr>
+      <td align="left" valign="top">
+      <b>newline-and-indent</b>()</td>
+
+      <td>This action inserts a newline into the text and adds
+      spaces to that line to indent it to match the previous
+      line.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">
+      <b>newline-and-backup</b>()</td>
+
+      <td>This action inserts a newline into the text <i>after</i>
+      the insert point.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>newline</b>()</td>
+
+      <td>This action inserts a newline into the text <i>before</i>
+      the insert point.</td>
+    </tr>
+  </table>
+
+  <h3>Kill Actions</h3>
+
+  <table cellspacing="4" cellpadding="0" width="95%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>kill-word</b>()<br>
+      <b>backward-kill-word</b>()</td>
+
+      <td>These actions act exactly like the
+      <i>delete-next-word</i> and <i>delete-previous-word</i>
+      actions, but they stuff the word that was killed into the
+      kill buffer (<i>CUT_BUFFER_1</i>).</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>kill-selection</b>()</td>
+
+      <td>This action deletes the current selection and stuffs the
+      deleted text into the kill buffer (<i>CUT_BUFFER_1</i>).</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">
+      <b>kill-to-end-of-line</b>()</td>
+
+      <td>This action deletes the entire line to the right of the
+      insert point position, and stuffs the deleted text into the
+      kill buffer (<i>CUT_BUFFER_1</i>).</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>kill-paragraph</b>()</td>
+
+      <td>This action deletes the current paragraph, if between
+      paragraphs it deletes the paragraph above the insert point,
+      and stuffs the deleted text into the kill buffer
+      (<i>CUT_BUFFER_1</i>).</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">
+      <b>kill-to-end-of-paragraph</b>()</td>
+
+      <td>This action deletes everything between the current insert
+      point location and the next paragraph boundary, and stuffs
+      the deleted text into the kill buffer
+      (<i>CUT_BUFFER_1</i>).</td>
+    </tr>
+  </table>
+
+  <h3>Miscellaneous Actions</h3>
+
+  <table cellspacing="4" cellpadding="0" width="95%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>redraw-display</b>()</td>
+
+      <td>This action recomputes the location of all the text lines
+      on the display, scrolls the text to vertically center the
+      line containing the insert point on the screen, clears the
+      entire screen, and redisplays it.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">
+      <b>insert-file</b>([filename])</td>
+
+      <td>This action activates the insert file popup. The
+      <i>filename</i> option specifies the default filename to put
+      in the filename buffer of the popup. If no <i>filename</i> is
+      specified the buffer is empty at startup.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>insert-char</b>()</td>
+
+      <td>This action may only be attached to a key event. It calls
+      XLookupString to translate the event into a (rebindable)
+      Latin-1 character (sequence) and inserts that sequence into
+      the text at the insert point position.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>insert-string</b>
+      (string[,string ,...])</td>
+
+      <td>This action inserts each <i>string</i> into the text at
+      the insert point location. Any <i>string</i> beginning with
+      the characters "0x" and containing only valid hexadecimal
+      digits in the remainder is interpreted as a hexadecimal
+      constant and the corresponding single character is inserted
+      instead.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>display-caret</b>
+      (state,when)</td>
+
+      <td>This action allows the insert point to be turned on and
+      off. The <i>state</i> argument specifies the desired state of
+      the insert point. This value may be any of the string values
+      accepted for Boolean resources (e.g. <i>on, True, off,
+      False</i>, etc.). If no arguments are specified, the default
+      value is <i>True</i>. The <i>when</i> argument specifies, for
+      <i>EnterNotify</i> or <i>LeaveNotify</i> events whether or
+      not the focus field in the event is to be examined. If the
+      second argument is not specified, or specified as something
+      other than <i>always</i> then if the action is bound to an
+      <i>EnterNotify</i> or <i>LeaveNotify</i> event, the action
+      will be taken only if the focus field is <i>True</i>. An
+      augmented binding that might be useful is:<br>
+      <i>*Text.Translations: #override \\<br>
+      &lt;FocusIn&gt;: display-caret(on) \\n\\<br>
+      &lt;FocusOut&gt;: display-caret(off)</i></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>focus-in</b>()<br>
+      <b>focus-out</b>()</td>
+
+      <td>These actions do not currently do anything.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>search</b>(direction,
+      [string])</td>
+
+      <td>This action activates the search popup. The
+      <i>direction</i> must be specified as either <i>forward</i>
+      or <i>backward</i>. The string is optional and is used as an
+      initial value for the <i>Search for</i>: string. For further
+      explanation of the search widget see the section on <i>Text
+      Searches</i>.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>multiply</b>(value)</td>
+
+      <td>The multiply action allows the user to multiply the
+      effects of many of the text actions. Thus the following
+      action sequence <i>multiply(10) delete-next-word()</i> will
+      delete 10 words. It does not matter whether these actions
+      take place in one event or many events. Using the default
+      translations the key sequence <i>Control-u, Control-d</i>
+      will delete 4 characters. Multiply actions can be chained,
+      thus <i>multiply(5) multiply(5)</i> is the same as
+      <i>multiply(25)</i>. If the string <i>reset</i> is passed to
+      the multiply action the effects of all previous multiplies
+      are removed and a beep is sent to the display.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>form-paragraph</b>()</td>
+
+      <td>This action removes all the Carriage Returns from the
+      current paragraph and reinserts them so that each line is as
+      long as possible, while still fitting on the current screen.
+      Lines are broken at word boundaries if at all possible. This
+      action currently works only on Text widgets that use ASCII
+      text.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">
+      <b>transpose-characters</b>()</td>
+
+      <td>This action will swap the position of the character to
+      the left of the insert point with the character to the right
+      of the insert point. The insert point will then be advanced
+      one character.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>no-op</b>([action])</td>
+
+      <td>The no-op action makes no change to the text widget, and
+      is mainly used to override translations. This action takes
+      one optional argument. If this argument is <i>RingBell</i>
+      then a beep is sent to the display.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>XawWMProtocols</b>
+      ([wm_protocol_name])</td>
+
+      <td>This action is written specifically for the transient
+      shells instantiated by the Text widget, which are the file
+      insertion and the search and replace dialog boxes. This
+      action is attached to those shells by the Text widget, in
+      order to handle ClientMessage events with the WM_PROTOCOLS
+      atom in the detail field. This action supports
+      WM_DELETE_WINDOW on the Text widget popups, and may support
+      other window manager protocols if necessary in the future.
+      The popup will be dismissed if the window manager sends a
+      WM_DELETE_WINDOW request and there are no parameters in the
+      action call, which is the default. The popup will also be
+      dismissed if the parameters include the string
+      "wm_delete_window", and the event is a ClientMessage event
+      requesting dismissal or is not a ClientMessage event. This
+      action is not sensitive to the case of the strings passed as
+      parameters.</td>
+    </tr>
+  </table>
+
+  <h3><a name="ProgSelection" id="ProgSelection">Text Selections
+  for Application Programmers</a></h3>
+
+  <p>The default behavior of the text selection array is described
+  in the section called <i>Text Selections for Users</i>. To modify
+  the selections a programmer must construct a
+  <i>XawTextSelectType</i> array (called the selection array),
+  containing the selections desired, and pass this as the new value
+  for the <i>selectionTypes</i> resource. The selection array may
+  also be modified using the <i>XawTextSetSelectionArray</i>
+  function. All selection arrays must end with the value
+  <i>XawselectNull</i>. The <i>selectionTypes</i> resource has no
+  converter registered and cannot be modified through the resource
+  manager.</p>
+
+  <p>The array contains a list of entries that will be called when
+  the user attempts to select text in rapid succession with the
+  <i>select-start</i> action (usually by clicking a pointer
+  button). The first entry in the selection array will be used when
+  the <i>select-start</i> action is initially called. The next
+  entry will be used when <i>select-start</i> is called again, and
+  so on. If a timeout value (1/10 of a second) is exceeded, the the
+  next <i>select-start</i> action will begin at the top of the
+  selection array. When <i>XawselectNull</i> is reached the array
+  is recycled beginning with the first element.</p>
+
+  <table cellspacing="4" cellpadding="0" width="95%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>XawselectAll</b></td>
+
+      <td>Selects the contents of the entire buffer.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>XawselectChar</b></td>
+
+      <td>Selects text characters as the pointer moves over
+      them.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>XawselectLine</b></td>
+
+      <td>Selects the entire line.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>XawselectNull</b></td>
+
+      <td>Indicates the end of the selection array.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>XawselectParagraph</b></td>
+
+      <td>Selects the entire paragraph.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>XawselectPosition</b></td>
+
+      <td>Selects the current pointer position.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>XawselectWord</b></td>
+
+      <td>Selects whole words as the pointer moves onto them.</td>
+    </tr>
+  </table>
+
+  <p>The default selectType array is: <i>{XawselectPosition,
+  XawselectWord, XawselectLine, XawselectParagraph, XawselectAll,
+  XawselectNull}</i></p>
+
+  <p>The selection array is not copied by the text widgets. The
+  application must allocate space for the array and cannot
+  deallocate or change it until the text widget is destroyed or
+  until a new selection array is set.</p>
+
+  <h3>Default Translation Bindings</h3>
+
+  <p>The following translations are defaults built into every Text
+  widget. They can be overridden, or replaced by specifying a new
+  value for the Text widget's <i>translations</i> resource.</p>
+
+  <table cellspacing="4" cellpadding="0" width="95%" summary="">
+    <tr>
+      <td>Ctrl&lt;Key&gt;A:<br>
+      Ctrl&lt;Key&gt;B:<br>
+      Ctrl&lt;Key&gt;D:<br>
+      Ctrl&lt;Key&gt;E:<br>
+      Ctrl&lt;Key&gt;F:<br>
+      Ctrl&lt;Key&gt;G:<br>
+      Ctrl&lt;Key&gt;H:<br>
+      Ctrl&lt;Key&gt;J:<br>
+      Ctrl&lt;Key&gt;K:<br>
+      Ctrl&lt;Key&gt;L:<br>
+      Ctrl&lt;Key&gt;M:<br>
+      Ctrl&lt;Key&gt;N:<br>
+      Ctrl&lt;Key&gt;O:<br>
+      Ctrl&lt;Key&gt;P:<br>
+      Ctrl&lt;Key&gt;R:<br>
+      Ctrl&lt;Key&gt;S:<br>
+      Ctrl&lt;Key&gt;T:<br>
+      Ctrl&lt;Key&gt;U:<br>
+      Ctrl&lt;Key&gt;V:<br>
+      Ctrl&lt;Key&gt;W:<br>
+      Ctrl&lt;Key&gt;Y:<br>
+      Ctrl&lt;Key&gt;Z:<br>
+      Meta&lt;Key&gt;B:<br>
+      Meta&lt;Key&gt;F:<br>
+      Meta&lt;Key&gt;I:<br>
+      Meta&lt;Key&gt;K:<br>
+      Meta&lt;Key&gt;Q:<br>
+      Meta&lt;Key&gt;V:<br>
+      Meta&lt;Key&gt;Y:<br>
+      Meta&lt;Key&gt;Z:<br>
+      :Meta&lt;Key&gt;d:<br>
+      :Meta&lt;Key&gt;D:<br>
+      :Meta&lt;Key&gt;h:<br>
+      :Meta&lt;Key&gt;H:<br>
+      :Meta&lt;Key&gt;\\&lt;:<br>
+      :Meta&lt;Key&gt;\\&gt;:<br>
+      :Meta&lt;Key&gt;]:<br>
+      :Meta&lt;Key&gt;[:<br>
+      ~Shift Meta&lt;Key&gt;Delete:<br>
+      \ Shift Meta&lt;Key&gt;Delete:<br>
+      ~Shift Meta&lt;Key&gt;Backspace:<br>
+      \ Shift Meta&lt;Key&gt;Backspace:<br>
+      &lt;Key&gt;Right:<br>
+      &lt;Key&gt;Left:<br>
+      &lt;Key&gt;Down:<br>
+      &lt;Key&gt;Up:<br>
+      &lt;Key&gt;Delete:<br>
+      &lt;Key&gt;BackSpace:<br>
+      &lt;Key&gt;Linefeed:<br>
+      &lt;Key&gt;Return:<br>
+      &lt;Key&gt;:<br>
+      &lt;FocusIn&gt;:<br>
+      &lt;FocusOut&gt;:<br>
+      &lt;Btn1Down&gt;:<br>
+      &lt;Btn1Motion&gt;:<br>
+      &lt;Btn1Up&gt;:<br>
+      &lt;Btn2Down&gt;:<br>
+      &lt;Btn3Down&gt;:<br>
+      &lt;Btn3Motion&gt;:<br>
+      &lt;Btn3Up&gt;:</td>
+
+      <td>beginning-of-line()<br>
+      backward-character()<br>
+      delete-next-character()<br>
+      end-of-line()<br>
+      forward-character()<br>
+      multiply(Reset)<br>
+      delete-previous-character()<br>
+      newline-and-indent()<br>
+      kill-to-end-of-line()<br>
+      redraw-display()<br>
+      newline()<br>
+      next-line()<br>
+      newline-and-backup()<br>
+      previous-line()<br>
+      search(backward)<br>
+      search(forward)<br>
+      transpose-characters()<br>
+      multiply(4)<br>
+      next-page()<br>
+      kill-selection()<br>
+      insert-selection(CUT_BUFFER1)<br>
+      scroll-one-line-up()<br>
+      backward-word()<br>
+      forward-word()<br>
+      insert-file()<br>
+      kill-to-end-of-paragraph()<br>
+      form-paragraph()<br>
+      previous-page()<br>
+      insert-selection(PRIMARY, CUT_BUFFER0)<br>
+      scroll-one-line-down()<br>
+      delete-next-word()<br>
+      kill-word()<br>
+      delete-previous-word()<br>
+      backward-kill-word()<br>
+      beginning-of-file()<br>
+      end-of-file()<br>
+      forward-paragraph()<br>
+      backward-paragraph()<br>
+      delete-previous-word()<br>
+      backward-kill-word()<br>
+      delete-previous-word()<br>
+      backward-kill-word()<br>
+      forward-character()<br>
+      backward-character()<br>
+      next-line()<br>
+      previous-line()<br>
+      delete-previous-character()<br>
+      delete-previous-character()<br>
+      newline-and-indent()<br>
+      newline()<br>
+      insert-char()<br>
+      focus-in()<br>
+      focus-out()<br>
+      select-start()<br>
+      extend-adjust()<br>
+      extend-end(PRIMARY, CUT_BUFFER0)<br>
+      insert-selection(PRIMARY, CUT_BUFFER0)<br>
+      extend-start()<br>
+      extend-adjust()<br>
+      extend-end(PRIMARY, CUT_BUFFER0)</td>
+    </tr>
+  </table>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

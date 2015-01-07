@@ -1,222 +1,252 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>The Sme Object</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<H3><I>The Sme Object</I></H3>
+  <title>The Sme Object</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
 
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
 
-<TD>&lt;X11/XawPlus/Sme.h&gt;<BR>
-&lt;X11/XawPlus/SmeP.h&gt;<BR>
-smeObjectClass<BR>
-Sme<BR>
-RectObj</TD>
-</TR>
-</TABLE>
+  <h3><i>The Sme Object</i></h3>
 
-<P>The Sme object is the base class for all menu entries. While this object
-is mainly intended to be subclassed, it may be used in a menu to add blank
-space between menu entries.</P>
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
 
-<H3>Differences between Xaw and XawPlus</H3>
+      <td>&lt;X11/XawPlus/Sme.h&gt;<br>
+      &lt;X11/XawPlus/SmeP.h&gt;<br>
+      smeObjectClass<br>
+      Sme<br>
+      RectObj</td>
+    </tr>
+  </table>
 
-<P>Sme now has the new resources <I>highlightColor</I> and <I>shadowColor</I>
-to inherit them to SmeLine and SmeBSB. These resources are not used from
-Sme.</P>
+  <p>The Sme object is the base class for all menu entries. While
+  this object is mainly intended to be subclassed, it may be used
+  in a menu to add blank space between menu entries.</p>
 
-<H3>Resources</H3>
+  <h3>Differences between Xaw and XawPlus</h3>
 
-<P>The resources associated with the SmeLine object are defined in this
-section, and affect only the single menu entry specified by this object.
-There are no new resources added for this class, as it picks up all its
-resources from the RectObj class.</P>
+  <p>Sme now has the new resources <i>highlightColor</i> and
+  <i>shadowColor</i> to inherit them to SmeLine and SmeBSB. These
+  resources are not used from Sme.</p>
 
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
+  <h3>Resources</h3>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+  <p>The resources associated with the SmeLine object are defined
+  in this section, and affect only the single menu entry specified
+  by this object. There are no new resources added for this class,
+  as it picks up all its resources from the RectObj class.</p>
 
-<TR>
-<TD>destroyCallback</TD>
-<TD>Callback</TD>
-<TD>Pointer</TD>
-<TD>NULL</TD>
-</TR>
+  <table border="1" cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
 
-<TR>
-<TD>borderWidth<BR>
-height<BR>
-sensitive<BR>
-width<BR>
-x<BR>
-y</TD>
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
 
-<TD>BorderWidth<BR>
-Height<BR>
-Sensitive<BR>
-Width<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
 
-<TD>Dimension<BR>
-Dimension<BR>
-Boolean<BR>
-Dimension<BR>
-Position<BR>
-Position</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
 
-<TD>0<BR>
-0<BR>
-True<BR>
-0<BR>
-0<BR>
-0</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">SME:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD>callback<BR>
-highlightColor<BR>
-shadowColor<BR>
-international</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>Callback<BR>
-Background<BR>
-Background<BR>
-International</TD>
+    <tr>
+      <td>destroyCallback</td>
 
-<TD>Pointer<BR>
-Pixel<BR>
-Pixel<BR>
-Boolean</TD>
+      <td>Callback</td>
 
-<TD>NULL<BR>
-grey90<BR>
-grey40<BR>
-False</TD>
-</TR>
+      <td>Pointer</td>
 
-</TABLE>
+      <td>NULL</td>
+    </tr>
 
-<P></P>
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>highlightColor</B></TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>The color is used for the highlighted part of the line in SmeLine and
-for the highlighted part of the text from insensitive entries in SmeBSB.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>shadowColor</B></TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>The color is used for the shadowed part of the line in SmeLine and
-for the shadowed part of the text from insensitive entries in SmeBSB.</TD>
-</TR>
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      sensitive<br>
+      width<br>
+      x<br>
+      y</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>international</B></TD>
-<TD>This is a boolean flag, only settable at widget creation time. A value of false
-signals not to use the X11R6 internationalization facility. A value of true signals
-to use font sets and support of multi byte code to display text etc. This resource is
-used from widgets which has to handle text output like <I>SmeBSB</I>.</TD>
-</TR>
+      <td>BorderWidth<br>
+      Height<br>
+      Sensitive<br>
+      Width<br>
+      Position<br>
+      Position</td>
 
-</TABLE>
+      <td>Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Dimension<br>
+      Position<br>
+      Position</td>
 
-<P>Keep in mind that the SimpleMenu widget will force all menu items to
-be the width of the widest entry.</P>
+      <td>0<br>
+      0<br>
+      True<br>
+      0<br>
+      0<br>
+      0</td>
+    </tr>
 
-<H3>Subclassing the Sme Object</H3>
+    <tr>
+      <td bgcolor="#C0C0C0">SME:</td>
 
-<P>To Create a new Sme object you will need to define a few class procedures.
-These procedures allow the SimpleMenu to highlight and unhighlight the
-menu entry as the pointer cursor moves over it, as well as notifying the
-entry when the user has selected it.</P>
+      <td bgcolor="#C0C0C0"></td>
 
-<P>There are three new class methods defined by the Sme Object. All of
-these methods may be inherited from the Sme object, although the default
-semantics are not very interesting.</P>
+      <td bgcolor="#C0C0C0"></td>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>Highlight</B>()</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>Called to put the menu entry into the highlighted state.</TD>
-</TR>
+    <tr>
+      <td>callback<br>
+      highlightColor<br>
+      shadowColor<br>
+      international</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>Unhighlight</B>()</TD>
+      <td>Callback<br>
+      Background<br>
+      Background<br>
+      International</td>
 
-<TD>Called to return the widget to its normal (unhighlighted) state.</TD>
-</TR>
+      <td>Pointer<br>
+      Pixel<br>
+      Pixel<br>
+      Boolean</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>Notify</B>()</TD>
+      <td>NULL<br>
+      grey90<br>
+      grey40<br>
+      False</td>
+    </tr>
+  </table>
 
-<TD>Called when the user selects this menu entry.</TD>
-</TR>
-</TABLE>
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>highlightColor</b></td>
 
-<P>Other then these specialized class procedures creating a new object
-is straight forward. Just subclass Sme and define new redisplay and highlight
-procedures. Here is some information that may help you avoid some common
-mistakes.</P>
+      <td>The color is used for the highlighted part of the line in
+      SmeLine and for the highlighted part of the text from
+      insensitive entries in SmeBSB.</td>
+    </tr>
 
-<UL>
-<LI>Objects can be zero pixels high.</LI>
+    <tr>
+      <td align="left" valign="top"><b>shadowColor</b></td>
 
-<LI>Objects draw on their parent's window, therefore the Drawing dimensions
-are different from those of widgets. For instance, <I>y</I> locations vary
-from <I>y</I> to <I>y + height</I>, not <I>0</I> to <I>height</I>.</LI>
+      <td>The color is used for the shadowed part of the line in
+      SmeLine and for the shadowed part of the text from
+      insensitive entries in SmeBSB.</td>
+    </tr>
 
-<LI>SetValues calls may come from the application while the SimpleMenu
-is in its notify procedure. The SimpleMenu may later call the menu entries
-unhighlight procedure. Due to the asynchronous nature of X the expose event
-generated by <I>XtSetValues()</I> will come after this unhighlight.</LI>
+    <tr>
+      <td align="left" valign="top"><b>international</b></td>
 
-<LI>Remember the menu entry does not own the window. Share the space with
-other menu entries, never draw outside your own section of the menu.</LI>
-</UL>
+      <td>This is a boolean flag, only settable at widget creation
+      time. A value of false signals not to use the X11R6
+      internationalization facility. A value of true signals to use
+      font sets and support of multi byte code to display text etc.
+      This resource is used from widgets which has to handle text
+      output like <i>SmeBSB</i>.</td>
+    </tr>
+  </table>
 
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+  <p>Keep in mind that the SimpleMenu widget will force all menu
+  items to be the width of the widest entry.</p>
 
-</BODY>
-</HTML>
+  <h3>Subclassing the Sme Object</h3>
+
+  <p>To Create a new Sme object you will need to define a few class
+  procedures. These procedures allow the SimpleMenu to highlight
+  and unhighlight the menu entry as the pointer cursor moves over
+  it, as well as notifying the entry when the user has selected
+  it.</p>
+
+  <p>There are three new class methods defined by the Sme Object.
+  All of these methods may be inherited from the Sme object,
+  although the default semantics are not very interesting.</p>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>Highlight</b>()</td>
+
+      <td>Called to put the menu entry into the highlighted
+      state.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>Unhighlight</b>()</td>
+
+      <td>Called to return the widget to its normal (unhighlighted)
+      state.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>Notify</b>()</td>
+
+      <td>Called when the user selects this menu entry.</td>
+    </tr>
+  </table>
+
+  <p>Other then these specialized class procedures creating a new
+  object is straight forward. Just subclass Sme and define new
+  redisplay and highlight procedures. Here is some information that
+  may help you avoid some common mistakes.</p>
+
+  <ul>
+    <li>Objects can be zero pixels high.</li>
+
+    <li>Objects draw on their parent's window, therefore the
+    Drawing dimensions are different from those of widgets. For
+    instance, <i>y</i> locations vary from <i>y</i> to <i>y +
+    height</i>, not <i>0</i> to <i>height</i>.</li>
+
+    <li>SetValues calls may come from the application while the
+    SimpleMenu is in its notify procedure. The SimpleMenu may later
+    call the menu entries unhighlight procedure. Due to the
+    asynchronous nature of X the expose event generated by
+    <i>XtSetValues()</i> will come after this unhighlight.</li>
+
+    <li>Remember the menu entry does not own the window. Share the
+    space with other menu entries, never draw outside your own
+    section of the menu.</li>
+  </ul>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

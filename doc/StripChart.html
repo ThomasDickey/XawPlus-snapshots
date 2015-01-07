@@ -1,313 +1,352 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>The StripChart Widget</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<H3><I>The StripChart Widget</I></H3>
+  <title>The StripChart Widget</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
 
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
 
-<TD>&lt;X11/XawPlus/StripChart.h&gt;<BR>
-&lt;X11/XawPlus/StripChartP.h&gt;<BR>
-stripChartWidgetClass<BR>
-StripChart<BR>
-Simple</TD>
-</TR>
-</TABLE>
+  <h3><i>The StripChart Widget</i></h3>
 
-<P>The StripChart widget is used to provide a real time graphical chart of 
-a single value. This widget is used by <I><B>xload</B></I> to provide the
-load graph. It will read data from an application, and update
-the chart at the <I>update</I> interval specified.
-</P>
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
 
-<H3>Differences between Xaw and XawPlus</H3>
+      <td>&lt;X11/XawPlus/StripChart.h&gt;<br>
+      &lt;X11/XawPlus/StripChartP.h&gt;<br>
+      stripChartWidgetClass<br>
+      StripChart<br>
+      Simple</td>
+    </tr>
+  </table>
 
-<P>Since the 3D extensions of <I>Simple</I> are inserted, the
-StripChart widget has the additional (but at this time not used) resources
-<I>highlightColor, shadowColor</I> and <I>buttonBorderWidth</I>.
-The default <I>background</I> color is now grey75.</P>
+  <p>The StripChart widget is used to provide a real time graphical
+  chart of a single value. This widget is used by
+  <i><b>xload</b></i> to provide the load graph. It will read data
+  from an application, and update the chart at the <i>update</i>
+  interval specified.</p>
 
-<H3>Resources</H3>
+  <h3>Differences between Xaw and XawPlus</h3>
 
-<P>When creating a Simple widget instance, the following resources are retrieved
-from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
-or from the resource database:</P>
+  <p>Since the 3D extensions of <i>Simple</i> are inserted, the
+  StripChart widget has the additional (but at this time not used)
+  resources <i>highlightColor, shadowColor</i> and
+  <i>buttonBorderWidth</i>. The default <i>background</i> color is
+  now grey75.</p>
 
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
+  <h3>Resources</h3>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+  <p>When creating a Simple widget instance, the following
+  resources are retrieved from the argument list of
+  <i>XtSetValues()</i> or <i>XtVaSetValues()</i> or from the
+  resource database:</p>
 
-<TR>
-<TD>destroyCallback</TD>
+  <table border="1" cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
 
-<TD>Callback</TD>
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
 
-<TD>Pointer</TD>
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
 
-<TD>NULL</TD>
-</TR>
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
 
-<TR>
-<TD>borderWidth<BR>
-height<BR>
-sensitive<BR>
-width<BR>
-x<BR>
-y</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>BorderWidth<BR>
-Height<BR>
-Sensitive<BR>
-Width<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>Dimension<BR>
-Dimension<BR>
-Boolean<BR>
-Dimension<BR>
-Position<BR>
-Position</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>0<BR>
-120<BR>
-True<BR>
-120<BR>
-0<BR>
-0</TD>
-</TR>
+    <tr>
+      <td>destroyCallback</td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">CORE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td>Callback</td>
 
-<TR>
-<TD>border<BR>
-background<BR>
-mappedWhenManaged</TD>
+      <td>Pointer</td>
 
-<TD>BorderColor<BR>
-Background<BR>
-MappedWhenManaged</TD>
+      <td>NULL</td>
+    </tr>
 
-<TD>Pixel<BR>
-Pixel<BR>
-Boolean</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
 
-<TD>XtDefaultForeground<BR>
-grey75<BR>
-True</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD>cursor
-<BR>cursorName
-<BR>pointerColor
-<BR>pointerColorBackground
-<BR>insensitiveBorder
-<BR>international
-<BR>highlightColor
-<BR>shadowColor
-<BR>buttonBorderWidth</TD>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<TD>Cursor
-<BR>Cursor
-<BR>Foreground
-<BR>Background
-<BR>Insensitive
-<BR>International
-<BR>Background
-<BR>Background
-<BR>Width</TD>
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      sensitive<br>
+      width<br>
+      x<br>
+      y</td>
 
-<TD>Cursor
-<BR>String
-<BR>Pixel
-<BR>Pixel
-<BR>Pixmap
-<BR>Boolean
-<BR>Pixel
-<BR>Pixel
-<BR>Dimension</TD>
+      <td>BorderWidth<br>
+      Height<br>
+      Sensitive<br>
+      Width<br>
+      Position<br>
+      Position</td>
 
-<TD>None
-<BR>NULL
-<BR>XtDefaultForeground
-<BR>XtDefaultBackground
-<BR>NULL
-<BR>False
-<BR>grey90
-<BR>grey40
-<BR>2</TD>
-</TR>
+      <td>Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Dimension<br>
+      Position<br>
+      Position</td>
 
-<TR>
-<TD BGCOLOR="#C0C0C0">STRIPCHART:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
+      <td>0<br>
+      120<br>
+      True<br>
+      120<br>
+      0<br>
+      0</td>
+    </tr>
 
-<TR>
-<TD>foreground<BR>
-getValue<BR>
-highlight<BR>
-jumpScroll<BR>
-minScale<BR>
-update</TD>
+    <tr>
+      <td bgcolor="#C0C0C0">CORE:</td>
 
-<TD>Foreground<BR>
-Callback<BR>
-Foreground<BR>
-JumpScroll<BR>
-Scale<BR>
-Interval</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>Pixel<BR>
-XtCallbackList<BR>
-Pixel<BR>
-int<BR>
-int<BR>
-int</TD>
+      <td bgcolor="#C0C0C0"></td>
 
-<TD>XtDefaultForeground<BR>
-NULL<BR>
-XtDefaultForeground<BR>
-1/2 width<BR>
-1<BR>
-10 (seconds)</TD>
-</TR>
-</TABLE>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<P></P>
+    <tr>
+      <td>border<br>
+      background<br>
+      mappedWhenManaged</td>
 
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>foreground</B></TD>
-<TD>A pixel value which indexes the widget's colormap to derive the color
-that will be used to draw the graph.</TD>
-</TR>
+      <td>BorderColor<br>
+      Background<br>
+      MappedWhenManaged</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>getValue</B></TD>
-<TD>This is a list of functions to call every <I>update</I> seconds. This
-function will get the value to be graphed by the StripChart widget. The
-section <I>Getting the StripChart Value</I> will describe the calling
-interface in more detail. This callback list should contain only one
-function. If this callback list contains more than one function, the
-behavior is undefined.</TD>
-</TR>
+      <td>Pixel<br>
+      Pixel<br>
+      Boolean</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>highlight</B></TD>
-<TD>A pixel value which indexes the widget's colormap to derive the color
-that will be used to draw the scale lines on the graph.</TD>
-</TR>
+      <td>XtDefaultForeground<br>
+      grey75<br>
+      True</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>jumpScroll</B></TD>
-<TD>When the graph reaches the right edge of the window it must be
-scrolled to the left. This resource specifies the number of pixels
-it will jump. Smooth scrolling can be achieved by setting this resource
-to 1.</TD>
-</TR>
+    <tr>
+      <td bgcolor="#C0C0C0">SIMPLE:</td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>minScale</B></TD>
-<TD>The minimum scale for the graph. The number of divisions on the graph
-will always be greater than or equal to this value.</TD>
-</TR>
+      <td bgcolor="#C0C0C0"></td>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>update</B></TD>
-<TD>The number of seconds between graph updates. Each update is
-represented on the graph as a 1 pixel wide line. Every <I>update</I> seconds
-the <I>getValue</I> procedure will be used to get a new graph point,
-and this point will be added to the right end of the StripChart.</TD>
-</TR>
-</TABLE>
+      <td bgcolor="#C0C0C0"></td>
 
-<H3>Getting The StripChart Value</H3>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-<P>The StripChart widget will call the application routine passed to it
-as the <I>getValue</I> callback function every <I>update</I> seconds to
-obtain another point for the StripChart graph.</P>
+    <tr>
+      <td>cursor<br>
+      cursorName<br>
+      pointerColor<br>
+      pointerColorBackground<br>
+      insensitiveBorder<br>
+      international<br>
+      highlightColor<br>
+      shadowColor<br>
+      buttonBorderWidth</td>
 
-<P>The calling interface for the <I>getValue</I> callback is:</P>
+      <td>Cursor<br>
+      Cursor<br>
+      Foreground<br>
+      Background<br>
+      Insensitive<br>
+      International<br>
+      Background<br>
+      Background<br>
+      Width</td>
 
-<BLOCKQUOTE>
-<P><I>void (*getValueProc)(w, client_data, value)<BR>
-Widget w;<BR>
-XtPointer client_data;<BR>
-XtPointer value;    /* double * */</I></P>
+      <td>Cursor<br>
+      String<br>
+      Pixel<br>
+      Pixel<br>
+      Pixmap<br>
+      Boolean<br>
+      Pixel<br>
+      Pixel<br>
+      Dimension</td>
 
-<TABLE CELLSPACING=0 CELLPADDING=0 WIDTH="80%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
-<TD>Specifies the StripChart widget.</TD>
-</TR>
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>client_data</B></TD>
-<TD>Specifies the client data.</TD>
-</TR>
+      <td>None<br>
+      NULL<br>
+      XtDefaultForeground<br>
+      XtDefaultBackground<br>
+      NULL<br>
+      False<br>
+      grey90<br>
+      grey40<br>
+      2</td>
+    </tr>
 
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>value</B></TD>
-<TD>Returns a pointer to a double. The application should set the address
-pointed to by this argument to a double containing the value to be
-graphed on the StripChart.</TD>
-</TR>
-</TABLE>
-</BLOCKQUOTE>
+    <tr>
+      <td bgcolor="#C0C0C0">STRIPCHART:</td>
 
-<P>This function is used by the StripChart to call an application routine.
-The routine will pass the value to be graphed back to the the StripChart
-in the <I>value</I> field of this routine.</P>
+      <td bgcolor="#C0C0C0"></td>
 
-<P></P>
+      <td bgcolor="#C0C0C0"></td>
 
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
 
-</BODY>
-</HTML>
+    <tr>
+      <td>foreground<br>
+      getValue<br>
+      highlight<br>
+      jumpScroll<br>
+      minScale<br>
+      update</td>
+
+      <td>Foreground<br>
+      Callback<br>
+      Foreground<br>
+      JumpScroll<br>
+      Scale<br>
+      Interval</td>
+
+      <td>Pixel<br>
+      XtCallbackList<br>
+      Pixel<br>
+      int<br>
+      int<br>
+      int</td>
+
+      <td>XtDefaultForeground<br>
+      NULL<br>
+      XtDefaultForeground<br>
+      1/2 width<br>
+      1<br>
+      10 (seconds)</td>
+    </tr>
+  </table>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>foreground</b></td>
+
+      <td>A pixel value which indexes the widget's colormap to
+      derive the color that will be used to draw the graph.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>getValue</b></td>
+
+      <td>This is a list of functions to call every <i>update</i>
+      seconds. This function will get the value to be graphed by
+      the StripChart widget. The section <i>Getting the StripChart
+      Value</i> will describe the calling interface in more detail.
+      This callback list should contain only one function. If this
+      callback list contains more than one function, the behavior
+      is undefined.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>highlight</b></td>
+
+      <td>A pixel value which indexes the widget's colormap to
+      derive the color that will be used to draw the scale lines on
+      the graph.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>jumpScroll</b></td>
+
+      <td>When the graph reaches the right edge of the window it
+      must be scrolled to the left. This resource specifies the
+      number of pixels it will jump. Smooth scrolling can be
+      achieved by setting this resource to 1.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>minScale</b></td>
+
+      <td>The minimum scale for the graph. The number of divisions
+      on the graph will always be greater than or equal to this
+      value.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>update</b></td>
+
+      <td>The number of seconds between graph updates. Each update
+      is represented on the graph as a 1 pixel wide line. Every
+      <i>update</i> seconds the <i>getValue</i> procedure will be
+      used to get a new graph point, and this point will be added
+      to the right end of the StripChart.</td>
+    </tr>
+  </table>
+
+  <h3>Getting The StripChart Value</h3>
+
+  <p>The StripChart widget will call the application routine passed
+  to it as the <i>getValue</i> callback function every
+  <i>update</i> seconds to obtain another point for the StripChart
+  graph.</p>
+
+  <p>The calling interface for the <i>getValue</i> callback is:</p>
+
+  <blockquote>
+    <p><i>void (*getValueProc)(w, client_data, value)<br>
+    Widget w;<br>
+    XtPointer client_data;<br>
+    XtPointer value; /* double * */</i></p>
+
+    <table cellspacing="0" cellpadding="0" width="80%" summary="">
+      <tr>
+        <td align="left" valign="top"><b>w</b></td>
+
+        <td>Specifies the StripChart widget.</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><b>client_data</b></td>
+
+        <td>Specifies the client data.</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><b>value</b></td>
+
+        <td>Returns a pointer to a double. The application should
+        set the address pointed to by this argument to a double
+        containing the value to be graphed on the StripChart.</td>
+      </tr>
+    </table>
+  </blockquote>
+
+  <p>This function is used by the StripChart to call an application
+  routine. The routine will pass the value to be graphed back to
+  the the StripChart in the <i>value</i> field of this routine.</p>
+
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

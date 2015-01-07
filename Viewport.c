@@ -1057,14 +1057,8 @@ static XtGeometryResult PreferredGeometry(w, constraints, reply)
  ************************************************************/
 
 void
-#if NeedFunctionPrototypes
 XawViewportSetLocation (Widget gw,
 			float xoff, float yoff)
-#else
-XawViewportSetLocation (gw, xoff, yoff)
-    Widget gw;
-    float  xoff,yoff;
-#endif
 {
     ViewportWidget w = (ViewportWidget) gw;
     Widget child = w->viewport.child;
@@ -1088,14 +1082,8 @@ XawViewportSetLocation (gw, xoff, yoff)
 }
 
 void
-#if NeedFunctionPrototypes
 XawViewportSetCoordinates (Widget gw,
 			   Position x, Position y)
-#else
-XawViewportSetCoordinates (gw, x, y)
-    Widget gw;
-    Position x, y;
-#endif
 {
     ViewportWidget w = (ViewportWidget) gw;
     Widget child = w->viewport.child;

@@ -5,6 +5,7 @@
 /***********************************************************
 
 Copyright 2015	Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -47,8 +48,6 @@ ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
 WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
-
-This file contains modifications for XawPlus, Roland Krause 2002
 
 *************************************************************************/
 
@@ -103,14 +102,12 @@ _XFUNCPROTOBEGIN
  */
 
 extern void XawTextSinkDisplayText(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Position		/* x */,
     Position		/* y */,
     XawTextPosition	/* pos1 */,
     XawTextPosition	/* pos2 */,
     Boolean		/* highlight */
-#endif
 );
 
 /*	Function Name: XawTextSinkInsertCursor
@@ -125,12 +122,10 @@ extern void XawTextSinkDisplayText(
  */
 
 extern void XawTextSinkInsertCursor(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Position		/* x */,
     Position		/* y */,
     XawTextInsertState	/* state */
-#endif
 );
 
 /*	Function Name: XawTextSinkClearToBackground
@@ -145,13 +140,11 @@ extern void XawTextSinkInsertCursor(
  */
 
 extern void XawTextSinkClearToBackground(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Position		/* x */,
     Position		/* y */,
     Dimension		/* width */,
     Dimension		/* height */
-#endif
 );
 
 /*	Function Name: XawTextSinkFindPosition
@@ -168,7 +161,6 @@ extern void XawTextSinkClearToBackground(
  */
 
 extern void XawTextSinkFindPosition(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* fromPos */,
     int			/* fromX */,
@@ -177,7 +169,6 @@ extern void XawTextSinkFindPosition(
     XawTextPosition*	/* pos_return */,
     int*		/* width_return */,
     int*		/* height_return */
-#endif
 );
 
 /*	Function Name: XawTextSinkFindDistance
@@ -193,7 +184,6 @@ extern void XawTextSinkFindPosition(
  */
 
 extern void XawTextSinkFindDistance (
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* fromPos */,
     int			/* fromX */,
@@ -201,7 +191,6 @@ extern void XawTextSinkFindDistance (
     int*		/* width_return */,
     XawTextPosition*	/* pos_return */,
     int*		/* height_return */
-#endif
 );
 
 /*	Function Name: XawTextSinkResolve
@@ -215,13 +204,11 @@ extern void XawTextSinkFindDistance (
  */
 
 extern void XawTextSinkResolve(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* fromPos */,
     int			/* fromX */,
     int			/* width */,
     XawTextPosition*	/* pos_return */
-#endif
 );
 
 /*	Function Name: XawTextSinkMaxLines
@@ -233,10 +220,8 @@ extern void XawTextSinkResolve(
  */
 
 extern int XawTextSinkMaxLines(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Dimension		/* height */
-#endif
 );
 
 /*	Function Name: XawTextSinkMaxHeight
@@ -248,10 +233,8 @@ extern int XawTextSinkMaxLines(
  */
 
 extern int XawTextSinkMaxHeight(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     int			/* lines */
-#endif
 );
 
 /*	Function Name: XawTextSinkSetTabs
@@ -263,11 +246,9 @@ extern int XawTextSinkMaxHeight(
  */
 
 extern void XawTextSinkSetTabs(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     int			/* tab_count */,
     int*		/* tabs */
-#endif
 );
 						  
 /*	Function Name: XawTextSinkGetCursorBounds
@@ -278,10 +259,8 @@ extern void XawTextSinkSetTabs(
  */
 
 extern void XawTextSinkGetCursorBounds(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XRectangle*		/* rect_return */
-#endif
 );
 
 _XFUNCPROTOEND

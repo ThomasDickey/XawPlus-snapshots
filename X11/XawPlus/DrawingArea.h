@@ -1,17 +1,6 @@
-
-#ifndef _DrawingArea_h
-#define _DrawingArea_h
-
-/****************************************************************
- *
- * Drawing Area Widget
- * 
- * This widget adds a backing store machanism to the simple
- * widget. So it becomes usable as a drawing area for any
- * painting. Note that all Xlib painting functions are replaced
- * by a version, that works with a widget.
- *
- * Copyright (c) Roland Krause 2002, roland_krause@freenet.de
+/*
+ * Copyright 2015 Thomas E. Dickey
+ * Copyright 2002 Roland Krause
  *
  * This module is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,8 +16,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- ****************************************************************/
+ */
 
+#ifndef _DrawingArea_h
+#define _DrawingArea_h
+
+/*
+ *
+ * Drawing Area Widget
+ * 
+ * This widget adds a backing store machanism to the simple
+ * widget. So it becomes usable as a drawing area for any
+ * painting. Note that all Xlib painting functions are replaced
+ * by a version, that works with a widget.
+ */
 #include <X11/XawPlus/Simple.h>
 #include <X11/Xfuncproto.h>
 
@@ -88,9 +89,7 @@ _XFUNCPROTOBEGIN
  *  Returns	  : none
  */
 extern void XawClearWindow(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 /*  Function Name : XawDrawPoint
@@ -101,11 +100,9 @@ extern void XawClearWindow(
  *  Returns	  : none
  */
 extern void XawDrawPoint(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int		/* coordinates */
-#endif
 );
 
 /*  Function Name : XawDrawPoints
@@ -118,13 +115,11 @@ extern void XawDrawPoint(
  *  Returns	  : none
  */
 extern void XawDrawPoints(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     XPoint *,		/* list of point coordinates */
     int,		/* number of points */
     int			/* drawing mode */
-#endif
 );
 
 /*  Function Name : XawDrawLine
@@ -136,12 +131,10 @@ extern void XawDrawPoints(
  *  Returns	  : none
  */
 extern void XawDrawLine(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int,		/* coordinates starting point */
     int, int		/* coordinates end point */
-#endif
 );
 
 /*  Function Name : XawDrawLines
@@ -154,13 +147,11 @@ extern void XawDrawLine(
  *  Returns	  : none
  */
 extern void XawDrawLines(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     XPoint *,		/* list of point coordinates */
     int,		/* number of points */
     int			/* drawing mode */
-#endif
 );
 
 /*  Function Name : XawDrawSegments
@@ -172,12 +163,10 @@ extern void XawDrawLines(
  *  Returns	  : none
  */
 extern void XawDrawSegments(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     XSegment *,		/* list of line coordinates */
     int			/* number of segments */
-#endif
 );
 
 /*  Function Name : XawDrawRectangle
@@ -189,13 +178,11 @@ extern void XawDrawSegments(
  *  Returns	  : none
  */
 extern void XawDrawRectangle(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int,		/* upper left edge */
     unsigned int,	/* widht and height */
     unsigned int
-#endif
 );
 
 /*  Function Name : XawDrawRectangles
@@ -207,12 +194,10 @@ extern void XawDrawRectangle(
  *  Returns	  : none
  */
 extern void XawDrawRectangles(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     XRectangle *,	/* rectangle coordinates */
     int			/* number of rectangles */
-#endif
 );
 
 /*  Function Name : XawDrawArc
@@ -225,14 +210,12 @@ extern void XawDrawRectangles(
  *  Returns	  : none
  */
 extern void XawDrawArc(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int,		/* center */
     unsigned int,	/* width */
     unsigned int,	/* height */
     int, int		/* start angle, end angle */
-#endif
 );
 
 /*  Function Name : XawDrawArcs
@@ -244,12 +227,10 @@ extern void XawDrawArc(
  *  Returns	  : none
  */
 extern void XawDrawArcs(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     XArc *,		/* list of parameters */
     int			/* number of circles */
-#endif
 );
 
 /*  Function Name : XawFillRectangle
@@ -261,13 +242,11 @@ extern void XawDrawArcs(
  *  Returns	  : none
  */
 extern void XawFillRectangle(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int,		/* upper left edge */
     unsigned int,	/* widht and height */
     unsigned int
-#endif
 );
 
 /*  Function Name : XawFillRectangles
@@ -279,12 +258,10 @@ extern void XawFillRectangle(
  *  Returns	  : none
  */
 extern void XawFillRectangles(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     XRectangle *,	/* rectangle coordinates */
     int			/* number of rectangles */
-#endif
 );
 
 /*  Function Name : XawFillArc
@@ -297,14 +274,12 @@ extern void XawFillRectangles(
  *  Returns	  : none
  */
 extern void XawFillArc(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int,		/* center */
     unsigned int,	/* width */
     unsigned int,	/* height */
     int, int		/* start angle, end angle */
-#endif
 );
 
 /*  Function Name : XawFillArcs
@@ -316,12 +291,10 @@ extern void XawFillArc(
  *  Returns	  : none
  */
 extern void XawFillArcs(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     XArc *,		/* list of parameters */
     int			/* number of circles */
-#endif
 );
 
 /*  Function Name : XawFillPolygon
@@ -335,14 +308,12 @@ extern void XawFillArcs(
  *  Returns	  : none
  */
 extern void XawFillPolygon(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     XPoint *,		/* list of points */
     int,		/* number of points */
     int,		/* drawing mode */
     int			/* relative or absolute coordinates */
-#endif
 );
 
 /*****************************************************************
@@ -361,13 +332,11 @@ extern void XawFillPolygon(
  *  Returns	  : none
  */
 extern void XawDrawString(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int,		/* string position */
     char *,		/* the string */
     int			/* number of chararcters */
-#endif
 );
 
 /*  Function Name : XawDrawImageString
@@ -380,13 +349,11 @@ extern void XawDrawString(
  *  Returns	  : none
  */
 extern void XawDrawImageString(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int,		/* string position */
     char *,		/* the string */
     int			/* number of chararcters */
-#endif
 );
 
 /*  Function Name : XawDrawText
@@ -399,14 +366,12 @@ extern void XawDrawImageString(
  *  Returns	  : none
  */
 extern void XawDrawText(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* gc */
     int,		/* x */
     int,		/* y */
     XTextItem *,	/* items */
     int			/* nitems */
-#endif
 );
 
 /*  Function Name : XawDrawString16
@@ -419,13 +384,11 @@ extern void XawDrawText(
  *  Returns	  : none
  */
 extern void XawDrawString16(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int,		/* string position */
     _Xconst XChar2b*,	/* the string */
     int			/* number of chararcters */
-#endif
 );
 
 /*  Function Name : XawDrawImageString16
@@ -438,13 +401,11 @@ extern void XawDrawString16(
  *  Returns	  : none
  */
 extern void XawDrawImageString16(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* graphics context */
     int, int,		/* string position */
     _Xconst XChar2b*,	/* string */
     int			/* number of chararcters */
-#endif
 );
 
 /*  Function Name : XawDrawText16
@@ -457,14 +418,12 @@ extern void XawDrawImageString16(
  *  Returns	  : none
  */
 extern void XawDrawText16(
-#if NeedFunctionPrototypes
     Widget,		/* w */
     GC,			/* gc */
     int,		/* x */
     int,		/* y */
     XTextItem16 *,	/* items */
     int			/* nitems */
-#endif
 );
 
 _XFUNCPROTOEND

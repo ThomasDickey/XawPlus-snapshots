@@ -4,6 +4,8 @@
 
 /***********************************************************
 
+Copyright 2015 Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -46,8 +48,6 @@ ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
 WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
-
-This file contains modifications for XawPlus, Roland Krause 2002
 
 *************************************************************************/
 
@@ -250,36 +250,28 @@ typedef struct _TextRec {
  *******************************************/
 
 extern void _XawTextBuildLineTable (
-#if NeedFunctionPrototypes
     TextWidget /*ctx*/, 
     XawTextPosition /*top pos*/, 
     _XtBoolean /* force_rebuild */
-#endif
 );
 
 extern char* _XawTextGetSTRING(
-#if NeedFunctionPrototypes
     TextWidget /*ctx*/, 
     XawTextPosition /*left*/, 
     XawTextPosition /*right*/
-#endif
 ); 
 
 extern void _XawTextSaltAwaySelection(
-#if NeedFunctionPrototypes
     TextWidget /*ctx*/, 
     Atom* /*selections*/, 
     int /*num_atoms*/
-#endif
 ); 
 
 extern void _XawTextPosToXY(
-#if NeedFunctionPrototypes
     Widget			/* w */,
     XawTextPosition		/* pos */,
     Position *			/* x */,
     Position *			/*y */
-#endif
 );
 
 #endif /* _XawTextP_h */

@@ -3,6 +3,7 @@
 /***********************************************************
 
 Copyright 2015	Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -45,8 +46,6 @@ ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
 WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
-
-This file contains modifications for XawPlus, Roland Krause 2002
 
 **************************************************************************/
 
@@ -174,121 +173,87 @@ typedef struct _TextRec      *TextWidget;
 _XFUNCPROTOBEGIN
 
 extern XrmQuark _XawTextFormat(
-#if NeedFunctionPrototypes
     TextWidget		/* tw */
-#endif
 );
 
 extern void XawTextDisplay(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 ); 
 
 extern void XawTextEnableRedisplay(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextDisableRedisplay(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextSetSelectionArray(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextSelectType*	/* sarray */
-#endif
 );
 
 extern void XawTextGetSelectionPos(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition*	/* begin_return */,
     XawTextPosition*	/* end_return */
-#endif
 );
 
 extern void XawTextSetSource(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Widget		/* source */,
     XawTextPosition	/* position */
-#endif
 );
 
 extern int XawTextReplace(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* start */,
     XawTextPosition	/* end */,
     XawTextBlock*	/* text */
-#endif
 );
 
 extern XawTextPosition XawTextTopPosition(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextSetInsertionPoint(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* position */
-#endif
 );
 
 extern XawTextPosition XawTextGetInsertionPoint(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextUnsetSelection(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextSetSelection(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* left */,
     XawTextPosition	/* right */
-#endif
 );
 
 extern void XawTextInvalidate(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* from */,
     XawTextPosition	/* to */
-#endif
 );
 
 extern Widget XawTextGetSource(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern XawTextPosition XawTextSearch(
-#if NeedFunctionPrototypes
     Widget			/* w */,
     XawTextScanDirection	/* dir */,
     XawTextBlock*		/* text */
-#endif
 );
 
 extern void XawTextDisplayCaret(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Boolean		/* visible */
-#endif
 );
 
 _XFUNCPROTOEND

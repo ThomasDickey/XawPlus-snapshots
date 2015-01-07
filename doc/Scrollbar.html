@@ -1,558 +1,627 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-   <TITLE>The Scrollbar Widget</TITLE>
-   <META NAME="Author" CONTENT="Roland Krause 2002, roland_krause@freenet.de">
-   <META NAME="Description" CONTENT="Documentation to XawPlus">
-</HEAD>
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#55188A" ALINK="#FF0000">
-
-<H3><I><FONT COLOR="#FF0000">_________________________________________________________Xaw</FONT><FONT COLOR="#008000">Plus</FONT></I></H3>
-
-<H3><I>The Scrollbar Widget</I></H3>
-
-<TABLE>
-<TR>
-<TD>Application Header file<BR>
-Class Header file<BR>
-Class<BR>
-Class Name<BR>
-Superclass</TD>
-
-<TD>&lt;X11/XawPlus/Scrollbar.h&gt;<BR>
-&lt;X11/XawPlus/ScrollbarP.h&gt;<BR>
-scrollbarWidgetClass<BR>
-Scrollbar<BR>
-Simple</TD>
-</TR>
-</TABLE>
-
-<P>The Scrollbar widget is a rectangular area containing a slide region,
-a thumb (also known as a slide bar) and two arrow keys. A Scrollbar can be used alone,
-as a value generator, or it can be used within a composite widget (for
-example, a Viewport). A Scrollbar can be oriented either vertically or
-horizontally.</P>
-
-<P>When a Scrollbar is created, it is drawn with the thumb as a 3D styled
-bar and the arrow keys at the ends of the slide region. The thumb is normally
-used to scroll client data and to give visual feedback (through its length)
-on the percentage of the client data, that is visible.</P>
-
-<P>Each pointer button invokes a specific action. By default clicking with the middle
-mouse button (poiter button 2) let the thumb jump to the current pointer position in
-the slide region. With pointer 1 or 3 (left or right mouse button) the user can step
-page by page up or down through the corresponding document. If the pointer button 1 or 3
-is clicked onto the thumb, held down and the pointer is moved, the thumb follows the
-pointer.</P>
-
-<P>While scrolling is in progress, the application receives notification
-through callback procedures. For both discrete scrolling actions, the
-callback returns the scrollbar widget, the client_data, and the pixel
-position of the pointer when the button was released. For continuous
-scrolling, the callback routine returns the scrollbar widget, the
-client data, and the current relative position of the thumb.</P>
-
-<H3>Differences between Xaw and XawPlus</H3>
-
-<P>Since the 3D extensions of <I>Simple</I> are inserted, the
-Scrollbar widget has the additional resources <I>highlightColor,</I> <I>shadowColor</I>
-and <I>buttonBorderWidth</I>. The default <I>background</I> color is now
-grey75. Since Release 2.0 of XawPlus the scrollbar is Motif styled. The implementation
-is derived from the scrollbar implementation of Xaw3d Release 1.4.</P>
-
-<P>The resources <I>foreground</I> and <I>thumb</I> and all the cursor resources are
-not longer used.</P>
-
-<H3>Resources</H3>
-
-<P>When creating a Scrollbar widget instance, the following resources are retrieved
-from the argument list of <I>XtSetValues()</I> or <I>XtVaSetValues()</I>
-or from the resource database:</P>
-
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD BGCOLOR="#E0E0E0"><B>Name</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Class</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Type</B></TD>
-<TD BGCOLOR="#E0E0E0"><B>Default Value</B></TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">OBJECT:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>destroyCallback</TD>
-
-<TD>Callback</TD>
-
-<TD>Pointer</TD>
-
-<TD>NULL</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">RECTANGLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>borderWidth<BR>
-height<BR>
-sensitive<BR>
-width<BR>
-x<BR>
-y</TD>
-
-<TD>BorderWidth<BR>
-Height<BR>
-Sensitive<BR>
-Width<BR>
-Position<BR>
-Position</TD>
-
-<TD>Dimension<BR>
-Dimension<BR>
-Boolean<BR>
-Dimension<BR>
-Position<BR>
-Position</TD>
-
-<TD>0<BR>
-12<BR>
-True<BR>
-12<BR>
-0<BR>
-0</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">CORE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>border<BR>
-background<BR>
-mappedWhenManaged</TD>
-
-<TD>BorderColor<BR>
-Background<BR>
-MappedWhenManaged</TD>
-
-<TD>Pixel<BR>
-Pixel<BR>
-Boolean</TD>
-
-<TD>XtDefaultForeground<BR>
-grey75<BR>
-True</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">SIMPLE:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>cursor
-<BR>cursorName
-<BR>pointerColor
-<BR>pointerColorBackground
-<BR>insensitiveBorder
-<BR>international
-<BR>highlightColor
-<BR>shadowColor
-<BR>buttonBorderWidth</TD>
-
-<TD>Cursor
-<BR>Cursor
-<BR>Foreground
-<BR>Background
-<BR>Insensitive
-<BR>International
-<BR>Background
-<BR>Background
-<BR>Width</TD>
-
-<TD>Cursor
-<BR>String
-<BR>Pixel
-<BR>Pixel
-<BR>Pixmap
-<BR>Boolean
-<BR>Pixel
-<BR>Pixel
-<BR>Dimension</TD>
-
-<TD>None
-<BR>left_ptr
-<BR>XtDefaultForeground
-<BR>XtDefaultBackground
-<BR>NULL
-<BR>False
-<BR>grey90
-<BR>grey40
-<BR>2</TD>
-</TR>
-
-<TR>
-<TD BGCOLOR="#C0C0C0">SCROLLBAR:</TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-<TD BGCOLOR="#C0C0C0"></TD>
-</TR>
-
-<TR>
-<TD>accelerators<BR>
-ancestorSensitive<BR>
-jumpProc<BR>
-scrollProc<BR>
-thumbProc<BR>
-translations<BR>
-<BR>
-length<BR>
-minimumThumb<BR>
-thickness<BR>
-orientation<BR>
-shown<BR>
-topOfThumb</TD>
-
-<TD>Accelerators<BR>
-AncestorSensitive<BR>
-Callback<BR>
-Callback<BR>
-Callback<BR>
-Translations<BR>
-<BR>
-Length<BR>
-MinimumThumb<BR>
-Thickness<BR>
-Orientation<BR>
-Shown<BR>
-TopOfThumb</TD>
-
-<TD>AcceleratorTable<BR>
-Boolean<BR>
-XtCallbackList<BR>
-XtCallbackList<BR>
-XtCallbackList<BR>
-TranslationTable<BR>
-<BR>
-Dimension<BR>
-Dimension<BR>
-Dimension<BR>
-XtOrientation<BR>
-Float<BR>
-Float</TD>
-
-<TD>NULL<BR>
-True<BR>
-NULL<BR>
-NULL<BR>
-NULL<BR>
-see above<BR>
-<BR>
-1<BR>
-12<BR>
-16<BR>
-XtorientVertical<BR>
-0.0<BR>
-0.0</TD>
-</TR>
-</TABLE>
-
-<P></P>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>jumpProc</B></TD>
-<TD>All functions on this callback list are called when the
-<I>NotifyThumb</I> action is invoked. See the <I>Scrollbar
-Actions</I> section for details.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>length</B></TD>
-<TD>The height of a vertical scrollbar or the width of a horizontal scrollbar.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>minimumThumb</B></TD>
-<TD>The smallest size in pixels, to which the thumb can shrink.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>orientation</B></TD>
-<TD>The orientation is the direction that the thumb will be allowed to move.
-This value can be either <I>XtorientVertical</I> or <I>XtorientHorizontal</I>.
-</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>scrollProc</B></TD>
-<TD>All functions on this callback list may be called when the
-<I>NotifyScroll</I> action is invoked. See the <I>Scrollbar Actions</I>
-section for details.
-</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>shown</B></TD>
-<TD>This is the size of the thumb, expressed as a percentage (0.0 - 1.0)
-of the length of the scrollbar.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>thickness</B></TD>
-<TD>The width of a vertical scrollbar or the height of a horizontal scrollbar.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>topOfThumb</B></TD>
-<TD>The location of the top of the thumb, as a percentage (0.0 - 1.0)
-of the length of the scrollbar. This resource was called <I>top</I> in 
-previous versions of the Athena widget set. The name collided with the
-a Form widget constraint resource, and had to be changed.</TD>
-</TR>
-</TABLE>
-
-<H3>Scrollbar Actions</H3>
-
-<P>The actions supported by the Scrollbar widget are:</P>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="90%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>StartScroll</B>(value)</TD>
-<TD>The possible <I>values</I> are Forward, Backward, or Continuous.
-This must be the first action to begin a new movement.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>NotifyScroll</B>(value)</TD>
-<TD>The possible <I>values</I> are <I><B>Proportional</B></I> or <I><B>FullLength</B></I>.
-If the argument to <I>StartScroll</I> was <I><B>Forward</B></I> or <I><B>Backward</B></I>,
-<I>NotifyScroll</I> executes the <I>scrollProc</I> callbacks and passes either;
-the position of the pointer, if <I>value</I> is <I><B>Proportional</B></I>, or the full
-length of the scroll bar, if <I>value</I> is <I><B>FullLength</B></I>. If the argument to
-<I>StartScroll</I> was <I><B>Continuous</B></I>, <I>NotifyScroll</I> returns without
-executing any callbacks.
-</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>EndScroll</B>()</TD>
-<TD>This must be the last action after a movement is complete.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>MoveThumb</B>()</TD>
-<TD>Repositions the Scrollbar's thumb to the current pointer location.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>NotifyThumb</B>()</TD>
-<TD>Calls the <I>jumpProc</I> callbacks and passes the relative position of the
-pointer as a percentage of the scroll bar length.</TD>
-</TR>
-</TABLE>
-
-<P>The default bindings for Scrollbar are:</P>
-
-<BLOCKQUOTE>
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
-<TR>
-<TD><I>&lt;Btn1Down&gt; :<BR>
-&lt;Btn2Down&gt; :<BR>
-&lt;Btn3Down&gt; :<BR>
-&lt;Btn1Motion&gt; :<BR>
-&lt;Btn2Motion&gt; :<BR>
-&lt;Btn3Motion&gt; :<BR>
-&lt;BtnUp&gt; :</I></TD>
-
-<TD><I>NotifyScroll()<BR>
-MoveThumb() NotifyThumb()<BR>
-NotifyScroll()<BR>
-HandleThumb()<BR>
-HandleThumb()<BR>
-MoveThumb() NotifyThumb()<BR>
-EndScroll()</I></TD>
-</TR>
-</TABLE>
-</BLOCKQUOTE>
-
-<P>Examples of additional bindings a user might wish to specify in a
-resource file are:</P>
-
-<BLOCKQUOTE>
-<P><I>*Scrollbar.Translations: \\<BR>
-~Meta<Key>space: StartScroll(Forward) NotifyScroll(FullLength) \\n\\<BR>
-Meta<Key>space:	StartScroll(Backward) NotifyScroll(FullLength) \\n\\<BR>
-EndScroll()</I></P>
-</BLOCKQUOTE>
-
-<H3>Scrollbar Callbacks</H3>
-
-<P>There are two callback lists provided by the Scrollbar widget.
-The procedural interface for these functions is described here.</P>
-
-<P>The calling interface to the <I>scrollProc</I> callback procedure is:</P>
-
-<BLOCKQUOTE>
-<P><I>void ScrollProc(scrollbar, client_data, position)<BR>
-Widget scrollbar;<BR>
-XtPointer client_data;<BR>
-XtPointer position;    /* int */</I></P>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>scrollbar</B></TD>
-<TD>Specifies the Scrollbar widget.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>client_data</B></TD>
-<TD>Specifies the client data.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>position</B></TD>
-<TD>Specifies a pixel position in integer form.</TD>
-</TR>
-</TABLE>
-</BLOCKQUOTE>
-
-<P>The <I>scrollProc</I> callback is used for incremental scrolling 
-and is called by the <I>NotifyScroll</I> action.
-The position argument is a signed quantity and should be cast to an <I>int</I>
-when used. Using the default button bindings, button 1 returns a
-positive value, and button 3 returns a negative value. In both cases,
-the magnitude of the value is the distance of the pointer in
-pixels from the top (or left) of the Scrollbar. The value will never
-be greater than the length of the Scrollbar.</P>
-
-<P>The calling interface to the <I>jumpProc</I> callback procedure is:</P>
-
-<BLOCKQUOTE>
-<P><I>void JumpProc(scrollbar, client_data, percent)<BR>
-Widget scrollbar;<BR>
-XtPointer client_data;<BR>
-XtPointer percent_ptr; /* float* */</I></P>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>scrollbar</B></TD>
-<TD>Specifies the ID of the scroll bar widget.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>client_data</B></TD>
-<TD>Specifies the client data.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>percent_ptr</B></TD>
-<TD>Specifies the floating point position of the thumb (0.0, -1.0).</TD>
-</TR>
-</TABLE>
-</BLOCKQUOTE>
-
-<P>The <I>jumpProc</I> callback is used to implement smooth scrolling and
-is called by the <I>NotifyThumb</I> action. <I>Percent_ptr</I> must be cast
-to a pointer to float before use; i.e.</P>
-
-<BLOCKQUOTE>
-<P><I>float percent = *(float*)percent_ptr;</I></P>
-</BLOCKQUOTE>
-
-<P>With the default button bindings, button 2 (the middle mouse button) moves
-the thumb interactively, and the <I>jumpProc</I> is called on each new position
-of the pointer, while the pointer button remains down. The value specified by
-<I>percent_ptr</I> is the current location of the thumb (from the top or
-left of the Scrollbar) expressed as a percentage of the length of the
-Scrollbar.</P>
-
-<H3>Convenience Routines</H3>
-
-<P>To set the position and length of a Scrollbar thumb, use 
-<I>XawScrollbarSetThumb()</I>:</P>
-
-<BLOCKQUOTE>
-<P><I>void XawScrollbarSetThumb(w, top, shown)<BR>
-Widget w;<BR>
-float top;<BR>
-float shown;</I></P>
-
-<TABLE CELLSPACING=4 CELLPADDING=0 WIDTH="80%" >
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>w</B></TD>
-<TD>Specifies the Scrollbar widget.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>top</B></TD>
-<TD>Specifies the position of the top of the thumb as a fraction of the
-length of the Scrollbar.</TD>
-</TR>
-
-<TR>
-<TD ALIGN=LEFT VALIGN=TOP><B>shown</B></TD>
-<TD>Specifies the length of the thumb as a fraction of the total length
-of the Scrollbar.</TD>
-</TR>
-</TABLE>
-</BLOCKQUOTE>
-
-<P><I>XawScrollbarThumb()</I>
-moves the visible thumb to a new position (0.0, -1.0) and length (0.0, -1.0).
-Either the top or shown arguments can be specified as -1.0,
-in which case the current value is left unchanged.
-Values greater than 1.0 are truncated to 1.0.</P>
-
-<P>If called from <I>jumpProc, XawScrollbarSetThumb()</I> has no effect.</P>
-
-<H3>Setting Float Resources</H3>
-
-<P>The <I>shown</I> and <I>topOfThumb</I> resources are of type
-<I>float</I>. These resources can be difficult to get into an
-argument list. The reason is that C performs an automatic cast of
-the float value to an integer value, usually truncating the important
-information. The following code fragment is one portable method of
-getting a float into an argument list.</P>
-
-<BLOCKQUOTE>
-<PRE>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
+
+  <title>The Scrollbar Widget</title>
+  <meta name="Author" content=
+  "Roland Krause 2002, roland_krause@freenet.de">
+  <meta name="Description" content="Documentation to XawPlus">
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink=
+"#55188A" alink="#FF0000">
+  <h3><i><font color=
+  "#FF0000">_________________________________________________________Xaw</font><font color="#008000">Plus</font></i></h3>
+
+  <h3><i>The Scrollbar Widget</i></h3>
+
+  <table summary="">
+    <tr>
+      <td>Application Header file<br>
+      Class Header file<br>
+      Class<br>
+      Class Name<br>
+      Superclass</td>
+
+      <td>&lt;X11/XawPlus/Scrollbar.h&gt;<br>
+      &lt;X11/XawPlus/ScrollbarP.h&gt;<br>
+      scrollbarWidgetClass<br>
+      Scrollbar<br>
+      Simple</td>
+    </tr>
+  </table>
+
+  <p>The Scrollbar widget is a rectangular area containing a slide
+  region, a thumb (also known as a slide bar) and two arrow keys. A
+  Scrollbar can be used alone, as a value generator, or it can be
+  used within a composite widget (for example, a Viewport). A
+  Scrollbar can be oriented either vertically or horizontally.</p>
+
+  <p>When a Scrollbar is created, it is drawn with the thumb as a
+  3D styled bar and the arrow keys at the ends of the slide region.
+  The thumb is normally used to scroll client data and to give
+  visual feedback (through its length) on the percentage of the
+  client data, that is visible.</p>
+
+  <p>Each pointer button invokes a specific action. By default
+  clicking with the middle mouse button (poiter button 2) let the
+  thumb jump to the current pointer position in the slide region.
+  With pointer 1 or 3 (left or right mouse button) the user can
+  step page by page up or down through the corresponding document.
+  If the pointer button 1 or 3 is clicked onto the thumb, held down
+  and the pointer is moved, the thumb follows the pointer.</p>
+
+  <p>While scrolling is in progress, the application receives
+  notification through callback procedures. For both discrete
+  scrolling actions, the callback returns the scrollbar widget, the
+  client_data, and the pixel position of the pointer when the
+  button was released. For continuous scrolling, the callback
+  routine returns the scrollbar widget, the client data, and the
+  current relative position of the thumb.</p>
+
+  <h3>Differences between Xaw and XawPlus</h3>
+
+  <p>Since the 3D extensions of <i>Simple</i> are inserted, the
+  Scrollbar widget has the additional resources
+  <i>highlightColor,</i> <i>shadowColor</i> and
+  <i>buttonBorderWidth</i>. The default <i>background</i> color is
+  now grey75. Since Release 2.0 of XawPlus the scrollbar is Motif
+  styled. The implementation is derived from the scrollbar
+  implementation of Xaw3d Release 1.4.</p>
+
+  <p>The resources <i>foreground</i> and <i>thumb</i> and all the
+  cursor resources are not longer used.</p>
+
+  <h3>Resources</h3>
+
+  <p>When creating a Scrollbar widget instance, the following
+  resources are retrieved from the argument list of
+  <i>XtSetValues()</i> or <i>XtVaSetValues()</i> or from the
+  resource database:</p>
+
+  <table border="1" cellspacing="0" cellpadding="0" width="90%"
+  summary="">
+    <tr>
+      <td bgcolor="#E0E0E0"><b>Name</b></td>
+
+      <td bgcolor="#E0E0E0"><b>Class</b></td>
+
+      <td bgcolor="#E0E0E0"><b>Type</b></td>
+
+      <td bgcolor="#E0E0E0"><b>Default Value</b></td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">OBJECT:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>destroyCallback</td>
+
+      <td>Callback</td>
+
+      <td>Pointer</td>
+
+      <td>NULL</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">RECTANGLE:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>borderWidth<br>
+      height<br>
+      sensitive<br>
+      width<br>
+      x<br>
+      y</td>
+
+      <td>BorderWidth<br>
+      Height<br>
+      Sensitive<br>
+      Width<br>
+      Position<br>
+      Position</td>
+
+      <td>Dimension<br>
+      Dimension<br>
+      Boolean<br>
+      Dimension<br>
+      Position<br>
+      Position</td>
+
+      <td>0<br>
+      12<br>
+      True<br>
+      12<br>
+      0<br>
+      0</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">CORE:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>border<br>
+      background<br>
+      mappedWhenManaged</td>
+
+      <td>BorderColor<br>
+      Background<br>
+      MappedWhenManaged</td>
+
+      <td>Pixel<br>
+      Pixel<br>
+      Boolean</td>
+
+      <td>XtDefaultForeground<br>
+      grey75<br>
+      True</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">SIMPLE:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>cursor<br>
+      cursorName<br>
+      pointerColor<br>
+      pointerColorBackground<br>
+      insensitiveBorder<br>
+      international<br>
+      highlightColor<br>
+      shadowColor<br>
+      buttonBorderWidth</td>
+
+      <td>Cursor<br>
+      Cursor<br>
+      Foreground<br>
+      Background<br>
+      Insensitive<br>
+      International<br>
+      Background<br>
+      Background<br>
+      Width</td>
+
+      <td>Cursor<br>
+      String<br>
+      Pixel<br>
+      Pixel<br>
+      Pixmap<br>
+      Boolean<br>
+      Pixel<br>
+      Pixel<br>
+      Dimension</td>
+
+      <td>None<br>
+      left_ptr<br>
+      XtDefaultForeground<br>
+      XtDefaultBackground<br>
+      NULL<br>
+      False<br>
+      grey90<br>
+      grey40<br>
+      2</td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#C0C0C0">SCROLLBAR:</td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+
+      <td bgcolor="#C0C0C0"></td>
+    </tr>
+
+    <tr>
+      <td>accelerators<br>
+      ancestorSensitive<br>
+      jumpProc<br>
+      scrollProc<br>
+      thumbProc<br>
+      translations<br>
+      <br>
+      length<br>
+      minimumThumb<br>
+      thickness<br>
+      orientation<br>
+      shown<br>
+      topOfThumb</td>
+
+      <td>Accelerators<br>
+      AncestorSensitive<br>
+      Callback<br>
+      Callback<br>
+      Callback<br>
+      Translations<br>
+      <br>
+      Length<br>
+      MinimumThumb<br>
+      Thickness<br>
+      Orientation<br>
+      Shown<br>
+      TopOfThumb</td>
+
+      <td>AcceleratorTable<br>
+      Boolean<br>
+      XtCallbackList<br>
+      XtCallbackList<br>
+      XtCallbackList<br>
+      TranslationTable<br>
+      <br>
+      Dimension<br>
+      Dimension<br>
+      Dimension<br>
+      XtOrientation<br>
+      Float<br>
+      Float</td>
+
+      <td>NULL<br>
+      True<br>
+      NULL<br>
+      NULL<br>
+      NULL<br>
+      see above<br>
+      <br>
+      1<br>
+      12<br>
+      16<br>
+      XtorientVertical<br>
+      0.0<br>
+      0.0</td>
+    </tr>
+  </table>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>jumpProc</b></td>
+
+      <td>All functions on this callback list are called when the
+      <i>NotifyThumb</i> action is invoked. See the <i>Scrollbar
+      Actions</i> section for details.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>length</b></td>
+
+      <td>The height of a vertical scrollbar or the width of a
+      horizontal scrollbar.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>minimumThumb</b></td>
+
+      <td>The smallest size in pixels, to which the thumb can
+      shrink.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>orientation</b></td>
+
+      <td>The orientation is the direction that the thumb will be
+      allowed to move. This value can be either
+      <i>XtorientVertical</i> or <i>XtorientHorizontal</i>.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>scrollProc</b></td>
+
+      <td>All functions on this callback list may be called when
+      the <i>NotifyScroll</i> action is invoked. See the
+      <i>Scrollbar Actions</i> section for details.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>shown</b></td>
+
+      <td>This is the size of the thumb, expressed as a percentage
+      (0.0 - 1.0) of the length of the scrollbar.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>thickness</b></td>
+
+      <td>The width of a vertical scrollbar or the height of a
+      horizontal scrollbar.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>topOfThumb</b></td>
+
+      <td>The location of the top of the thumb, as a percentage
+      (0.0 - 1.0) of the length of the scrollbar. This resource was
+      called <i>top</i> in previous versions of the Athena widget
+      set. The name collided with the a Form widget constraint
+      resource, and had to be changed.</td>
+    </tr>
+  </table>
+
+  <h3>Scrollbar Actions</h3>
+
+  <p>The actions supported by the Scrollbar widget are:</p>
+
+  <table cellspacing="4" cellpadding="0" width="90%" summary="">
+    <tr>
+      <td align="left" valign="top"><b>StartScroll</b>(value)</td>
+
+      <td>The possible <i>values</i> are Forward, Backward, or
+      Continuous. This must be the first action to begin a new
+      movement.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>NotifyScroll</b>(value)</td>
+
+      <td>The possible <i>values</i> are <i><b>Proportional</b></i>
+      or <i><b>FullLength</b></i>. If the argument to
+      <i>StartScroll</i> was <i><b>Forward</b></i> or
+      <i><b>Backward</b></i>, <i>NotifyScroll</i> executes the
+      <i>scrollProc</i> callbacks and passes either; the position
+      of the pointer, if <i>value</i> is
+      <i><b>Proportional</b></i>, or the full length of the scroll
+      bar, if <i>value</i> is <i><b>FullLength</b></i>. If the
+      argument to <i>StartScroll</i> was <i><b>Continuous</b></i>,
+      <i>NotifyScroll</i> returns without executing any
+      callbacks.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>EndScroll</b>()</td>
+
+      <td>This must be the last action after a movement is
+      complete.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>MoveThumb</b>()</td>
+
+      <td>Repositions the Scrollbar's thumb to the current pointer
+      location.</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>NotifyThumb</b>()</td>
+
+      <td>Calls the <i>jumpProc</i> callbacks and passes the
+      relative position of the pointer as a percentage of the
+      scroll bar length.</td>
+    </tr>
+  </table>
+
+  <p>The default bindings for Scrollbar are:</p>
+
+  <blockquote>
+    <table cellspacing="4" cellpadding="0" width="80%" summary="">
+      <tr>
+        <td><i>&lt;Btn1Down&gt; :<br>
+        &lt;Btn2Down&gt; :<br>
+        &lt;Btn3Down&gt; :<br>
+        &lt;Btn1Motion&gt; :<br>
+        &lt;Btn2Motion&gt; :<br>
+        &lt;Btn3Motion&gt; :<br>
+        &lt;BtnUp&gt; :</i></td>
+
+        <td><i>NotifyScroll()<br>
+        MoveThumb() NotifyThumb()<br>
+        NotifyScroll()<br>
+        HandleThumb()<br>
+        HandleThumb()<br>
+        MoveThumb() NotifyThumb()<br>
+        EndScroll()</i></td>
+      </tr>
+    </table>
+  </blockquote>
+
+  <p>Examples of additional bindings a user might wish to specify
+  in a resource file are:</p>
+
+  <blockquote>
+    <p><i>*Scrollbar.Translations: \\<br>
+    ~Meta&lt;Key&gt;space: StartScroll(Forward)
+    NotifyScroll(FullLength) \\n\\<br>
+    Meta&lt;Key&gt;space: StartScroll(Backward)
+    NotifyScroll(FullLength) \\n\\<br>
+    EndScroll()</i></p>
+  </blockquote>
+
+  <h3>Scrollbar Callbacks</h3>
+
+  <p>There are two callback lists provided by the Scrollbar widget.
+  The procedural interface for these functions is described
+  here.</p>
+
+  <p>The calling interface to the <i>scrollProc</i> callback
+  procedure is:</p>
+
+  <blockquote>
+    <p><i>void ScrollProc(scrollbar, client_data, position)<br>
+    Widget scrollbar;<br>
+    XtPointer client_data;<br>
+    XtPointer position; /* int */</i></p>
+
+    <table cellspacing="4" cellpadding="0" width="80%" summary="">
+      <tr>
+        <td align="left" valign="top"><b>scrollbar</b></td>
+
+        <td>Specifies the Scrollbar widget.</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><b>client_data</b></td>
+
+        <td>Specifies the client data.</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><b>position</b></td>
+
+        <td>Specifies a pixel position in integer form.</td>
+      </tr>
+    </table>
+  </blockquote>
+
+  <p>The <i>scrollProc</i> callback is used for incremental
+  scrolling and is called by the <i>NotifyScroll</i> action. The
+  position argument is a signed quantity and should be cast to an
+  <i>int</i> when used. Using the default button bindings, button 1
+  returns a positive value, and button 3 returns a negative value.
+  In both cases, the magnitude of the value is the distance of the
+  pointer in pixels from the top (or left) of the Scrollbar. The
+  value will never be greater than the length of the Scrollbar.</p>
+
+  <p>The calling interface to the <i>jumpProc</i> callback
+  procedure is:</p>
+
+  <blockquote>
+    <p><i>void JumpProc(scrollbar, client_data, percent)<br>
+    Widget scrollbar;<br>
+    XtPointer client_data;<br>
+    XtPointer percent_ptr; /* float* */</i></p>
+
+    <table cellspacing="4" cellpadding="0" width="80%" summary="">
+      <tr>
+        <td align="left" valign="top"><b>scrollbar</b></td>
+
+        <td>Specifies the ID of the scroll bar widget.</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><b>client_data</b></td>
+
+        <td>Specifies the client data.</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><b>percent_ptr</b></td>
+
+        <td>Specifies the floating point position of the thumb
+        (0.0, -1.0).</td>
+      </tr>
+    </table>
+  </blockquote>
+
+  <p>The <i>jumpProc</i> callback is used to implement smooth
+  scrolling and is called by the <i>NotifyThumb</i> action.
+  <i>Percent_ptr</i> must be cast to a pointer to float before use;
+  i.e.</p>
+
+  <blockquote>
+    <p><i>float percent = *(float*)percent_ptr;</i></p>
+  </blockquote>
+
+  <p>With the default button bindings, button 2 (the middle mouse
+  button) moves the thumb interactively, and the <i>jumpProc</i> is
+  called on each new position of the pointer, while the pointer
+  button remains down. The value specified by <i>percent_ptr</i> is
+  the current location of the thumb (from the top or left of the
+  Scrollbar) expressed as a percentage of the length of the
+  Scrollbar.</p>
+
+  <h3>Convenience Routines</h3>
+
+  <p>To set the position and length of a Scrollbar thumb, use
+  <i>XawScrollbarSetThumb()</i>:</p>
+
+  <blockquote>
+    <p><i>void XawScrollbarSetThumb(w, top, shown)<br>
+    Widget w;<br>
+    float top;<br>
+    float shown;</i></p>
+
+    <table cellspacing="4" cellpadding="0" width="80%" summary="">
+      <tr>
+        <td align="left" valign="top"><b>w</b></td>
+
+        <td>Specifies the Scrollbar widget.</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><b>top</b></td>
+
+        <td>Specifies the position of the top of the thumb as a
+        fraction of the length of the Scrollbar.</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><b>shown</b></td>
+
+        <td>Specifies the length of the thumb as a fraction of the
+        total length of the Scrollbar.</td>
+      </tr>
+    </table>
+  </blockquote>
+
+  <p><i>XawScrollbarThumb()</i> moves the visible thumb to a new
+  position (0.0, -1.0) and length (0.0, -1.0). Either the top or
+  shown arguments can be specified as -1.0, in which case the
+  current value is left unchanged. Values greater than 1.0 are
+  truncated to 1.0.</p>
+
+  <p>If called from <i>jumpProc, XawScrollbarSetThumb()</i> has no
+  effect.</p>
+
+  <h3>Setting Float Resources</h3>
+
+  <p>The <i>shown</i> and <i>topOfThumb</i> resources are of type
+  <i>float</i>. These resources can be difficult to get into an
+  argument list. The reason is that C performs an automatic cast of
+  the float value to an integer value, usually truncating the
+  important information. The following code fragment is one
+  portable method of getting a float into an argument list.</p>
+
+  <blockquote>
+    <pre>
 top = 0.5;
-if (sizeof(float) > sizeof(XtArgVal))
+if (sizeof(float) &gt; sizeof(XtArgVal))
 {
-	/* If a float is larger than an XtArgVal then pass this
-	 * resource value by reference.
-	 */
-	XtSetArg(args[0], XtNshown, &top);
+        /* If a float is larger than an XtArgVal then pass this
+         * resource value by reference.
+         */
+        XtSetArg(args[0], XtNshown, &amp;top);
 }
 else
 {
-	/* Convince C not to perform an automatic conversion,
-	 * which would truncate 0.5 to 0.
-	 */
-	XtArgVal * l_top = (XtArgVal *) &top;
-	XtSetArg(args[0], XtNshown, *l_top);
+        /* Convince C not to perform an automatic conversion,
+         * which would truncate 0.5 to 0.
+         */
+        XtArgVal * l_top = (XtArgVal *) &amp;top;
+        XtSetArg(args[0], XtNshown, *l_top);
 }
-</PRE>
-</BLOCKQUOTE>
+</pre>
+  </blockquote>
 
-<P></P>
-
-<H3><I><FONT COLOR="#FF0000">Xaw</FONT><FONT COLOR="#008000">Plus_________________________________________________________</FONT></I></H3>
-
-</BODY>
-</HTML>
+  <h3><i><font color="#FF0000">Xaw</font><font color=
+  "#008000">Plus_________________________________________________________</font></i></h3>
+</body>
+</html>

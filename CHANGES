@@ -1,3 +1,21 @@
+2015-01-06  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* X11/XawPlus/AsciiSink.h, X11/XawPlus/Dialog.h, X11/XawPlus/DrawingArea.h, X11/XawPlus/Label.h, X11/XawPlus/MultiSinkP.h, X11/XawPlus/MultiSrc.h, X11/XawPlus/MultiSrcP.h, X11/XawPlus/Simple.h, X11/XawPlus/SimpleMenu.h, X11/XawPlus/XawImP.h, X11/XawPlus/StrToPmap.h, X11/XawPlus/AsciiSrc.h, X11/XawPlus/Form.h, X11/XawPlus/List.h, X11/XawPlus/Paned.h, X11/XawPlus/Scrollbar.h, X11/XawPlus/Text.h, X11/XawPlus/TextP.h, X11/XawPlus/TextSink.h, X11/XawPlus/TextSrc.h, X11/XawPlus/TextSrcP.h, X11/XawPlus/Toggle.h, X11/XawPlus/Tree.h, X11/XawPlus/Viewport.h, SimpleMenu.c, Toggle.c, Tree.c, UTF8.h, XawI18n.c, XawI18n.h, AsciiSrc.c, Form.c, MultiSink.c, MultiSrc.c, Paned.c, Text.c, TextSink.c, TextSrc.c, Viewport.c, XawIm.c:
+	eliminate ifdef's with NeedFunctionPrototypes
+
+	* makefile.in: missed a definition
+
+	* package/debian/changelog, package/XawPlus.spec, VERSION: bump
+
+	* doc/AsciiSink.html, doc/AsciiSource.html, doc/AsciiText.html, doc/Box.html, doc/Command.html, doc/Dialog.html, doc/DrawingArea.html, doc/Form.html, doc/Grip.html, doc/IconList.html, doc/Label.html, doc/List.html, doc/MenuButton.html, doc/Paned.html, doc/Panner.html, doc/Porthole.html, doc/Repeater.html, doc/Scrollbar.html, doc/Simple.html, doc/SimpleMenu.html, doc/Sme.html, doc/SmeBSB.html, doc/SmeLine.html, doc/StripChart.html, doc/Text.html, doc/TextActions.html, doc/TextFuncs.html, doc/TextSink.html, doc/TextSource.html, doc/Toggle.html, doc/Tree.html, doc/Viewport.html, doc/index.html:
+	indented with tidy
+
+	* doc/AsciiSink.html, doc/AsciiSource.html, doc/AsciiText.html, doc/Box.html, doc/Dialog.html, doc/DrawingArea.html, doc/Form.html, doc/Grip.html, doc/IconList.html, doc/Label.html, doc/List.html, doc/MenuButton.html, doc/Paned.html, doc/Panner.html, doc/Porthole.html, doc/Repeater.html, doc/Scrollbar.html, doc/Simple.html, doc/SimpleMenu.html, doc/Sme.html, doc/SmeBSB.html, doc/SmeLine.html, doc/StripChart.html, doc/Text.html, doc/TextActions.html, doc/TextFuncs.html, doc/TextSink.html, doc/TextSource.html, doc/Toggle.html, doc/Tree.html, doc/Viewport.html, doc/index.html, doc/Command.html:
+	fix warnings from "tidy"
+
+	* makefile.in:
+	fix a libtool warning by matching the rules and definitions from dialog.
+
 2015-01-02  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/XawPlus.spec, package/debian/rules: build-script

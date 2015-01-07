@@ -1,6 +1,8 @@
 /*
  * $Xorg: Toggle.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  *
+Copyright 2015 Thomas E. Dickey
+Copyright 2002  Roland Krause
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -32,8 +34,6 @@ in this Software without prior written authorization from The Open Group.
  *         kit@expo.lcs.mit.edu
  *  
  * Date:   January 12, 1989
- *
- * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
 #ifndef _XawToggle_h
@@ -164,10 +164,8 @@ _XFUNCPROTOBEGIN
  */
 
 extern void XawToggleChangeRadioGroup(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Widget		/* radio_group */
-#endif
 );
 
 /*	Function Name: XawToggleGetCurrent
@@ -178,9 +176,7 @@ extern void XawToggleChangeRadioGroup(
  */
 
 extern XtPointer XawToggleGetCurrent(
-#if NeedFunctionPrototypes
     Widget		/* radio_group */
-#endif
 );
 
 /*	Function Name: XawToggleSetCurrent
@@ -192,10 +188,8 @@ extern XtPointer XawToggleGetCurrent(
  */
 
 extern void XawToggleSetCurrent(
-#if NeedFunctionPrototypes
     Widget		/* radio_group */,
     XtPointer		/* radio_data */
-#endif
 );
  
 /*	Function Name: XawToggleUnsetCurrent
@@ -205,9 +199,7 @@ extern void XawToggleSetCurrent(
  */
 
 extern void XawToggleUnsetCurrent(
-#if NeedFunctionPrototypes
     Widget		/* radio_group */
-#endif
 );
 
 _XFUNCPROTOEND
