@@ -1,3 +1,9 @@
+xawplus (3.1.0+20221206) unstable; urgency=low
+
+  * maintenance updates
+
+ -- Thomas E. Dickey <dickey@invisible-island.net>  Tue, 06 Dec 2022 18:29:47 -0500
+
 xawplus (3.1.0+20150106) unstable; urgency=high
 
   * Initial package release

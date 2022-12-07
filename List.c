@@ -1,7 +1,10 @@
-/* $Xorg: List.c,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $ */
+/*
+ * $XTermId: List.c,v 1.3 2022/12/06 23:58:25 tom Exp $
+ * $Xorg: List.c,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
+ */
 
 /*
-Copyright 2015	Thomas E. Dickey
+Copyright 2015,2022	Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -38,6 +41,7 @@ in this Software without prior written authorization from The Open Group.
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
 

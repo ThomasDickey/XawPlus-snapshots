@@ -1,10 +1,11 @@
 /*
-* $Xorg: TextSrcP.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
-*/
+ * $XTermId: TextSrcP.h,v 1.3 2022/12/06 23:57:33 tom Exp $
+ * $Xorg: TextSrcP.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
+ */
 
 /***********************************************************
 
-Copyright 2015 Thomas E. Dickey
+Copyright 2015,2022 Thomas E. Dickey
 Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
@@ -74,6 +75,7 @@ SOFTWARE.
  *
  ************************************************************/
 
+#if 0
 typedef struct {
   XtPointer		next_extension;
   XrmQuark		record_type;
@@ -81,14 +83,34 @@ typedef struct {
   Cardinal		record_size;
   int			(*Input)();
 } TextSrcExtRec, *TextSrcExt;
+#endif
+
+typedef XawTextPosition (*_XawSrcReadProc)
+     (Widget, XawTextPosition, XawTextBlock*, int);
+
+typedef int (*_XawSrcReplaceProc)
+     (Widget, XawTextPosition, XawTextPosition, XawTextBlock*);
+
+typedef XawTextPosition (*_XawSrcScanProc)
+     (Widget, XawTextPosition, XawTextScanType, XawTextScanDirection,
+      int, Bool);
+
+typedef XawTextPosition (*_XawSrcSearchProc)
+     (Widget, XawTextPosition, XawTextScanDirection, XawTextBlock*);
+
+typedef void (*_XawSrcSetSelectionProc)
+     (Widget, XawTextPosition, XawTextPosition, Atom);
+
+typedef Boolean (*_XawSrcConvertSelectionProc)
+     (Widget, Atom*, Atom*, Atom*, XtPointer*, unsigned long*, int*);
 
 typedef struct _TextSrcClassPart {
-  XawTextPosition	(*Read)();
-  int			(*Replace)();
-  XawTextPosition	(*Scan)();
-  XawTextPosition       (*Search)();
-  void                  (*SetSelection)();
-  Boolean		(*ConvertSelection)();
+    _XawSrcReadProc Read;
+    _XawSrcReplaceProc Replace;
+    _XawSrcScanProc Scan;
+    _XawSrcSearchProc Search;
+    _XawSrcSetSelectionProc SetSelection;
+    _XawSrcConvertSelectionProc ConvertSelection;
 } TextSrcClassPart;
 
 /* Full class record declaration */
@@ -142,19 +164,20 @@ wchar_t* _XawTextMBToWC(
  *
  ************************************************************/
 
-typedef Boolean (*_XawBooleanFunc)();
-typedef int (*_XawIntFunc)();
+#if 0	/* no longer used */
 typedef XawTextPosition (*_XawTextPositionFunc)();
-typedef void (*_XawTextVoidFunc)();
+#endif
 
 #define XtInheritInput                ((_XawTextPositionFunc) _XtInherit)
-#define XtInheritRead                 ((_XawTextPositionFunc) _XtInherit)
-#define XtInheritReplace              ((_XawIntFunc) _XtInherit)
-#define XtInheritScan                 ((_XawTextPositionFunc) _XtInherit)
-#define XtInheritSearch               ((_XawTextPositionFunc) _XtInherit)
-#define XtInheritSetSelection         ((_XawTextVoidFunc) _XtInherit)
-#define XtInheritConvertSelection     ((_XawBooleanFunc) _XtInherit)
+#define XtInheritRead                 ((_XawSrcReadProc)_XtInherit)
+#define XtInheritReplace              ((_XawSrcReplaceProc)_XtInherit)
+#define XtInheritScan                 ((_XawSrcScanProc)_XtInherit)
+#define XtInheritSearch               ((_XawSrcSearchProc)_XtInherit)
+#define XtInheritSetSelection         ((_XawSrcSetSelectionProc)_XtInherit)
+#define XtInheritConvertSelection     ((_XawSrcConvertSelectionProc)_XtInherit)
+#if 0
 #define XtTextSrcExtVersion	      1
 #define XtTextSrcExtTypeString        "XT_TEXTSRC_EXT"
+#endif
 
 #endif /* _XawTextSrcP_h */

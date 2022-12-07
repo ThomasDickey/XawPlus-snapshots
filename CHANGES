@@ -1,16 +1,71 @@
+2022-12-06  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/control: fix url
+
+	* List.c: include stdlib.h
+
+	* X11/XawPlus/TextSrcP.h: use definitions from current Xaw
+
+	* package/debian/compat: bump
+
+	* package/debian/rules: use dh_prep
+
+	* VERSION, package/XawPlus.spec, package/debian/changelog: bump
+
+	* configure: regen
+
+	* aclocal.m4: resync with my-autoconf
+
+2022-08-01  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.guess, config.sub: update to 2022/08/01
+
+2020-11-30  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* install-sh: update to 2020/11/04
+
 2015-01-06  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* X11/XawPlus/AsciiSink.h, X11/XawPlus/Dialog.h, X11/XawPlus/DrawingArea.h, X11/XawPlus/Label.h, X11/XawPlus/MultiSinkP.h, X11/XawPlus/MultiSrc.h, X11/XawPlus/MultiSrcP.h, X11/XawPlus/Simple.h, X11/XawPlus/SimpleMenu.h, X11/XawPlus/XawImP.h, X11/XawPlus/StrToPmap.h, X11/XawPlus/AsciiSrc.h, X11/XawPlus/Form.h, X11/XawPlus/List.h, X11/XawPlus/Paned.h, X11/XawPlus/Scrollbar.h, X11/XawPlus/Text.h, X11/XawPlus/TextP.h, X11/XawPlus/TextSink.h, X11/XawPlus/TextSrc.h, X11/XawPlus/TextSrcP.h, X11/XawPlus/Toggle.h, X11/XawPlus/Tree.h, X11/XawPlus/Viewport.h, SimpleMenu.c, Toggle.c, Tree.c, UTF8.h, XawI18n.c, XawI18n.h, AsciiSrc.c, Form.c, MultiSink.c, MultiSrc.c, Paned.c, Text.c, TextSink.c, TextSrc.c, Viewport.c, XawIm.c:
+	* X11/XawPlus/AsciiSink.h, X11/XawPlus/Dialog.h,
+	  X11/XawPlus/DrawingArea.h, X11/XawPlus/Label.h,
+	  X11/XawPlus/MultiSinkP.h, X11/XawPlus/MultiSrc.h,
+	  X11/XawPlus/MultiSrcP.h, X11/XawPlus/Simple.h,
+	  X11/XawPlus/SimpleMenu.h, X11/XawPlus/XawImP.h,
+	  X11/XawPlus/StrToPmap.h, X11/XawPlus/AsciiSrc.h, X11/XawPlus/Form.h,
+	  X11/XawPlus/List.h, X11/XawPlus/Paned.h, X11/XawPlus/Scrollbar.h,
+	  X11/XawPlus/Text.h, X11/XawPlus/TextP.h, X11/XawPlus/TextSink.h,
+	  X11/XawPlus/TextSrc.h, X11/XawPlus/TextSrcP.h, X11/XawPlus/Toggle.h,
+	  X11/XawPlus/Tree.h, X11/XawPlus/Viewport.h, SimpleMenu.c, Toggle.c,
+	  Tree.c, UTF8.h, XawI18n.c, XawI18n.h, AsciiSrc.c, Form.c, MultiSink.c,
+	  MultiSrc.c, Paned.c, Text.c, TextSink.c, TextSrc.c, Viewport.c, XawIm.c:
 	eliminate ifdef's with NeedFunctionPrototypes
 
 	* makefile.in: missed a definition
 
 	* package/debian/changelog, package/XawPlus.spec, VERSION: bump
 
-	* doc/AsciiSink.html, doc/AsciiSource.html, doc/AsciiText.html, doc/Box.html, doc/Command.html, doc/Dialog.html, doc/DrawingArea.html, doc/Form.html, doc/Grip.html, doc/IconList.html, doc/Label.html, doc/List.html, doc/MenuButton.html, doc/Paned.html, doc/Panner.html, doc/Porthole.html, doc/Repeater.html, doc/Scrollbar.html, doc/Simple.html, doc/SimpleMenu.html, doc/Sme.html, doc/SmeBSB.html, doc/SmeLine.html, doc/StripChart.html, doc/Text.html, doc/TextActions.html, doc/TextFuncs.html, doc/TextSink.html, doc/TextSource.html, doc/Toggle.html, doc/Tree.html, doc/Viewport.html, doc/index.html:
+	* doc/AsciiSink.html, doc/AsciiSource.html, doc/AsciiText.html,
+	  doc/Box.html, doc/Command.html, doc/Dialog.html, doc/DrawingArea.html,
+	  doc/Form.html, doc/Grip.html, doc/IconList.html, doc/Label.html,
+	  doc/List.html, doc/MenuButton.html, doc/Paned.html, doc/Panner.html,
+	  doc/Porthole.html, doc/Repeater.html, doc/Scrollbar.html,
+	  doc/Simple.html, doc/SimpleMenu.html, doc/Sme.html, doc/SmeBSB.html,
+	  doc/SmeLine.html, doc/StripChart.html, doc/Text.html,
+	  doc/TextActions.html, doc/TextFuncs.html, doc/TextSink.html,
+	  doc/TextSource.html, doc/Toggle.html, doc/Tree.html,
+	  doc/Viewport.html, doc/index.html:
 	indented with tidy
 
-	* doc/AsciiSink.html, doc/AsciiSource.html, doc/AsciiText.html, doc/Box.html, doc/Dialog.html, doc/DrawingArea.html, doc/Form.html, doc/Grip.html, doc/IconList.html, doc/Label.html, doc/List.html, doc/MenuButton.html, doc/Paned.html, doc/Panner.html, doc/Porthole.html, doc/Repeater.html, doc/Scrollbar.html, doc/Simple.html, doc/SimpleMenu.html, doc/Sme.html, doc/SmeBSB.html, doc/SmeLine.html, doc/StripChart.html, doc/Text.html, doc/TextActions.html, doc/TextFuncs.html, doc/TextSink.html, doc/TextSource.html, doc/Toggle.html, doc/Tree.html, doc/Viewport.html, doc/index.html, doc/Command.html:
+	* doc/AsciiSink.html, doc/AsciiSource.html, doc/AsciiText.html,
+	  doc/Box.html, doc/Dialog.html, doc/DrawingArea.html, doc/Form.html,
+	  doc/Grip.html, doc/IconList.html, doc/Label.html, doc/List.html,
+	  doc/MenuButton.html, doc/Paned.html, doc/Panner.html,
+	  doc/Porthole.html, doc/Repeater.html, doc/Scrollbar.html,
+	  doc/Simple.html, doc/SimpleMenu.html, doc/Sme.html, doc/SmeBSB.html,
+	  doc/SmeLine.html, doc/StripChart.html, doc/Text.html,
+	  doc/TextActions.html, doc/TextFuncs.html, doc/TextSink.html,
+	  doc/TextSource.html, doc/Toggle.html, doc/Tree.html,
+	  doc/Viewport.html, doc/index.html, doc/Command.html:
 	fix warnings from "tidy"
 
 	* makefile.in:
@@ -28,13 +83,17 @@
 
 	* aclocal.m4: add CF_LIB_PREFIX
 
-	* package/debian/control, package/debian/watch, package/debian/copyright, package/debian/changelog:
+	* package/debian/control, package/debian/watch,
+	  package/debian/copyright, package/debian/changelog:
 	build-script
 
 	* X11/XawPlus/SimpleP.h, X11/XawPlus/XawInit.h, X11/XawPlus/TextP.h:
 	gcc-warnings
 
-	* X11/XawPlus/Form.h, X11/XawPlus/List.h, X11/XawPlus/Paned.h, X11/XawPlus/Scrollbar.h, X11/XawPlus/Text.h, X11/XawPlus/TextSink.h, X11/XawPlus/TextSrc.h, X11/XawPlus/Viewport.h, Form.c, Paned.c, Text.c, TextSink.c, TextSrc.c, Viewport.c:
+	* X11/XawPlus/Form.h, X11/XawPlus/List.h, X11/XawPlus/Paned.h,
+	  X11/XawPlus/Scrollbar.h, X11/XawPlus/Text.h, X11/XawPlus/TextSink.h,
+	  X11/XawPlus/TextSrc.h, X11/XawPlus/Viewport.h, Form.c, Paned.c,
+	  Text.c, TextSink.c, TextSrc.c, Viewport.c:
 	rip out ifdef's for wide-function prototypes (Xorg-hackers broke that long ago)
 		http://invisible-island.net/xterm/xterm.faq.html#narrowproto
 
@@ -123,12 +182,18 @@
 
 2002-09-13  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* doc/AsciiSource.html, doc/Command.html, doc/Dialog.html, doc/DrawingArea.html, doc/Form.html, doc/Grip.html, doc/IconList.html:
+	* doc/AsciiSource.html, doc/Command.html, doc/Dialog.html,
+	  doc/DrawingArea.html, doc/Form.html, doc/Grip.html, doc/IconList.html:
 	RCS_BASE
 
 2002-09-12  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* doc/Label.html, doc/List.html, doc/MenuButton.html, doc/Paned.html, doc/Panner.html, doc/Porthole.html, doc/Repeater.html, doc/Scrollbar.html, doc/Simple.html, doc/SimpleMenu.html, doc/StripChart.html, doc/TextFuncs.html, doc/TextSink.html, doc/TextSource.html, doc/Toggle.html, doc/Tree.html, doc/index.html, README:
+	* doc/Label.html, doc/List.html, doc/MenuButton.html, doc/Paned.html,
+	  doc/Panner.html, doc/Porthole.html, doc/Repeater.html,
+	  doc/Scrollbar.html, doc/Simple.html, doc/SimpleMenu.html,
+	  doc/StripChart.html, doc/TextFuncs.html, doc/TextSink.html,
+	  doc/TextSource.html, doc/Toggle.html, doc/Tree.html, doc/index.html,
+	  README:
 	RCS_BASE
 
 2002-09-10  Thomas E. Dickey  <dickey@invisible-island.net>
@@ -137,32 +202,59 @@
 
 2002-09-07  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* Makefile, X11/XawPlus/XawInit.h, XawInit.c, X11/XawPlus/XawImP.h, XawIm.c, XawI18n.h, XawI18n.c, X11/XawPlus/ViewportP.h, X11/XawPlus/Viewport.h, Viewport.c, X11/XawPlus/VendorEP.h, Vendor.c, X11/XawPlus/TreeP.h, X11/XawPlus/Tree.h, Tree.c, X11/XawPlus/ToggleP.h, X11/XawPlus/Toggle.h, Toggle.c, TextTr.c, X11/XawPlus/TextSrcP.h, X11/XawPlus/TextSrc.h, TextSrc.c, X11/XawPlus/TextSinkP.h, X11/XawPlus/TextSink.h, TextSink.c, TextPop.c, X11/XawPlus/TextP.h, TextAction.c, X11/XawPlus/Text.h, Text.c:
+	* Makefile, X11/XawPlus/XawInit.h, XawInit.c, X11/XawPlus/XawImP.h,
+	  XawIm.c, XawI18n.h, XawI18n.c, X11/XawPlus/ViewportP.h,
+	  X11/XawPlus/Viewport.h, Viewport.c, X11/XawPlus/VendorEP.h, Vendor.c,
+	  X11/XawPlus/TreeP.h, X11/XawPlus/Tree.h, Tree.c,
+	  X11/XawPlus/ToggleP.h, X11/XawPlus/Toggle.h, Toggle.c, TextTr.c,
+	  X11/XawPlus/TextSrcP.h, X11/XawPlus/TextSrc.h, TextSrc.c,
+	  X11/XawPlus/TextSinkP.h, X11/XawPlus/TextSink.h, TextSink.c,
+	  TextPop.c, X11/XawPlus/TextP.h, TextAction.c, X11/XawPlus/Text.h,
+	  Text.c:
 	RCS_BASE
 
 2002-09-01  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* SmeLine.c, X11/XawPlus/StripChart.h, StripChart.c, X11/XawPlus/StripCharP.h, X11/XawPlus/SmeP.h, X11/XawPlus/SmeLineP.h, X11/XawPlus/SmeLine.h, X11/XawPlus/SmeBSBP.h, X11/XawPlus/SmeBSB.h, X11/XawPlus/Sme.h, Sme.c, X11/XawPlus/SimpleP.h, X11/XawPlus/SimpleMenu.h, SimpleMenu.c, X11/XawPlus/SimpleMenP.h, X11/XawPlus/Simple.h, Simple.c, X11/XawPlus/ScrollbarP.h, X11/XawPlus/Scrollbar.h, Scrollbar.c, X11/XawPlus/Reports.h, X11/XawPlus/RepeaterP.h, X11/XawPlus/Repeater.h, Repeater.c, X11/XawPlus/PortholeP.h, Porthole.c, X11/XawPlus/Porthole.h:
+	* SmeLine.c, X11/XawPlus/StripChart.h, StripChart.c,
+	  X11/XawPlus/StripCharP.h, X11/XawPlus/SmeP.h, X11/XawPlus/SmeLineP.h,
+	  X11/XawPlus/SmeLine.h, X11/XawPlus/SmeBSBP.h, X11/XawPlus/SmeBSB.h,
+	  X11/XawPlus/Sme.h, Sme.c, X11/XawPlus/SimpleP.h,
+	  X11/XawPlus/SimpleMenu.h, SimpleMenu.c, X11/XawPlus/SimpleMenP.h,
+	  X11/XawPlus/Simple.h, Simple.c, X11/XawPlus/ScrollbarP.h,
+	  X11/XawPlus/Scrollbar.h, Scrollbar.c, X11/XawPlus/Reports.h,
+	  X11/XawPlus/RepeaterP.h, X11/XawPlus/Repeater.h, Repeater.c,
+	  X11/XawPlus/PortholeP.h, Porthole.c, X11/XawPlus/Porthole.h:
 	RCS_BASE
 
 2002-08-21  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* X11/XawPlus/PannerP.h, X11/XawPlus/Panner.h, Panner.c, X11/XawPlus/PanedP.h, X11/XawPlus/Paned.h, Paned.c, X11/XawPlus/MultiSrcP.h, X11/XawPlus/MultiSrc.h, MultiSrc.c:
+	* X11/XawPlus/PannerP.h, X11/XawPlus/Panner.h, Panner.c,
+	  X11/XawPlus/PanedP.h, X11/XawPlus/Paned.h, Paned.c,
+	  X11/XawPlus/MultiSrcP.h, X11/XawPlus/MultiSrc.h, MultiSrc.c:
 	RCS_BASE
 
 2002-08-20  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* X11/XawPlus/MultiSinkP.h, X11/XawPlus/MultiSink.h, MultiSink.c, X11/XawPlus/MenuButton.h, MenuButton.c, X11/XawPlus/MenuButtoP.h, X11/XawPlus/ListP.h, X11/XawPlus/List.h, List.c, X11/XawPlus/LabelP.h, Label.c, X11/XawPlus/Label.h:
+	* X11/XawPlus/MultiSinkP.h, X11/XawPlus/MultiSink.h, MultiSink.c,
+	  X11/XawPlus/MenuButton.h, MenuButton.c, X11/XawPlus/MenuButtoP.h,
+	  X11/XawPlus/ListP.h, X11/XawPlus/List.h, List.c, X11/XawPlus/LabelP.h,
+	  Label.c, X11/XawPlus/Label.h:
 	RCS_BASE
 
 2002-08-13  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* X11/XawPlus/GripP.h, X11/XawPlus/Grip.h, Grip.c, X11/XawPlus/FormP.h, X11/XawPlus/Form.h, Command.c, Dialog.c, X11/XawPlus/Dialog.h, Form.c, X11/XawPlus/DialogP.h, X11/XawPlus/CommandP.h, X11/XawPlus/Command.h, X11/XawPlus/Cardinals.h, X11/XawPlus/BoxP.h, X11/XawPlus/Box.h, Box.c, X11/XawPlus/AsciiTextP.h, X11/XawPlus/AsciiText.h:
+	* X11/XawPlus/GripP.h, X11/XawPlus/Grip.h, Grip.c, X11/XawPlus/FormP.h,
+	  X11/XawPlus/Form.h, Command.c, Dialog.c, X11/XawPlus/Dialog.h, Form.c,
+	  X11/XawPlus/DialogP.h, X11/XawPlus/CommandP.h, X11/XawPlus/Command.h,
+	  X11/XawPlus/Cardinals.h, X11/XawPlus/BoxP.h, X11/XawPlus/Box.h, Box.c,
+	  X11/XawPlus/AsciiTextP.h, X11/XawPlus/AsciiText.h:
 	RCS_BASE
 
 2002-08-12  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* AsciiText.c, X11/XawPlus/AsciiSrcP.h, X11/XawPlus/AsciiSrc.h, AsciiSrc.c, X11/XawPlus/AsciiSinkP.h, X11/XawPlus/AsciiSink.h, AsciiSink.c:
+	* AsciiText.c, X11/XawPlus/AsciiSrcP.h, X11/XawPlus/AsciiSrc.h,
+	  AsciiSrc.c, X11/XawPlus/AsciiSinkP.h, X11/XawPlus/AsciiSink.h,
+	  AsciiSink.c:
 	RCS_BASE
 
 2002-08-11  Thomas E. Dickey  <dickey@invisible-island.net>
@@ -183,12 +275,16 @@
 
 2002-07-10  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* doc/Viewport.html, doc/TextActions.html, doc/Text.html, doc/SmeLine.html, doc/Sme.html, doc/Box.html, doc/AsciiText.html, doc/AsciiSink.html:
+	* doc/Viewport.html, doc/TextActions.html, doc/Text.html,
+	  doc/SmeLine.html, doc/Sme.html, doc/Box.html, doc/AsciiText.html,
+	  doc/AsciiSink.html:
 	RCS_BASE
 
 2002-07-09  Thomas E. Dickey  <dickey@invisible-island.net>
 
-	* DrawingArea.c, X11/XawPlus/DrawingArea.h, X11/XawPlus/StrToPmap.h, StrToPmap.c, LocPixmap.c, X11/XawPlus/IconList.h, X11/XawPlus/DrawingAreaP.h:
+	* DrawingArea.c, X11/XawPlus/DrawingArea.h, X11/XawPlus/StrToPmap.h,
+	  StrToPmap.c, LocPixmap.c, X11/XawPlus/IconList.h,
+	  X11/XawPlus/DrawingAreaP.h:
 	RCS_BASE
 
 2001-07-14  Thomas E. Dickey  <dickey@clark.net>
