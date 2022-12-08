@@ -1,3 +1,9 @@
+2022-12-07  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* VERSION, package/XawPlus.spec, package/debian/changelog: bump
+
+	* makefile.in: set LIB_PREFIX, needed for packages...
+
 2022-12-06  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/control: fix url
