@@ -1,7 +1,11 @@
-/* $Xorg: Label.c,v 1.5 2001/02/09 02:03:43 xorgcvs Exp $ */
+/*
+ * $XTermId: Label.c,v 1.7 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: Label.c,v 1.5 2001/02/09 02:03:43 xorgcvs Exp $
+ */
 
 /*************************************************************************
 
+Copyright 2022  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -29,13 +33,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -54,8 +58,8 @@ This file contains modifications for XawPlus, Roland Krause 2002
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "private.h"
+
 #include "UTF8.h"
 
 #include <X11/IntrinsicP.h>
@@ -101,7 +105,7 @@ static XtResource resources[] = {
 	offset(label.internal_width), XtRImmediate, (XtPointer)4},
     {XtNinternalHeight, XtCHeight, XtRDimension, sizeof(Dimension),
 	offset(label.internal_height), XtRImmediate, (XtPointer)2},
- 
+
     {XtNresize, XtCResize, XtRBoolean, sizeof(Boolean),
 	offset(label.resize), XtRImmediate, (XtPointer)True},
 
@@ -124,20 +128,20 @@ static XtResource resources[] = {
 
 /* Prototypes of label methods */
 
-static void Initialize();
-static void Resize();
-static void Redisplay();
-static Boolean SetValues();
-static void ClassInitialize();
-static void Destroy();
-static XtGeometryResult QueryGeometry();
+static void Initialize(Widget request, Widget new, ArgList args, Cardinal *num_args);
+static void Resize(Widget w);
+static void Redisplay(Widget w, XEvent *event, Region region);
+static Boolean SetValues(Widget current, Widget request, Widget new, ArgList args, Cardinal *num_args);
+static void ClassInitialize(void);
+static void Destroy(Widget w);
+static XtGeometryResult QueryGeometry(Widget w, XtWidgetGeometry *intended, XtWidgetGeometry *preferred);
 
 #define superclass	(&simpleClassRec)
 #define ownClassName	"Label"
 
 LabelClassRec labelClassRec = {
   {
-/* core_class fields */	
+/* core_class fields */
 
     /* superclass	  	*/	(WidgetClass) superclass,
     /* class_name	  	*/	ownClassName,
@@ -192,8 +196,8 @@ WidgetClass labelWidgetClass = (WidgetClass)&labelClassRec;
 
 /* Calculate width and height of the label for 8 bit characters
  */
-static void SetWidthAndHeight8Bit(lw)
-LabelWidget lw;
+static void SetWidthAndHeight8Bit(
+LabelWidget lw)
 {
     XFontStruct *fs = lw->label.font;
     int width;
@@ -234,8 +238,8 @@ LabelWidget lw;
 
 /* Calculate width and height of the label for 16 bit characters
  */
-static void SetWidthAndHeight2Byte(lw)
-LabelWidget lw;
+static void SetWidthAndHeight2Byte(
+LabelWidget lw)
 {
     XFontStruct *fs = lw->label.font;
     int width;
@@ -262,7 +266,7 @@ LabelWidget lw;
 	    if (*label) lw->label.label_height +=
 			fs->max_bounds.ascent + fs->max_bounds.descent;
     	}
-    	if (*label) 
+    	if (*label)
 	{
 	   width = XTextWidth16(fs, (XChar2b *)label, (int)str16len(label));
 	   if (width > (int) lw->label.label_width) lw->label.label_width = width;
@@ -278,8 +282,8 @@ LabelWidget lw;
 
 /* Calculate width and height of the label for a multibyte string (UTF-8)
  */
-static void SetWidthAndHeightMulti(lw)
-LabelWidget lw;
+static void SetWidthAndHeightMulti(
+LabelWidget lw)
 {
    XFontSet fset = lw->label.fontset;
    XFontSetExtents *ext = XExtentsOfFontSet(fset);
@@ -322,8 +326,8 @@ LabelWidget lw;
  * Calculate width and height of displayed text in pixels
  */
 
-static void SetTextWidthAndHeight(lw)
-LabelWidget lw;
+static void SetTextWidthAndHeight(
+LabelWidget lw)
 {
     Window root;
     int x, y;
@@ -355,8 +359,8 @@ LabelWidget lw;
 
 /* Create required GCs
  */
-static void GetnormalGC(lw)
-    LabelWidget lw;
+static void GetnormalGC(
+    LabelWidget lw)
 {
     XGCValues	values;
 
@@ -377,8 +381,8 @@ static void GetnormalGC(lw)
 			      &values);
 }
 
-static void GetgrayGCs(lw)
-    LabelWidget lw;
+static void GetgrayGCs(
+    LabelWidget lw)
 {
     XGCValues	values;
 
@@ -411,8 +415,9 @@ static void GetgrayGCs(lw)
     }
 }
 
-static void compute_bitmap_offsets(clw, lw)
-LabelWidget lw, clw;
+static void compute_bitmap_offsets(
+LabelWidget clw,
+LabelWidget lw)
 {
     /*
      * label will be displayed at (internal_width, internal_height + lbm_y)
@@ -431,8 +436,9 @@ LabelWidget lw, clw;
 
 /* Check if bitmaps or pixmaps in use and determine width, height and depth
  */
-static void set_bitmap_info(clw, lw)
-LabelWidget clw, lw;
+static void set_bitmap_info(
+LabelWidget clw GCC_UNUSED,
+LabelWidget lw)
 {
     Window root;
     int x, y;
@@ -458,7 +464,7 @@ LabelWidget clw, lw;
  *
  ***********************************************************************/
 
-static void ClassInitialize()
+static void ClassInitialize(void)
 {
   static XtConvertArgRec xpmCvtArg[] = {
     {XtWidgetBaseOffset,(XtPointer)XtOffsetOf(LabelRec,core.screen),sizeof(Screen *)},
@@ -483,8 +489,11 @@ static void ClassInitialize()
  *
  ***********************************************************************/
 
-static void Initialize(request, new)
- Widget request, new;
+static void Initialize(
+ Widget request GCC_UNUSED,
+ Widget new,
+ ArgList args GCC_UNUSED,
+ Cardinal *num_args GCC_UNUSED)
 {
     LabelWidget lw = (LabelWidget)new;
 
@@ -527,10 +536,11 @@ static void Initialize(request, new)
  *
  ***********************************************************************/
 
-static void _DrawLabel16(lw, labelText, y, len)
-LabelWidget lw;
-char16	   *labelText;
-int	    y, len;
+static void _DrawLabel16(
+LabelWidget lw,
+char16	   *labelText,
+int	    y,
+int	    len)
 {
   Display *disp = XtDisplay((Widget)lw);
   Window   win  = XtWindow((Widget)lw);
@@ -547,10 +557,11 @@ int	    y, len;
   }
 }
 
-static void _DrawLabelString(lw, labelText, y, len)
-LabelWidget lw;
-char	   *labelText;
-int	    y, len;
+static void _DrawLabelString(
+LabelWidget lw,
+char	   *labelText,
+int	    y,
+int	    len)
 {
   Display *disp = XtDisplay((Widget)lw);
   Window   win  = XtWindow((Widget)lw);
@@ -582,10 +593,10 @@ int	    y, len;
 
 /* ------------------------------------------------------------------ */
 
-static void Redisplay(w, event, region)
-Widget w;
-XEvent *event;
-Region region;
+static void Redisplay(
+Widget w,
+XEvent *event,
+Region region)
 {
    LabelWidget	lw = (LabelWidget) w;
    GC		gc = lw->label.normal_GC;
@@ -608,7 +619,7 @@ Region region;
 	   if (lw->label.label_depth == 1)
 	     XCopyPlane(XtDisplay(w), lw->label.left_bitmap, XtWindow(w), gc,
 		        0, 0, lw->label.lbm_width, lw->label.lbm_height,
-		        (int) lw->label.lbm_x, 
+		        (int) lw->label.lbm_x,
 		        (int) lw->label.internal_height + lw->label.lbm_y,
 		        (unsigned long) 1L);
            else {
@@ -619,7 +630,7 @@ Region region;
 	     }
 	     XCopyArea(XtDisplay(w), lw->label.left_bitmap, XtWindow(w), gc,
 		       0, 0, lw->label.lbm_width, lw->label.lbm_height,
-		       (int) lw->label.lbm_x, 
+		       (int) lw->label.lbm_x,
 		       (int) lw->label.internal_height + lw->label.lbm_y);
 	     XSetClipMask(XtDisplay(w), gc, None);
            }
@@ -655,19 +666,31 @@ Region region;
 	   {
 	     ext = XExtentsOfFontSet(lw->label.fontset);
 	     y = lw->label.label_y + abs(ext->max_ink_extent.y);
-	   }
- 	   if (len == MULTI_LINE_LABEL) {
-	     char *nl;
-	     while ((nl = index(label, '\n')) != NULL)
-	     {
-	       len = (int)(nl - label);
-	       _DrawLabelString(lw, label, (int)y, len);
-	       if (lw->simple.international == True) y += ext->max_ink_extent.height;
-	       else y += lw->label.font->max_bounds.ascent + lw->label.font->max_bounds.descent;
-	       label = nl + 1;
+ 	     if (len == MULTI_LINE_LABEL) {
+	       char *nl;
+	       while ((nl = index(label, '\n')) != NULL)
+	       {
+	         len = (int)(nl - label);
+	         _DrawLabelString(lw, label, (int)y, len);
+	         y += ext->max_ink_extent.height;
+	         label = nl + 1;
+	       }
 	     }
-	     len = strlen(label);
-           }
+	   }
+	   else
+	   {
+ 	     if (len == MULTI_LINE_LABEL) {
+	       char *nl;
+	       while ((nl = index(label, '\n')) != NULL)
+	       {
+	         len = (int)(nl - label);
+	         _DrawLabelString(lw, label, (int)y, len);
+	         y += lw->label.font->max_bounds.ascent + lw->label.font->max_bounds.descent;
+	         label = nl + 1;
+	       }
+	     }
+	   }
+	   len = strlen(label);
            if (len) _DrawLabelString(lw, label, (int)y, len);
 	 }
       }
@@ -682,7 +705,7 @@ Region region;
 	if (lw->label.clipMask != None) {
 	  XSetClipMask(XtDisplay(w), gc, lw->label.clipMask);
 	  XSetClipOrigin(XtDisplay(w), gc, lw->label.label_x, lw->label.label_y);
-			    
+
 	}
 	XCopyArea(XtDisplay(w), lw->label.pixmap, XtWindow(w), gc,
 		  0, 0, lw->label.label_width, lw->label.label_height,
@@ -694,7 +717,7 @@ Region region;
 
 /***********************************************************************
  *
- * TruncateLabelString: Truncate the label string, if it is too 
+ * TruncateLabelString: Truncate the label string, if it is too
  *			long for the widgets window.
  *
  ***********************************************************************/
@@ -702,18 +725,18 @@ Region region;
 /* DoTruncate8(): Truncate the 8 bit coded label string.
  * This function does not free the memory used by the label string.
  */
-static void DoTruncate8(lw, usableWidth)
-LabelWidget lw;
-int usableWidth;
+static void DoTruncate8(
+LabelWidget lw,
+int usableWidth)
 {
    int newlen, fullLen, currentWidth;
    static char *dots = "..";
    char *p;
-   
+
    fullLen = strlen(lw->label.label_full_len);
 
    /* Handling for a fixed width font: Calculate the string width in pixel */
-	 
+
    if (lw->label.font->max_bounds.width == lw->label.font->min_bounds.width)
      newlen = usableWidth / lw->label.font->max_bounds.width;
    else
@@ -768,20 +791,19 @@ int usableWidth;
 /* DoTruncate16(): Truncate the label string in UNICODE/UCS2 code.
  * This function does not free the memory used by the label string.
  */
-
-static void DoTruncate16(lw, usableWidth)
-LabelWidget lw;
-int usableWidth;
+static void DoTruncate16(
+LabelWidget lw,
+int usableWidth)
 {
    int newlen, fullLen, currentWidth;
    static char *dots = "..";
    char16 *p, *wLabel, *dots16;
-   
+
    dots16 = UTF8toUCS2(dots);
    fullLen = str16len((char16 *)lw->label.label_full_len);
 
    /* Handling for a fixed width font: Calculate the string width in pixel */
-	 
+
    if (lw->label.font->max_bounds.width == lw->label.font->min_bounds.width)
      newlen = usableWidth / lw->label.font->max_bounds.width;
    else
@@ -839,15 +861,14 @@ int usableWidth;
 /* DoTruncateMulti(): Truncate the label string in multibyte code (UTF8).
  * This function does not free the memory used by the label string.
  */
-
-static void DoTruncateMulti(lw, usableWidth)
-LabelWidget lw;
-int usableWidth;
+static void DoTruncateMulti(
+LabelWidget lw,
+int usableWidth)
 {
    int newlen, noOfChars, fullLen, currentWidth, charLen;
    static char *dots = "..";		/* This is also a correct multibyte code */
    char *p;
-   
+
    fullLen = strlen(lw->label.label_full_len);
 
    /* Handling for all fonts:
@@ -893,8 +914,7 @@ int usableWidth;
 /* Free the resources allocated by the
  * truncate mechanism and reset the label length
  */
-static void ResetTruncateMode(lw)
-LabelWidget lw;
+static void ResetTruncateMode(LabelWidget lw)
 {
    XtFree(lw->label.label);
    lw->label.label = lw->label.label_full_len;
@@ -909,9 +929,9 @@ LabelWidget lw;
  * TruncateLabelString() will modify the label and the label_len
  * entries in the widget record.
  */
-void TruncateLabelString(lw, currentWidth)
-LabelWidget lw;
-Dimension currentWidth;
+void TruncateLabelString(
+LabelWidget lw,
+Dimension currentWidth)
 {
    int usableWidth;
 
@@ -954,9 +974,10 @@ Dimension currentWidth;
 /* Determine the new position of the label string
  * and the left bitmap or a pixmap after resize.
  */
-static void Reposition(lw, width, height)
-register LabelWidget lw;
-Dimension width, height;
+static void Reposition(
+register LabelWidget lw,
+Dimension width,
+Dimension height)
 {
     Position newPos;
     Position leftedge = lw->label.internal_width + LEFT_OFFSET(lw);
@@ -981,8 +1002,7 @@ Dimension width, height;
     lw->label.label_y = (int)(height - lw->label.label_height)/2;
 }
 
-static void Resize(w)
-    Widget w;
+static void Resize(Widget w)
 {
     LabelWidget lw = (LabelWidget)w;
 
@@ -1010,10 +1030,12 @@ static void Resize(w)
 #define HEIGHT	 2
 #define NUM_CHECKS 3
 
-static Boolean SetValues(current, request, new, args, num_args)
-    Widget current, request, new;
-    ArgList args;
-    Cardinal *num_args;
+static Boolean SetValues(
+    Widget current,
+    Widget request,
+    Widget new,
+    ArgList args,
+    Cardinal *num_args)
 {
     LabelWidget curlw = (LabelWidget) current;
     LabelWidget reqlw = (LabelWidget) request;
@@ -1023,7 +1045,7 @@ static Boolean SetValues(current, request, new, args, num_args)
 
     for (i = 0; i < NUM_CHECKS; i++) checks[i] = FALSE;
 
-    for (i = 0; i < *num_args; i++) {
+    for (i = 0; (Cardinal) i < *num_args; i++) {
 	if (streq(XtNbitmap, args[i].name) || streq(XtNpixmap, args[i].name) ||
 	    streq(XtNclipMask, args[i].name))
 	    checks[PIXMAP] = TRUE;
@@ -1032,7 +1054,7 @@ static Boolean SetValues(current, request, new, args, num_args)
 	if (streq(XtNheight, args[i].name))
 	    checks[HEIGHT] = TRUE;
     }
-    if (newlw->label.label == NULL) newlw->label.label = newlw->core.name;
+    if (newlw->label.label == NULL) newlw->label.label = DeConst(newlw->core.name);
 
     /*
      * resize on bitmap change or change of font style
@@ -1067,8 +1089,8 @@ static Boolean SetValues(current, request, new, args, num_args)
     /* recalculate the window size if something has changed. */
 
     if (newlw->label.resize && was_resized) {
-      if ((curlw->core.height == reqlw->core.height) && !checks[HEIGHT])
-	newlw->core.height = newlw->label.label_height + 2 * newlw->label.internal_height;
+        if ((curlw->core.height == reqlw->core.height) && !checks[HEIGHT])
+	  newlw->core.height = newlw->label.label_height + 2 * newlw->label.internal_height;
 
 	set_bitmap_info(curlw, newlw);
 
@@ -1091,7 +1113,7 @@ static Boolean SetValues(current, request, new, args, num_args)
 	redisplay = True;
     }
     /* Truncate machanism activated or deactivated ? */
-    
+
     if (curlw->label.truncLabel != newlw->label.truncLabel)
     {
 	/* Truncate mode deactivated: If label is currently truncated,
@@ -1106,7 +1128,7 @@ static Boolean SetValues(current, request, new, args, num_args)
 	  }
 	}
 	/* Truncate machanism activated: No resize but resize handling required */
-	
+
 	else was_resized = True;
     }
 
@@ -1122,9 +1144,9 @@ static Boolean SetValues(current, request, new, args, num_args)
 
     if ((curlw->label.internal_width != newlw->label.internal_width) ||
         (curlw->label.internal_height != newlw->label.internal_height) || was_resized) {
-	
+
 	/* Resize() will be called if geometry changes succeed */
-	
+
 	if (strcmp(ownClassName, XtClass(new)->core_class.class_name) == 0)
 	{
 	  Reposition(newlw, curlw->core.width, curlw->core.height);
@@ -1144,8 +1166,7 @@ static Boolean SetValues(current, request, new, args, num_args)
  *
  ***********************************************************************/
 
-static void Destroy(w)
-Widget w;
+static void Destroy(Widget w)
 {
     LabelWidget lw = (LabelWidget)w;
 
@@ -1162,9 +1183,10 @@ Widget w;
  *
  ***********************************************************************/
 
-static XtGeometryResult QueryGeometry(w, intended, preferred)
-    Widget w;
-    XtWidgetGeometry *intended, *preferred;
+static XtGeometryResult QueryGeometry(
+    Widget w,
+    XtWidgetGeometry *intended,
+    XtWidgetGeometry *preferred)
 {
     register LabelWidget lw = (LabelWidget)w;
 

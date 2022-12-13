@@ -1,10 +1,10 @@
 /*
- * $XTermId: List.c,v 1.3 2022/12/06 23:58:25 tom Exp $
+ * $XTermId: List.c,v 1.7 2022/12/13 00:53:17 tom Exp $
  * $Xorg: List.c,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
  */
 
 /*
-Copyright 2015,2022	Thomas E. Dickey
+Copyright 2015, 2022	Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -41,8 +41,8 @@ in this Software without prior written authorization from The Open Group.
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "private.h"
+
 #include <ctype.h>
 
 #include <X11/IntrinsicP.h>
@@ -64,11 +64,11 @@ I also added the freedoms member of the list widget part. */
 #define WidthFree( w )   !(((ListWidget)(w))->list.freedoms & WidthLock )
 #define LongestFree( w ) !(((ListWidget)(w))->list.freedoms & LongestLock )
 
-/* 
+/*
  * Default Translation table.
  */
 
-static char defaultTranslations[] =  
+static char defaultTranslations[] =
   "<Btn1Down>:   Set()\n\
    <Btn1Up>:     Notify()";
 
@@ -125,15 +125,17 @@ static XtResource resources[] = {
         offset(list.callback), XtRCallback, NULL},
 };
 
-static void Initialize();
-static void ChangeSize();
-static void Resize();
-static void Redisplay();
-static void Destroy();
-static Boolean Layout();
-static XtGeometryResult PreferredGeom();
-static Boolean SetValues();
-static void Notify(), Set(), Unset();
+static void Initialize(Widget junk, Widget new, ArgList args, Cardinal *num_args);
+static void ChangeSize(Widget w, Dimension width, Dimension height);
+static void Resize(Widget w);
+static void Redisplay(Widget w, XEvent *event, Region junk);
+static void Destroy(Widget w);
+static Boolean Layout(Widget w, Boolean xfree, Boolean yfree, Dimension *width, Dimension *height);
+static XtGeometryResult PreferredGeom(Widget w, XtWidgetGeometry *intended, XtWidgetGeometry *requested);
+static Boolean SetValues(Widget current, Widget request, Widget new, ArgList args, Cardinal *num_args);
+static void Notify(Widget w, XEvent * event, String * params, Cardinal *num_params);
+static void Set(Widget w, XEvent * event, String * params, Cardinal *num_params);
+static void Unset(Widget w, XEvent * event, String * params, Cardinal *num_params);
 
 static XtActionsRec actions[] = {
       {"Notify",         Notify},
@@ -143,7 +145,7 @@ static XtActionsRec actions[] = {
 
 ListClassRec listClassRec = {
   {
-/* core_class fields */	
+/* core_class fields */
     /* superclass	  	*/	(WidgetClass) &simpleClassRec,
     /* class_name	  	*/	"List",
     /* widget_size	  	*/	sizeof(ListRec),
@@ -196,11 +198,10 @@ WidgetClass iconListWidgetClass = (WidgetClass)&listClassRec;
  *
  ****************************************************************/
 
-static void GetGCs(w)
-Widget w;
+static void GetGCs(Widget w)
 {
     XGCValues	values;
-    ListWidget lw = (ListWidget) w;    
+    ListWidget lw = (ListWidget) w;
 
     values.foreground = lw->list.foreground;
     values.background = lw->core.background_pixel;
@@ -224,7 +225,7 @@ Widget w;
       lw->list.revgc = XtAllocateGC(w, 0, GCForeground|GCBackground, &values, GCFont, 0);
     else lw->list.revgc = XtGetGC(w, GCForeground|GCFont|GCBackground, &values);
 
-    values.tile = XmuCreateStippledPixmap(XtScreen(w), 
+    values.tile = XmuCreateStippledPixmap(XtScreen(w),
 					  lw->list.foreground,
 					  lw->core.background_pixel,
 					  lw->core.depth);
@@ -245,8 +246,7 @@ Widget w;
  * MAY NOT change your geometry from within a SetValues. (Xt man,
  * sect. 9.7.2)  So, I factored these changes out. */
 
-static void CalculatedValues( w )
-Widget w;
+static void CalculatedValues(Widget w)
 {
     int i, len;
 
@@ -314,9 +314,10 @@ Widget w;
  */
 
 static void
-ResetList( w, changex, changey )
-Widget w;
-Boolean changex, changey;
+ResetList(
+Widget w,
+Boolean changex,
+Boolean changey)
 {
     Dimension width = w->core.width;
     Dimension height = w->core.height;
@@ -334,9 +335,10 @@ Boolean changex, changey;
  */
 
 static void
-ChangeSize(w, width, height)
-Widget w;
-Dimension width, height;
+ChangeSize(
+Widget w,
+Dimension width,
+Dimension height)
 {
     XtWidgetGeometry request, reply;
 
@@ -364,12 +366,14 @@ Dimension width, height;
 	    request.request_mode = CWWidth | CWHeight;
 	    XtMakeGeometryRequest(w, &request, &reply);
 	    break;
+	case XtGeometryDone:
 	default:
 	  XtAppWarning(XtWidgetToApplicationContext(w),
 		       "List Widget: Unknown geometry return.");
 	  break;
 	}
 	break;
+    case XtGeometryDone:
     default:
 	XtAppWarning(XtWidgetToApplicationContext(w),
 		     "List Widget: Unknown geometry return.");
@@ -384,14 +388,15 @@ Dimension width, height;
  *	Returns: none
  */
 
-static void Initialize(junk, new, args, num_args)
-Widget junk, new;
-ArgList args;
-Cardinal *num_args;
+static void Initialize(
+Widget junk GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     ListWidget lw = (ListWidget) new;
 
-/* 
+/*
  * Initialize all private resources.
  */
 
@@ -426,10 +431,11 @@ Cardinal *num_args;
  */
 
 static int
-CvtToItem(w, xloc, yloc, item)
-Widget w;
-int xloc, yloc;
-int *item;
+CvtToItem(
+Widget w,
+int xloc,
+int yloc,
+int *item)
 {
     int one, another;
     ListWidget lw = (ListWidget) w;
@@ -438,7 +444,7 @@ int *item;
     if (lw->list.vertical_cols) {
         one = lw->list.nrows * ((xloc - (int) lw->list.internal_width)
 	    / lw->list.col_width);
-        another = (yloc - (int) lw->list.internal_height) 
+        another = (yloc - (int) lw->list.internal_height)
 	        / lw->list.row_height;
 	 /* If out of range, return minimum possible value. */
 	if (another >= lw->list.nrows) {
@@ -447,15 +453,15 @@ int *item;
 	}
     }
     else {
-        one = (lw->list.ncols * ((yloc - (int) lw->list.internal_height) 
+        one = (lw->list.ncols * ((yloc - (int) lw->list.internal_height)
               / lw->list.row_height)) ;
 	/* If in right margin handle things right. */
         another = (xloc - (int) lw->list.internal_width) / lw->list.col_width;
 	if (another >= lw->list.ncols) {
-	    another = lw->list.ncols - 1; 
+	    another = lw->list.ncols - 1;
 	    ret_val = OUT_OF_RANGE;
 	}
-    }  
+    }
     if ((xloc < 0) || (yloc < 0))
         ret_val = OUT_OF_RANGE;
     if (one < 0) one = 0;
@@ -474,10 +480,11 @@ int *item;
  */
 
 static void
-FindCornerItems(w, event, ul_ret, lr_ret)
-Widget w;
-XEvent * event;
-int *ul_ret, *lr_ret;
+FindCornerItems(
+Widget w,
+XEvent * event,
+int *ul_ret,
+int *lr_ret)
 {
     int xloc, yloc;
 
@@ -498,15 +505,17 @@ int *ul_ret, *lr_ret;
  */
 
 static Boolean
-ItemInRectangle(w, ul, lr, item)
-Widget w;
-int ul, lr, item;
+ItemInRectangle(
+Widget w,
+int ul,
+int lr,
+int item)
 {
     ListWidget lw = (ListWidget) w;
     int mod_item;
     int things;
-    
-    if (item < ul || item > lr) 
+
+    if (item < ul || item > lr)
         return(FALSE);
     if (lw->list.vertical_cols)
         things = lw->list.nrows;
@@ -524,14 +533,15 @@ int ul, lr, item;
  *	Arguments: w - the widget.
  *                 x, y - ul corner of the area item occupies.
  *                 gc - the gc that is used to paint this rectangle
- *	Returns: 
+ *	Returns:
  */
 
 static void
-HighlightBackground(w, x, y, gc)
-Widget w;
-int x, y;
-GC gc;
+HighlightBackground(
+Widget w,
+int x,
+int y,
+GC gc)
 {
     ListWidget lw = (ListWidget) w;
     int hl_x, hl_y, width;
@@ -552,9 +562,9 @@ GC gc;
  *  NOTE: no action taken on an unrealized widget. */
 
 static void
-PaintItemName(w, item)
-Widget w;
-int item;
+PaintItemName(
+Widget w,
+int item)
 {
     char * str;
     GC gc;
@@ -581,7 +591,7 @@ int item;
 
     if (lw->simple.international) {
 	delta = (lw->list.row_height - ext->max_ink_extent.height)/2 - lw->list.internal_height;
-	str_y = y + abs(ext->max_ink_extent.y) + delta; 
+	str_y = y + abs(ext->max_ink_extent.y) + delta;
     }
     else {
 	delta = (lw->list.row_height - lw->list.font->max_bounds.ascent -
@@ -652,8 +662,8 @@ int item;
 
     /* Draw the String */
 
-    if (lw->list.iconList) str = lw->list.iconList[item].string;
-    else str = lw->list.list[item];
+    if (lw->list.iconList) str = DeConst(lw->list.iconList[item].string);
+    else str = DeConst(lw->list.list[item]);
 
     if (lw->simple.international)
         XmbDrawString(XtDisplay(w), XtWindow(w), lw->list.fontset,
@@ -661,7 +671,7 @@ int item;
     else XDrawString(XtDisplay(w), XtWindow(w), gc, str_x, str_y, str, strlen(str));
 }
 
-    
+
 /* Redisplay()
  *
  * Repaints the widget window on expose events.
@@ -670,11 +680,11 @@ int item;
  * junk - not used, unless three-d patch enabled. */
 
 /* ARGSUSED */
-static void 
-Redisplay(w, event, junk)
-Widget w;
-XEvent *event;
-Region junk;
+static void
+Redisplay(
+Widget w,
+XEvent *event,
+Region junk GCC_UNUSED)
 {
     int item;			/* an item to work with. */
     int ul_item, lr_item;       /* corners of items we need to paint. */
@@ -687,7 +697,7 @@ Region junk;
     }
     else
         FindCornerItems(w, event, &ul_item, &lr_item);
-    
+
     for (item = ul_item; (item <= lr_item && item < lw->list.nitems) ; item++)
       if (ItemInRectangle(w, ul_item, lr_item, item))
 	PaintItemName(w, item);
@@ -702,14 +712,15 @@ Region junk;
  * intended - what the parent intends to do with us.
  * requested - what we want to happen. */
 
-static XtGeometryResult 
-PreferredGeom(w, intended, requested)
-Widget w;
-XtWidgetGeometry *intended, *requested;
+static XtGeometryResult
+PreferredGeom(
+Widget w,
+XtWidgetGeometry *intended,
+XtWidgetGeometry *requested)
 {
     Dimension new_width, new_height;
     Boolean change, width_req, height_req;
-    
+
     width_req = intended->request_mode & CWWidth;
     height_req = intended->request_mode & CWHeight;
 
@@ -724,14 +735,14 @@ XtWidgetGeometry *intended, *requested;
       new_height = w->core.height;
 
     requested->request_mode = 0;
-    
+
 /*
  * We only care about our height and width.
  */
 
     if ( !width_req && !height_req)
       return(XtGeometryYes);
-    
+
     change = Layout(w, !width_req, !height_req, &new_width, &new_height);
 
     requested->request_mode |= CWWidth;
@@ -750,8 +761,7 @@ XtWidgetGeometry *intended, *requested;
  * resizes the widget, by changing the number of rows and columns. */
 
 static void
-Resize(w)
-    Widget w;
+Resize(Widget w)
 {
     Dimension width, height;
 
@@ -773,19 +783,21 @@ Resize(w)
  * width, height- the is the current width and height that we are going
  *                we are going to layout the list widget to,
  *                depending on xfree and yfree of course.
- *                               
+ *
  * RETURNS: TRUE if width or height have been changed. */
 
 static Boolean
-Layout(w, xfree, yfree, width, height)
-Widget w;
-Boolean xfree, yfree;
-Dimension *width, *height;
+Layout(
+Widget w,
+Boolean xfree,
+Boolean yfree,
+Dimension *width,
+Dimension *height)
 {
     ListWidget lw = (ListWidget) w;
     Boolean change = FALSE;
-    
-/* 
+
+/*
  * If force columns is set then always use number of columns specified
  * by default_cols.
  */
@@ -829,7 +841,7 @@ Dimension *width, *height;
                 + 2 * lw->list.internal_height;
 	change = TRUE;
     }
-/* 
+/*
  * If the width is fixed then use it to determine the number of columns.
  * If the height is free to move (width still fixed) then resize the height
  * of the widget to fit the current list exactly.
@@ -845,20 +857,20 @@ Dimension *width, *height;
 	    change = TRUE;
 	}
     }
-/* 
+/*
  * The last case is xfree and !yfree we use the height to determine
  * the number of rows and then set the width to just fit the resulting
  * number of columns.
  */
     else if (!yfree) {		/* xfree must be TRUE. */
-        lw->list.nrows = (int)(*height - 2 * lw->list.internal_height) 
+        lw->list.nrows = (int)(*height - 2 * lw->list.internal_height)
 	                 / (int)lw->list.row_height;
 	if (lw->list.nrows <= 0) lw->list.nrows = 1;
 	lw->list.ncols = (( lw->list.nitems - 1 ) / lw->list.nrows) + 1;
-	*width = lw->list.ncols * lw->list.col_width 
+	*width = lw->list.ncols * lw->list.col_width
 	       + 2 * lw->list.internal_width;
 	change = TRUE;
-    }      
+    }
     return(change);
 }
 
@@ -871,20 +883,20 @@ Dimension *width, *height;
 
 /* ARGSUSED */
 static void
-Notify(w, event, params, num_params)
-Widget w;
-XEvent * event;
-String * params;
-Cardinal *num_params;
+Notify(
+Widget w,
+XEvent * event,
+String * params GCC_UNUSED,
+Cardinal *num_params GCC_UNUSED)
 {
     ListWidget lw = (ListWidget) w;
     int item;
     char *str;
     XawListReturnStruct ret_value;
 
-/* 
- * Find item and if out of range then unhighlight and return. 
- * 
+/*
+ * Find item and if out of range then unhighlight and return.
+ *
  * If the current item is unhighlighted then the user has aborted the
  * notify, so unhighlight and return.
  */
@@ -896,7 +908,9 @@ Cardinal *num_params;
     }
     /* if XtNpasteBuffer is set then paste it. */
 
-    str = lw->list.iconList ? lw->list.iconList[item].string : lw->list.list[item];
+    str = DeConst(lw->list.iconList
+                  ? lw->list.iconList[item].string
+		  : lw->list.list[item]);
     if (lw->list.paste) XStoreBytes(XtDisplay(w), str, strlen(str));
 
     /* Call Callback function. */
@@ -913,11 +927,11 @@ Cardinal *num_params;
 
 /* ARGSUSED */
 static void
-Unset(w, event, params, num_params)
-Widget w;
-XEvent * event;
-String * params;
-Cardinal *num_params;
+Unset(
+Widget w,
+XEvent * event GCC_UNUSED,
+String * params GCC_UNUSED,
+Cardinal *num_params GCC_UNUSED)
 {
   XawListUnhighlight(w);
 }
@@ -929,11 +943,11 @@ Cardinal *num_params;
 
 /* ARGSUSED */
 static void
-Set(w, event, params, num_params)
-Widget w;
-XEvent * event;
-String * params;
-Cardinal *num_params;
+Set(
+Widget w,
+XEvent * event,
+String * params GCC_UNUSED,
+Cardinal *num_params GCC_UNUSED)
 {
   int item;
   ListWidget lw = (ListWidget) w;
@@ -949,11 +963,13 @@ Cardinal *num_params;
  * Set specified arguments into widget
  */
 
-static Boolean 
-SetValues(current, request, new, args, num_args)
-Widget current, request, new;
-ArgList args;
-Cardinal *num_args;
+static Boolean
+SetValues(
+Widget current,
+Widget request,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     ListWidget cl = (ListWidget) current;
     ListWidget rl = (ListWidget) request;
@@ -1048,17 +1064,17 @@ Cardinal *num_args;
         nl->list.highlight = NO_HIGHLIGHT;
 	redraw = TRUE;
     }
-    
+
     if (!XtIsRealized(current)) return(FALSE);
     return(redraw);
 }
 
-static void Destroy(w)
-    Widget w;
+static void Destroy(
+    Widget w)
 {
     ListWidget lw = (ListWidget) w;
     XGCValues values;
-    
+
     XGetGCValues(XtDisplay(w), lw->list.graygc, GCTile, &values);
     XmuReleaseStippledPixmap(XtScreen(w), values.tile);
     XtReleaseGC(w, lw->list.graygc);
@@ -1083,11 +1099,12 @@ static void Destroy(w)
  *                 If nitems is <= 0 then the list needs to be NULL terminated.
  */
 
-void XawListChange(w, list, nitems, longest, resize_it)
-Widget	w;
-String  *list;
-int	nitems, longest;
-Boolean	resize_it;
+void XawListChange(
+Widget	w,
+String  *list,
+int	nitems,
+int	longest,
+Boolean	resize_it)
 {
     ListWidget lw = (ListWidget) w;
 
@@ -1124,7 +1141,7 @@ Boolean	resize_it;
  *                           	in the list.
  *		   icon_w -	width of all icons
  *		   icon_h -	height of all icons
- *		   icon_d -	depth of all icons		   	    	
+ *		   icon_d -	depth of all icons
  *                 resize - 	if TRUE the the list widget will
  *                          	try to resize itself.
  *	Returns: none.
@@ -1132,11 +1149,15 @@ Boolean	resize_it;
  *                 If nitems is <= 0 then the list needs to be NULL terminated.
  */
 
-void XawIconListChange(w, iconlist, nitems, longest, icon_w, icon_h, icon_d, resize_it)
-Widget		w;
-XawIconList	*iconlist;
-int		nitems, longest, icon_w, icon_h, icon_d;
-Boolean		resize_it;
+void XawIconListChange(
+Widget		w,
+XawIconList	*iconlist,
+int		nitems,
+int		longest,
+int		icon_w,
+int		icon_h,
+int		icon_d,
+Boolean		resize_it)
 {
     ListWidget lw = (ListWidget) w;
     int		   text_height;
@@ -1182,8 +1203,8 @@ Boolean		resize_it;
  *	Returns: none.
  */
 
-void XawListUnhighlight(w)
-Widget w;
+void XawListUnhighlight(
+Widget w)
 {
     ListWidget lw = ( ListWidget ) w;
 
@@ -1199,17 +1220,17 @@ Widget w;
  *	Returns: none.
  */
 
-void XawListHighlight(w, item)
-Widget w;
-int item;
+void XawListHighlight(
+Widget w,
+int item)
 {
     ListWidget lw = ( ListWidget ) w;
-    
+
     if (XtIsSensitive(w)) {
         lw->list.highlight = item;
         if (lw->list.is_highlighted != NO_HIGHLIGHT)
             PaintItemName(w, lw->list.is_highlighted);  /* Unhighlight. */
-	PaintItemName(w, item);				/* HIGHLIGHT this one. */ 
+	PaintItemName(w, item);				/* HIGHLIGHT this one. */
     }
 }
 
@@ -1219,8 +1240,7 @@ int item;
  *	Returns: the info about the currently highlighted object.
  */
 
-XawListReturnStruct *XawListShowCurrent(w)
-Widget w;
+XawListReturnStruct *XawListShowCurrent(Widget w)
 {
     ListWidget lw = (ListWidget) w;
     XawListReturnStruct * ret_val;
@@ -1237,4 +1257,3 @@ Widget w;
     }
     return(ret_val);
 }
-

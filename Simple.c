@@ -1,7 +1,11 @@
-/* $Xorg: Simple.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $ */
+/*
+ * $XTermId: Simple.c,v 1.7 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: Simple.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
+ */
 
 /**************************************************************************
 
+Copyright 2022  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -29,13 +33,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -50,7 +54,8 @@ Note that alle the Add3dExt code from XawPlus 2.x is moved into this widget.
 
 ***************************************************************************/
 
-#include <stdio.h>
+#include "private.h"
+
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/XawPlus/XawInit.h>
@@ -85,9 +90,14 @@ static XtResource resources[] = {
 #undef coffset
 };
 
-static void ClassPartInitialize(), ClassInitialize(), Destroy(),
-	    Initialize(), Realize(),ConvertCursor();
-static Boolean SetValues(), ChangeSensitive();
+static void ClassPartInitialize(WidgetClass class);
+static void ClassInitialize(void);
+static void Destroy(Widget w);
+static void Initialize(Widget old, Widget new, ArgList args, Cardinal *num_args);
+static void Realize(Widget w, Mask *valueMask, XSetWindowAttributes *attributes);
+static void ConvertCursor(Widget w);
+static Boolean SetValues(Widget current, Widget request, Widget new, ArgList args, Cardinal *num_args);
+static Boolean ChangeSensitive(Widget w);
 
 SimpleClassRec simpleClassRec = {
   { /* core fields */
@@ -144,26 +154,25 @@ WidgetClass simpleWidgetClass = (WidgetClass)&simpleClassRec;
  *	Returns:       none.
  */
 
-static void ConvertCursor(w)
-Widget w;
+static void ConvertCursor(Widget w)
 {
     SimpleWidget simple = (SimpleWidget) w;
     XrmValue from, to;
     Cursor cursor;
-   
+
     if (simple->simple.cursor_name == NULL)
 	return;
 
-    from.addr = (XPointer) simple->simple.cursor_name;
+    from.addr = (XPointer) DeConst(simple->simple.cursor_name);
     from.size = strlen((char *) from.addr) + 1;
 
     to.size = sizeof(Cursor);
     to.addr = (XPointer) &cursor;
 
     if (XtConvertAndStore(w, XtRString, &from, XtRColorCursor, &to)) {
-	if ( cursor !=  None) 
+	if ( cursor !=  None)
 	    simple->simple.cursor = cursor;
-    } 
+    }
     else {
 	XtAppErrorMsg(XtWidgetToApplicationContext(w),
 		      "convertFailed","ConvertCursor","XawError",
@@ -182,13 +191,16 @@ Widget w;
  *	Returns:	None
  */
 
-static void DrawRectBorder(Dpy, Win, upperGC, lowerGC, borderWidth, x, y, width, height)
-Display	*Dpy;		/* Display to paint to */
-Drawable Win;		/* Window to paint in */
+static void DrawRectBorder(
+Display	*Dpy,		/* Display to paint to */
+Drawable Win,		/* Window to paint in */
 GC	 upperGC,	/* GC for upper and left border */
-	 lowerGC;	/* GC for lower an right border */
+GC	 lowerGC,	/* GC for lower and right border */
 int	 borderWidth,	/* Width of the border */
-	 x,y,width,height;
+int	 x,
+int	 y,
+int	 width,
+int	 height)
 {
    int	 xMin, xMax, yMin, yMax, i;
 
@@ -247,7 +259,7 @@ int	 borderWidth,	/* Width of the border */
  *
  ***********************************************************************/
 
-static void ClassInitialize()
+static void ClassInitialize(void)
 {
    /* Arguments for the color converter */
 
@@ -276,8 +288,7 @@ static void ClassInitialize()
  *
  ***********************************************************************/
 
-static void ClassPartInitialize(class)
-    WidgetClass class;
+static void ClassPartInitialize(WidgetClass class)
 {
     SimpleWidgetClass c     = (SimpleWidgetClass) class;
     SimpleWidgetClass super = (SimpleWidgetClass) c->core_class.superclass;
@@ -289,7 +300,7 @@ static void ClassPartInitialize(class)
 	char* fmt = "%s Widget: The Simple Widget class method 'change_sensitive' is undefined.\n"
 		    "A function must be defined or inherited.";
 
-        if ((len = strlen (fmt) + strlen (c->core_class.class_name)) < sizeof buf) bufp = buf;
+        if ((size_t) (len = strlen (fmt) + strlen (c->core_class.class_name)) < sizeof buf) bufp = buf;
 	else bufp = XtMalloc(len + 1);
 
 	if (bufp == NULL) {
@@ -314,10 +325,11 @@ static void ClassPartInitialize(class)
  *
  ***********************************************************************/
 
-static void Initialize(old, new, args, num_args)
-Widget old, new;
-ArgList args;
-Cardinal *num_args;
+static void Initialize(
+Widget old GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     XGCValues	   values;
     SimpleWidget w = (SimpleWidget)new;
@@ -344,19 +356,19 @@ Cardinal *num_args;
  *
  ***********************************************************************/
 
-static void Realize(w, valueMask, attributes)
-    Widget w;
-    Mask *valueMask;
-    XSetWindowAttributes *attributes;
+static void Realize(
+    Widget w,
+    Mask *valueMask,
+    XSetWindowAttributes *attributes)
 {
-    Pixmap border_pixmap;
+    Pixmap border_pixmap = CopyFromParent;
     if (!XtIsSensitive(w)) {
 	/* change border to gray; have to remember the old one,
 	 * so XtDestroyWidget deletes the proper one */
 	if (((SimpleWidget)w)->simple.insensitive_border == None)
 	    ((SimpleWidget)w)->simple.insensitive_border =
 		XmuCreateStippledPixmap(XtScreen(w),
-					w->core.border_pixel, 
+					w->core.border_pixel,
 					w->core.background_pixel,
 					w->core.depth);
         border_pixmap = w->core.border_pixmap;
@@ -385,8 +397,7 @@ static void Realize(w, valueMask, attributes)
  *
  ***********************************************************************/
 
-static void Destroy(w)
-Widget w;
+static void Destroy(Widget w)
 {
     SimpleWidget sw = (SimpleWidget)w;
 
@@ -401,10 +412,12 @@ Widget w;
  *
  ***********************************************************************/
 
-static Boolean SetValues(current, request, new, args, num_args)
-Widget current, request, new;
-ArgList args;
-Cardinal *num_args;
+static Boolean SetValues(
+Widget current,
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     SimpleWidget s_old = (SimpleWidget) current;
     SimpleWidget s_new = (SimpleWidget) new;
@@ -435,7 +448,7 @@ Cardinal *num_args;
     if (new_cursor && XtIsRealized(new))
         XDefineCursor(XtDisplay(new), XtWindow(new), s_new->simple.cursor);
 
-    /* Check, if any color has changed. If so, free the old color cell and 
+    /* Check, if any color has changed. If so, free the old color cell and
      * store the new color in the GC.
      */
     if (s_old->simple.highlightColor != s_new->simple.highlightColor)
@@ -460,7 +473,7 @@ Cardinal *num_args;
 
     if (s_old->simple.borderWidth != s_new->simple.borderWidth) redraw = TRUE;
 
-    return(redraw);   
+    return(redraw);
 }
 
 /*****************************************************************************
@@ -469,8 +482,7 @@ Cardinal *num_args;
  *
  *****************************************************************************/
 
-static Boolean ChangeSensitive(w)
-    Widget w;
+static Boolean ChangeSensitive(Widget w)
 {
     if (XtIsRealized(w)) {
 	if (XtIsSensitive(w))
@@ -478,13 +490,13 @@ static Boolean ChangeSensitive(w)
 		XSetWindowBorderPixmap( XtDisplay(w), XtWindow(w),
 				        w->core.border_pixmap );
 	    else
-		XSetWindowBorder( XtDisplay(w), XtWindow(w), 
+		XSetWindowBorder( XtDisplay(w), XtWindow(w),
 				  w->core.border_pixel );
 	else {
 	    if (((SimpleWidget)w)->simple.insensitive_border == None)
 		((SimpleWidget)w)->simple.insensitive_border =
 		    XmuCreateStippledPixmap(XtScreen(w),
-					    w->core.border_pixel, 
+					    w->core.border_pixel,
 					    w->core.background_pixel,
 					    w->core.depth);
 	    XSetWindowBorderPixmap( XtDisplay(w), XtWindow(w),
@@ -497,10 +509,12 @@ static Boolean ChangeSensitive(w)
 
 /* Draw a flat rectangle for buttons -----------------------------------
  */
-void XawFlatRectangle(w, x, y, width, height)
-Widget w;
-int		x, y;
-unsigned int	width, height;
+void XawFlatRectangle(
+Widget w,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height)
 {
    SimpleWidget sw = (SimpleWidget)w;
    unsigned int	 xMin, xWidth, yMin, yHeight, i;
@@ -519,14 +533,16 @@ unsigned int	width, height;
 
 /* Draw a 3D styled rectangle for released buttons --------------------
  */
-void XawRaisedRectangle(w, x, y, width, height)
-Widget w;
-int		x, y;
-unsigned int	width, height;
+void XawRaisedRectangle(
+Widget w,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height)
 {
    SimpleWidget sw = (SimpleWidget)w;
 
-   
+
    DrawRectBorder(XtDisplay(w), sw->core.window,
 	 sw->simple.highlightGC, sw->simple.shadowGC,
 	 (int)sw->simple.borderWidth, x, y, (int)width, (int)height);
@@ -534,10 +550,12 @@ unsigned int	width, height;
 
 /* Draw a 3D styled rectangle for pressed buttons ----------------------
  */
-void XawSunkenRectangle(w, x, y, width, height)
-Widget w;
-int		x, y;
-unsigned int	width, height;
+void XawSunkenRectangle(
+Widget w,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height)
 {
    SimpleWidget sw = (SimpleWidget)w;
 
@@ -548,10 +566,12 @@ unsigned int	width, height;
 
 /* Draw a 3D styled raised button --------------------------------------
  */
-void XawRaisedButton(w, x, y, width, height)
-Widget		w;
-int		x, y;
-unsigned int	width, height;
+void XawRaisedButton(
+Widget		w,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height)
 {
    SimpleWidget sw = (SimpleWidget)w;
 
@@ -564,10 +584,12 @@ unsigned int	width, height;
 
 /* Draw a 3D styled sunken button --------------------------------------
  */
-void XawSunkenButton(w, x, y, width, height)
-Widget w;
-int		x, y;
-unsigned int	width, height;
+void XawSunkenButton(
+Widget w,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height)
 {
    SimpleWidget sw = (SimpleWidget)w;
 
@@ -580,14 +602,15 @@ unsigned int	width, height;
 
 /* Draw a flat button --------------------------------------------------
  */
-void XawFlatButton(w, x, y, width, height)
-Widget w;
-int		x, y;
-unsigned int	width, height;
+void XawFlatButton(
+Widget w,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height)
 {
    SimpleWidget sw = (SimpleWidget)w;
 
    XFillRectangle(XtDisplay(w), sw->core.window, sw->simple.backgrGC,
 		x, y, width, height);
 }
-

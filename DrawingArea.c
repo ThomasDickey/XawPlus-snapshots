@@ -1,3 +1,6 @@
+/*
+ * $XTermId: DrawingArea.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ */
 
 /***********************************************************************
  *
@@ -6,6 +9,7 @@
  * This widget adds a backing store to the simple widget and defines
  * all(?) drawing functions known from the Xlib for this widget.
  *
+ * Copyright 2022  Thomas E. Dickey
  * Copyright (c) Roland Krause 2002, roland_krause@freenet.de
  *
  * This module is free software; you can redistribute it and/or modify
@@ -24,7 +28,8 @@
  *
  ***********************************************************************/
 
-#include <stdio.h>
+#include "private.h"
+
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/XawPlus/XawInit.h>
@@ -32,11 +37,11 @@
 
 /* Prototypes */
 
-static void Initialize();
-static void Destroy();
-static void Resize();
-static void Redisplay();
-static Boolean SetValues();
+static void Initialize(Widget junk, Widget new, ArgList args, Cardinal *num_args);
+static void Destroy(Widget w);
+static void Resize(Widget w);
+static void Redisplay(Widget w, XEvent *event, Region reg);
+static Boolean SetValues(Widget current, Widget request, Widget new, ArgList args, Cardinal *num_args);
 
 DrawingAreaClassRec drawingAreaClassRec = {
   { /* core fields */
@@ -97,10 +102,11 @@ WidgetClass drawingAreaWidgetClass = (WidgetClass)&drawingAreaClassRec;
  *			initialize pixmaps.
  ***********************************************************************/
 
-static void Initialize(junk, new, args, num_args)
-Widget junk, new;
-ArgList args;
-Cardinal *num_args;
+static void Initialize(
+Widget junk GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     DrawingAreaWidget daw  = (DrawingAreaWidget)new;
     XGCValues	      values;
@@ -119,8 +125,7 @@ Cardinal *num_args;
  *
  ***********************************************************************/
 
-static void Destroy(w)
-Widget w;
+static void Destroy(Widget w)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -133,10 +138,12 @@ Widget w;
  *
  ***********************************************************************/
 
-static Boolean SetValues(current, request, new, args, num_args)
-Widget current, request, new;
-ArgList args;
-Cardinal *num_args;
+static Boolean SetValues(
+Widget current,
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
   DrawingAreaWidget NewDaw     = (DrawingAreaWidget)new;
   DrawingAreaWidget CurrentDaw = (DrawingAreaWidget)current;
@@ -160,7 +167,7 @@ Cardinal *num_args;
 /***********************************************************************
  *
  * Resize method:	Create a new pixmap with the given width and height,
- *			clear the pixmap and copy the old pixmap with the 
+ *			clear the pixmap and copy the old pixmap with the
  * 			minimum width and height in it. After this, free
  *			the old pixmap and store the new values for pixmap,
  *			width and height. If the old size is smaller
@@ -168,8 +175,7 @@ Cardinal *num_args;
  *
  ***********************************************************************/
 
-static void Resize(w)
-Widget w;
+static void Resize(Widget w)
 {
   DrawingAreaWidget daw  = (DrawingAreaWidget)w;
   Display 	   *disp = XtDisplay(w);
@@ -213,10 +219,10 @@ Widget w;
  *
  ***********************************************************************/
 
-static void Redisplay(w, event, reg)
-Widget w;
-XEvent *event;
-Region reg;
+static void Redisplay(
+Widget w,
+XEvent *event,
+Region reg GCC_UNUSED)
 {
   DrawingAreaWidget daw  = (DrawingAreaWidget)w;
   Display 	   *disp = XtDisplay(w);
@@ -227,7 +233,7 @@ Region reg;
   {
     daw->draw.BackingStore = XCreatePixmap(disp, daw->core.window,
 				daw->core.width, daw->core.height, daw->core.depth);
-    XFillRectangle(disp, daw->draw.BackingStore, daw->draw.gc, 
+    XFillRectangle(disp, daw->draw.BackingStore, daw->draw.gc,
 		   0, 0, daw->core.width, daw->core.height);
 
     /* Save the actual height and width values */
@@ -254,8 +260,7 @@ Region reg;
  *
  ***********************************************************************/
 
-void XawClearWindow(w)
-Widget w;
+void XawClearWindow(Widget w)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
   Pixmap	    new;
@@ -277,10 +282,11 @@ Widget w;
   }
 }
 
-void XawDrawPoint(w, gc, x, y)
-Widget	w;
-GC	gc;
-int	x, y;
+void XawDrawPoint(
+Widget	w,
+GC	gc,
+int	x,
+int	y)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -290,11 +296,12 @@ int	x, y;
   }
 }
 
-void XawDrawPoints(w, gc, points, npoints, mode)
-Widget	w;
-GC	gc;
-XPoint	*points;
-int	npoints, mode;
+void XawDrawPoints(
+Widget	w,
+GC	gc,
+XPoint	*points,
+int	npoints,
+int	mode)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -305,10 +312,13 @@ int	npoints, mode;
   }
 }
 
-void XawDrawLine(w, gc, x1, y1, x2, y2)
-Widget	w;
-GC	gc;
-int	x1, y1, x2, y2;
+void XawDrawLine(
+Widget	w,
+GC	gc,
+int	x1,
+int	y1,
+int	x2,
+int	y2)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -318,11 +328,12 @@ int	x1, y1, x2, y2;
   }
 }
 
-void XawDrawLines(w, gc, points, npoints, mode)
-Widget	w;
-GC	gc;
-XPoint	*points;
-int	npoints, mode;
+void XawDrawLines(
+Widget	w,
+GC	gc,
+XPoint	*points,
+int	npoints,
+int	mode)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -332,11 +343,11 @@ int	npoints, mode;
   }
 }
 
-void XawDrawSegments(w, gc, segments, n)
-Widget	  w;
-GC	  gc;
-XSegment *segments;
-int	  n;
+void XawDrawSegments(
+Widget	  w,
+GC	  gc,
+XSegment *segments,
+int	  n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -346,11 +357,13 @@ int	  n;
   }
 }
 
-void XawDrawRectangle(w, gc, x, y, width, height)
-Widget		w;
-GC		gc;
-int		x, y;
-unsigned int	width, height;
+void XawDrawRectangle(
+Widget		w,
+GC		gc,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -361,11 +374,11 @@ unsigned int	width, height;
   }
 }
 
-void XawDrawRectangles(w, gc, rectangles, n)
-Widget	    w;
-GC	    gc;
-XRectangle *rectangles;
-int	    n;
+void XawDrawRectangles(
+Widget	    w,
+GC	    gc,
+XRectangle *rectangles,
+int	    n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -375,12 +388,15 @@ int	    n;
   }
 }
 
-void XawDrawArc(w, gc, x, y, width, height, angle1, angle2)
-Widget		w;
-GC		gc;
-int		x, y;
-unsigned int	width, height;
-int		angle1, angle2;
+void XawDrawArc(
+Widget		w,
+GC		gc,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height,
+int		angle1,
+int		angle2)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -391,11 +407,11 @@ int		angle1, angle2;
   }
 }
 
-void XawDrawArcs(w, gc, arcs, n)
-Widget	    w;
-GC	    gc;
-XArc	   *arcs;
-int	    n;
+void XawDrawArcs(
+Widget	    w,
+GC	    gc,
+XArc	   *arcs,
+int	    n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -405,11 +421,13 @@ int	    n;
   }
 }
 
-void XawFillRectangle(w, gc, x, y, width, height)
-Widget		w;
-GC		gc;
-int		x, y;
-unsigned int	width, height;
+void XawFillRectangle(
+Widget		w,
+GC		gc,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -420,11 +438,11 @@ unsigned int	width, height;
   }
 }
 
-void XawFillRectangles(w, gc, rectangles, n)
-Widget	    w;
-GC	    gc;
-XRectangle *rectangles;
-int	    n;
+void XawFillRectangles(
+Widget	    w,
+GC	    gc,
+XRectangle *rectangles,
+int	    n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -434,12 +452,15 @@ int	    n;
   }
 }
 
-void XawFillArc(w, gc, x, y, width, height, angle1, angle2)
-Widget		w;
-GC		gc;
-int		x, y;
-unsigned int	width, height;
-int		angle1, angle2;
+void XawFillArc(
+Widget		w,
+GC		gc,
+int		x,
+int		y,
+unsigned int	width,
+unsigned int	height,
+int		angle1,
+int		angle2)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -450,11 +471,11 @@ int		angle1, angle2;
   }
 }
 
-void XawFillArcs(w, gc, arcs, n)
-Widget	    w;
-GC	    gc;
-XArc	   *arcs;
-int	    n;
+void XawFillArcs(
+Widget	    w,
+GC	    gc,
+XArc	   *arcs,
+int	    n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -464,11 +485,13 @@ int	    n;
   }
 }
 
-void XawFillPolygon(w, gc, points, n, shape, mode)
-Widget	    w;
-GC	    gc;
-XPoint	   *points;
-int	    n, shape, mode;
+void XawFillPolygon(
+Widget	    w,
+GC	    gc,
+XPoint	   *points,
+int	    n,
+int	    shape,
+int	    mode)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -479,12 +502,13 @@ int	    n, shape, mode;
   }
 }
 
-void XawDrawString(w, gc, x, y, str, n)
-Widget	    w;
-GC	    gc;
-int	    x, y;
-char	   *str;
-int	    n;
+void XawDrawString(
+Widget	    w,
+GC	    gc,
+int	    x,
+int	    y,
+char	   *str,
+int	    n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -495,12 +519,13 @@ int	    n;
   }
 }
 
-void XawDrawImageString(w, gc, x, y, str, n)
-Widget	    w;
-GC	    gc;
-int	    x, y;
-char	   *str;
-int	    n;
+void XawDrawImageString(
+Widget	    w,
+GC	    gc,
+int	    x,
+int	    y,
+char	   *str,
+int	    n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -511,12 +536,13 @@ int	    n;
   }
 }
 
-void XawDrawText(w, gc, x, y, item, n)
-Widget	    w;
-GC	    gc;
-int	    x, y;
-XTextItem   *item;
-int	    n;
+void XawDrawText(
+Widget	    w,
+GC	    gc,
+int	    x,
+int	    y,
+XTextItem   *item,
+int	    n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -527,12 +553,13 @@ int	    n;
   }
 }
 
-void XawDrawString16(w, gc, x, y, str, n)
-Widget		w;
-GC		gc;
-int		x, y;
-_Xconst XChar2b	*str;
-int		n;
+void XawDrawString16(
+Widget		w,
+GC		gc,
+int		x,
+int		y,
+_Xconst XChar2b	*str,
+int		n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -543,12 +570,13 @@ int		n;
   }
 }
 
-void XawDrawImageString16(w, gc, x, y, str, n)
-Widget		w;
-GC		gc;
-int		x, y;
-_Xconst XChar2b	*str;
-int		n;
+void XawDrawImageString16(
+Widget		w,
+GC		gc,
+int		x,
+int		y,
+_Xconst XChar2b	*str,
+int		n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -559,12 +587,13 @@ int		n;
   }
 }
 
-void XawDrawText16(w, gc, x, y, item, n)
-Widget	    w;
-GC	    gc;
-int	    x, y;
-XTextItem16 *item;
-int	    n;
+void XawDrawText16(
+Widget	    w,
+GC	    gc,
+int	    x,
+int	    y,
+XTextItem16 *item,
+int	    n)
 {
   DrawingAreaWidget daw = (DrawingAreaWidget)w;
 
@@ -574,4 +603,3 @@ int	    n;
     XDrawText16(XtDisplay(w), daw->draw.BackingStore, gc, x, y, item, n);
   }
 }
-

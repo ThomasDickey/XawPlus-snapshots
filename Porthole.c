@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Porthole.c,v 1.5 2022/12/13 00:53:17 tom Exp $
  * $Xorg: Porthole.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
  *
+Copyright 2022  Thomas E. Dickey
 Copyright 1990, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -24,19 +26,20 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  *
  * Author:  Jim Fulton, MIT X Consortium
- * 
+ *
  * This widget is a trivial clipping widget.  It is typically used with a
  * panner or scrollbar to navigate.
  *
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
+#include "private.h"
+
 #include <X11/IntrinsicP.h>		/* get basic toolkit stuff */
 #include <X11/StringDefs.h>		/* get XtN and XtC defines */
 #include <X11/XawPlus/XawInit.h>	/* get Xaw initialize stuff */
 #include <X11/XawPlus/PortholeP.h>	/* get porthole structs */
 #include <X11/Xmu/Misc.h>		/* for MAX */
-
 
 /*
  * resources for the porthole
@@ -52,12 +55,12 @@ static XtResource resources[] = {
 /*
  * widget class methods used below
  */
-static void ClassInitialize();
-static void Realize();			/* set gravity and upcall */
-static void Resize();			/* report new size */
-static XtGeometryResult GeometryManager();  /* deal with child requests */
-static void ChangeManaged();		/* somebody added a new widget */
-static XtGeometryResult QueryGeometry();  /* say how big would like to be */
+static void ClassInitialize(void);
+static void Realize(Widget gw, Mask *valueMask, XSetWindowAttributes *attributes);
+static void Resize(Widget gw);
+static XtGeometryResult GeometryManager(Widget w, XtWidgetGeometry *req, XtWidgetGeometry *reply);
+static void ChangeManaged(Widget gw);
+static XtGeometryResult QueryGeometry(Widget gw, XtWidgetGeometry *intended, XtWidgetGeometry *preferred);
 
 PortholeClassRec portholeClassRec = {
   { /* core fields */
@@ -115,8 +118,8 @@ WidgetClass portholeWidgetClass = (WidgetClass) &portholeClassRec;
  *                                                                           *
  *****************************************************************************/
 
-static Widget find_child (pw)
-    PortholeWidget pw;
+static Widget find_child (
+    PortholeWidget pw)
 {
     Widget *children;
     int i;
@@ -126,16 +129,16 @@ static Widget find_child (pw)
      * managed children.
      */
     for (i = 0, children = pw->composite.children;
-	 i < pw->composite.num_children; i++, children++) {
+	 (Cardinal) i < pw->composite.num_children; i++, children++) {
 	if (XtIsManaged(*children)) return *children;
     }
 
     return (Widget) NULL;
 }
 
-static void SendReport (pw, changed)
-    PortholeWidget pw;
-    unsigned int changed;
+static void SendReport (
+    PortholeWidget pw,
+    unsigned int changed)
 {
     Widget child = find_child (pw);
 
@@ -155,12 +158,14 @@ static void SendReport (pw, changed)
 }
 
 
-static void layout_child (pw, child, geomp, xp, yp, widthp, heightp)
-    PortholeWidget pw;
-    Widget child;
-    XtWidgetGeometry *geomp;
-    Position *xp, *yp;
-    Dimension *widthp, *heightp;
+static void layout_child (
+    PortholeWidget pw,
+    Widget child,
+    XtWidgetGeometry *geomp,
+    Position *xp,
+    Position *yp,
+    Dimension *widthp,
+    Dimension *heightp)
 {
     Position minx, miny;
 
@@ -204,7 +209,7 @@ static void layout_child (pw, child, geomp, xp, yp, widthp, heightp)
  *                                                                           *
  *****************************************************************************/
 
-static void ClassInitialize()
+static void ClassInitialize(void)
 {
    static XtConvertArgRec colConvertArg[] = {
      {XtWidgetBaseOffset, (XtPointer)XtOffsetOf(WidgetRec, core.screen), sizeof(Screen *)},
@@ -217,10 +222,10 @@ static void ClassInitialize()
 }
 
 
-static void Realize (gw, valueMask, attributes)
-    Widget gw;
-    Mask *valueMask;
-    XSetWindowAttributes *attributes;
+static void Realize (
+    Widget gw,
+    Mask *valueMask,
+    XSetWindowAttributes *attributes)
 {
     attributes->bit_gravity = NorthWestGravity;
     *valueMask |= CWBitGravity;
@@ -232,8 +237,7 @@ static void Realize (gw, valueMask, attributes)
 }
 
 
-static void Resize (gw)
-    Widget gw;
+static void Resize (Widget gw)
 {
     PortholeWidget pw = (PortholeWidget) gw;
     Widget child = find_child (pw);
@@ -254,9 +258,10 @@ static void Resize (gw)
 }
 
 
-static XtGeometryResult QueryGeometry (gw, intended, preferred)
-    Widget gw;
-    XtWidgetGeometry *intended, *preferred;
+static XtGeometryResult QueryGeometry (
+    Widget gw,
+    XtWidgetGeometry *intended,
+    XtWidgetGeometry *preferred)
 {
     PortholeWidget pw = (PortholeWidget) gw;
     Widget child = find_child (pw);
@@ -277,14 +282,15 @@ static XtGeometryResult QueryGeometry (gw, intended, preferred)
 	else
 	  return XtGeometryAlmost;
 #undef SIZEONLY
-    } 
+    }
     return XtGeometryNo;
 }
 
 
-static XtGeometryResult GeometryManager (w, req, reply)
-    Widget w;
-    XtWidgetGeometry *req, *reply;
+static XtGeometryResult GeometryManager (
+    Widget w,
+    XtWidgetGeometry *req,
+    XtWidgetGeometry *reply)
 {
     PortholeWidget pw = (PortholeWidget) w->core.parent;
     Widget child = find_child (pw);
@@ -346,8 +352,7 @@ static XtGeometryResult GeometryManager (w, req, reply)
 }
 
 
-static void ChangeManaged (gw)
-    Widget gw;
+static void ChangeManaged (Widget gw)
 {
     PortholeWidget pw = (PortholeWidget) gw;
     Widget child = find_child (pw);	/* ignore extra children */
@@ -370,7 +375,7 @@ static void ChangeManaged (gw)
 	        (void) XtMakeGeometryRequest (gw, &retgeom, (XtWidgetGeometry *)NULL);
 	    }
 	}
-	
+
 	XtResizeWidget (child, Max (child->core.width, pw->core.width),
 			Max (child->core.height, pw->core.height), 0);
 

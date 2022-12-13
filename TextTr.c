@@ -1,4 +1,7 @@
-/* $Xorg: TextTr.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $ */
+/*
+ * $XTermId: TextTr.c,v 1.3 2022/12/13 00:46:16 tom Exp $
+ * $Xorg: TextTr.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
+ */
 
 /*
 
@@ -41,6 +44,8 @@ so I am adding one more translation:
 The Japanese user typically hits their Kanji key when they want to do
 input.  This merely makes sure the input is connected.
 */
+
+#include "private.h"
 
 char *_XawDefaultTextTranslations1 =
 "\

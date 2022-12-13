@@ -1,8 +1,10 @@
+/*
+ * $XTermId: SimpleP.h,v 1.4 2022/12/13 00:59:54 tom Exp $
+ * $Xorg: SimpleP.h,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
+ */
+
 /**************************************************************************
-
- $Xorg: SimpleP.h,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
-
-
+Copyright 2022  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -60,7 +62,7 @@ typedef struct {
     Boolean	(*change_sensitive)(Widget);
 } SimpleClassPart;
 
-#define XtInheritChangeSensitive ((Boolean (*)())_XtInherit)
+#define XtInheritChangeSensitive ((Boolean (*)(Widget))_XtInherit)
 
 typedef struct _SimpleClassRec {
     CoreClassPart	core_class;

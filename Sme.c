@@ -1,6 +1,10 @@
-/* $Xorg: Sme.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $ */
+/*
+ * $XTermId: Sme.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: Sme.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
+ */
 
 /*
+Copyright 2022  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -30,13 +34,14 @@ in this Software without prior written authorization from The Open Group.
  * Date:    September 26, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  *
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
-#include <stdio.h>
+#include "private.h"
+
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
@@ -55,16 +60,20 @@ static XtResource resources[] = {
      offset(highlightColor), XtRString, "grey90"},
   {XtNshadowColor, XtCBackground, XtRPixel, sizeof(Pixel),
      offset(shadowColor), XtRString, "grey40"}
-};   
+};
 #undef offset
 
 /*
- * Semi Public function definitions. 
+ * Semi Public function definitions.
  */
 
-static void Unhighlight(), Highlight(), Notify(), ClassPartInitialize();
-static void ClassInit(), Initialize();
-static XtGeometryResult QueryGeometry();
+static void Unhighlight(Widget w);
+static void Highlight(Widget w);;
+static void Notify(Widget w);
+static void ClassPartInitialize(WidgetClass class);
+static void ClassInit(void);
+static void Initialize(Widget request, Widget new, ArgList args, Cardinal *num_args);
+static XtGeometryResult QueryGeometry(Widget w, XtWidgetGeometry *intended, XtWidgetGeometry *return_val);
 
 #define SUPERCLASS (&rectObjClassRec)
 
@@ -84,7 +93,7 @@ SmeClassRec smeClassRec = {
     /* resources          */    resources,
     /* resource_count     */	XtNumber(resources),
     /* xrm_class          */    NULLQUARK,
-    /* compress_motion    */    FALSE, 
+    /* compress_motion    */    FALSE,
     /* compress_exposure  */    XtExposeNoCompress,
     /* compress_enterleave*/ 	FALSE,
     /* visible_interest   */    FALSE,
@@ -93,8 +102,8 @@ SmeClassRec smeClassRec = {
     /* expose             */    NULL,
     /* set_values         */    NULL,
     /* set_values_hook    */	NULL,
-    /* set_values_almost  */	XtInheritSetValuesAlmost,  
-    /* get_values_hook    */	NULL,			
+    /* set_values_almost  */	XtInheritSetValuesAlmost,
+    /* get_values_hook    */	NULL,
     /* accept_focus       */    NULL,
     /* intrinsics version */	XtVersion,
     /* callback offsets   */    NULL,
@@ -104,11 +113,11 @@ SmeClassRec smeClassRec = {
     /* extension	  */    NULL
   },{
     /* Simple Menu Entry Fields */
-      
+
     /* highlight */             Highlight,
     /* unhighlight */           Unhighlight,
-    /* notify */		Notify,		
-    /* extension */             NULL				
+    /* notify */		Notify,
+    /* extension */             NULL
   }
 };
 
@@ -126,26 +135,25 @@ WidgetClass smeObjectClass = (WidgetClass) &smeClassRec;
  *	Returns: none.
  */
 
-static void ClassPartInitialize(class)
-WidgetClass class;
+static void ClassPartInitialize(WidgetClass class)
 {
     SmeObjectClass m_ent, superC;
 
     m_ent = (SmeObjectClass) class;
     superC = (SmeObjectClass) m_ent->rect_class.superclass;
 
-/* 
+/*
  * We don't need to check for null super since we'll get to TextSink
  * eventually.
  */
 
-    if (m_ent->sme_class.highlight == XtInheritHighlight) 
+    if (m_ent->sme_class.highlight == XtInheritHighlight)
 	m_ent->sme_class.highlight = superC->sme_class.highlight;
 
     if (m_ent->sme_class.unhighlight == XtInheritUnhighlight)
 	m_ent->sme_class.unhighlight = superC->sme_class.unhighlight;
 
-    if (m_ent->sme_class.notify == XtInheritNotify) 
+    if (m_ent->sme_class.notify == XtInheritNotify)
 	m_ent->sme_class.notify = superC->sme_class.notify;
 }
 
@@ -153,7 +161,7 @@ WidgetClass class;
  * 			    Install required converters
  */
 
-static void ClassInit()
+static void ClassInit(void)
 {
    /* Arguments for the color converter */
 
@@ -174,14 +182,15 @@ static void ClassInit()
  *                 new     - the new widget with both resource and non
  *                           resource values.
  *      Returns: none.
- * 
+ *
  * MENU ENTRIES CANNOT HAVE BORDERS.
  */
 
-static void Initialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;
-Cardinal *num_args;
+static void Initialize(
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     SmeObject entry = (SmeObject) new;
 
@@ -194,8 +203,7 @@ Cardinal *num_args;
  *	Returns: none.
  */
 
-static void Highlight(w)
-Widget w;
+static void Highlight(Widget w GCC_UNUSED)
 {
 /* This space intentionally left blank. */
 }
@@ -206,8 +214,7 @@ Widget w;
  *	Returns: none.
  */
 
-static void Unhighlight(w)
-Widget w;
+static void Unhighlight(Widget w GCC_UNUSED)
 {
 /* This space intentionally left blank. */
 }
@@ -218,8 +225,7 @@ Widget w;
  *	Returns: none.
  */
 
-static void Notify(w) 
-Widget w;
+static void Notify(Widget w)
 {
     XtCallCallbacks(w, XtNcallback, (XtPointer)NULL);
 }
@@ -231,13 +237,14 @@ Widget w;
  *	Returns: A Geometry Result.
  *
  * See the Intrinsics manual for details on what this function is for.
- * 
+ *
  * I just return the height and a width of 1.
  */
 
-static XtGeometryResult QueryGeometry(w, intended, return_val) 
-Widget w;
-XtWidgetGeometry *intended, *return_val;
+static XtGeometryResult QueryGeometry(
+Widget w,
+XtWidgetGeometry *intended,
+XtWidgetGeometry *return_val)
 {
     SmeObject entry = (SmeObject) w;
     Dimension width;
@@ -251,7 +258,7 @@ XtWidgetGeometry *intended, *return_val;
 	return_val->request_mode |= CWWidth;
 	return_val->width = width;
 	mode = return_val->request_mode;
-	
+
 	if ( (mode & CWWidth) && (width == entry->rectangle.width) )
 	    return(XtGeometryNo);
 	return(XtGeometryAlmost);

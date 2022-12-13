@@ -1,5 +1,9 @@
 /*
- * Copyright 2015 Thomas E. Dickey
+ * $XTermId: StrToPmap.h,v 1.4 2022/12/13 01:01:00 tom Exp $
+ */
+
+/**************************************************************************
+ * Copyright 2015,2022 Thomas E. Dickey
  * Copyright 2002 Roland Krause
  *
  * This module is free software; you can redistribute it and/or modify
@@ -44,6 +48,8 @@
 #ifndef _StrToPmap_h
 #define _StrToPmap_h
 
+#include <X11/Intrinsic.h>
+
 void XawCvtStringToPixmap(
 	XrmValuePtr,		/* Argument list for the converter	*/
 	Cardinal *,		/* Number of arguments in the list	*/
@@ -57,6 +63,16 @@ void XawCvtStringToClipMask(
 	XrmValuePtr,		/* Resource to convert			*/
 	XrmValuePtr		/* Conversion result			*/
 );
+
+Pixmap XawLocatePixmapFile(
+	Screen *,		/* screen */
+	Colormap,		/* colormap */
+	char *,			/* PixmapName */
+	char *,			/* srcname - RETURN */
+	int,			/* srcnamelen */
+	int *,			/* widthp - RETURN */
+	int *,			/* heightp - RETURN */
+	Pixmap *);		/* clipmask - RETURN */
 
 #endif
 

@@ -1,6 +1,10 @@
-/* $Xorg: SmeLine.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $ */
+/*
+ * $XTermId: SmeLine.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: SmeLine.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
+ */
 
 /*
+Copyright 2022  Thomas E. Dickey
 Copyright 1989, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -32,13 +36,14 @@ in this Software without prior written authorization from The Open Group.
  * Date:    September 26, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  *
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
-#include <stdio.h>
+#include "private.h"
+
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
@@ -51,17 +56,19 @@ in this Software without prior written authorization from The Open Group.
 static XtResource resources[] = {
   {XtNlineWidth, XtCLineWidth, XtRDimension, sizeof(Dimension),
      offset(line_width), XtRImmediate, (XtPointer) 1}
-};   
+};
 #undef offset
 
 /*
- * Function definitions. 
+ * Function definitions.
  */
 
-static void Redisplay(), Initialize();
-static void DestroyGC(), CreateGC();
-static Boolean SetValues();
-static XtGeometryResult QueryGeometry();
+static void Redisplay(Widget w, XEvent * event, Region region);
+static void Initialize(Widget request, Widget new, ArgList args, Cardinal *num_args);
+static void DestroyGC(Widget w);
+static void CreateGC(Widget w);
+static Boolean SetValues(Widget current, Widget request, Widget new, ArgList args, Cardinal *num_args);
+static XtGeometryResult QueryGeometry(Widget w, XtWidgetGeometry *intended, XtWidgetGeometry *return_val);
 
 
 #define SUPERCLASS (&smeClassRec)
@@ -82,7 +89,7 @@ SmeLineClassRec smeLineClassRec = {
     /* resources          */    resources,
     /* resource_count     */	XtNumber(resources),
     /* xrm_class          */    NULLQUARK,
-    /* compress_motion    */    FALSE, 
+    /* compress_motion    */    FALSE,
     /* compress_exposure  */    XtExposeNoCompress,
     /* compress_enterleave*/ 	FALSE,
     /* visible_interest   */    FALSE,
@@ -91,8 +98,8 @@ SmeLineClassRec smeLineClassRec = {
     /* expose             */    Redisplay,
     /* set_values         */    SetValues,
     /* set_values_hook    */	NULL,
-    /* set_values_almost  */	XtInheritSetValuesAlmost,  
-    /* get_values_hook    */	NULL,			
+    /* set_values_almost  */	XtInheritSetValuesAlmost,
+    /* get_values_hook    */	NULL,
     /* accept_focus       */    NULL,
     /* intrinsics version */	XtVersion,
     /* callback offsets   */    NULL,
@@ -102,14 +109,14 @@ SmeLineClassRec smeLineClassRec = {
     /* extension	  */    NULL
   },{
     /* Menu Entry Fields */
-      
+
     /* highlight */             XtInheritHighlight,
     /* unhighlight */           XtInheritUnhighlight,
-    /* notify */		XtInheritNotify,		
-    /* extension */             NULL				
+    /* notify */		XtInheritNotify,
+    /* extension */             NULL
   },{
     /* Line Menu Entry Fields */
-    /* extension */             NULL				
+    /* extension */             NULL
   }
 };
 
@@ -129,10 +136,11 @@ WidgetClass smeLineObjectClass = (WidgetClass) &smeLineClassRec;
  *      Returns: none.
  */
 
-static void Initialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;
-Cardinal *num_args;
+static void Initialize(
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     SmeLineObject entry = (SmeLineObject) new;
 
@@ -149,13 +157,12 @@ Cardinal *num_args;
  *      we need to change the stipple origin when drawing.
  */
 
-static void CreateGC(w)
-Widget w;
+static void CreateGC(Widget w)
 {
     SmeLineObject entry = (SmeLineObject) w;
     XGCValues values;
     XtGCMask mask = GCForeground | GCGraphicsExposures | GCLineWidth ;
-    
+
     values.foreground = entry->sme.highlightColor;
     values.graphics_exposures = FALSE;
     values.line_width = entry->sme_line.line_width;
@@ -171,8 +178,7 @@ Widget w;
  *	Returns: none
  */
 
-static void DestroyGC(w)
-Widget w;
+static void DestroyGC(Widget w)
 {
     SmeLineObject entry = (SmeLineObject) w;
 
@@ -187,18 +193,18 @@ Widget w;
  *	Returns: none
  */
 
-static void Redisplay(w, event, region)
-Widget w;
-XEvent * event;
-Region region;
+static void Redisplay(
+Widget w,
+XEvent * event GCC_UNUSED,
+Region region GCC_UNUSED)
 {
     SmeLineObject entry = (SmeLineObject) w;
     int y = entry->rectangle.y;
 
-    XDrawLine(XtDisplayOfObject(w), XtWindowOfObject(w), entry->sme_line.shadowGC, 
+    XDrawLine(XtDisplayOfObject(w), XtWindowOfObject(w), entry->sme_line.shadowGC,
 	entry->rectangle.x+2, y, (unsigned int) entry->rectangle.width, y);
     y += entry->sme_line.line_width;
-    XDrawLine(XtDisplayOfObject(w), XtWindowOfObject(w), entry->sme_line.highGC, 
+    XDrawLine(XtDisplayOfObject(w), XtWindowOfObject(w), entry->sme_line.highGC,
 	entry->rectangle.x+2, y, (unsigned int) entry->rectangle.width, y);
 }
 
@@ -210,14 +216,16 @@ Region region;
  *      Returns: none
  */
 
-static Boolean SetValues(current, request, new, args, num_args)
-Widget current, request, new;
-ArgList args;
-Cardinal *num_args;
+static Boolean SetValues(
+Widget current,
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     SmeLineObject entry = (SmeLineObject) new;
     SmeLineObject old_entry = (SmeLineObject) current;
-  
+
     if ((entry->sme_line.line_width != old_entry->sme_line.line_width) ||
 	(entry->sme.highlightColor != old_entry->sme.highlightColor) ||
 	(entry->sme.shadowColor != old_entry->sme.shadowColor))
@@ -236,13 +244,14 @@ Cardinal *num_args;
  *	Returns: A Geometry Result.
  *
  * See the Intrinsics manual for details on what this function is for.
- * 
+ *
  * I just return the height and a width of 1.
  */
 
-static XtGeometryResult QueryGeometry(w, intended, return_val) 
-Widget w;
-XtWidgetGeometry *intended, *return_val;
+static XtGeometryResult QueryGeometry(
+Widget w,
+XtWidgetGeometry *intended,
+XtWidgetGeometry *return_val)
 {
     SmeObject entry = (SmeObject) w;
     Dimension width;
@@ -256,7 +265,7 @@ XtWidgetGeometry *intended, *return_val;
 	return_val->request_mode |= CWWidth;
 	return_val->width = width;
 	mode = return_val->request_mode;
-	
+
 	if ( (mode & CWWidth) && (width == entry->rectangle.width) )
 	    return(XtGeometryNo);
 	return(XtGeometryAlmost);

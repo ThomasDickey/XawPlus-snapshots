@@ -1,7 +1,11 @@
-/* $Xorg: Grip.c,v 1.4 2001/02/09 02:03:43 xorgcvs Exp $ */
+/*
+ * $XTermId: Grip.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: Grip.c,v 1.4 2001/02/09 02:03:43 xorgcvs Exp $
+ */
 
 /*************************************************************************
 
+Copyright 2022  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -53,6 +57,9 @@ This file contains modifications for XawPlus, Roland Krause 2002
  * Grip.c - Grip Widget (Used by Paned Widget)
  *
  */
+
+#include "private.h"
+
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/XawPlus/XawInit.h>
@@ -73,8 +80,8 @@ static XtResource resources[] = {
 
 /* Function prototypes */
 
-static void GripAction();
-static void Redisplay();
+static void GripAction(Widget widget, XEvent *event, String *params, Cardinal *num_params);
+static void Redisplay(Widget w, XEvent *event, Region region);
 
 static XtActionsRec actionsList[] =
 {
@@ -137,11 +144,11 @@ WidgetClass gripWidgetClass = (WidgetClass) &gripClassRec;
  *
  ***********************************************************************/
 
-static void GripAction( widget, event, params, num_params )
-    Widget widget;
-    XEvent *event;
-    String *params;
-    Cardinal *num_params;
+static void GripAction(
+    Widget widget,
+    XEvent *event,
+    String *params,
+    Cardinal *num_params)
 {
     XawGripCallDataRec call_data;
 
@@ -158,10 +165,10 @@ static void GripAction( widget, event, params, num_params )
  *
  ***********************************************************************/
 
-static void Redisplay(w, event, region)
-Widget w;
-XEvent *event;
-Region region;
+static void Redisplay(
+Widget w,
+XEvent *event GCC_UNUSED,
+Region region GCC_UNUSED)
 {
   XawRaisedButton(w, 0, 0, w->core.width, w->core.height);
 }

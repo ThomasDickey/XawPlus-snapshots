@@ -1,6 +1,10 @@
-/* $Xorg: XawIm.c,v 1.6 2001/02/09 02:03:47 xorgcvs Exp $ */
+/*
+ * $XTermId: XawIm.c,v 1.11 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: XawIm.c,v 1.6 2001/02/09 02:03:47 xorgcvs Exp $
+ */
 
 /*
+ * Copyright 2022  Thomas E. Dickey
  * Copyright 1991 by OMRON Corporation
  *
  * Permission to use, copy, modify, distribute, and sell this software and its
@@ -19,14 +23,14 @@
  * ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
  * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTUOUS ACTION,
  * ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
- * SOFTWARE. 
+ * SOFTWARE.
  *
  *	Author:	Seiji Kuwari	OMRON Corporation
  *				kuwa@omron.co.jp
  *				kuwa%omron.co.jp@uunet.uu.net
  *
  * Some bugfixes to avoid gcc -Wall warnings implemented, Roland Krause 2000
- */				
+ */
 
 
 /*
@@ -57,7 +61,10 @@ This file contains modifications for XawPlus, Roland Krause 2000
 
 */
 
+#include "private.h"
+
 #include <X11/IntrinsicP.h>
+#include <X11/ResourceI.h>
 #include <X11/StringDefs.h>
 #include <X11/Xos.h>
 #include <X11/Xfuncs.h>
@@ -67,16 +74,9 @@ This file contains modifications for XawPlus, Roland Krause 2000
 #include <X11/XawPlus/MultiSinkP.h>
 #include <X11/XawPlus/XawImP.h>
 #include <X11/XawPlus/VendorEP.h>
+
 #include "XawI18n.h"
 #include <ctype.h>
-
-#if NeedVarargsPrototypes
-# include <stdarg.h>
-# define Va_start(a,b) va_start(a,b)
-#else
-# include <varargs.h>
-# define Va_start(a,b) va_start(a)
-#endif
 
 #define maxAscentOfFontSet(fontset)     \
         ( - (XExtentsOfFontSet((fontset)))->max_logical_extent.y)
@@ -94,13 +94,13 @@ This file contains modifications for XawPlus, Roland Krause 2000
  * Forward reference prototypes
  *
  *****************************************************/
- 
-static XawIcTableList CurrentSharedIcTable( 
-    XawVendorShellExtPart* /* ve */ 
+
+static XawIcTableList CurrentSharedIcTable(
+    XawVendorShellExtPart* /* ve */
 );
 
-static void DestroyIC( 
-    Widget /* w */, 
+static void DestroyIC(
+    Widget /* w */,
     XawVendorShellExtPart* /* ve */
 );
 
@@ -130,29 +130,27 @@ static XtResource resources[] =
 #undef Offset
 
 
-static void SetVaArg( arg, value )
-    XPointer *arg, value;
+static void SetVaArg(XPointer *arg, XPointer value)
 {
     *arg = value;
 }
 
-static VendorShellWidget SearchVendorShell( w )
-    Widget w;
+static VendorShellWidget SearchVendorShell(Widget w)
 {
     while(w && !XtIsShell(w)) w = XtParent(w);
     if (w && XtIsVendorShell(w)) return((VendorShellWidget)w);
     return(NULL);
 }
 
-static XContext extContext = (XContext)NULL;
+static XContext extContext = (XContext)0;
 
-static XawVendorShellExtPart *SetExtPart( w, vew )
-    VendorShellWidget w;
-    XawVendorShellExtWidget vew;
+static XawVendorShellExtPart *SetExtPart(
+    VendorShellWidget w,
+    XawVendorShellExtWidget vew)
 {
     contextDataRec *contextData;
 
-    if (extContext == (XContext)NULL) extContext = XUniqueContext();
+    if (extContext == (XContext)0) extContext = XUniqueContext();
 
     contextData = XtNew(contextDataRec);
     contextData->parent = (Widget)w;
@@ -163,8 +161,8 @@ static XawVendorShellExtPart *SetExtPart( w, vew )
     return(&(vew->vendor_ext));
 }
 
-static XawVendorShellExtPart *GetExtPart( w )
-    VendorShellWidget w;
+static XawVendorShellExtPart *GetExtPart(
+    VendorShellWidget w)
 {
     contextDataRec *contextData;
     XawVendorShellExtWidget vew;
@@ -177,15 +175,14 @@ static XawVendorShellExtPart *GetExtPart( w )
     return(&(vew->vendor_ext));
 }
 
-static Boolean IsSharedIC( ve )
-    XawVendorShellExtPart * ve;
+static Boolean IsSharedIC(XawVendorShellExtPart * ve)
 {
     return( ve->ic.shared_ic );
 }
 
-static XawIcTableList GetIcTableShared( w, ve )
-    Widget w;
-    XawVendorShellExtPart * ve;
+static XawIcTableList GetIcTableShared(
+    Widget w,
+    XawVendorShellExtPart * ve)
 {
     XawIcTableList	p;
 
@@ -201,9 +198,9 @@ static XawIcTableList GetIcTableShared( w, ve )
     return(NULL);
 }
 
-static XawIcTableList GetIcTable( w, ve )
-    Widget w;
-    XawVendorShellExtPart * ve;
+static XawIcTableList GetIcTable(
+    Widget w,
+    XawVendorShellExtPart * ve)
 {
     XawIcTableList	p;
 
@@ -215,18 +212,19 @@ static XawIcTableList GetIcTable( w, ve )
     return(NULL);
 }
 
-static XIMStyle GetInputStyleOfIC( ve )
-    XawVendorShellExtPart * ve;
+static XIMStyle GetInputStyleOfIC(
+    XawVendorShellExtPart * ve)
 {
 
     if (!ve) return((XIMStyle)0);
     return(ve->ic.input_style);
 }
 
-static void ConfigureCB( w, closure, event )
-    Widget	w;
-    XtPointer	closure;
-    XEvent *	event;
+static void ConfigureCB(
+    Widget	w,
+    XtPointer	closure GCC_UNUSED,
+    XEvent *	event,
+    Boolean *	continue_to_dispatch GCC_UNUSED )
 {
     XawIcTableList		p;
     XawVendorShellExtPart	*ve;
@@ -260,15 +258,15 @@ static void ConfigureCB( w, closure, event )
     }
 }
 
-static XContext errContext = (XContext)NULL;
+static XContext errContext = (XContext)0;
 
-static Widget SetErrCnxt( w, xim )
-    Widget w;
-    XIM xim;
+static Widget SetErrCnxt(
+    Widget w,
+    XIM xim)
 {
     contextErrDataRec *contextErrData;
 
-    if (errContext == (XContext)NULL) errContext = XUniqueContext();
+    if (errContext == (XContext)0) errContext = XUniqueContext();
 
     contextErrData = XtNew(contextErrDataRec);
     contextErrData->widget = w;
@@ -292,16 +290,16 @@ static Widget SetErrCnxt( w, xim )
     return(contextErrData->widget);
 } */
 
-static void CloseIM( ve )
-    XawVendorShellExtPart * ve;
+static void CloseIM(
+    XawVendorShellExtPart * ve)
 {
     if (ve->im.xim)
 	XCloseIM(ve->im.xim);
 }
 
-static Dimension SetVendorShellHeight( ve, height )
-    XawVendorShellExtPart* ve;
-    Dimension height;
+static Dimension SetVendorShellHeight(
+    XawVendorShellExtPart* ve,
+    Dimension height)
 {
     Arg			args[2];
     Cardinal		i = 0;
@@ -315,8 +313,8 @@ static Dimension SetVendorShellHeight( ve, height )
    return(ve->im.area_height);
 }
 
-static void DestroyAllIM( ve )
-    XawVendorShellExtPart * ve;
+static void DestroyAllIM(
+    XawVendorShellExtPart * ve)
 {
     XawIcTableList	p;
     contextErrDataRec *contextErrData;
@@ -354,15 +352,11 @@ static void DestroyAllIM( ve )
      * resize vendor shell to core size
      */
     (void) SetVendorShellHeight(ve, 0);
-    /*
-    XawVendorShellExtResize(vw);
-    */
-    return;
 }
 
-static void FreeAllDataOfVendorShell(ve, vw)
-    XawVendorShellExtPart * ve;
-    VendorShellWidget vw;
+static void FreeAllDataOfVendorShell(
+    XawVendorShellExtPart * ve,
+    VendorShellWidget vw)
 {
     XawIcTableList       p, next;
     contextErrDataRec *contextErrData;
@@ -381,9 +375,10 @@ static void FreeAllDataOfVendorShell(ve, vw)
     }
 }
 
-static void VendorShellDestroyed( w, cl_data, ca_data )
-    Widget w;
-    XtPointer cl_data, ca_data;
+static void VendorShellDestroyed(
+    Widget w,
+    XtPointer cl_data GCC_UNUSED,
+    XtPointer ca_data GCC_UNUSED)
 {
     XawVendorShellExtPart	*ve;
 
@@ -410,8 +405,8 @@ static void VendorShellDestroyed( w, cl_data, ca_data )
  * Attempt to open an input method
  */
 
-static void OpenIM(ve)
-    XawVendorShellExtPart * ve;
+static void OpenIM(
+    XawVendorShellExtPart * ve)
 {
     int		i;
     char	*p, *s, *ns, *end, *pbuf, buf[32];
@@ -429,12 +424,12 @@ static void OpenIM(ve)
 	/* no fragment can be longer than the whole string */
 	int	len = strlen (ve->im.input_method) + 5;
 
-	if (len < sizeof buf) pbuf = buf;
+	if ((size_t) len < sizeof buf) pbuf = buf;
 	else pbuf = XtMalloc (len);
 
 	if (pbuf == NULL) return;
 
-	for(ns=s=ve->im.input_method; ns && *s;) {
+	for(ns = s = DeConst(ve->im.input_method); ns && *s;) {
 	    /* skip any leading blanks */
 	    while (*s && isspace(*s)) s++;
 	    if (!*s) break;
@@ -468,13 +463,13 @@ static void OpenIM(ve)
     }
     if (XGetIMValues(xim, XNQueryInputStyle, &xim_styles, NULL)
 	|| !xim_styles) {
-	XtAppWarning(XtWidgetToApplicationContext(ve->parent), 
+	XtAppWarning(XtWidgetToApplicationContext(ve->parent),
 	    "input method doesn't support any style");
 	XCloseIM(xim);
 	return;
     }
     found = False;
-    for(ns = s = ve->im.preedit_type; s && !found;) {
+    for(ns = s = DeConst(ve->im.preedit_type); s && !found;) {
 	while (*s && isspace(*s)) s++;
 	if (!*s) break;
 	if ((ns = end = strchr(s, ',')) == NULL)
@@ -508,10 +503,10 @@ static void OpenIM(ve)
     }
 }
 
-static Boolean ResizeVendorShell_Core(vw, ve, p)
-    VendorShellWidget vw;
-    XawVendorShellExtPart * ve;
-    XawIcTableList p;
+static Boolean ResizeVendorShell_Core(
+    VendorShellWidget vw,
+    XawVendorShellExtPart * ve,
+    XawIcTableList p)
 {
     XVaNestedList		pe_attr, st_attr;
     XRectangle			pe_area, st_area;
@@ -559,9 +554,9 @@ static Boolean ResizeVendorShell_Core(vw, ve, p)
     return(TRUE);
 }
 
-static void ResizeVendorShell(vw, ve)
-    VendorShellWidget vw;
-    XawVendorShellExtPart * ve;
+static void ResizeVendorShell(
+    VendorShellWidget vw,
+    XawVendorShellExtPart * ve)
 {
     XawIcTableList               p;
 
@@ -577,9 +572,9 @@ static void ResizeVendorShell(vw, ve)
     }
 }
 
-static XawIcTableList CreateIcTable( w, ve )
-    Widget w;
-    XawVendorShellExtPart * ve;
+static XawIcTableList CreateIcTable(
+    Widget w,
+    XawVendorShellExtPart * ve GCC_UNUSED)
 {
     XawIcTableList	table;
 
@@ -598,9 +593,9 @@ static XawIcTableList CreateIcTable( w, ve )
     return(table);
 }
 
-static Boolean RegisterToVendorShell( w, ve )
-    Widget w; 
-    XawVendorShellExtPart * ve;
+static Boolean RegisterToVendorShell(
+    Widget w,
+    XawVendorShellExtPart * ve)
 {
     XawIcTableList	table;
 
@@ -610,9 +605,9 @@ static Boolean RegisterToVendorShell( w, ve )
     return(TRUE);
 }
 
-static void UnregisterFromVendorShell(w, ve)
-    Widget w;
-    XawVendorShellExtPart * ve;
+static void UnregisterFromVendorShell(
+    Widget w,
+    XawVendorShellExtPart * ve)
 {
     XawIcTableList	*prev, p;
 
@@ -626,11 +621,11 @@ static void UnregisterFromVendorShell(w, ve)
     return;
 }
 
-static void SetICValuesShared(w, ve, p, check)
-    Widget w;
-    XawVendorShellExtPart * ve;
-    XawIcTableList	p;
-    Boolean     check;
+static void SetICValuesShared(
+    Widget w,
+    XawVendorShellExtPart * ve,
+    XawIcTableList	p,
+    Boolean     check)
 {
     XawIcTableList	pp;
 
@@ -663,9 +658,9 @@ static void SetICValuesShared(w, ve, p, check)
     }
 }
 
-static Boolean IsCreatedIC(w, ve)
-    Widget w;
-    XawVendorShellExtPart * ve;
+static Boolean IsCreatedIC(
+    Widget w,
+    XawVendorShellExtPart * ve)
 {
     XawIcTableList	p;
 
@@ -675,15 +670,18 @@ static Boolean IsCreatedIC(w, ve)
     return(TRUE);
 }
 
-static void SizeNegotiation(p, width, height)
-    XawIcTableList	p;
-    Dimension		width, height;
+static void SizeNegotiation(
+    XawIcTableList	p,
+    Dimension		width,
+    Dimension		 height)
 {
     XRectangle		pe_area, st_area;
     XVaNestedList	pe_attr = NULL, st_attr = NULL;
     int			ic_cnt = 0, pe_cnt = 0, st_cnt = 0;
     XRectangle		*pe_area_needed = NULL, *st_area_needed = NULL;
     XPointer		ic_a[5];
+
+    memset(ic_a, 0, sizeof(ic_a));
 
     if (p->input_style & XIMPreeditArea) {
 	pe_attr = XVaCreateNestedList(0, XNAreaNeeded, &pe_area_needed, NULL);
@@ -695,10 +693,9 @@ static void SizeNegotiation(p, width, height)
 	SetVaArg( &ic_a[ic_cnt], (XPointer) XNStatusAttributes); ic_cnt++;
 	SetVaArg( &ic_a[ic_cnt], (XPointer) st_attr); ic_cnt++;
     }
-    SetVaArg( &ic_a[ic_cnt], (XPointer) NULL);
 
-    if (ic_cnt > 0) {
-	XGetICValues(p->xic, ic_a[0], ic_a[1], ic_a[2], ic_a[3], ic_a[4]);
+    if (ic_cnt > 0) {	/* ic_cnt is 0, 2 or 4 */
+	XGetICValues(p->xic, ic_a[0], ic_a[1], ic_a[2], ic_a[3], ic_a[4], NULL);
 	if (pe_attr) XFree(pe_attr);
 	if (st_attr) XFree(st_attr);
 	if (p->xic == NULL) {
@@ -738,7 +735,7 @@ static void SizeNegotiation(p, width, height)
 	    SetVaArg( &ic_a[ic_cnt], (XPointer) pe_attr); ic_cnt++;
 	}
 	SetVaArg( &ic_a[ic_cnt], (XPointer) NULL);
-	XSetICValues(p->xic, ic_a[0], ic_a[1], ic_a[2], ic_a[3], ic_a[4]);
+	XSetICValues(p->xic, ic_a[0], ic_a[1], ic_a[2], ic_a[3], ic_a[4], NULL);
 	if (pe_attr) XFree(pe_attr);
 	if (st_attr) XFree(st_attr);
 	if (p->xic == NULL) {
@@ -748,9 +745,9 @@ static void SizeNegotiation(p, width, height)
     }
 }
 
-static void CreateIC( w, ve )
-    Widget w;
-    XawVendorShellExtPart* ve;
+static void CreateIC(
+    Widget w,
+    XawVendorShellExtPart* ve)
 {
     XawIcTableList	p;
     XPoint		position;
@@ -769,7 +766,7 @@ static void CreateIC( w, ve )
 
     if (IsSharedIC(ve)) SetICValuesShared(w, ve, p, FALSE);
     XFlush(XtDisplay(w));
-    
+
     if (p->input_style & (XIMPreeditArea|XIMPreeditPosition|XIMStatusArea)) {
 	if (p->flg & CIFontSet) {
 	    SetVaArg( &pe_a[pe_cnt], (XPointer) XNFontSet); pe_cnt++;
@@ -855,7 +852,7 @@ static void CreateIC( w, ve )
 				   pe_a[4], pe_a[5], pe_a[6], pe_a[7], pe_a[8],
 				   pe_a[9], pe_a[10], pe_a[11], pe_a[12],
 				   pe_a[13], pe_a[14], pe_a[15], pe_a[16],
-				   pe_a[17], pe_a[18],  pe_a[19]);
+				   pe_a[17], pe_a[18],  pe_a[19], NULL);
 	SetVaArg( &ic_a[ic_cnt], (XPointer) XNPreeditAttributes); ic_cnt++;
 	SetVaArg( &ic_a[ic_cnt], (XPointer) pe_attr); ic_cnt++;
     }
@@ -866,7 +863,7 @@ static void CreateIC( w, ve )
 				   st_a[4], st_a[5], st_a[6], st_a[7], st_a[8],
 				   st_a[9], st_a[10], st_a[11], st_a[12],
 				   st_a[13], st_a[14], st_a[15], st_a[16],
-				   st_a[17], st_a[18],  st_a[19]);
+				   st_a[17], st_a[18],  st_a[19], NULL);
 	SetVaArg( &ic_a[ic_cnt], (XPointer) XNStatusAttributes); ic_cnt++;
 	SetVaArg( &ic_a[ic_cnt], (XPointer) st_attr); ic_cnt++;
     }
@@ -875,7 +872,7 @@ static void CreateIC( w, ve )
     p->xic = XCreateIC(ve->im.xim, ic_a[0], ic_a[1], ic_a[2], ic_a[3],
 		       ic_a[4], ic_a[5], ic_a[6], ic_a[7], ic_a[8], ic_a[9],
 		       ic_a[10], ic_a[11], ic_a[12], ic_a[13], ic_a[14],
-		       ic_a[15], ic_a[16], ic_a[17], ic_a[18], ic_a[19]);
+		       ic_a[15], ic_a[16], ic_a[17], ic_a[18], ic_a[19], NULL);
     if (pe_attr) XtFree(pe_attr);
     if (st_attr) XtFree(st_attr);
 
@@ -891,15 +888,15 @@ static void CreateIC( w, ve )
     if (!IsSharedIC(ve)) {
 	if (p->input_style & XIMPreeditPosition) {
 	    XtAddEventHandler(w, (EventMask)StructureNotifyMask, FALSE,
-			      (XtEventHandler)ConfigureCB, (Opaque)NULL);
+			      ConfigureCB, (Opaque)NULL);
 	}
     }
 }
 
-static void SetICValues( w, ve, focus )
-    Widget	w;
-    XawVendorShellExtPart	*ve;
-    Boolean	focus;
+static void SetICValues(
+    Widget	w,
+    XawVendorShellExtPart	*ve,
+    Boolean	focus)
 {
     XawIcTableList	p;
     XPoint		position;
@@ -993,7 +990,8 @@ static void SetICValues( w, ve, focus )
 				      pe_a[4], pe_a[5], pe_a[6], pe_a[7],
 				      pe_a[8], pe_a[9], pe_a[10], pe_a[11],
 				      pe_a[12], pe_a[13], pe_a[14], pe_a[15],
-				      pe_a[16], pe_a[17], pe_a[18],  pe_a[19]);
+				      pe_a[16], pe_a[17], pe_a[18],  pe_a[19],
+				      NULL);
 	SetVaArg( &ic_a[ic_cnt], (XPointer) XNPreeditAttributes); ic_cnt++;
 	SetVaArg( &ic_a[ic_cnt], (XPointer) pe_attr); ic_cnt++;
     }
@@ -1003,7 +1001,8 @@ static void SetICValues( w, ve, focus )
 				      st_a[4], st_a[5], st_a[6], st_a[7],
 				      st_a[8], st_a[9], st_a[10], st_a[11],
 				      st_a[12], st_a[13], st_a[14], st_a[15],
-				      st_a[16], st_a[17], st_a[18],  st_a[19]);
+				      st_a[16], st_a[17], st_a[18],  st_a[19],
+				      NULL);
 	SetVaArg( &ic_a[ic_cnt], (XPointer) XNStatusAttributes); ic_cnt++;
 	SetVaArg( &ic_a[ic_cnt], (XPointer) st_attr); ic_cnt++;
     }
@@ -1016,7 +1015,8 @@ static void SetICValues( w, ve, focus )
 	XSetICValues(p->xic, ic_a[0], ic_a[1], ic_a[2], ic_a[3], ic_a[4],
 		     ic_a[5], ic_a[6], ic_a[7], ic_a[8], ic_a[9], ic_a[10],
 		     ic_a[11], ic_a[12], ic_a[13], ic_a[14], ic_a[15],
-		     ic_a[16], ic_a[17], ic_a[18], ic_a[19]);
+		     ic_a[16], ic_a[17], ic_a[18], ic_a[19],
+		     NULL);
 	if (pe_attr) XtFree(pe_attr);
 	if (st_attr) XtFree(st_attr);
     }
@@ -1027,10 +1027,10 @@ static void SetICValues( w, ve, focus )
     p->flg &= ~(CIFontSet | CIFg | CIBg | CIBgPixmap | CICursorP | CILineS);
 }
 
-static void SharedICChangeFocusWindow(w, ve, p)
-    Widget		w;
-    XawVendorShellExtPart	*ve;
-    XawIcTableList	p;
+static void SharedICChangeFocusWindow(
+    Widget		w,
+    XawVendorShellExtPart	*ve,
+    XawIcTableList	p GCC_UNUSED)
 {
     XawIcTableList	pp;
 
@@ -1043,15 +1043,15 @@ static void SharedICChangeFocusWindow(w, ve, p)
     SetICValues(w, ve, TRUE);
 }
 
-static XawIcTableList CurrentSharedIcTable( ve )
-    XawVendorShellExtPart * ve;
+static XawIcTableList CurrentSharedIcTable(
+    XawVendorShellExtPart * ve)
 {
     return(ve->ic.current_ic_table);
 }
 
-static void SetICFocus(w, ve)
-    Widget w;
-    XawVendorShellExtPart * ve;
+static void SetICFocus(
+    Widget w,
+    XawVendorShellExtPart * ve)
 {
     XawIcTableList	p, pp;
 
@@ -1071,9 +1071,9 @@ static void SetICFocus(w, ve)
     p->flg &= ~CIICFocus;
 }
 
-static void UnsetICFocus(w, ve)
-    Widget w;
-    XawVendorShellExtPart * ve;
+static void UnsetICFocus(
+    Widget w,
+    XawVendorShellExtPart * ve)
 {
     XawIcTableList	p, pp;
 
@@ -1092,11 +1092,11 @@ static void UnsetICFocus(w, ve)
     }
 }
 
-static void SetValues( w, ve, args, num_args )
-    Widget w;
-    XawVendorShellExtPart * ve;
-    ArgList args;
-    Cardinal num_args;
+static void SetValues(
+    Widget w,
+    XawVendorShellExtPart * ve,
+    ArgList args,
+    Cardinal num_args)
 {
     ArgList	arg;
 
@@ -1112,7 +1112,7 @@ static void SetValues( w, ve, args, num_args )
     for (arg = args ; num_args != 0; num_args--, arg++) {
 	argName = XrmStringToName(arg->name);
 	for (xrmres = (XrmResourceList)ve->im.resources, i = 0;
-	     i < ve->im.num_resources; i++, xrmres++) {
+	     (Cardinal) i < ve->im.num_resources; i++, xrmres++) {
             if (argName == xrmres->xrm_name) {
                 _XtCopyFromArg(arg->value,
 			       (char *)p - xrmres->xrm_offset - 1,
@@ -1142,9 +1142,9 @@ static void SetValues( w, ve, args, num_args )
     p->prev_flg |= p->flg;
 }
 
-static void SetFocus( w, ve )
-    Widget w;
-    XawVendorShellExtPart *ve;
+static void SetFocus(
+    Widget w,
+    XawVendorShellExtPart *ve)
 {
     XawIcTableList	p;
     if ((p = GetIcTableShared(w, ve)) == NULL) return;
@@ -1155,9 +1155,9 @@ static void SetFocus( w, ve )
     p->prev_flg |= p->flg;
 }
 
-static void DestroyIC(w, ve)
-    Widget w;
-    XawVendorShellExtPart *ve;
+static void DestroyIC(
+    Widget w,
+    XawVendorShellExtPart *ve)
 {
     XawIcTableList	p;
 
@@ -1173,16 +1173,16 @@ static void DestroyIC(w, ve)
     if (!IsSharedIC(ve)) {
 	if (p->input_style & XIMPreeditPosition) {
 	    XtRemoveEventHandler(w, (EventMask)StructureNotifyMask, FALSE,
-				 (XtEventHandler)ConfigureCB, (Opaque)NULL);
+				 ConfigureCB, (Opaque)NULL);
 	}
     }
 }
 
-static void SetFocusValues( inwidg, args, num_args, focus )
-    Widget	inwidg;
-    ArgList	args;
-    Cardinal	num_args;
-    Boolean	focus;
+static void SetFocusValues(
+    Widget	inwidg,
+    ArgList	args,
+    Cardinal	num_args,
+    Boolean	focus)
 {
     XawVendorShellExtPart	*ve;
     VendorShellWidget		vw;
@@ -1197,14 +1197,14 @@ static void SetFocusValues( inwidg, args, num_args, focus )
 		if (focus) SetICFocus(inwidg, ve);
 	    } else {
 		CreateIC(inwidg, ve);
-	    	SetICFocus(inwidg, ve);
+		SetICFocus(inwidg, ve);
 	    }
 	}
     }
 }
 
-static void UnsetFocus( inwidg )
-    Widget inwidg;
+static void UnsetFocus(
+    Widget inwidg)
 {
     XawVendorShellExtPart	*ve;
     VendorShellWidget		vw;
@@ -1223,9 +1223,9 @@ static void UnsetFocus( inwidg )
     }
 }
 
-static Boolean IsRegistered( w, ve )
-    Widget w;
-    XawVendorShellExtPart* ve;
+static Boolean IsRegistered(
+    Widget w,
+    XawVendorShellExtPart* ve)
 {
     XawIcTableList	p;
 
@@ -1236,9 +1236,9 @@ static Boolean IsRegistered( w, ve )
     return(FALSE);
 }
 
-static void Register(inwidg, ve)
-    Widget inwidg;
-    XawVendorShellExtPart* ve;
+static void Register(
+    Widget inwidg,
+    XawVendorShellExtPart* ve)
 {
     if (ve->im.xim == NULL)
 	{
@@ -1258,16 +1258,16 @@ static void Register(inwidg, ve)
 	}
 }
 
-static Boolean NoRegistered(ve)
-     XawVendorShellExtPart* ve;
+static Boolean NoRegistered(
+     XawVendorShellExtPart* ve)
 {
     if (ve->ic.ic_table == NULL) return(TRUE);
     return(FALSE);
 }
 
-static void Unregister(inwidg, ve)
-    Widget inwidg;
-    XawVendorShellExtPart* ve;
+static void Unregister(
+    Widget inwidg,
+    XawVendorShellExtPart* ve)
 {
     if (!IsRegistered(inwidg, ve)) return;
 
@@ -1286,8 +1286,8 @@ static void Unregister(inwidg, ve)
 	}
 }
 
-static void AllCreateIC( ve )
-    XawVendorShellExtPart* ve;
+static void AllCreateIC(
+    XawVendorShellExtPart* ve)
 {
     XawIcTableList p;
 
@@ -1309,8 +1309,8 @@ static void AllCreateIC( ve )
 }
 
 
-static void Reconnect(ve)
-    XawVendorShellExtPart* ve;
+static void Reconnect(
+    XawVendorShellExtPart* ve)
 {
     XawIcTableList	p;
 
@@ -1334,9 +1334,9 @@ static void Reconnect(ve)
 }
 
 
-static void CompileResourceList( res, num_res )
-    XtResourceList res;
-    unsigned int num_res;
+static void CompileResourceList(
+    XtResourceList res,
+    unsigned int num_res)
 {
     unsigned int count;
 
@@ -1351,9 +1351,9 @@ static void CompileResourceList( res, num_res )
 #undef xrmres
 }
 
-static Boolean Initialize( vw, ve )
-    VendorShellWidget vw;
-    XawVendorShellExtPart* ve;
+static Boolean Initialize(
+    VendorShellWidget vw,
+    XawVendorShellExtPart* ve)
 {
     if (!XtIsVendorShell((Widget)vw)) return(FALSE);
     ve->parent = (Widget)vw;
@@ -1379,9 +1379,9 @@ static Boolean Initialize( vw, ve )
  * It is called by _XawImDestroy, which is called by Vendor.c's
  * VendorExt's Destroy method.           Sheeran, Omron KK, 93/08/05 */
 
-static void Destroy( w, ve )
-    Widget w;
-    XawVendorShellExtPart* ve;
+static void Destroy(
+    Widget w,
+    XawVendorShellExtPart* ve)
 {
     contextDataRec *contextData;
     contextErrDataRec *contextErrData;
@@ -1390,13 +1390,13 @@ static void Destroy( w, ve )
 	return;
     XtFree( (char*) ve->im.resources );
 
-    if (extContext != (XContext)NULL && 
-	!XFindContext (XtDisplay (w), (Window)w, 
+    if (extContext != (XContext)0 &&
+	!XFindContext (XtDisplay (w), (Window)w,
 		       extContext, (XPointer*)&contextData))
         XtFree( (char*) contextData );
 
-    if (errContext != (XContext)NULL && 
-	!XFindContext (XDisplayOfIM( ve->im.xim ), (Window) ve->im.xim, 
+    if (errContext != (XContext)0 &&
+	!XFindContext (XDisplayOfIM( ve->im.xim ), (Window) ve->im.xim,
 		       errContext, (XPointer*) &contextErrData))
         XtFree( (char*) contextErrData );
 }
@@ -1409,7 +1409,7 @@ static void Destroy( w, ve )
  ********************************************/
 
 void
-_XawImResizeVendorShell( 
+_XawImResizeVendorShell(
     Widget w )
 {
     XawVendorShellExtPart *ve;
@@ -1421,7 +1421,7 @@ _XawImResizeVendorShell(
 
 
 Dimension
-_XawImGetShellHeight( 
+_XawImGetShellHeight(
     Widget w )
 {
     XawVendorShellExtPart *ve;
@@ -1434,11 +1434,10 @@ _XawImGetShellHeight(
 }
 
 void
-_XawImRealize( 
+_XawImRealize(
     Widget w )
 {
     XawVendorShellExtPart	*ve;
-    extern void XawVendorShellExtResize();
 
     if ( !XtIsRealized( w ) || !XtIsVendorShell( w ) ) return;
     if ((ve = GetExtPart((VendorShellWidget)w)) != NULL) {
@@ -1449,8 +1448,8 @@ _XawImRealize(
 }
 
 void
-_XawImInitialize( 
-    Widget w, 
+_XawImInitialize(
+    Widget w,
     Widget ext )
 {
     XawVendorShellExtPart	*ve;
@@ -1464,7 +1463,7 @@ _XawImInitialize(
 }
 
 void
-_XawImReconnect( 
+_XawImReconnect(
     Widget inwidg )
 {
     XawVendorShellExtPart	*ve;
@@ -1503,9 +1502,9 @@ _XawImUnregister(
 }
 
 void
-_XawImSetValues( 
-    Widget inwidg, 
-    ArgList args, 
+_XawImSetValues(
+    Widget inwidg,
+    ArgList args,
     Cardinal num_args )
 {
     SetFocusValues( inwidg, args, num_args, FALSE );
@@ -1513,8 +1512,8 @@ _XawImSetValues(
 
 void
 _XawImSetFocusValues(
-    Widget inwidg, 
-    ArgList args, 
+    Widget inwidg,
+    ArgList args,
     Cardinal num_args)
 {
     SetFocusValues(inwidg, args, num_args, TRUE);
@@ -1528,12 +1527,12 @@ _XawImUnsetFocus(
 }
 
 int
-_XawImWcLookupString( 
-    Widget inwidg, 
+_XawImWcLookupString(
+    Widget inwidg,
     XKeyPressedEvent *event,
-    wchar_t* buffer_return, 
+    wchar_t* buffer_return,
     int bytes_buffer,
-    KeySym *keysym_return, 
+    KeySym *keysym_return,
     Status *status_return)
 {
     XawVendorShellExtPart*	ve;
@@ -1575,10 +1574,9 @@ _XawImCallVendorShellExtResize(
 {
     XawVendorShellExtPart	*ve;
     VendorShellWidget		vw;
-    extern void XawVendorShellExtResize();
 
     if ((vw = SearchVendorShell(w)) && (ve = GetExtPart(vw))) {
-	XawVendorShellExtResize(vw);
+	XawVendorShellExtResize((Widget) vw, NULL, NULL, NULL);
     }
 }
 
@@ -1589,9 +1587,9 @@ _XawImCallVendorShellExtResize(
  * core Destroy method.  Sheeran, Omron KK 93/08/05 */
 
 void
-_XawImDestroy( 
-    Widget w, 
-    Widget ext )
+_XawImDestroy(
+    Widget w,
+    Widget ext  GCC_UNUSED)
 {
     XawVendorShellExtPart        *ve;
 

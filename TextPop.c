@@ -1,7 +1,11 @@
-/* $Xorg: TextPop.c,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $ */
+/*
+ * $XTermId: TextPop.c,v 1.5 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: TextPop.c,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $
+ */
 
 /*
 
+Copyright 2022  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -35,13 +39,13 @@ This file contains modifications for XawPlus, Roland Krause 2002
  *
  * FileInsert, Search, and Replace.
  *
- * There is also a section at the end for utility functions 
+ * There is also a section at the end for utility functions
  * used by all more than one of these dialogs.
  *
  * The following functions are the only non-static ones defined
  * in this module.  They are located at the begining of the
  * section that contains this dialog box that uses them.
- * 
+ *
  * void _XawTextInsertFileAction(w, event, params, num_params);
  * void _XawTextDoSearchAction(w, event, params, num_params);
  * void _XawTextDoReplaceAction(w, event, params, num_params);
@@ -49,9 +53,11 @@ This file contains modifications for XawPlus, Roland Krause 2002
  *
  *************************************************************/
 
+#include "private.h"
+
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/Shell.h> 
+#include <X11/Shell.h>
 
 #include <X11/XawPlus/TextP.h>
 #include <X11/XawPlus/AsciiText.h>
@@ -60,8 +66,8 @@ This file contains modifications for XawPlus, Roland Krause 2002
 #include <X11/XawPlus/Form.h>
 #include <X11/XawPlus/Toggle.h>
 #include <X11/Xmu/CharSet.h>
+
 #include "XawI18n.h"
-#include <stdio.h>
 #include <X11/Xos.h>		/* for O_RDONLY */
 #include <errno.h>
 
@@ -80,24 +86,31 @@ static char* TEXT_NAME = "text";
 
 #define R_OFFSET      1
 
-static void CenterWidgetOnPoint(), PopdownSearch(), DoInsert(), _SetField();
-static void InitializeSearchWidget(), SetResource(), SetSearchLabels();
-static void DoReplaceOne(), DoReplaceAll();
-static Widget CreateDialog(), GetShell();
-static void SetWMProtocolTranslations();
-static Boolean DoSearch(), SetResourceByName(), Replace();
-static String GetString();
-
-static String GetStringRaw();
-
-static void AddInsertFileChildren();
-static Boolean InsertFileNamed();
-static void AddSearchChildren();
+static void CenterWidgetOnPoint(Widget /* w */, XEvent * /* event */);
+static void PopdownSearch(Widget /* w */, XtPointer /* closure */, XtPointer /* call_data */);
+static void DoInsert(Widget /* w */, XtPointer /* closure */, XtPointer /* call_data */);
+static void _SetField(Widget /* new */, Widget /* old */);
+static void InitializeSearchWidget(struct SearchAndReplace * /* search */, XawTextScanDirection /* dir */, Boolean /* replace_active */);
+static void SetResource(Widget /* w */, char * /* res_name */, XtArgVal /* value */);
+static void SetSearchLabels(struct SearchAndReplace * /* search */, String /* msg1 */, String /* msg2 */, Boolean /* bell */);
+static void DoReplaceOne(Widget /* w */, XtPointer /* closure */, XtPointer /* call_data */);
+static void DoReplaceAll(Widget /* w */, XtPointer /* closure */, XtPointer /* call_data */);
+static Widget CreateDialog(Widget /* parent */, char * /* ptr */, String /* name */, void (* /* func */)(Widget, char *, Widget));
+static Widget GetShell(Widget /* w */);
+static void SetWMProtocolTranslations(Widget /* w */);
+static Boolean DoSearch(struct SearchAndReplace * /* search */);
+static Boolean SetResourceByName(Widget /* shell */, char * /* name */, char * /* res_name */, XtArgVal /* value */);
+static Boolean Replace(struct SearchAndReplace * /* search */, Boolean /* once_only */, Boolean /* show_current */);
+static char * GetString(Widget /* tw */);
+static char * GetStringRaw(Widget /* tw */);
+static void AddInsertFileChildren(Widget /* form */, char * /* ptr */, Widget /* tw */);
+static Boolean InsertFileNamed(Widget /* tw */, char * /* str */);
+static void AddSearchChildren(Widget /* form */, char * /* ptr */, Widget /* tw */);
 
 static char radio_trans_string[] =
     "<Btn1Down>,<Btn1Up>:   set() notify()";
 
-static char search_text_trans[] = 
+static char search_text_trans[] =
   "~Shift<Key>Return:      DoSearchAction(Popdown) \n\
    Shift<Key>Return:       DoSearchAction() SetField(Replace) \n\
    Ctrl<Key>q,<Key>Tab:    insert-char()    \n\
@@ -105,7 +118,7 @@ static char search_text_trans[] =
    <Btn1Down>:             select-start() SetField(Search) \n\
    <Key>Tab:               DoSearchAction() SetField(Replace)";
 
-static char rep_text_trans[] = 
+static char rep_text_trans[] =
   "~Shift<Key>Return:      DoReplaceAction(Popdown) \n\
    Shift<Key>Return:       SetField(Search) \n\
    Ctrl<Key>q,<Key>Tab:    insert-char()     \n\
@@ -114,27 +127,27 @@ static char rep_text_trans[] =
    <Key>Tab:               SetField(Search)";
 
 /************************************************************
- * 
- * This section of the file contains all the functions that 
+ *
+ * This section of the file contains all the functions that
  * the file insert dialog box uses.
  *
  ************************************************************/
 
 /*	Function Name: _XawTextInsertFileAction
- *	Description: Action routine that can be bound to dialog box's 
+ *	Description: Action routine that can be bound to dialog box's
  *                   Text Widget that will insert a file into the main
  *                   Text Widget.
- *	Arguments:   (Standard Action Routine args) 
+ *	Arguments:   (Standard Action Routine args)
  *	Returns:     none.
  */
 
 /* ARGSUSED */
-void 
-_XawTextInsertFileAction(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String * params;
-Cardinal * num_params;
+void
+_XawTextInsertFileAction(
+Widget w,
+XEvent *event GCC_UNUSED,
+String * params GCC_UNUSED,
+Cardinal * num_params GCC_UNUSED)
 {
   DoInsert(w, (XtPointer) XtParent(XtParent(XtParent(w))), (XtPointer)NULL);
 }
@@ -155,12 +168,12 @@ Cardinal * num_params;
  *          file to insert.
  */
 
-void 
-_XawTextInsertFile(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String * params;
-Cardinal * num_params;
+void
+_XawTextInsertFile(
+Widget w,
+XEvent *event,
+String * params,
+Cardinal * num_params)
 {
   TextWidget ctx = (TextWidget)w;
   char * ptr;
@@ -169,17 +182,17 @@ Cardinal * num_params;
 
   XtSetArg(args[0], XtNeditType,&edit_mode);
   XtGetValues(ctx->text.source, args, ONE);
-  
+
   if (edit_mode != XawtextEdit) {
     XBell(XtDisplay(w), 0);
     return;
   }
 
-  if (*num_params == 0) 
+  if (*num_params == 0)
     ptr = "";
-  else 
-    ptr = params[0];
-    
+  else
+    ptr = DeConst(params[0]);
+
   if (!ctx->text.file_insert) {
     ctx->text.file_insert = CreateDialog(w, ptr, "insertFile",
 					 AddInsertFileChildren);
@@ -201,17 +214,17 @@ Cardinal * num_params;
  */
 
 /* ARGSUSED */
-static void 
-PopdownFileInsert(w, closure, call_data)
-Widget w;			/* The Dialog Button Pressed. */
-XtPointer closure;		/* Text Widget. */
-XtPointer call_data;		/* unused */
+static void
+PopdownFileInsert(
+Widget w GCC_UNUSED,		/* The Dialog Button Pressed. */
+XtPointer closure,		/* Text Widget. */
+XtPointer call_data GCC_UNUSED)	/* unused */
 {
   TextWidget ctx = (TextWidget) closure;
 
   XtPopdown( ctx->text.file_insert );
-  (void) SetResourceByName( ctx->text.file_insert, LABEL_NAME, 
-			   XtNlabel, (XtArgVal) INSERT_FILE);
+  (void) SetResourceByName( ctx->text.file_insert, LABEL_NAME,
+			   DeConst(XtNlabel), (XtArgVal) INSERT_FILE);
 }
 
 /*	Function Name: DoInsert
@@ -224,11 +237,11 @@ XtPointer call_data;		/* unused */
  */
 
 /* ARGSUSED */
-static void 
-DoInsert(w, closure, call_data)
-Widget w;			/* The Dialog Button Pressed. */
-XtPointer closure;		/* Text Widget */
-XtPointer call_data;		/* unused */
+static void
+DoInsert(
+Widget w,			/* The Dialog Button Pressed. */
+XtPointer closure,		/* Text Widget */
+XtPointer call_data)		/* unused */
 {
   TextWidget ctx = (TextWidget) closure;
   char buf[BUFSIZ], msg[BUFSIZ];
@@ -236,10 +249,10 @@ XtPointer call_data;		/* unused */
 
   (void) sprintf(buf, "%s.%s", FORM_NAME, TEXT_NAME);
   if ( (temp_widget = XtNameToWidget(ctx->text.file_insert, buf)) == NULL ) {
-    (void) strcpy(msg, 
+    (void) strcpy(msg,
 	   "*** Error: Could not get text widget from file insert popup");
   }
-  else 
+  else
     if (InsertFileNamed( (Widget) ctx, GetString( temp_widget ))) {
       PopdownFileInsert(w, closure, call_data);
       return;
@@ -247,8 +260,10 @@ XtPointer call_data;		/* unused */
     else
       (void) sprintf( msg, "*** Error: %s ***", strerror(errno));
 
-  (void)SetResourceByName(ctx->text.file_insert, 
-			  LABEL_NAME, XtNlabel, (XtArgVal) msg);
+  (void)SetResourceByName(ctx->text.file_insert,
+			  DeConst(LABEL_NAME),
+                          DeConst(XtNlabel),
+                          (XtArgVal) msg);
   XBell(XtDisplay(w), 0);
 }
 
@@ -261,15 +276,15 @@ XtPointer call_data;		/* unused */
 
 
 static Boolean
-InsertFileNamed(tw, str)
-Widget tw;
-char *str;
+InsertFileNamed(
+Widget tw,
+char *str)
 {
   FILE *file;
   XawTextBlock text;
   XawTextPosition pos;
 
-  if ( (str == NULL) || (strlen(str) == 0) || 
+  if ( (str == NULL) || (strlen(str) == 0) ||
        ((file = fopen(str, "r")) == NULL))
     return(FALSE);
 
@@ -284,7 +299,7 @@ char *str;
   text.format = XawFmt8Bit;
 
   fseek(file, 0L, 0);
-  if (fread(text.ptr, sizeof(unsigned char), text.length, file) != text.length)
+  if (fread(text.ptr, sizeof(unsigned char), text.length, file) != (size_t) text.length)
       XtErrorMsg("readError", "insertFileNamed", "XawError",
                  "fread returned error.", NULL, NULL);
 
@@ -321,9 +336,10 @@ char *str;
  */
 
 static void
-AddInsertFileChildren(form, ptr, tw)
-Widget form, tw;
-char * ptr;
+AddInsertFileChildren(
+Widget form,
+char * ptr,
+Widget tw)
 {
   Arg args[10];
   Cardinal num_args;
@@ -336,9 +352,9 @@ char * ptr;
   XtSetArg(args[num_args], XtNright, XtChainLeft); num_args++;
   XtSetArg(args[num_args], XtNresizable, TRUE ); num_args++;
   XtSetArg(args[num_args], XtNborderWidth, 0 ); num_args++;
-  label = XtCreateManagedWidget (LABEL_NAME, labelWidgetClass, form, 
+  label = XtCreateManagedWidget (LABEL_NAME, labelWidgetClass, form,
 				 args, num_args);
-  
+
   num_args = 0;
   XtSetArg(args[num_args], XtNfromVert, label); num_args++;
   XtSetArg(args[num_args], XtNleft, XtChainLeft); num_args++;
@@ -382,33 +398,33 @@ char * ptr;
 }
 
 /************************************************************
- * 
- * This section of the file contains all the functions that 
+ *
+ * This section of the file contains all the functions that
  * the search dialog box uses.
  *
  ************************************************************/
 
 /*	Function Name: _XawTextDoSearchAction
- *	Description: Action routine that can be bound to dialog box's 
- *                   Text Widget that will search for a string in the main 
+ *	Description: Action routine that can be bound to dialog box's
+ *                   Text Widget that will search for a string in the main
  *                   Text Widget.
- *	Arguments:   (Standard Action Routine args) 
+ *	Arguments:   (Standard Action Routine args)
  *	Returns:     none.
  *
  * Note:
- * 
+ *
  * If the search was sucessful and the argument popdown is passed to
- * this action routine then the widget will automatically popdown the 
+ * this action routine then the widget will automatically popdown the
  * search widget.
  */
 
 /* ARGSUSED */
-void 
-_XawTextDoSearchAction(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String * params;
-Cardinal * num_params;
+void
+_XawTextDoSearchAction(
+Widget w,
+XEvent *event GCC_UNUSED,
+String * params,
+Cardinal * num_params)
 {
   TextWidget tw = (TextWidget) XtParent(XtParent(XtParent(w)));
   Boolean popdown = FALSE;
@@ -416,25 +432,25 @@ Cardinal * num_params;
   if ( (*num_params == 1) &&
        ((params[0][0] == 'p') || (params[0][0] == 'P')) )
       popdown = TRUE;
-    
+
   if (DoSearch(tw->text.search) && popdown)
     PopdownSearch(w, (XtPointer) tw->text.search, (XtPointer)NULL);
 }
 
 /*	Function Name: _XawTextPopdownSearchAction
- *	Description: Action routine that can be bound to dialog box's 
+ *	Description: Action routine that can be bound to dialog box's
  *                   Text Widget that will popdown the search widget.
- *	Arguments:   (Standard Action Routine args) 
+ *	Arguments:   (Standard Action Routine args)
  *	Returns:     none.
  */
 
 /* ARGSUSED */
-void 
-_XawTextPopdownSearchAction(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String * params;
-Cardinal * num_params;
+void
+_XawTextPopdownSearchAction(
+Widget w,
+XEvent *event GCC_UNUSED,
+String * params GCC_UNUSED,
+Cardinal * num_params GCC_UNUSED)
 {
   TextWidget tw = (TextWidget) XtParent(XtParent(XtParent(w)));
 
@@ -450,11 +466,11 @@ Cardinal * num_params;
  */
 
 /* ARGSUSED */
-static void 
-PopdownSearch(w, closure, call_data)
-Widget w;			
-XtPointer closure;		
-XtPointer call_data;		
+static void
+PopdownSearch(
+Widget w GCC_UNUSED,
+XtPointer closure,
+XtPointer call_data GCC_UNUSED)
 {
   struct SearchAndReplace * search = (struct SearchAndReplace *) closure;
 
@@ -467,15 +483,15 @@ XtPointer call_data;
  *	Arguments: w - *** NOT USED **.
  *                 closure - a pointer to the search info.
  *                 call_data - *** NOT USED ***.
- *	Returns: 
+ *	Returns:
  */
 
 /* ARGSUSED */
-static void 
-SearchButton(w, closure, call_data)
-Widget w;			
-XtPointer closure;		
-XtPointer call_data;
+static void
+SearchButton(
+Widget w GCC_UNUSED,
+XtPointer closure,
+XtPointer call_data GCC_UNUSED)
 {
   (void) DoSearch( (struct SearchAndReplace *) closure );
 }
@@ -502,12 +518,12 @@ XtPointer call_data;
 
 #define SEARCH_HEADER ("Text Widget - Search():")
 
-void 
-_XawTextSearch(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String * params;
-Cardinal * num_params;
+void
+_XawTextSearch(
+Widget w,
+XEvent *event,
+String * params,
+Cardinal * num_params)
 {
   TextWidget ctx = (TextWidget)w;
   XawTextScanDirection dir;
@@ -523,17 +539,17 @@ Cardinal * num_params;
 #endif
 
   if ( (*num_params < 1) || (*num_params > 2) ) {
-    (void) sprintf(buf, "%s %s\n%s", SEARCH_HEADER, 
-	    "This action must have only", 
+    (void) sprintf(buf, "%s %s\n%s", SEARCH_HEADER,
+	    "This action must have only",
 	    "one or two parameters");
     XtAppWarning(XtWidgetToApplicationContext(w), buf);
     return;
   }
 
   if (*num_params == 2 )
-      ptr = params[1];
+      ptr = DeConst(params[1]);
   else
-      if (_XawTextFormat(ctx) == XawFmtWide) {
+      if ((unsigned long) _XawTextFormat(ctx) == XawFmtWide) {
           /*This just does the equivalent of ptr = ""L, a waste because params[1] isnt W aligned.*/
           ptr = (char *)XtMalloc(sizeof(wchar_t));
           *((wchar_t*)ptr) = (wchar_t)0;
@@ -550,7 +566,7 @@ Cardinal * num_params;
     dir = XawsdRight;
     break;
   default:
-    (void) sprintf(buf, "%s %s\n%s", SEARCH_HEADER, 
+    (void) sprintf(buf, "%s %s\n%s", SEARCH_HEADER,
 	    "The first parameter must be",
 	    "Either 'backward' or 'forward'");
     XtAppWarning(XtWidgetToApplicationContext(w), buf);
@@ -581,22 +597,22 @@ Cardinal * num_params;
  *	Description: This function initializes the search widget and
  *                   is called each time the search widget is poped up.
  *	Arguments: search - the search widget structure.
- *                 dir - direction to search. 
- *                 replace_active - state of the sensitivity for the 
+ *                 dir - direction to search.
+ *                 replace_active - state of the sensitivity for the
  *                                  replace button.
  *	Returns: none.
  */
 
 static void
-InitializeSearchWidget(search, dir, replace_active)
-struct SearchAndReplace * search;
-XawTextScanDirection dir;
-Boolean replace_active;
+InitializeSearchWidget(
+struct SearchAndReplace * search,
+XawTextScanDirection dir,
+Boolean replace_active)
 {
-  SetResource(search->rep_one, XtNsensitive, (XtArgVal) replace_active);
-  SetResource(search->rep_all, XtNsensitive, (XtArgVal) replace_active);
-  SetResource(search->rep_label, XtNsensitive, (XtArgVal) replace_active);
-  SetResource(search->rep_text, XtNsensitive, (XtArgVal) replace_active);
+  SetResource(search->rep_one, DeConst(XtNsensitive), (XtArgVal) replace_active);
+  SetResource(search->rep_all, DeConst(XtNsensitive), (XtArgVal) replace_active);
+  SetResource(search->rep_label, DeConst(XtNsensitive), (XtArgVal) replace_active);
+  SetResource(search->rep_text, DeConst(XtNsensitive), (XtArgVal) replace_active);
 
   switch (dir) {
   case XawsdLeft:
@@ -608,7 +624,7 @@ Boolean replace_active;
   default:
     break;
   }
-}  
+}
 
 /*	Function Name: AddSearchChildren
  *	Description: Adds all children to the Search Dialog Widget.
@@ -619,9 +635,10 @@ Boolean replace_active;
  */
 
 static void
-AddSearchChildren(form, ptr, tw)
-Widget form, tw;
-char * ptr;
+AddSearchChildren(
+Widget form,
+char * ptr,
+Widget tw)
 {
   Arg args[10];
   Cardinal num_args;
@@ -645,8 +662,8 @@ char * ptr;
   XtSetArg(args[num_args], XtNborderWidth, 0 ); num_args++;
   search->label2 = XtCreateManagedWidget("label2", labelWidgetClass, form,
 					 args, num_args);
-  
-/* 
+
+/*
  * We need to add R_OFFSET to the radio_data, because the value zero (0)
  * has special meaning.
  */
@@ -724,7 +741,7 @@ char * ptr;
   r_text = XtCreateManagedWidget("replaceText", asciiTextWidgetClass,
 				 form, args, num_args);
   search->rep_text = r_text;
-  
+
   num_args = 0;
   XtSetArg(args[num_args], XtNlabel, "Search"); num_args++;
   XtSetArg(args[num_args], XtNfromVert, r_text); num_args++;
@@ -801,8 +818,7 @@ char * ptr;
 
 /* ARGSUSED */
 static Boolean
-DoSearch(search)
-struct SearchAndReplace * search;
+DoSearch(struct SearchAndReplace * search)
 {
   Widget tw = XtParent(search->search_popup);
   XawTextPosition pos;
@@ -817,14 +833,14 @@ struct SearchAndReplace * search;
   else
       text.length = strlen(text.ptr);
   text.firstPos = 0;
-  
-  dir = (XawTextScanDirection)(int) ((XPointer)XawToggleGetCurrent(search->left_toggle) -
+
+  dir = (XawTextScanDirection)((XPointer)XawToggleGetCurrent(search->left_toggle) -
 				R_OFFSET);
-  
+
   pos = XawTextSearch( tw, dir, &text);
 
 
-   /* The Raw string in find.ptr may be WC I can't use here, so I re - call 
+   /* The Raw string in find.ptr may be WC I can't use here, so I re - call
    GetString to get a tame version. */
 
   if (pos == XawTextSearchError)  {
@@ -833,7 +849,7 @@ struct SearchAndReplace * search;
     char* fmt = "Could not find string \"%s\"";
     int len = strlen (fmt) + strlen (GetString (search->search_text));
 
-    if (len < sizeof msgbuf) msg = msgbuf;
+    if ((size_t) len < sizeof msgbuf) msg = msgbuf;
     else msg = XtMalloc (len + 1);
     if (msg == NULL) {
       msg = msgbuf;
@@ -849,34 +865,34 @@ struct SearchAndReplace * search;
     XawTextSetInsertionPoint( tw, pos + text.length);
   else
     XawTextSetInsertionPoint( tw, pos);
-    
+
   XawTextSetSelection( tw, pos, pos + text.length);
   search->selection_changed = FALSE; /* selection is good. */
   return TRUE;
 }
 
 /************************************************************
- * 
- * This section of the file contains all the functions that 
+ *
+ * This section of the file contains all the functions that
  * the replace dialog box uses.
  *
  ************************************************************/
 
 /*	Function Name: _XawTextDoReplaceAction
- *	Description: Action routine that can be bound to dialog box's 
- *                   Text Widget that will replace a string in the main 
+ *	Description: Action routine that can be bound to dialog box's
+ *                   Text Widget that will replace a string in the main
  *                   Text Widget.
- *	Arguments:   (Standard Action Routine args) 
+ *	Arguments:   (Standard Action Routine args)
  *	Returns:     none.
  */
 
 /* ARGSUSED */
-void 
-_XawTextDoReplaceAction(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String * params;
-Cardinal * num_params;
+void
+_XawTextDoReplaceAction(
+Widget w,
+XEvent *event GCC_UNUSED,
+String * params,
+Cardinal * num_params)
 {
   TextWidget ctx = (TextWidget) XtParent(XtParent(XtParent(w)));
   Boolean popdown = FALSE;
@@ -900,11 +916,11 @@ Cardinal * num_params;
  */
 
 /* ARGSUSED */
-static void 
-DoReplaceOne(w, closure, call_data)
-Widget w;			/* The Button Pressed. */
-XtPointer closure;		/* Text Widget. */
-XtPointer call_data;		/* unused */
+static void
+DoReplaceOne(
+Widget w GCC_UNUSED,		/* The Button Pressed. */
+XtPointer closure,		/* Text Widget. */
+XtPointer call_data GCC_UNUSED)	/* unused */
 {
   Replace( (struct SearchAndReplace *) closure, TRUE, FALSE);
 }
@@ -920,11 +936,11 @@ XtPointer call_data;		/* unused */
  */
 
 /* ARGSUSED */
-static void 
-DoReplaceAll(w, closure, call_data)
-Widget w;			/* The Button Pressed. */
-XtPointer closure;		/* Text Widget. */
-XtPointer call_data;		/* unused */
+static void
+DoReplaceAll(
+Widget w GCC_UNUSED,		/* The Button Pressed. */
+XtPointer closure,		/* Text Widget. */
+XtPointer call_data GCC_UNUSED)
 {
   Replace( (struct SearchAndReplace *) closure, FALSE, FALSE);
 }
@@ -935,16 +951,17 @@ XtPointer call_data;		/* unused */
  *	Arguments: tw - the Text Widget to replce the string in.
  *                 once_only - If TRUE then only replace the first one found.
  *                             other replace all of them.
- *                 show_current - If true then leave the selection on the 
+ *                 show_current - If true then leave the selection on the
  *                                string that was just replaced, otherwise
  *                                move it onto the next one.
  *	Returns: none.
  */
 
 static Boolean
-Replace(search, once_only, show_current)
-struct SearchAndReplace * search;
-Boolean once_only, show_current;
+Replace(
+struct SearchAndReplace * search,
+Boolean once_only,
+Boolean show_current)
 {
   XawTextPosition pos, new_pos, end_pos;
   XawTextScanDirection dir;
@@ -967,14 +984,14 @@ Boolean once_only, show_current;
       replace.length = wcslen((wchar_t*)replace.ptr);
   else
       replace.length = strlen(replace.ptr);
-    
-  dir = (XawTextScanDirection)(int) ((XPointer)XawToggleGetCurrent(search->left_toggle) -
+
+  dir = (XawTextScanDirection)((XPointer)XawToggleGetCurrent(search->left_toggle) -
 				R_OFFSET);
   /* CONSTCOND */
   while (TRUE) {
     if (count != 0) {
       new_pos = XawTextSearch( tw, dir, &find);
-      
+
       if ( (new_pos == XawTextSearchError) ) {
 	if (count == 0) {
 	  char msgbuf[BUFSIZ];
@@ -983,7 +1000,7 @@ Boolean once_only, show_current;
 	  char* fmt = "*** Error: Could not find string \"%s\" ***";
 
 	  len = strlen (fmt) + strlen (GetString (search->search_text));
-	  if (len < sizeof msgbuf) msg = msgbuf;
+	  if ((size_t) len < sizeof msgbuf) msg = msgbuf;
 	  else msg = XtMalloc (len + 1);
 	  if (msg == NULL) {
 	    msg = msgbuf;
@@ -1008,7 +1025,7 @@ Boolean once_only, show_current;
 			"", TRUE);
 	return(FALSE);
       }
-      if (pos == end_pos) 
+      if (pos == end_pos)
 	  return(FALSE);
     }
 
@@ -1019,7 +1036,7 @@ Boolean once_only, show_current;
       char* fmt = "'%s' with '%s'. ***";
 
       len = strlen (fmt) + strlen (find.ptr) + strlen (replace.ptr);
-      if (len < sizeof msgbuf) msg = msgbuf;
+      if ((size_t) len < sizeof msgbuf) msg = msgbuf;
       else msg = XtMalloc (len + 1);
       if (msg == NULL) {
 	msg = msgbuf;
@@ -1029,20 +1046,21 @@ Boolean once_only, show_current;
       SetSearchLabels(search, "*** Error while replacing", msg, TRUE);
       if (msg != msgbuf) XtFree (msg);
       return FALSE;
-    }      
+    }
 
     if (dir == XawsdRight)
       XawTextSetInsertionPoint( tw, pos + replace.length);
     else
       XawTextSetInsertionPoint( tw, pos);
 
-    if (once_only) 
+    if (once_only) {
       if (show_current)
 	break;
       else {
 	DoSearch(search);
 	return(TRUE);
       }
+    }
     count++;
   }
 
@@ -1063,19 +1081,20 @@ Boolean once_only, show_current;
  */
 
 static void
-SetSearchLabels(search, msg1, msg2, bell)
-struct SearchAndReplace * search;
-String msg1, msg2;
-Boolean bell;
+SetSearchLabels(
+struct SearchAndReplace * search,
+String msg1,
+String msg2,
+Boolean bell)
 {
-  (void) SetResource( search->label1, XtNlabel, (XtArgVal) msg1);
-  (void) SetResource( search->label2, XtNlabel, (XtArgVal) msg2);
-  if (bell) 
+  (void) SetResource( search->label1, DeConst(XtNlabel), (XtArgVal) msg1);
+  (void) SetResource( search->label2, DeConst(XtNlabel), (XtArgVal) msg2);
+  if (bell)
     XBell(XtDisplay(search->search_popup), 0);
 }
 
 /************************************************************
- * 
+ *
  * This section of the file contains utility routines used by
  * other functions in this file.
  *
@@ -1083,19 +1102,19 @@ Boolean bell;
 
 
 /*	Function Name: _XawTextSetField
- *	Description: Action routine that can be bound to dialog box's 
+ *	Description: Action routine that can be bound to dialog box's
  *                   Text Widget that will send input to the field specified.
- *	Arguments:   (Standard Action Routine args) 
+ *	Arguments:   (Standard Action Routine args)
  *	Returns:     none.
  */
 
 /* ARGSUSED */
-void 
-_XawTextSetField(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String * params;
-Cardinal * num_params;
+void
+_XawTextSetField(
+Widget w,
+XEvent *event GCC_UNUSED,
+String * params,
+Cardinal * num_params)
 {
   struct SearchAndReplace * search;
   Widget new, old;
@@ -1133,8 +1152,8 @@ Cardinal * num_params;
  */
 
 static void
-_SetField(new, old)
-Widget new, old;
+_SetField(
+Widget new, Widget old)
 {
   Arg args[2];
   Pixel new_border, old_border, old_bg;
@@ -1144,8 +1163,8 @@ Widget new, old;
     return;
   }
 
-  XtSetKeyboardFocus(XtParent(new), new); 
-						
+  XtSetKeyboardFocus(XtParent(new), new);
+
   XtSetArg(args[0], XtNborderColor, &old_border);
   XtSetArg(args[1], XtNbackground, &old_bg);
   XtGetValues(new, args, TWO);
@@ -1156,8 +1175,8 @@ Widget new, old;
   if (old_border != old_bg)	/* Colors are already correct, return. */
       return;
 
-  SetResource(old, XtNborderColor, (XtArgVal) old_border);
-  SetResource(new, XtNborderColor, (XtArgVal) new_border);
+  SetResource(old, DeConst(XtNborderColor), (XtArgVal) old_border);
+  SetResource(new, DeConst(XtNborderColor), (XtArgVal) new_border);
 }
 
 /*	Function Name: SetResourceByName
@@ -1171,10 +1190,11 @@ Widget new, old;
  */
 
 static Boolean
-SetResourceByName(shell, name, res_name, value)
-Widget shell;
-char * name, * res_name;
-XtArgVal value;
+SetResourceByName(
+Widget shell,
+char * name,
+char * res_name,
+XtArgVal value)
 {
   Widget temp_widget;
   char buf[BUFSIZ];
@@ -1182,7 +1202,7 @@ XtArgVal value;
   int len = strlen (FORM_NAME) + strlen (name) + 1;
   Boolean ret = FALSE;
 
-  if (len < sizeof buf) bufp = buf;
+  if ((size_t) len < sizeof buf) bufp = buf;
   else bufp = XtMalloc (len + 1);
 
   if (bufp == NULL) return FALSE;
@@ -1206,13 +1226,13 @@ XtArgVal value;
  */
 
 static void
-SetResource(w, res_name, value)
-Widget w;
-char * res_name;
-XtArgVal value;
+SetResource(
+Widget w,
+char * res_name,
+XtArgVal value)
 {
   Arg args[1];
-  
+
   XtSetArg(args[0], res_name, value);
   XtSetValues( w, args, ONE );
 }
@@ -1220,17 +1240,17 @@ XtArgVal value;
 /*	Function Name: GetString{Raw}
  *	Description:   Gets the value for the string in the popup.
  *	Arguments:     text - the text widget whose string we will get.
- * 
+ *
  *	GetString returns the string as a MB.
  *	GetStringRaw returns the exact buffer contents suitable for a search.
  *
  */
 
-static String
-GetString(text)
-Widget text;
+static char *
+GetString(
+Widget text)
 {
-  String string;
+  char * string;
   Arg args[1];
 
   XtSetArg( args[0], XtNstring, &string );
@@ -1238,13 +1258,12 @@ Widget text;
   return(string);
 }
 
-static String
-GetStringRaw(tw)
-Widget tw;
+static char *
+GetStringRaw(
+Widget tw)
 {
   TextWidget ctx = (TextWidget)tw;
   XawTextPosition last;
-  char *_XawTextGetText();
 
   last = XawTextSourceScan(ctx->text.source, 0, XawstAll, XawsdRight,
 			     ctx->text.mult, TRUE);
@@ -1262,15 +1281,15 @@ Widget tw;
  */
 
 static void
-CenterWidgetOnPoint(w, event)
-Widget w;
-XEvent *event;
+CenterWidgetOnPoint(
+Widget w,
+XEvent *event)
 {
   Arg args[3];
   Cardinal num_args;
   Dimension width, height, b_width;
   Position x = 0, y = 0, max_x, max_y;
-  
+
   if (event != NULL) {
     switch (event->type) {
     case ButtonPress:
@@ -1287,7 +1306,7 @@ XEvent *event;
       return;
     }
   }
-  
+
   num_args = 0;
   XtSetArg(args[num_args], XtNwidth, &width); num_args++;
   XtSetArg(args[num_args], XtNheight, &height); num_args++;
@@ -1304,7 +1323,7 @@ XEvent *event;
   y -= ( (Position) height/2 );
   if (y < 0) y = 0;
   if ( y > (max_y = (Position) (XtScreen(w)->height - height)) ) y = max_y;
-  
+
   num_args = 0;
   XtSetArg(args[num_args], XtNx, x); num_args++;
   XtSetArg(args[num_args], XtNy, y); num_args++;
@@ -1318,7 +1337,7 @@ XEvent *event;
  *                 name - name of the dialog.
  *                 func - function to create the children of the dialog.
  *	Returns: the popup shell of the dialog.
- * 
+ *
  * NOTE:
  *
  * The function argument is passed the following arguements.
@@ -1329,10 +1348,11 @@ XEvent *event;
  */
 
 static Widget
-CreateDialog(parent, ptr, name, func)
-Widget parent;
-String ptr, name;
-void (*func)();
+CreateDialog(
+Widget parent,
+char * ptr,
+String name,
+void (*func)(Widget, char *, Widget))
 {
   Widget popup, form;
   Arg args[5];
@@ -1343,9 +1363,9 @@ void (*func)();
   XtSetArg(args[num_args], XtNgeometry, NULL); num_args++;
   XtSetArg(args[num_args], XtNallowShellResize, TRUE); num_args++;
   XtSetArg(args[num_args], XtNtransientFor, GetShell(parent)); num_args++;
-  popup = XtCreatePopupShell(name, transientShellWidgetClass, 
+  popup = XtCreatePopupShell(name, transientShellWidgetClass,
 			     parent, args, num_args);
-  
+
   form = XtCreateManagedWidget(FORM_NAME, formWidgetClass, popup,
 			       (ArgList)NULL, ZERO);
   XtManageChild (form);
@@ -1361,35 +1381,35 @@ void (*func)();
   * 	Returns: The shell widget among the ancestors of w that is the
   * 		fewest levels up in the widget hierarchy.
   */
- 
+
 static Widget
-GetShell(w)
-Widget w;
+GetShell(
+Widget w)
 {
     while ((w != NULL) && !XtIsShell(w))
 	w = XtParent(w);
-    
+
     return (w);
 }
 
-static Boolean InParams(str, p, n)
-    String str;
-    String *p;
-    Cardinal n;
+static Boolean InParams(
+    String str,
+    String *p,
+    Cardinal n)
 {
     int i;
-    for (i=0; i < n; p++, i++)
+    for (i=0; (Cardinal) i < n; p++, i++)
 	if (! XmuCompareISOLatin1(*p, str)) return True;
     return False;
 }
 
 static char *WM_DELETE_WINDOW = "WM_DELETE_WINDOW";
 
-static void WMProtocols(w, event, params, num_params)
-    Widget w;		/* popup shell */
-    XEvent *event;
-    String *params;
-    Cardinal *num_params;
+static void WMProtocols(
+    Widget w,		/* popup shell */
+    XEvent *event,
+    String *params,
+    Cardinal *num_params)
 {
     Atom wm_delete_window;
     Atom wm_protocols;
@@ -1397,7 +1417,7 @@ static void WMProtocols(w, event, params, num_params)
     wm_delete_window = XInternAtom(XtDisplay(w), WM_DELETE_WINDOW, True);
     wm_protocols = XInternAtom(XtDisplay(w), "WM_PROTOCOLS", True);
 
-    /* Respond to a recognized WM protocol request iff 
+    /* Respond to a recognized WM protocol request iff
      * event type is ClientMessage and no parameters are passed, or
      * event type is ClientMessage and event data is matched to parameters, or
      * event type isn't ClientMessage and parameters make a request.
@@ -1406,9 +1426,9 @@ static void WMProtocols(w, event, params, num_params)
 
     if ((event->type == ClientMessage &&
 	 event->xclient.message_type == wm_protocols &&
-	 event->xclient.data.l[0] == wm_delete_window &&
+	 event->xclient.data.l[0] == (long) wm_delete_window &&
 	 (*num_params == 0 || DO_DELETE_WINDOW))
-	|| 
+	||
 	(event->type != ClientMessage && DO_DELETE_WINDOW)) {
 
 #undef DO_DELETE_WINDOW
@@ -1421,8 +1441,8 @@ static void WMProtocols(w, event, params, num_params)
     }
 }
 
-static void SetWMProtocolTranslations(w)
-    Widget	w;	/* realized popup shell */
+static void SetWMProtocolTranslations(
+    Widget	w)	/* realized popup shell */
 {
     int i;
     XtAppContext app_context;
@@ -1438,7 +1458,7 @@ static void SetWMProtocolTranslations(w)
 	("<Message>WM_PROTOCOLS: XawWMProtocols()\n");
 
     /* add actions once per application context */
-    for (i=0; i < list_size && app_context_list[i] != app_context; i++) ;
+    for (i=0; (Cardinal) i < list_size && app_context_list[i] != app_context; i++) ;
     if (i == list_size) {
 	XtActionsRec actions[1];
 	actions[0].string = "XawWMProtocols";

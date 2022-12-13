@@ -1,7 +1,11 @@
-/* $Xorg: Dialog.c,v 1.4 2001/02/09 02:03:43 xorgcvs Exp $ */
+/*
+ * $XTermId: Dialog.c,v 1.5 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: Dialog.c,v 1.4 2001/02/09 02:03:43 xorgcvs Exp $
+ */
 
 /************************************************************************
 
+Copyright 2022  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -54,6 +58,8 @@ This file contains modifications for XawPlus, Roland Krause 2002
    than just directly making your own form. */
 
 
+#include "private.h"
+
 #include <X11/Xlib.h>
 #include <X11/Xos.h>
 #include <X11/IntrinsicP.h>
@@ -90,13 +96,13 @@ static XtResource resources[] = {
      XtOffsetOf(DialogRec, dialog.clipMask), XtRImmediate, (XtPointer)None}
 };
 
-static void Initialize(),
-	    ConstraintInitialize(),
-	    CreateDialogValueWidget(),
-            GetValuesHook(),
-	    ClassInitialize();
+static void Initialize(Widget request, Widget new, ArgList args, Cardinal *num_args);
+static void ConstraintInitialize(Widget request, Widget new, ArgList args, Cardinal *num_args);
+static void CreateDialogValueWidget(Widget w);
+static void GetValuesHook(Widget w, ArgList args, Cardinal * num_args);
+static void ClassInitialize(void);
 
-static Boolean SetValues();
+static Boolean SetValues(Widget current, Widget request, Widget new, ArgList in_args, Cardinal *in_num_args);
 
 DialogClassRec dialogClassRec = {
   { /* core_class fields */
@@ -167,7 +173,7 @@ WidgetClass dialogWidgetClass = (WidgetClass)&dialogClassRec;
  *
  ***********************************************************************/
 
-static void ClassInitialize()
+static void ClassInitialize(void)
 {
   static XtConvertArgRec xpmCvtArg[] = {
     {XtWidgetBaseOffset,(XtPointer)XtOffsetOf(DialogRec,core.screen),sizeof(Screen *)},
@@ -188,10 +194,11 @@ static void ClassInitialize()
  *
  ***********************************************************************/
 
-static void Initialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;
-Cardinal *num_args;
+static void Initialize(
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     DialogWidget dw = (DialogWidget)new;
     Arg arglist[9];
@@ -233,10 +240,11 @@ Cardinal *num_args;
  *
  ***********************************************************************/
 
-static void ConstraintInitialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;
-Cardinal *num_args;
+static void ConstraintInitialize(
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     DialogWidget dw = (DialogWidget)new->core.parent;
     DialogConstraints constraint = (DialogConstraints)new->core.constraints;
@@ -276,10 +284,12 @@ Cardinal *num_args;
 #define LABEL 1
 #define NUM_CHECKS 2
 
-static Boolean SetValues(current, request, new, in_args, in_num_args)
-Widget current, request, new;
-ArgList in_args;
-Cardinal *in_num_args;
+static Boolean SetValues(
+Widget current,
+Widget request GCC_UNUSED,
+Widget new,
+ArgList in_args,
+Cardinal *in_num_args)
 {
     DialogWidget w = (DialogWidget)new;
     DialogWidget old = (DialogWidget)current;
@@ -291,7 +301,7 @@ Cardinal *in_num_args;
     for (i = 0; i < NUM_CHECKS; i++)
 	checks[i] = FALSE;
 
-    for (i = 0; i < *in_num_args; i++) {
+    for (i = 0; (Cardinal) i < *in_num_args; i++) {
 	if (streq(XtNicon, in_args[i].name) || streq(XtNclipMask, in_args[i].name))
 	    checks[ICON] = TRUE;
 	if (streq(XtNlabel, in_args[i].name))
@@ -356,9 +366,9 @@ Cardinal *in_num_args;
 #endif /*notdef*/
 	}
 	else {			/* Widget ok, just change string. */
-	    Arg args[1];
-	    XtSetArg(args[0], XtNstring, w->dialog.value);
-	    XtSetValues(w->dialog.valueW, args, ONE);
+	    Arg args2[1];
+	    XtSetArg(args2[0], XtNstring, w->dialog.value);
+	    XtSetValues(w->dialog.valueW, args2, ONE);
 	    w->dialog.value = MAGIC_VALUE;
 	}
     }
@@ -377,17 +387,17 @@ Cardinal *in_num_args;
  *
  ***********************************************************************/
 
-static void GetValuesHook(w, args, num_args)
-Widget w;
-ArgList args;
-Cardinal * num_args;
+static void GetValuesHook(
+Widget w,
+ArgList args,
+Cardinal * num_args)
 {
   Arg a[1];
-  String s;
+  char * s;
   DialogWidget src = (DialogWidget) w;
   int i;
   
-  for (i=0; i < *num_args; i++)
+  for (i=0; (Cardinal) i < *num_args; i++)
     if (streq(args[i].name, XtNvalue)) {
       XtSetArg(a[0], XtNstring, &s);
       XtGetValues(src->dialog.valueW, a, 1);
@@ -405,8 +415,7 @@ Cardinal * num_args;
  *
  ***********************************************************************/
 
-static void CreateDialogValueWidget(w)
-Widget w;
+static void CreateDialogValueWidget(Widget w)
 {
     DialogWidget dw = (DialogWidget) w;    
     Arg arglist[10];
@@ -456,11 +465,11 @@ Widget w;
 
 /***********************************************************************/
 
-void XawDialogAddButton(dialog, name, function, param)
-Widget dialog;
-String name;
-XtCallbackProc function;
-XtPointer param;
+void XawDialogAddButton(
+Widget dialog,
+String name,
+XtCallbackProc function,
+XtPointer param)
 {
 /*
  * Correct Constraints are all set in ConstraintInitialize().
@@ -476,8 +485,7 @@ XtPointer param;
 
 /***********************************************************************/
 
-char *XawDialogGetValueString(w)
-Widget w;
+char *XawDialogGetValueString(Widget w)
 {
     Arg args[1];
     char * value;

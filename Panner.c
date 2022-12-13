@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Panner.c,v 1.4 2022/12/13 00:53:17 tom Exp $
  * $Xorg: Panner.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
  *
+Copyright 2022  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -28,22 +30,19 @@ in this Software without prior written authorization from The Open Group.
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
+#include "private.h"
+
 #include <X11/IntrinsicP.h>		/* for toolkit routines */
 #include <X11/StringDefs.h>		/* for XtN and XtC defines */
 #include <X11/Xmu/CharSet.h>		/* for XmuCompareISOLatin1() */
 #include <X11/XawPlus/XawInit.h>	/* for XawInitializeWidgetSet */
 #include <X11/XawPlus/PannerP.h>	/* us */
 #include <X11/Xmu/Misc.h>		/* for Min */
+#include <X11/Xmu/StdCmap.h>		/* for XmuDistinguishablePixels */
+
 #include <ctype.h>			/* for isascii() etc. */
-#include <stdlib.h>			/* for atof() */
 
-extern Bool XmuDistinguishablePixels(); /* not defined in any Xmu headers */
-
-#if defined(ISC) && __STDC__ && !defined(ISC30)
-extern double atof(char *);
-#endif
-
-static char defaultTranslations[] = 
+static char defaultTranslations[] =
   "<Btn1Down>:    start() \n\
    <Btn1Motion>:  move() \n\
    <Btn1Up>:      notify() stop() \n\
@@ -58,8 +57,12 @@ static char defaultTranslations[] =
    <Key>Home:     page(0,0) ";
 
 
-static void ActionStart(), ActionStop(), ActionAbort(), ActionMove();
-static void ActionPage(), ActionNotify();
+static void ActionStart(Widget gw, XEvent *event, String *params, Cardinal *num_params);
+static void ActionStop(Widget gw, XEvent *event, String *params, Cardinal *num_params);
+static void ActionAbort(Widget gw, XEvent *event, String *params, Cardinal *num_params);
+static void ActionMove(Widget gw, XEvent *event, String *params, Cardinal *num_params);
+static void ActionPage(Widget gw, XEvent *event, String *params, Cardinal *num_params);
+static void ActionNotify(Widget gw, XEvent *event, String *params, Cardinal *num_params);
 
 static XtActionsRec actions[] = {
     { "start", ActionStart },		/* start tmp graphics */
@@ -105,14 +108,14 @@ static XtResource resources[] = {
 /*
  * widget class methods used below
  */
-static void Initialize();		/* create gc's */
-static void Realize();			/* create window */
-static void Destroy();			/* clean up widget */
-static void Resize();			/* need to rescale ourselves */
-static void Redisplay();		/* draw ourselves */
-static Boolean SetValues();		/* set all of the resources */
-static void SetValuesAlmost();		/* deal with failed setval geom req */
-static XtGeometryResult QueryGeometry();  /* say how big we would like to be */
+static void Initialize(Widget greq, Widget gnew, ArgList args, Cardinal *num_args);
+static void Realize(Widget gw, XtValueMask *valuemaskp, XSetWindowAttributes *attr);
+static void Destroy(Widget gw);
+static void Resize(Widget gw);
+static void Redisplay(Widget gw, XEvent *event, Region region);
+static Boolean SetValues(Widget gcur, Widget greq, Widget gnew, ArgList args, Cardinal *num_args);
+static void SetValuesAlmost(Widget gold, Widget gnew, XtWidgetGeometry *req, XtWidgetGeometry *reply);
+static XtGeometryResult QueryGeometry(Widget gw, XtWidgetGeometry *intended, XtWidgetGeometry *pref);
 
 PannerClassRec pannerClassRec = {
   { /* core fields */
@@ -166,9 +169,9 @@ WidgetClass pannerWidgetClass = (WidgetClass) &pannerClassRec;
  *                                                                           *
  *****************************************************************************/
 
-static void check_knob (pw, knob)
-    PannerWidget pw;
-    Boolean knob;
+static void check_knob (
+    PannerWidget pw,
+    Boolean knob)
 {
     Position pad = pw->panner.internal_border * 2;
     Position maxx = (((Position) pw->core.width) - pad -
@@ -197,10 +200,11 @@ static void check_knob (pw, knob)
     }
 }
 
-
-static void scale_knob (pw, location, size)  /* set knob size and/or loc */
-    PannerWidget pw;
-    Boolean location, size;
+/* set knob size and/or loc */
+static void scale_knob (
+    PannerWidget pw,
+    Boolean location,
+    Boolean size)
 {
     if (location) {
 	pw->panner.knob_x = (Position) PANNER_HSCALE (pw, pw->panner.slider_x);
@@ -224,8 +228,7 @@ static void scale_knob (pw, location, size)  /* set knob size and/or loc */
     if (!pw->panner.allow_off) check_knob (pw, TRUE);
 }
 
-static void rescale (pw)
-    PannerWidget pw;
+static void rescale (PannerWidget pw)
 {
     int hpad = pw->panner.internal_border * 2;
     int vpad = hpad;
@@ -246,19 +249,21 @@ static void rescale (pw)
 }
 
 
-static void get_default_size (pw, wp, hp)
-    PannerWidget pw;
-    Dimension *wp, *hp;
+static void get_default_size (
+    PannerWidget pw,
+    Dimension *wp,
+    Dimension *hp)
 {
     Dimension pad = pw->panner.internal_border * 2;
     *wp = PANNER_DSCALE (pw, pw->panner.canvas_width) + pad;
     *hp = PANNER_DSCALE (pw, pw->panner.canvas_height) + pad;
 }
 
-static Boolean get_event_xy (pw, event, x, y)
-    PannerWidget pw;
-    XEvent *event;
-    int *x, *y;
+static Boolean get_event_xy (
+    PannerWidget pw,
+    XEvent *event,
+    int *x,
+    int *y)
 {
     int pad = pw->panner.internal_border;
 
@@ -290,12 +295,13 @@ static Boolean get_event_xy (pw, event, x, y)
     return FALSE;
 }
 
-static int parse_page_string (s, pagesize, canvassize, relative)
-    char *s;
-    int pagesize, canvassize;
-    Boolean *relative;
+static int parse_page_string (
+    String s,
+    int pagesize,
+    int canvassize,
+    Boolean *relative)
 {
-    char *cp;
+    String cp;
     double val = 1.0;
     Boolean rel = FALSE;
 
@@ -343,10 +349,12 @@ static int parse_page_string (s, pagesize, canvassize, relative)
  *                                                                           *
  *****************************************************************************/
 
-static void Initialize (greq, gnew, args, num_args)
-Widget greq, gnew;
-ArgList args;
-Cardinal *num_args;
+/* create gc's */
+static void Initialize (
+Widget greq,
+Widget gnew,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     PannerWidget   req = (PannerWidget) greq,
 		   new = (PannerWidget) gnew;
@@ -368,18 +376,17 @@ Cardinal *num_args;
     new->panner.gc	  = XtGetGC(gnew, GCForeground, &values);
 }
 
-
-static void Realize (gw, valuemaskp, attr)
-    Widget gw;
-    XtValueMask *valuemaskp;
-    XSetWindowAttributes *attr;
+/* create window */
+static void Realize (
+    Widget gw,
+    XtValueMask *valuemaskp,
+    XSetWindowAttributes *attr)
 {
     (*pannerWidgetClass->core_class.superclass->core_class.realize)(gw, valuemaskp, attr);
 }
 
-
-static void Destroy (gw)
-Widget gw;
+/* clean up widget */
+static void Destroy (Widget gw)
 {
     PannerWidget pw = (PannerWidget)gw;
 
@@ -387,17 +394,16 @@ Widget gw;
 }
 
 
-static void Resize (gw)
-Widget gw;
+static void Resize (Widget gw)
 {
     rescale ((PannerWidget) gw);
 }
 
 
-static void Redisplay (gw, event, region)
-    Widget gw;
-    XEvent *event;
-    Region region;
+static void Redisplay (
+    Widget gw,
+    XEvent *event GCC_UNUSED,
+    Region region GCC_UNUSED)
 {
     PannerWidget pw  = (PannerWidget) gw;
     int 	 pad = pw->panner.internal_border;
@@ -414,10 +420,12 @@ static void Redisplay (gw, event, region)
 
 
 /* ARGSUSED */
-static Boolean SetValues (gcur, greq, gnew, args, num_args)
-    Widget gcur, greq, gnew;
-    ArgList args;
-    Cardinal *num_args;
+static Boolean SetValues (
+    Widget gcur,
+    Widget greq GCC_UNUSED,
+    Widget gnew,
+    ArgList args GCC_UNUSED,
+    Cardinal *num_args GCC_UNUSED)
 {
     PannerWidget cur = (PannerWidget) gcur;
     PannerWidget new = (PannerWidget) gnew;
@@ -450,9 +458,11 @@ static Boolean SetValues (gcur, greq, gnew, args, num_args)
     return redisplay;
 }
 
-static void SetValuesAlmost (gold, gnew, req, reply)
-    Widget gold, gnew;
-    XtWidgetGeometry *req, *reply;
+static void SetValuesAlmost (
+    Widget gold,
+    Widget gnew,
+    XtWidgetGeometry *req,
+    XtWidgetGeometry *reply)
 {
     if (reply->request_mode == 0) {	/* got turned down, so cope */
 	Resize (gnew);
@@ -461,9 +471,10 @@ static void SetValuesAlmost (gold, gnew, req, reply)
 	(gold, gnew, req, reply);
 }
 
-static XtGeometryResult QueryGeometry (gw, intended, pref)
-    Widget gw;
-    XtWidgetGeometry *intended, *pref;
+static XtGeometryResult QueryGeometry (
+    Widget gw,
+    XtWidgetGeometry *intended,
+    XtWidgetGeometry *pref)
 {
     PannerWidget pw = (PannerWidget) gw;
 
@@ -489,11 +500,11 @@ static XtGeometryResult QueryGeometry (gw, intended, pref)
  *****************************************************************************/
 
 /* ARGSUSED */
-static void ActionStart (gw, event, params, num_params)
-    Widget gw;
-    XEvent *event;
-    String *params;			/* unused */
-    Cardinal *num_params;		/* unused */
+static void ActionStart (
+    Widget gw,
+    XEvent *event,
+    String *params GCC_UNUSED,
+    Cardinal *num_params GCC_UNUSED)
 {
     PannerWidget pw = (PannerWidget) gw;
     int x, y;
@@ -513,11 +524,11 @@ static void ActionStart (gw, event, params, num_params)
 }
 
 /* ARGSUSED */
-static void ActionStop (gw, event, params, num_params)
-    Widget gw;
-    XEvent *event;
-    String *params;			/* unused */
-    Cardinal *num_params;		/* unused */
+static void ActionStop (
+    Widget gw,
+    XEvent *event,
+    String *params GCC_UNUSED,
+    Cardinal *num_params GCC_UNUSED)
 {
     PannerWidget pw = (PannerWidget) gw;
     int x, y;
@@ -531,11 +542,11 @@ static void ActionStop (gw, event, params, num_params)
 }
 
 /* ARGSUSED */
-static void ActionAbort (gw, event, params, num_params)
-    Widget gw;
-    XEvent *event;
-    String *params;			/* unused */
-    Cardinal *num_params;		/* unused */
+static void ActionAbort (
+    Widget gw,
+    XEvent *event,
+    String *params,
+    Cardinal *num_params)
 {
     PannerWidget pw = (PannerWidget) gw;
 
@@ -551,11 +562,11 @@ static void ActionAbort (gw, event, params, num_params)
 }
 
 
-static void ActionMove (gw, event, params, num_params)
-    Widget gw;
-    XEvent *event;			/* must be a motion event */
-    String *params;			/* unused */
-    Cardinal *num_params;		/* unused */
+static void ActionMove (
+    Widget gw,
+    XEvent *event,			/* must be a motion event */
+    String *params,
+    Cardinal *num_params)
 {
     PannerWidget pw = (PannerWidget) gw;
     int x, y;
@@ -574,11 +585,11 @@ static void ActionMove (gw, event, params, num_params)
 }
 
 
-static void ActionPage (gw, event, params, num_params)
-    Widget gw;
-    XEvent *event;			/* unused */
-    String *params;
-    Cardinal *num_params;		/* unused */
+static void ActionPage (
+    Widget gw,
+    XEvent *event,
+    String *params,
+    Cardinal *num_params)
 {
     PannerWidget pw = (PannerWidget) gw;
     Cardinal zero = 0;
@@ -616,11 +627,11 @@ static void ActionPage (gw, event, params, num_params)
 }
 
 
-static void ActionNotify (gw, event, params, num_params)
-    Widget gw;
-    XEvent *event;			/* unused */
-    String *params;			/* unused */
-    Cardinal *num_params;		/* unused */
+static void ActionNotify (
+    Widget gw,
+    XEvent *event GCC_UNUSED,
+    String *params GCC_UNUSED,
+    Cardinal *num_params GCC_UNUSED)
 {
     PannerWidget pw = (PannerWidget) gw;
 
@@ -636,14 +647,14 @@ static void ActionNotify (gw, event, params, num_params)
 				      pw->panner.vaspect + 0.5);
     if (!pw->panner.allow_off) {
 	Position tmp;
-	
+
 	if (pw->panner.slider_x >
-	    (tmp = (((Position) pw->panner.canvas_width) - 
+	    (tmp = (((Position) pw->panner.canvas_width) -
 		    ((Position) pw->panner.slider_width))))
 	  pw->panner.slider_x = tmp;
 	if (pw->panner.slider_x < 0) pw->panner.slider_x = 0;
 	if (pw->panner.slider_y >
-	    (tmp = (((Position) pw->panner.canvas_height) - 
+	    (tmp = (((Position) pw->panner.canvas_height) -
 		    ((Position) pw->panner.slider_height))))
 	  pw->panner.slider_y = tmp;
 	if (pw->panner.slider_y < 0) pw->panner.slider_y = 0;

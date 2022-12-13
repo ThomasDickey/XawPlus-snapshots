@@ -1,3 +1,6 @@
+/*
+ * $XTermId: StrToPmap.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ */
 
 /******************************************************************************************
  *
@@ -19,6 +22,7 @@
  * XtAddConverter(XtRString, XtRPixmap, XawCvtStringToPixmap,
  *		   screenConvertArg, XtNumber(screenConvertArg));
  *
+ * Copyright 2022  Thomas E. Dickey
  * Copyright (c) Roland Krause 2002, roland_krause@freenet.de
  *
  * This module is free software; you can redistribute it and/or modify
@@ -37,12 +41,14 @@
  *
  ******************************************************************************************/
 
-#include	<X11/Intrinsic.h>
-#include	<X11/StringDefs.h>
-#include	<X11/Xmu/Converters.h>
-#include	<X11/Xmu/Drawing.h>
+#include "private.h"
 
-extern Pixmap   XawLocatePixmapFile();
+#include <X11/Intrinsic.h>
+#include <X11/StringDefs.h>
+#include <X11/Xmu/Converters.h>
+#include <X11/Xmu/Drawing.h>
+
+#include <X11/XawPlus/StrToPmap.h>
 
 /******************************************************************************************
  *

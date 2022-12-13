@@ -1,6 +1,10 @@
-/* $Xorg: SmeBSB.c,v 1.5 2001/02/09 02:03:45 xorgcvs Exp $ */
+/*
+ * $XTermId: SmeBSB.c,v 1.7 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: SmeBSB.c,v 1.5 2001/02/09 02:03:45 xorgcvs Exp $
+ */
 
 /*
+Copyright 2022  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -30,14 +34,14 @@ in this Software without prior written authorization from The Open Group.
  * Date:    September 26, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  *
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "private.h"
+
 #include "UTF8.h"
 
 #include <X11/IntrinsicP.h>
@@ -86,25 +90,31 @@ static XtResource resources[] = {
      offset(fontset),XtRString, XtDefaultFontSet},
   {XtNencoding, XtCEncoding, XtRUnsignedChar, sizeof(unsigned char),
      offset(encoding), XtRImmediate, (XtPointer)XawTextEncoding8bit},
-};   
+};
 #undef offset
 
 /*
- * Semi Public function definitions. 
+ * Semi Public function definitions.
  */
 
-static void Redisplay(), Destroy(), Initialize(), FlipColors();
-static void ClassInitialize();
-static Boolean SetValues();
-static XtGeometryResult QueryGeometry();
+static void Redisplay(Widget w, XEvent * event, Region region);
+static void Destroy(Widget w);
+static void Initialize(Widget request, Widget new, ArgList args, Cardinal *num_args);
+static void FlipColors(Widget w);
+static void ClassInitialize(void);
+static Boolean SetValues(Widget current, Widget request, Widget new, ArgList args, Cardinal *num_args);
+static XtGeometryResult QueryGeometry(Widget w, XtWidgetGeometry *intended, XtWidgetGeometry *return_val);
 
-/* 
+/*
  * Private Function Definitions.
  */
 
-static void GetDefaultSize(), DrawBitmaps(), GetBitmapInfo();
-static void CreateGCs(), DestroyGCs();
-    
+static void GetDefaultSize(Widget w, Dimension *width, Dimension *height);
+static void DrawBitmaps(Widget w, GC gc);
+static void GetBitmapInfo(Widget w, Boolean is_left);
+static void CreateGCs(Widget w);
+static void DestroyGCs(Widget w);
+
 #define superclass (&smeClassRec)
 SmeBSBClassRec smeBSBClassRec = {
   {
@@ -122,7 +132,7 @@ SmeBSBClassRec smeBSBClassRec = {
     /* resources          */    resources,
     /* resource_count     */	XtNumber(resources),
     /* xrm_class          */    NULLQUARK,
-    /* compress_motion    */    FALSE, 
+    /* compress_motion    */    FALSE,
     /* compress_exposure  */    XtExposeNoCompress,
     /* compress_enterleave*/ 	FALSE,
     /* visible_interest   */    FALSE,
@@ -131,8 +141,8 @@ SmeBSBClassRec smeBSBClassRec = {
     /* expose             */    Redisplay,
     /* set_values         */    SetValues,
     /* set_values_hook    */	NULL,
-    /* set_values_almost  */	XtInheritSetValuesAlmost,  
-    /* get_values_hook    */	NULL,			
+    /* set_values_almost  */	XtInheritSetValuesAlmost,
+    /* get_values_hook    */	NULL,
     /* accept_focus       */    NULL,
     /* intrinsics version */	XtVersion,
     /* callback offsets   */    NULL,
@@ -144,10 +154,10 @@ SmeBSBClassRec smeBSBClassRec = {
     /* SimpleMenuClass Fields */
     /* highlight          */	FlipColors,
     /* unhighlight        */	FlipColors,
-    /* notify             */	XtInheritNotify,		
+    /* notify             */	XtInheritNotify,
     /* extension	  */	NULL
   }, {
-    /* BSBClass Fields */  
+    /* BSBClass Fields */
     /* extension	  */    NULL
   }
 };
@@ -161,12 +171,12 @@ WidgetClass smeBSBObjectClass = (WidgetClass) &smeBSBClassRec;
  ************************************************************/
 
 /*	Function Name: ClassInitialize
- *	Description: Initializes the SmeBSBObject class. 
+ *	Description: Initializes the SmeBSBObject class.
  *	Arguments: none.
  *	Returns: none.
  */
 
-static void ClassInitialize()
+static void ClassInitialize(void)
 {
     static XtConvertArgRec screenConvertArg[] = {
       {XtWidgetBaseOffset, (XtPointer)XtOffsetOf(WidgetRec, core.screen), sizeof(Screen *)},
@@ -190,10 +200,11 @@ static void ClassInitialize()
  *      Returns: none.
  */
 
-static void Initialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;
-Cardinal *num_args;
+static void Initialize(
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     SmeBSBObject entry = (SmeBSBObject) new;
 
@@ -223,30 +234,30 @@ Cardinal *num_args;
  *      Returns: none.
  */
 
-static void Destroy(w)
-Widget w;
+static void Destroy(Widget w)
 {
     SmeBSBObject entry = (SmeBSBObject) w;
 
     DestroyGCs(w);
     if (entry->sme_bsb.label != XtName(w))
-	XtFree(entry->sme_bsb.label);
+	XtFree(DeConst(entry->sme_bsb.label));
 }
 
 /*      Function Name: Redisplay
  *      Description: Redisplays the contents of the widget.
  *      Arguments: w - the simple menu widget.
  *                 event - the X event that caused this redisplay.
- *                 region - the region the needs to be repainted. 
+ *                 region - the region the needs to be repainted.
  *      Returns: none.
  */
 
-static void DrawString16(w, gc, x, y, label, len)
-Widget	w;
-GC	gc;
-int	x, y;
-char	*label;
-int	len;
+static void DrawString16(
+Widget	w,
+GC	gc,
+int	x,
+int	y,
+const char *label,
+int	len)
 {
   SmeBSBObject entry = (SmeBSBObject)w;
 
@@ -254,27 +265,28 @@ int	len;
   {
     /* Draw the string in normal or revert style */
 
-    XDrawString16(XtDisplayOfObject(w), XtWindowOfObject(w), gc, x, y, (XChar2b *)label, len);
+    XDrawString16(XtDisplayOfObject(w), XtWindowOfObject(w), gc, x, y, (const XChar2b *)label, len);
   }
   else
   {
     /* Draw the string in the insensitive style */
 
     XDrawString16(XtDisplayOfObject(w), XtWindowOfObject(w), entry->sme_bsb.lgray_gc,
-	          x+1, y+1, (XChar2b *)label, len);
+	          x+1, y+1, (const XChar2b *)label, len);
     XDrawString16(XtDisplayOfObject(w), XtWindowOfObject(w), entry->sme_bsb.gray_gc,
-	          x, y, (XChar2b *)label, len);
+	          x, y, (const XChar2b *)label, len);
   }
 }
 
 /* ------------------------------------------------------------------------- */
 
-static void DrawStringInt(w, gc, x, y, label, len)
-Widget	w;
-GC	gc;
-int	x, y;
-char	*label;
-int	len;
+static void DrawStringInt(
+Widget	w,
+GC	gc,
+int	x,
+int	y,
+const char *label,
+int	len)
 {
   SmeBSBObject entry = (SmeBSBObject)w;
 
@@ -298,12 +310,13 @@ int	len;
 
 /* ------------------------------------------------------------------------- */
 
-static void DrawString8(w, gc, x, y, label, len)
-Widget	w;
-GC	gc;
-int	x, y;
-char	*label;
-int	len;
+static void DrawString8(
+Widget	w,
+GC	gc,
+int	x,
+int	y,
+const char *label,
+int	len)
 {
   SmeBSBObject entry = (SmeBSBObject)w;
 
@@ -326,14 +339,14 @@ int	len;
 
 /* ------------------------------------------------------------------------- */
 
-static int CalcTextWidth(entry, label, len)
-SmeBSBObject	entry;
-char		*label;
-int		len;
+static int CalcTextWidth(
+SmeBSBObject	entry,
+const char	*label,
+int		len)
 {
    int width;
 
-   if (entry->sme_bsb.encoding) width = XTextWidth16(entry->sme_bsb.font, (XChar2b *)label, len);
+   if (entry->sme_bsb.encoding) width = XTextWidth16(entry->sme_bsb.font, (const XChar2b *)label, len);
    else
    {
       if (entry->sme.international) width = XmbTextEscapement(entry->sme_bsb.fontset,label,len);
@@ -344,10 +357,10 @@ int		len;
 
 /* ------------------------------------------------------------------------- */
 
-static void Redisplay(w, event, region)
-Widget w;
-XEvent * event;
-Region region;
+static void Redisplay(
+Widget w,
+XEvent * event GCC_UNUSED,
+Region region GCC_UNUSED)
 {
     GC gc;
     SmeBSBObject entry = (SmeBSBObject) w;
@@ -356,7 +369,9 @@ Region region;
     int	fontset_ascent, fontset_descent;
     XFontSetExtents *ext = XExtentsOfFontSet(entry->sme_bsb.fontset);
 
-    entry->sme_bsb.set_values_area_cleared = FALSE;    
+    font_ascent = font_descent = fontset_ascent = fontset_descent = 0;
+    entry->sme_bsb.set_values_area_cleared = FALSE;
+
     if ( entry->sme.international == True ) {
         fontset_ascent = abs(ext->max_ink_extent.y);
         fontset_descent = ext->max_ink_extent.height - fontset_ascent;
@@ -370,7 +385,7 @@ Region region;
 
     if (XtIsSensitive(w) && XtIsSensitive( XtParent(w) ) ) {
 	if ( w == XawSimpleMenuGetActiveEntry(XtParent(w)) ) {
-	    XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w), 
+	    XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
 			   entry->sme_bsb.norm_gc, x_loc, y_loc,
 			   (unsigned int) entry->rectangle.width,
 			   (unsigned int) entry->rectangle.height);
@@ -379,9 +394,9 @@ Region region;
 	else gc = entry->sme_bsb.norm_gc;
     }
     else gc = entry->sme_bsb.norm_gc;
-    
+
     if (entry->sme_bsb.label != NULL) {
-	char *label = entry->sme_bsb.label;
+	const char *label = entry->sme_bsb.label;
 	int  len, width, t_width;
 
 	/* Determine the length of the label string */
@@ -407,6 +422,8 @@ Region region;
 		x_loc = entry->rectangle.width - (entry->sme_bsb.right_margin + t_width);
 		break;
 
+	   case XtJustifyLeft:
+		/*FALLTHROUGH*/
 	   default:	/* Everything else is XtJustifyLeft */
 
 		x_loc = entry->sme_bsb.left_margin;
@@ -416,7 +433,7 @@ Region region;
 
 	if (entry->sme_bsb.encoding)	/* Label string with UCS2 code/UNICODE */
 	{
-		y_loc += ((int)entry->rectangle.height - 
+		y_loc += ((int)entry->rectangle.height -
 			  (font_ascent + font_descent)) / 2 + font_ascent;
 		DrawString16(w, gc, x_loc, y_loc, label, len);
 	}
@@ -424,13 +441,13 @@ Region region;
 	{
 	    if (entry->sme.international)
 	    {
-		y_loc += ((int)entry->rectangle.height - 
+		y_loc += ((int)entry->rectangle.height -
 			  (fontset_ascent + fontset_descent)) / 2 + fontset_ascent;
 		DrawStringInt(w, gc, x_loc, y_loc, label, len);
 	    }
 	    else			/* Label string with 8 bit code */
 	    {
-		y_loc += ((int)entry->rectangle.height - 
+		y_loc += ((int)entry->rectangle.height -
 			  (font_ascent + font_descent)) / 2 + font_ascent;
 		DrawString8(w, gc, x_loc, y_loc, label, len);
 	    }
@@ -447,10 +464,12 @@ Region region;
  *      Returns: none
  */
 
-static Boolean SetValues(current, request, new, args, num_args)
-Widget current, request, new;
-ArgList args;
-Cardinal *num_args;
+static Boolean SetValues(
+Widget current,
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     SmeBSBObject entry 	   = (SmeBSBObject)new;
     SmeBSBObject old_entry = (SmeBSBObject)current;
@@ -471,7 +490,7 @@ Cardinal *num_args;
 	  if (entry->sme_bsb.encoding)
 	    entry->sme_bsb.label = (char *)UTF8toUCS2(entry->sme_bsb.label);
 	  else entry->sme_bsb.label = XtName(new);
-	  if (old_entry->sme_bsb.label != XtName(new)) XtFree(old_entry->sme_bsb.label);
+	  if (old_entry->sme_bsb.label != XtName(new)) XtFree(DeConst(old_entry->sme_bsb.label));
        }
        ret_val = labelModified = TRUE;
     }
@@ -484,14 +503,14 @@ Cardinal *num_args;
 	if (entry->sme_bsb.encoding)
 	{
 	   entry->sme_bsb.label = (char *)UTF8toUCS2(entry->sme_bsb.label);
-	   XtFree(old_entry->sme_bsb.label);
+	   XtFree(DeConst(old_entry->sme_bsb.label));
 	}
 	/* 8 bit character or multibyte character encoding */
 
 	else if (entry->sme_bsb.label != XtName(new))
 	{
 	   entry->sme_bsb.label = XtNewString(entry->sme_bsb.label);
-	   XtFree(old_entry->sme_bsb.label);
+	   XtFree(DeConst(old_entry->sme_bsb.label));
 	}
 	ret_val = TRUE;
     }
@@ -539,20 +558,21 @@ Cardinal *num_args;
  *	Returns: A Geometry Result.
  *
  * See the Intrinsics manual for details on what this function is for.
- * 
+ *
  * I just return the height and width of the label plus the margins.
  */
 
-static XtGeometryResult QueryGeometry(w, intended, return_val) 
-Widget w;
-XtWidgetGeometry *intended, *return_val;
+static XtGeometryResult QueryGeometry(
+Widget w,
+XtWidgetGeometry *intended,
+XtWidgetGeometry *return_val)
 {
     SmeBSBObject entry = (SmeBSBObject) w;
     Dimension width, height;
     XtGeometryResult ret_val = XtGeometryYes;
     XtGeometryMask mode = intended->request_mode;
 
-    GetDefaultSize(w, &width, &height );    
+    GetDefaultSize(w, &width, &height );
 
     if ( ((mode & CWWidth) && (intended->width != width)) ||
 	 !(mode & CWWidth) ) {
@@ -570,7 +590,7 @@ XtWidgetGeometry *intended, *return_val;
 
     if (ret_val == XtGeometryAlmost) {
 	mode = return_val->request_mode;
-	
+
 	if ( ((mode & CWWidth) && (width == entry->rectangle.width)) &&
 	     ((mode & CWHeight) && (height == entry->rectangle.height)) )
 	    return(XtGeometryNo);
@@ -578,15 +598,14 @@ XtWidgetGeometry *intended, *return_val;
 
     return(ret_val);
 }
-    
+
 /*      Function Name: FlipColors
  *      Description: Invert the colors of the current entry.
  *      Arguments: w - the bsb menu entry widget.
  *      Returns: none.
  */
 
-static void FlipColors(w)
-Widget w;
+static void FlipColors(Widget w)
 {
     SmeBSBObject entry = (SmeBSBObject) w;
 
@@ -595,7 +614,7 @@ Widget w;
     XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
 		   entry->sme_bsb.invert_gc,
 		   (int)entry->rectangle.x, (int)entry->rectangle.y,
-		   (unsigned int) entry->rectangle.width, 
+		   (unsigned int) entry->rectangle.width,
 		   (unsigned int) entry->rectangle.height);
 }
 
@@ -613,9 +632,10 @@ Widget w;
  *	Returns: none.
  */
 
-static void GetDefaultSize(w, width, height) 
-Widget w;
-Dimension *width, *height;
+static void GetDefaultSize(
+Widget w,
+Dimension *width,
+Dimension *height)
 {
     SmeBSBObject entry = (SmeBSBObject)w;
 
@@ -663,14 +683,12 @@ Dimension *width, *height;
  *      Returns: none
  */
 
-static void DrawBitmaps(w, gc)
-Widget w;
-GC gc;
+static void DrawBitmaps(Widget w, GC gc)
 {
   int x_loc, y_loc;
   SmeBSBObject entry = (SmeBSBObject) w;
-    
-  if ((entry->sme_bsb.left_bitmap == None) && 
+
+  if ((entry->sme_bsb.left_bitmap == None) &&
       (entry->sme_bsb.right_bitmap == None)) return;
 
   /* Draw Left Bitmap or Pixmap */
@@ -682,7 +700,7 @@ GC gc;
 
     if (entry->sme_bsb.left_bitmap_depth == 1) {
       XCopyPlane(XtDisplayOfObject(w), entry->sme_bsb.left_bitmap,
-	         XtWindowOfObject(w), gc, 0, 0, 
+	         XtWindowOfObject(w), gc, 0, 0,
 	         entry->sme_bsb.left_bitmap_width,
 	         entry->sme_bsb.left_bitmap_height, x_loc, y_loc, 1L);
     }
@@ -707,7 +725,7 @@ GC gc;
 
     if (entry->sme_bsb.right_bitmap_depth == 1) {
       XCopyPlane(XtDisplayOfObject(w), entry->sme_bsb.right_bitmap,
-	         XtWindowOfObject(w), gc, 0, 0, 
+	         XtWindowOfObject(w), gc, 0, 0,
 	         entry->sme_bsb.right_bitmap_width,
 	         entry->sme_bsb.right_bitmap_height, x_loc, y_loc, 1L);
     }
@@ -732,28 +750,26 @@ GC gc;
  *      Returns: none
  */
 
-static void GetBitmapInfo(w, is_left)
-Widget w;
-Boolean is_left;
+static void GetBitmapInfo(Widget w, Boolean is_left)
 {
-   SmeBSBObject entry = (SmeBSBObject) w;    
+   SmeBSBObject entry = (SmeBSBObject) w;
    unsigned int depth, bw;
    Window root;
    int x, y;
    unsigned int width, height;
    char buf[BUFSIZ];
-    
+
    if (is_left)
    {
      if (entry->sme_bsb.left_bitmap != None)
      {
-	if (!XGetGeometry(XtDisplayOfObject(w), entry->sme_bsb.left_bitmap, &root, 
+	if (!XGetGeometry(XtDisplayOfObject(w), entry->sme_bsb.left_bitmap, &root,
 			  &x, &y, &width, &height, &bw, &depth)) {
 	   sprintf(buf, "SmeBSB Object: %s \"%s\".",
              "Could not get Left Bitmap geometry information for menu entry ", XtName(w));
 	   XtAppError(XtWidgetToApplicationContext(w), buf);
 	}
-	entry->sme_bsb.left_bitmap_width = (Dimension) width; 
+	entry->sme_bsb.left_bitmap_width = (Dimension) width;
 	entry->sme_bsb.left_bitmap_height = (Dimension) height;
         entry->sme_bsb.left_bitmap_depth = depth;
      }
@@ -772,7 +788,7 @@ Boolean is_left;
 	  "Could not get Right Bitmap geometry information for menu entry ", XtName(w));
 	XtAppError(XtWidgetToApplicationContext(w), buf);
      }
-     entry->sme_bsb.right_bitmap_width = (Dimension) width; 
+     entry->sme_bsb.right_bitmap_width = (Dimension) width;
      entry->sme_bsb.right_bitmap_height = (Dimension) height;
      entry->sme_bsb.right_bitmap_depth = depth;
    }
@@ -782,7 +798,7 @@ Boolean is_left;
       entry->sme_bsb.right_bitmap_height = 0;
       entry->sme_bsb.right_bitmap_depth  = 1;
    }
-}      
+}
 
 /*      Function Name: CreateGCs
  *      Description: Creates all gc's for the simple menu widget.
@@ -790,10 +806,9 @@ Boolean is_left;
  *      Returns: none.
  */
 
-static void CreateGCs(w)
-Widget w;
+static void CreateGCs(Widget w)
 {
-    SmeBSBObject entry = (SmeBSBObject) w;    
+    SmeBSBObject entry = (SmeBSBObject) w;
     XGCValues values;
     XtGCMask  mask;
 
@@ -802,7 +817,7 @@ Widget w;
       mask = GCForeground | GCBackground | GCGraphicsExposures;
 
       /* Get GC with reverse colors */
-    
+
       values.foreground = XtParent(w)->core.background_pixel;
       values.background = entry->sme_bsb.foreground;
       values.graphics_exposures = FALSE;
@@ -863,10 +878,9 @@ Widget w;
  *      Returns: none.
  */
 
-static void DestroyGCs(w)
-Widget w;
+static void DestroyGCs(Widget w)
 {
-    SmeBSBObject entry = (SmeBSBObject) w;    
+    SmeBSBObject entry = (SmeBSBObject) w;
 
     XtReleaseGC(w, entry->sme_bsb.norm_gc);
     XtReleaseGC(w, entry->sme_bsb.gray_gc);
@@ -874,19 +888,3 @@ Widget w;
     XtReleaseGC(w, entry->sme_bsb.rev_gc);
     XtReleaseGC(w, entry->sme_bsb.invert_gc);
 }
-
-#ifdef apollo
-
-/*
- * The apollo compiler that we have optomizes out my code for
- * FlipColors() since it is static. and no one executes it in this
- * file.  I am setting the function pointer into the class structure so
- * that it can be called by my parent who will tell me to when to
- * highlight and unhighlight.
- */
-
-void _XawSmeBSBApolloHack ()
-{
-    FlipColors();
-}
-#endif /* apollo */

@@ -1,11 +1,10 @@
 /*
- * $XTermId: TextSrcP.h,v 1.3 2022/12/06 23:57:33 tom Exp $
+ * $XTermId: TextSrcP.h,v 1.4 2022/12/13 01:01:00 tom Exp $
  * $Xorg: TextSrcP.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  */
 
-/***********************************************************
-
-Copyright 2015,2022 Thomas E. Dickey
+/**************************************************************************
+Copyright 2015, 2022 Thomas E. Dickey
 Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 

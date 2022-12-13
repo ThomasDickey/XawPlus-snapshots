@@ -1,6 +1,10 @@
 /*
+ * $XTermId: SmeP.h,v 1.3 2022/12/13 01:01:00 tom Exp $
  * $Xorg: SmeP.h,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $
- *
+ */
+
+/**************************************************************************
+Copyright 2022  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -28,12 +32,12 @@ in this Software without prior written authorization from The Open Group.
  * SmeP.h - Private Header file for Sme object.
  *
  * This is the private header file for the Athena Sme object.
- * This object is intended to be used with the simple menu widget.  
+ * This object is intended to be used with the simple menu widget.
  *
  * Date:    April 3, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  *
  * This file contains modifications for XawPlus, Roland Krause 2002
@@ -48,6 +52,8 @@ in this Software without prior written authorization from The Open Group.
  *
  ***********************************************************************/
 
+#include <X11/Xfuncproto.h>
+
 #include <X11/XawPlus/Sme.h>
 
 /************************************************************
@@ -57,9 +63,9 @@ in this Software without prior written authorization from The Open Group.
  ************************************************************/
 
 typedef struct _SmeClassPart {
-  void (*highlight)();
-  void (*unhighlight)();
-  void (*notify)();	
+  XtWidgetProc highlight;
+  XtWidgetProc unhighlight;
+  XtWidgetProc notify;
   XtPointer extension;
 } SmeClassPart;
 
@@ -99,9 +105,7 @@ typedef struct _SmeRec {
  *
  ************************************************************/
 
-typedef void (*_XawEntryVoidFunc)();
-
-#define XtInheritHighlight   ((_XawEntryVoidFunc) _XtInherit)
+#define XtInheritHighlight   ((XtWidgetProc)_XtInherit)
 #define XtInheritUnhighlight XtInheritHighlight
 #define XtInheritNotify      XtInheritHighlight
 

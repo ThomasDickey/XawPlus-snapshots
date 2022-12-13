@@ -1,6 +1,8 @@
 /*
+ * $XTermId: XawInit.c,v 1.4 2022/12/13 00:53:17 tom Exp $
  * $Xorg: XawInit.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  *
+Copyright 2022  Thomas E. Dickey
 Copyright 1989, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -33,11 +35,13 @@ in this Software without prior written authorization from The Open Group.
  * used as the class init proc).
  */
 
+#include "private.h"
+
 #include <X11/Intrinsic.h>
 #include <X11/Vendor.h>
 #include <X11/Xaw/XawInit.h>
 
-void XawInitializeWidgetSet ()
+void XawInitializeWidgetSet (void)
 {
     static int firsttime = 1;
 

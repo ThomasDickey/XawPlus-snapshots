@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Repeater.c,v 1.4 2022/12/13 00:53:17 tom Exp $
  * $Xorg: Repeater.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
  *
+Copyright 2022  Thomas E. Dickey
 Copyright 1990, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -24,18 +26,20 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  *
  * Author:  Jim Fulton, MIT X Consortium
- * 
+ *
  * This widget is used for press-and-hold style buttons.
  *
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
+
+#include "private.h"
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>		/* for XtN and XtC defines */
 #include <X11/XawPlus/XawInit.h>	/* for XawInitializeWidgetSet() */
 #include <X11/XawPlus/RepeaterP.h>	/* us */
 
-static void tic();			/* clock timeout */
+static void tic(XtPointer client_data, XtIntervalId *id);
 
 #define DO_CALLBACK(rw) \
     XtCallCallbackList ((Widget) rw, rw->command.callbacks, (XtPointer)NULL)
@@ -55,7 +59,7 @@ static void tic();			/* clock timeout */
 /*
  * Translations to give user interface of press-notify...-release_or_leave
  */
-static char defaultTranslations[] = 
+static char defaultTranslations[] =
   "<EnterWindow>:     highlight() \n\
    <LeaveWindow>:     unhighlight() \n\
    <Btn1Down>:        set() start() \n\
@@ -65,7 +69,8 @@ static char defaultTranslations[] =
 /*
  * Actions added by this widget
  */
-static void ActionStart(), ActionStop();
+static void ActionStart(Widget gw, XEvent *event, String *params, Cardinal *num_params);
+static void ActionStop(Widget gw, XEvent *event, String *params, Cardinal *num_params);
 
 static XtActionsRec actions[] = {
     { "start", ActionStart },		/* trigger timers */
@@ -100,9 +105,9 @@ static XtResource resources[] = {
  * Class Methods
  */
 
-static void Initialize();		/* setup private data */
-static void Destroy();			/* clear timers */
-static Boolean SetValues();		/* set resources */
+static void Initialize(Widget greq, Widget gnew, ArgList args, Cardinal *num_args);
+static void Destroy(Widget gw);
+static Boolean SetValues(Widget gcur, Widget greq, Widget gnew, ArgList args, Cardinal *num_args);
 
 RepeaterClassRec repeaterClassRec = {
   { /* core fields */
@@ -162,10 +167,10 @@ WidgetClass repeaterWidgetClass = (WidgetClass) &repeaterClassRec;
  *                                                                           *
  *****************************************************************************/
 
-/* ARGSUSED */
-static void tic (client_data, id)
-    XtPointer client_data;
-    XtIntervalId *id;
+/* clock timeout */
+static void tic (
+    XtPointer client_data,
+    XtIntervalId *id GCC_UNUSED)
 {
     RepeaterWidget rw = (RepeaterWidget) client_data;
 
@@ -200,10 +205,11 @@ static void tic (client_data, id)
  *****************************************************************************/
 
 /* ARGSUSED */
-static void Initialize (greq, gnew, args, num_args)
-    Widget greq, gnew;
-    ArgList args;
-    Cardinal *num_args;
+static void Initialize (
+    Widget greq GCC_UNUSED,
+    Widget gnew,
+    ArgList args GCC_UNUSED,
+    Cardinal *num_args GCC_UNUSED)
 {
     RepeaterWidget new = (RepeaterWidget) gnew;
 
@@ -211,24 +217,25 @@ static void Initialize (greq, gnew, args, num_args)
     new->repeater.timer = (XtIntervalId) 0;
 }
 
-static void Destroy (gw)
-    Widget gw;
+static void Destroy (Widget gw)
 {
     CLEAR_TIMEOUT ((RepeaterWidget) gw);
 }
 
 /* ARGSUSED */
-static Boolean SetValues (gcur, greq, gnew, args, num_args)
-    Widget gcur, greq, gnew;
-    ArgList args;
-    Cardinal *num_args;
+static Boolean SetValues (
+    Widget gcur,
+    Widget greq GCC_UNUSED,
+    Widget gnew,
+    ArgList args GCC_UNUSED,
+    Cardinal *num_args GCC_UNUSED)
 {
     RepeaterWidget cur = (RepeaterWidget) gcur;
     RepeaterWidget new = (RepeaterWidget) gnew;
     Boolean redisplay = FALSE;
 
     if (cur->repeater.minimum_delay != new->repeater.minimum_delay) {
-	if (new->repeater.next_delay < new->repeater.minimum_delay) 
+	if (new->repeater.next_delay < new->repeater.minimum_delay)
 	  new->repeater.next_delay = new->repeater.minimum_delay;
     }
 
@@ -242,16 +249,16 @@ static Boolean SetValues (gcur, greq, gnew, args, num_args)
  *****************************************************************************/
 
 /* ARGSUSED */
-static void ActionStart (gw, event, params, num_params)
-    Widget gw;
-    XEvent *event;
-    String *params;			/* unused */
-    Cardinal *num_params;		/* unused */
+static void ActionStart (
+    Widget gw,
+    XEvent *event GCC_UNUSED,
+    String *params GCC_UNUSED,
+    Cardinal *num_params GCC_UNUSED)
 {
     RepeaterWidget rw = (RepeaterWidget) gw;
 
     CLEAR_TIMEOUT (rw);
-    if (rw->repeater.start_callbacks) 
+    if (rw->repeater.start_callbacks)
       XtCallCallbackList (gw, rw->repeater.start_callbacks, (XtPointer)NULL);
 
     DO_CALLBACK (rw);
@@ -261,16 +268,15 @@ static void ActionStart (gw, event, params, num_params)
 
 
 /* ARGSUSED */
-static void ActionStop (gw, event, params, num_params)
-    Widget gw;
-    XEvent *event;
-    String *params;			/* unused */
-    Cardinal *num_params;		/* unused */
+static void ActionStop (
+    Widget gw,
+    XEvent *event GCC_UNUSED,
+    String *params GCC_UNUSED,
+    Cardinal *num_params GCC_UNUSED)
 {
     RepeaterWidget rw = (RepeaterWidget) gw;
 
     CLEAR_TIMEOUT ((RepeaterWidget) gw);
-    if (rw->repeater.stop_callbacks) 
+    if (rw->repeater.stop_callbacks)
       XtCallCallbackList (gw, rw->repeater.stop_callbacks, (XtPointer)NULL);
 }
-

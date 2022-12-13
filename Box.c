@@ -1,7 +1,11 @@
-/* $Xorg: Box.c,v 1.4 2001/02/09 02:03:43 xorgcvs Exp $ */
+/*
+ * $XTermId: Box.c,v 1.5 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: Box.c,v 1.4 2001/02/09 02:03:43 xorgcvs Exp $
+ */
 
 /***********************************************************************
 
+Copyright 2022  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -49,17 +53,18 @@ This file contains modifications for XawPlus, Roland Krause 2002
 
 *************************************************************************/
 
-
 /* 
  * Box.c - Box composite widget
  * 
  */
 
-#include	<X11/IntrinsicP.h>
-#include	<X11/StringDefs.h>
-#include	<X11/Xmu/Misc.h>
-#include	<X11/XawPlus/XawInit.h>
-#include	<X11/XawPlus/BoxP.h>
+#include "private.h"
+
+#include <X11/IntrinsicP.h>
+#include <X11/StringDefs.h>
+#include <X11/Xmu/Misc.h>
+#include <X11/XawPlus/XawInit.h>
+#include <X11/XawPlus/BoxP.h>
 
 /****************************************************************
  *
@@ -84,14 +89,14 @@ static XtResource resources[] = {
  *
  ****************************************************************/
 
-static void ClassInitialize();
-static void Initialize();
-static void Realize();
-static void Resize();
-static Boolean SetValues();
-static XtGeometryResult GeometryManager();
-static void ChangeManaged();
-static XtGeometryResult PreferredSize();
+static void ClassInitialize(void);
+static void Initialize(Widget request, Widget new, ArgList args, Cardinal *num_args);
+static void Realize(Widget w, Mask *valueMask, XSetWindowAttributes *attributes);
+static void Resize(Widget w);
+static Boolean SetValues(Widget current, Widget request, Widget new, ArgList args, Cardinal *num_args);
+static XtGeometryResult GeometryManager(Widget w, XtWidgetGeometry *request, XtWidgetGeometry *reply);
+static void ChangeManaged(Widget w);
+static XtGeometryResult PreferredSize(Widget widget, XtWidgetGeometry *constraint, XtWidgetGeometry *preferred);
 
 BoxClassRec boxClassRec = {
   {
@@ -157,11 +162,13 @@ WidgetClass boxWidgetClass = (WidgetClass)&boxClassRec;
  *
  */
 
-static void DoLayout(bbw, width, height, reply_width, reply_height, position)
-    BoxWidget	bbw;
-    Dimension	width, height;
-    Dimension	*reply_width, *reply_height; /* bounding box */
-    Boolean	position;	/* actually reposition the windows? */
+static void DoLayout(
+    BoxWidget	bbw,
+    Dimension	width,
+    Dimension	height,
+    Dimension	*reply_width, /* bounding box */
+    Dimension	*reply_height,
+    Boolean	position)	/* actually reposition the windows? */
 {
     Boolean vbox = (bbw->box.orientation == XtorientVertical);
     Cardinal  i;
@@ -260,12 +267,12 @@ static void DoLayout(bbw, width, height, reply_width, reply_height, position)
         return;
     }
     if (position && XtIsRealized((Widget)bbw)) {
-	if (bbw->composite.num_children == num_mapped_children)
+	if (bbw->composite.num_children == (Cardinal) num_mapped_children)
 	    XMapSubwindows( XtDisplay((Widget)bbw), XtWindow((Widget)bbw) );
 	else {
-	    int i = bbw->composite.num_children;
+	    int i2 = bbw->composite.num_children;
 	    Widget *childP = bbw->composite.children;
-	    for (; i > 0; childP++, i--)
+	    for (; i2 > 0; childP++, i2--)
 		if (XtIsRealized(*childP) && XtIsManaged(*childP) &&
 		    (*childP)->core.mapped_when_managed)
 		    XtMapWidget(*childP);
@@ -288,9 +295,10 @@ static void DoLayout(bbw, width, height, reply_width, reply_height, position)
  *
  */
 
-static XtGeometryResult PreferredSize(widget, constraint, preferred)
-    Widget widget;
-    XtWidgetGeometry *constraint, *preferred;
+static XtGeometryResult PreferredSize(
+    Widget widget,
+    XtWidgetGeometry *constraint,
+    XtWidgetGeometry *preferred)
 {
     BoxWidget w = (BoxWidget)widget;
     Dimension width /*, height */;
@@ -389,8 +397,7 @@ static XtGeometryResult PreferredSize(widget, constraint, preferred)
  *
  */
 
-static void Resize(w)
-    Widget	w;
+static void Resize(Widget w)
 {
     Dimension junk;
 
@@ -407,8 +414,7 @@ static void Resize(w)
  * TryNewLayout just says if it's possible, and doesn't actually move the kids
  */
 
-static Boolean TryNewLayout(bbw)
-    BoxWidget	bbw;
+static Boolean TryNewLayout(BoxWidget bbw)
 {
     Dimension 	preferred_width, preferred_height;
     Dimension	proposed_width, proposed_height;
@@ -494,11 +500,10 @@ static Boolean TryNewLayout(bbw)
  */
 
 /*ARGSUSED*/
-static XtGeometryResult GeometryManager(w, request, reply)
-    Widget		w;
-    XtWidgetGeometry	*request;
-    XtWidgetGeometry	*reply;	/* RETURN */
-
+static XtGeometryResult GeometryManager(
+    Widget		w,
+    XtWidgetGeometry	*request,
+    XtWidgetGeometry	*reply GCC_UNUSED)	/* RETURN */
 {
     Dimension	width, height, borderWidth;
     BoxWidget bbw;
@@ -558,15 +563,14 @@ static XtGeometryResult GeometryManager(w, request, reply)
     return (XtGeometryYes);
 }
 
-static void ChangeManaged(w)
-    Widget w;
+static void ChangeManaged(Widget w)
 {
     /* Reconfigure the box */
     (void) TryNewLayout((BoxWidget)w);
     Resize(w);
 }
 
-static void ClassInitialize()
+static void ClassInitialize(void)
 {
    static XtConvertArgRec colConvertArg[] = {
      {XtWidgetBaseOffset, (XtPointer)XtOffsetOf(WidgetRec, core.screen), sizeof(Screen *)},
@@ -580,10 +584,11 @@ static void ClassInitialize()
 }
 
 /* ARGSUSED */
-static void Initialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;
-Cardinal *num_args;
+static void Initialize(
+Widget request GCC_UNUSED,
+Widget new,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
     BoxWidget newbbw = (BoxWidget)new;
 
@@ -600,10 +605,10 @@ Cardinal *num_args;
 
 } /* Initialize */
 
-static void Realize(w, valueMask, attributes)
-    Widget w;
-    Mask *valueMask;
-    XSetWindowAttributes *attributes;
+static void Realize(
+    Widget w,
+    Mask *valueMask,
+    XSetWindowAttributes *attributes)
 {
     attributes->bit_gravity = NorthWestGravity;
     *valueMask |= CWBitGravity;
@@ -613,10 +618,12 @@ static void Realize(w, valueMask, attributes)
 } /* Realize */
 
 /* ARGSUSED */
-static Boolean SetValues(current, request, new, args, num_args)
-Widget current, request, new;
-ArgList args;
-Cardinal *num_args;
+static Boolean SetValues(
+Widget current GCC_UNUSED,
+Widget request GCC_UNUSED,
+Widget new GCC_UNUSED,
+ArgList args GCC_UNUSED,
+Cardinal *num_args GCC_UNUSED)
 {
    /* need to relayout if h_space or v_space change */
 

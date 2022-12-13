@@ -1,3 +1,166 @@
+2022-12-12  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/changelog, VERSION, package/XawPlus.spec: bump
+
+	* X11/XawPlus/FormP.h, X11/XawPlus/SmeP.h, X11/XawPlus/StrToPmap.h,
+	  X11/XawPlus/TextP.h, X11/XawPlus/TextSinkP.h, X11/XawPlus/TextSrcP.h,
+	  X11/XawPlus/VendorEP.h, X11/XawPlus/SimpleP.h, AsciiSrc.c,
+	  AsciiSink.c, AsciiText.c, Box.c, Command.c, Dialog.c, DrawingArea.c,
+	  Form.c, Grip.c, Label.c, List.c, LocPixmap.c, MenuButton.c,
+	  MultiSink.c, MultiSrc.c, Paned.c, Panner.c, Porthole.c, Repeater.c,
+	  Scrollbar.c, Simple.c, SimpleMenu.c, Sme.c, SmeBSB.c, SmeLine.c,
+	  StrToPmap.c, StripChart.c, TextAction.c, TextPop.c, TextSink.c,
+	  TextSrc.c, Toggle.c, Tree.c, UTF8.c, UTF8.h, Vendor.c, Viewport.c,
+	  XawI18n.c, XawIm.c, XawInit.c, TextTr.c, private.h:
+	add ident...
+
+	* XawIm.c: gcc-warning: uninitialized variables
+
+	* XawIm.c, X11/XawPlus/VendorEP.h:
+	gcc-warning: incorrect prototype for XawVendorShellExtResize()
+
+	* XawIm.c: gcc-warning: incorrect signature for ConfigureCB()
+
+	* Text.c: gcc-warning: incorrect type passed to warn_msg()
+
+	* StripChart.c: gcc-warning: missing initializer
+
+	* SmeBSB.c: gcc-warnings: initialized variables
+
+	* SmeBSB.c: gcc-warning: unhandled case for XtJustifyLeft
+
+	* SimpleMenu.c: gcc-warning: missing initializer
+
+	* AsciiSrc.c: gcc-warnings: String vs char*
+
+	* LocPixmap.c: gcc-warning: uninitialized variable
+
+	* Simple.c: gcc-warning: String vs char*
+
+	* Simple.c, MultiSink.c: gcc-warning: uninitialized variable
+
+	* AsciiText.c: gcc-warning: missing initializer
+
+	* Label.c: gcc-warning: uninitialized variable 'ext'
+
+	* Label.c: gcc-warning: correct signature for Initialize()
+
+	* Box.c: gcc-warning: comparing inconsistent typess
+
+	* Form.c, Viewport.c: gcc-warning: correct signature for Layout()
+
+	* X11/XawPlus/FormP.h:
+	gcc-warning: inconsistent signature for layout() vs macro
+
+	* TextSrc.c: gcc-warning: correct signature of Scan()
+
+2022-12-11  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* TextSink.c: gcc-warnings: correct signatures
+
+	* MultiSrc.c: gcc-warning: String vs char*
+
+	* MultiSrc.c: gcc-warning: unhandled case XawstAll
+
+	* MultiSrc.c: gcc-warnings: uninitialized variables
+
+	* MultiSrc.c: gcc-warning: correct signature for Scan()
+
+	* AsciiSrc.c: gcc-warnings: uninitialized variables
+
+	* AsciiSrc.c: gcc-warning: case XawstAll not handled
+
+	* AsciiSrc.c: correct signature for Scan()
+
+	* AsciiSink.c: gcc-warnings: 3 uninitialized variables
+
+	* AsciiSink.c: correct 3 signatures (one more is incorrect)
+
+	* MultiSink.c:
+	correct two signatures (two more are incorrect, using parameters not passed-in)
+
+	* Vendor.c:
+	correct signatures for a few functions (adding parameters which are ignored)
+
+	* Paned.c: add missing initializer for paned_class
+
+	* Viewport.c: correct signature for Layout()
+
+	* Scrollbar.c, Vendor.c, List.c, Toggle.c, Text.c, TextAction.c,
+	  XawIm.c, TextPop.c, Tree.c, SimpleMenu.c, Simple.c, Porthole.c,
+	  MenuButton.c, MultiSrc.c, Label.c, AsciiSrc.c, MultiSink.c:
+	gcc-warnings (no object change)
+
+	* UTF8.h, UTF8.c: use const (no object change)
+
+	* SmeBSB.c, Command.c, Dialog.c, Viewport.c:
+	gcc-warnings (no object change)
+
+2022-12-10  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* XawIm.c: fxi prototype for _XtCopyArg
+
+	* X11/XawPlus/VendorEP.h: fix prototype for XawVendorShellExtResize
+
+	* StripChart.c, SmeLine.c, SmeBSB.c, Sme.c, SimpleMenu.c, Simple.c,
+	  Scrollbar.c, Repeater.c, Porthole.c, Panner.c, MultiSrc.c,
+	  MultiSink.c, MenuButton.c:
+	ANSIfy
+
+	* StrToPmap.c: fix prototype for XawLocatePixmapFile()
+
+	* X11/XawPlus/StrToPmap.h: add XawLocatePixmapFile() prototype
+
+	* LocPixmap.c, List.c, Label.c, Grip.c, Form.c, DrawingArea.c: ANSIfy
+
+	* X11/XawPlus/FormP.h: use prototype for XtInheritLayout from Xaw
+
+	* Dialog.c, Command.c, Box.c: ANSIfy
+
+	* X11/XawPlus/SimpleP.h: make XtInheritChangeSensitive a prototype-cast
+
+2022-12-09  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* X11/XawPlus/SmeP.h:
+	use XtWidgetProc definition, like Xaw, to get prototype
+
+	* Viewport.c:
+	form-layout was missing a parameter - prototype found this.
+
+	* X11/XawPlus/FormP.h, Toggle.c, Tree.c, Vendor.c, Viewport.c, XawInit.c:
+	ANSIfy
+
+	* X11/XawPlus/TextP.h:
+	add prototypes of internal functions for all Text*.c
+
+	* TextSrc.c, TextSink.c, TextPop.c, Text.c, TextAction.c: ANSIfy
+
+2022-12-08  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* Text.c: ANSIfy
+
+	* VERSION: add ident...
+
+	* XawIm.c, Paned.c, AsciiText.c, AsciiSrc.c, AsciiSink.c: ANSIfy
+
+	* private.h: conditionally-include config.h
+
+	* StrToPmap.c, Box.c, Grip.c, Panner.c, Porthole.c, Scrollbar.c, Tree.c,
+	  Viewport.c, XawI18n.c, XawIm.c, UTF8.c, Dialog.c, Form.c, Paned.c,
+	  Repeater.c, TextTr.c, XawInit.c, AsciiSrc.c, AsciiText.c, Command.c,
+	  DrawingArea.c, Label.c, List.c, LocPixmap.c, MenuButton.c,
+	  MultiSink.c, MultiSrc.c, Simple.c, SimpleMenu.c, Sme.c, SmeBSB.c,
+	  SmeLine.c, StripChart.c, Text.c, TextAction.c, TextPop.c, TextSink.c,
+	  TextSrc.c, Vendor.c:
+	add/use private.h for config.h related-definitions
+
+	* private.h: RCS_BASE
+
+	* AsciiSink.c, Toggle.c:
+	add/use private.h for config.h related-definitions
+
+	* X11/XawPlus/TextSinkP.h: add prototype information from Xaw header
+
 2022-12-07  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* VERSION, package/XawPlus.spec, package/debian/changelog: bump

@@ -1,3 +1,6 @@
+/*
+ * $XTermId: UTF8.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ */
 
 /**********************************************************************
  *
@@ -18,6 +21,7 @@
  * int mbStrLen()	Calc # of characters in UTF8 string
  * char16 *UTF8toUCS2() Convert UTF8 string to UCS2/UNICODE
  *
+ * Copyright 2022  Thomas E. Dickey
  * Copyright (c) Roland Krause 2002, roland_krause@freenet.de
  *
  * This module is free software; you can redistribute it and/or modify
@@ -36,7 +40,8 @@
  *
  **********************************************************************/
 
-#include <stdlib.h>
+#include "private.h"
+
 #include "UTF8.h"
 
 /* ********************************************************************
@@ -52,8 +57,7 @@
  *	Arguments:	str16	- A terminated string of char16's
  *	Returns:	Length in char16's
  */
-int str16len(str16)
-char16 *str16;
+int str16len(const char16 *str16)
 {
    int len = 0;
 
@@ -90,8 +94,7 @@ char ch;
  *			src	- Source string
  *	Returns:	None
  */
-void str16cpy(dest, src)
-char16 *dest, *src;
+void str16cpy(char16 *dest, const char16 *src)
 {
    while (*src) *dest++ = *src++;
    *dest = 0;		/* To terminate the string */
@@ -103,11 +106,9 @@ char16 *dest, *src;
  *	Arguments:	dest	- Destination string
  *			src	- Source string
  *			n	- # of characters to copy
- *	Returns:	None	
+ *	Returns:	None
  */
-void str16ncpy(dest, src, n)
-char16 *dest, *src;
-size_t n;
+void str16ncpy(char16 *dest, const char16 *src, size_t n)
 {
    while ((n > 0) && *src)
    {
@@ -123,8 +124,7 @@ size_t n;
  *			src	- Source string
  *	Returns:	None
  */
-void str16cat(dest, src)
-char16 *dest, *src;
+void str16cat(char16 *dest, const char16 *src)
 {
    while (*dest) dest++;	  /* search the end of the string */
    while (*src) *dest++ = *src++; /* copy the other behind */
@@ -138,8 +138,7 @@ char16 *dest, *src;
  *	Returns:	Number of byte of the next character in the string
  *			or 0 in case of an error.
  */
-int mbCharLen(str)
-char *str;
+int mbCharLen(const char *str)
 {
    unsigned char c = (unsigned char)*str;
    unsigned char mask = 0x80;
@@ -171,10 +170,9 @@ char *str;
  *			are counted as one character per byte.
  *			See UTF8toUCS2() for the reason!
  */
-int mbStrLen(str)
-char *str;
+int mbStrLen(const char *str)
 {
-   char *p = str;
+   const char *p = str;
    int clen, len = 0;
 
    while ((clen = mbCharLen(p)) > 0)
@@ -200,12 +198,11 @@ char *str;
  *			compatible to the XChar2b format! Type casting is valid.
  *			char16 is used to increase the performance.
  */
-char16 *UTF8toUCS2(str)
-char *str;
+char16 *UTF8toUCS2(const char *str)
 {
    char16 *str16, *p16, testINTEL = 1, c16;
    int    clen, cInString;
-   char   *p;
+   const char *p;
 
   /* In the first step we try to determine the string
    * length in characters.

@@ -1,6 +1,10 @@
-/* $Xorg: MenuButton.c,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $ */
+/*
+ * $XTermId: MenuButton.c,v 1.5 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: MenuButton.c,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
+ */
 
 /*
+Copyright 2022  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -42,11 +46,12 @@ This file contains modifications for XawPlus, Roland Krause 2002
  * Date:    May 2, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 
-#include <stdio.h>
+#include "private.h"
+
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
@@ -54,12 +59,12 @@ This file contains modifications for XawPlus, Roland Krause 2002
 #include <X11/XawPlus/MenuButtoP.h>
 #include <X11/XawPlus/SimpleMenP.h>
 
-static void ClassInitialize();
-static void PopupMenu();
+static void ClassInitialize(void);
+static void PopupMenu(Widget w, XEvent * event, String * params, Cardinal * num_params);
 
 #define superclass ((CommandWidgetClass)&commandClassRec)
 
-static char defaultTranslations[] = 
+static char defaultTranslations[] =
     "<EnterWindow>:	highlight()\n\
      <LeaveWindow>:	reset()\n\
      <BtnDown>:		set() PopupMenu()";
@@ -75,7 +80,7 @@ static char defaultTranslations[] =
 #define offset(field) XtOffsetOf(MenuButtonRec, field)
 static XtResource resources[] = {
   {
-    XtNmenuName, XtCMenuName, XtRString, sizeof(String), 
+    XtNmenuName, XtCMenuName, XtRString, sizeof(String),
     offset(menu_button.menu_name), XtRString, (XtPointer)"menu"},
 };
 #undef offset
@@ -87,7 +92,7 @@ static XtActionsRec actionsList[] =
 
 MenuButtonClassRec menuButtonClassRec = {
   {
-    (WidgetClass) superclass,		/* superclass		  */	
+    (WidgetClass) superclass,		/* superclass		  */
     "MenuButton",			/* class_name		  */
     sizeof(MenuButtonRec),       	/* size			  */
     ClassInitialize,			/* class_initialize	  */
@@ -121,7 +126,7 @@ MenuButtonClassRec menuButtonClassRec = {
     NULL				/* extension		  */
   },  /* CoreClass fields initialization */
   {
-    XtInheritChangeSensitive		/* change_sensitive	  */ 
+    XtInheritChangeSensitive		/* change_sensitive	  */
   },  /* SimpleClass fields initialization */
   {
     0					/* field not used 	  */
@@ -143,7 +148,7 @@ WidgetClass menuButtonWidgetClass = (WidgetClass) &menuButtonClassRec;
  *
  ****************************************************************/
 
-static void ClassInitialize()
+static void ClassInitialize(void)
 {
     XawInitializeWidgetSet();
     XtRegisterGrabAction(PopupMenu, True, ButtonPressMask | ButtonReleaseMask,
@@ -151,11 +156,11 @@ static void ClassInitialize()
 }
 
 
-static void PopupMenu(w, event, params, num_params)
-Widget w;
-XEvent * event;
-String * params;
-Cardinal * num_params;
+static void PopupMenu(
+Widget w,
+XEvent * event GCC_UNUSED,
+String * params GCC_UNUSED,
+Cardinal * num_params GCC_UNUSED)
 {
   MenuButtonWidget mbw = (MenuButtonWidget) w;
   SimpleMenuWidget simpleMenu;
@@ -168,7 +173,7 @@ Cardinal * num_params;
   temp = w;
   while(temp != NULL) {
     menu = XtNameToWidget(temp, mbw->menu_button.menu_name);
-    if (menu == NULL) 
+    if (menu == NULL)
       temp = XtParent(temp);
     else
       break;
@@ -180,7 +185,7 @@ Cardinal * num_params;
     int len;
     char* fmt = "MenuButton: Could not find menu widget named %s.";
 
-    if ((len = strlen (fmt) + strlen (mbw->menu_button.menu_name)) < sizeof error_buf)
+    if ((size_t) (len = strlen (fmt) + strlen (mbw->menu_button.menu_name)) < sizeof error_buf)
       errorp = error_buf;
     else
       errorp = XtMalloc (len + 1);
@@ -229,4 +234,3 @@ Cardinal * num_params;
 
   XtPopupSpringLoaded(menu);
 }
-

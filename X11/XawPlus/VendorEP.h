@@ -1,6 +1,10 @@
-/* $Xorg: VendorEP.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $ */
-
 /*
+ * $XTermId: VendorEP.h,v 1.4 2022/12/13 01:01:00 tom Exp $
+ * $Xorg: VendorEP.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
+ */
+
+/**************************************************************************
+ * Copyright 2022  Thomas E. Dickey
  * Copyright 1991 by OMRON Corporation
  *
  * Permission to use, copy, modify, distribute, and sell this software and its
@@ -19,12 +23,12 @@
  * ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
  * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTUOUS ACTION,
  * ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
- * SOFTWARE. 
+ * SOFTWARE.
  *
  *	Author:	Seiji Kuwari	OMRON Corporation
  *				kuwa@omron.co.jp
  *				kuwa%omron.co.jp@uunet.uu.net
- */				
+ */
 
 /*
 
@@ -78,5 +82,12 @@ typedef	struct XawVendorShellExtRec {
     ObjectPart	object;
     XawVendorShellExtPart	vendor_ext;
 } XawVendorShellExtRec, *XawVendorShellExtWidget;
+
+extern void XawVendorShellExtResize(
+    Widget		/* widget */,
+    XtPointer		/* closure */,
+    XEvent*		/* event */,
+    Boolean*		/* continue_to_dispatch */
+);
 
 #endif	/* _VendorEP_h */

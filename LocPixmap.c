@@ -1,4 +1,10 @@
 /*
+ * $XTermId: LocPixmap.c,v 1.6 2022/12/13 00:53:17 tom Exp $
+ */
+
+/*
+ * Copyright 2022  Thomas E. Dickey
+ *
  * I hacked this up from LocBitmap.c.  Since they (MIT X Consortium) did
  * most of the work and I only hacked it a little bit, I'm including
  * their copyright, HOWEVER, the hacks (specifically the diffs) are
@@ -32,11 +38,13 @@
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL M.I.T.
  * BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
- * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN 
+ * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * Author:  Jim Fulton, MIT X Consortium
  */
+
+#include "private.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xresource.h>
@@ -50,9 +58,9 @@
 #include <X11/xpm.h>
 
 #include <ctype.h>
-#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
+
+#include <X11/XawPlus/StrToPmap.h>
 
 static char	**PIXMAPFILEPATHCACHE = NULL;
 
@@ -99,49 +107,49 @@ static char **split_path_string (char *src)
     return elemlist;
 }
 
-static void ExtractXPMColorOverrides(string, colorsymbols, numsymbols)
-char		*string;	/* !CONTENTS ARE MODIFIED! */
-XpmColorSymbol	*colorsymbols;
-int		*numsymbols;
+static XpmColorSymbol *ExtractXPMColorOverrides(
+char		*string,	/* !CONTENTS ARE MODIFIED! */
+int		*numsymbols)
 {
+  XpmColorSymbol *colorsymbols = NULL;
   char	*s;	/* string scanning pointer */
   int	asize;	/* allocated size for colorsymbols */
-  
+
   asize = 4;	/* allocate 4 at first, expand as necessary */
   colorsymbols = (XpmColorSymbol *)malloc(sizeof(XpmColorSymbol) * asize);
-  
+
   *numsymbols = 0;	/* how many color replacements have we read */
-  
+
   /* I'm not using any of the more advanced string utilities, because I
      don't know what OS's they are available in.  Sue me */
-  
+
   /* scan past filename and terminate with \0 */
   for (s=string; *s && !isspace(*s); s++);
   if (*s) {
     char	*p;	/* placeholder */
     int		len;	/* length of color or symbol name */
-    
+
     *s = '\0'; /* filename is now separated from the rest of the string */
     s++;
-    
+
     while (*s) {
-      
+
       for (; *s && isspace(*s); s++);	/* skip over whitespace */
       if (*s == '\0')
 	break;			/* bail if no symbol name */
-      
+
       p = s; 				/* stash the beginning of the symbol */
       for (; *s && !isspace(*s); s++); 	/* scan past symbol */
       len = s-p;			/* store length */
       for (; *s && isspace(*s); s++);	/* skip whitespace between symbol and color name */
-      
+
       if (*s == '\0')
 	{
 	  /* complain. I should find a better mechanism than this. */
 	  fprintf(stderr,"Warning: ExtractXPMColorOverrides: symbol name without replacement color name. (%s, %s)\n", string, p);
 	  break;
 	}
-      
+
       if ( *numsymbols >= asize ) {
 	colorsymbols = (XpmColorSymbol *)realloc(colorsymbols, sizeof(XpmColorSymbol) * (asize*=2));
 	if (colorsymbols == NULL) {
@@ -154,22 +162,23 @@ int		*numsymbols;
       colorsymbols[*numsymbols].name = (char*)malloc(len+1);
       strncpy(colorsymbols[*numsymbols].name, p, len);
       colorsymbols[*numsymbols].name[len] = '\0';
-      
+
       p = s;	/* we are at the beginning of the replacement color name */
       for (; *s && !isspace(*s); s++);	/* scan to the end of the color name */
       len = s-p;
-      
+
       /* store the color name */
       colorsymbols[*numsymbols].value = (char*)malloc(len+1);
       strncpy(colorsymbols[*numsymbols].value, p, len);
       colorsymbols[*numsymbols].value[len] = '\0';
-      
+
       (*numsymbols)++;	/* one more replacement in the array */
-      
+
       /* go around for another shot. */
     } /* while */
-    
+
   } /* if */
+  return colorsymbols;
 }
 
 
@@ -177,15 +186,15 @@ int		*numsymbols;
  * XawLocatePixmapFile - read a pixmap file using the normal defaults
  */
 
-Pixmap XawLocatePixmapFile(screen, colormap, PixmapName, srcname, srcnamelen,
-			   widthp, heightp, clipmask)
-Screen *screen;
-Colormap colormap;
-char *PixmapName;
-char *srcname;			/* RETURN */
-int srcnamelen;
-int *widthp, *heightp;		/* RETURN */
-Pixmap *clipmask;		/* RETURN */
+Pixmap XawLocatePixmapFile(
+Screen *screen,
+Colormap colormap,
+char *PixmapName,
+char *srcname,			/* RETURN */
+int srcnamelen,
+int *widthp,
+int *heightp,		/* RETURN */
+Pixmap *clipmask)		/* RETURN */
 {
     Display *dpy = DisplayOfScreen (screen);
     Window root = RootWindowOfScreen (screen);
@@ -207,7 +216,7 @@ Pixmap *clipmask;		/* RETURN */
 
     name = (char *)malloc(strlen(PixmapName) + 1);
     (void)strcpy(name, PixmapName);
-    ExtractXPMColorOverrides(name, colorsymbols, &numsymbols);
+    colorsymbols = ExtractXPMColorOverrides(name, &numsymbols);
 
     if (numsymbols) {
 	attributes.numsymbols = numsymbols;

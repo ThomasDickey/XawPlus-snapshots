@@ -1,3 +1,7 @@
+/*
+ * $XTermId: UTF8.h,v 1.4 2022/12/13 00:53:17 tom Exp $
+ */
+
 /**********************************************************************
  *
  * UTF8.h: Functions to handle UTF8/UCS2 coded strings.
@@ -17,7 +21,7 @@
  * int mbStrLen()	Calc # of characters in an UTF8 string
  * char16 *UTF8toUCS2() Convert UTF8 string to UCS2/UNICODE
  *
- * Copyright 2015 Thomas E. Dickey
+ * Copyright 2015, 2022  Thomas E. Dickey
  * Copyright (c) Roland Krause 2002, roland_krause@freenet.de
  *
  * This module is free software; you can redistribute it and/or modify
@@ -54,7 +58,7 @@ typedef unsigned short char16;
  *	Returns:	Length in char16's
  */
 extern int str16len(
-	char16 *	/* str16 */
+	const char16 *	/* str16 */
 );
 
 /*	Function Name:	str16chr
@@ -78,7 +82,7 @@ extern char16 *str16chr(
  */
 extern void str16cpy(
 	char16 *,	/* dest */
-	char16 *	/* src */
+	const char16 *	/* src */
 );
 
 /*	Function Name:	str16ncpy
@@ -91,7 +95,7 @@ extern void str16cpy(
  */
 extern void str16ncpy(
 	char16 *,	/* dest */
-	char16 *,	/* src */
+	const char16 *,	/* src */
 	size_t		/* n */
 );
 
@@ -103,7 +107,7 @@ extern void str16ncpy(
  */
 extern void str16cat(
 	char16 *,	/* dest */
-	char16 *	/* src */
+	const char16 *	/* src */
 );
 
 /*	Function Name:	mbCharLen
@@ -114,7 +118,7 @@ extern void str16cat(
  *			or 0 in case of an error.
  */
 extern int mbCharLen(
-	char *		/* str */
+	const char *	/* str */
 );
 
 /*	Function Name:	mbStrLen
@@ -126,7 +130,7 @@ extern int mbCharLen(
  *			See UTF8toUCS2() for the reason!
  */
 extern int mbStrLen(
-	char *		/* str */
+	const char *	/* str */
 );
 
 /*	Function Name:	UTF8toUCS2
@@ -145,7 +149,7 @@ extern int mbStrLen(
  *			char16 is used to increase the performance.
  */
 extern char16 *UTF8toUCS2(
-	char *		/* str */
+	const char *	/* str */
 );
 
 

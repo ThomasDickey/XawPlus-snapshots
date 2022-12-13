@@ -1,8 +1,11 @@
-/* $Xorg: XawI18n.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $ */
+/*
+ * $XTermId: XawI18n.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ * $Xorg: XawI18n.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
+ */
 
 /*
 
-Copyright 2015 Thomas E. Dickey
+Copyright 2015, 2022  Thomas E. Dickey
 Copyright 1991, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -27,7 +30,10 @@ in this Software without prior written authorization from The Open Group.
 
 */
 
+#include "private.h"
+
 #include <X11/IntrinsicP.h>
+
 #include "XawI18n.h"
 
 wchar_t _Xaw_atowc(unsigned char c)
