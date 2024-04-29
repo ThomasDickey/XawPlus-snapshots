@@ -1,11 +1,11 @@
 /*
- * $XTermId: AsciiText.c,v 1.5 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: AsciiText.c,v 1.7 2024/04/29 00:06:22 tom Exp $
  * $Xorg: AsciiText.c,v 1.4 2001/02/09 02:03:42 xorgcvs Exp $
  */
 
 /*
 
-Copyright 2022  Thomas E. Dickey
+Copyright 2022,2024  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -27,7 +27,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
-
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
@@ -85,7 +84,7 @@ This file contains modifications for XawPlus, Roland Krause 2002
 #include <X11/XawPlus/MultiSrc.h>
 #include <X11/XawPlus/MultiSinkP.h>
 #include <X11/XawPlus/XawImP.h>
-
+/* *INDENT-OFF* */
 #define TAB_COUNT 32
 
 static void Initialize(Widget, Widget, ArgList, Cardinal *);
@@ -136,72 +135,74 @@ AsciiTextClassRec asciiTextClassRec = {
     /* empty            */      0
   }
 };
+/* *INDENT-ON* */
 
-WidgetClass asciiTextWidgetClass = (WidgetClass)&asciiTextClassRec;
-
+WidgetClass asciiTextWidgetClass = (WidgetClass) & asciiTextClassRec;
 
 static void
 Initialize(
-Widget request, Widget new,
-ArgList args,
-Cardinal *num_args)
+	      Widget request, Widget new,
+	      ArgList args,
+	      Cardinal *num_args)
 {
-  AsciiWidget w = (AsciiWidget) new;
-  int i;
-  int tabs[TAB_COUNT], tab;
+    AsciiWidget w = (AsciiWidget) new;
+    int i;
+    int tabs[TAB_COUNT], tab;
 
-  MultiSinkObject sink;
+    MultiSinkObject sink;
 
-  /* superclass Initialize can't set the following,
-   * as it didn't know the source or sink when it was called */
+    /* superclass Initialize can't set the following,
+     * as it didn't know the source or sink when it was called */
 
-  if (request->core.height == DEFAULT_TEXT_HEIGHT)
-    new->core.height = DEFAULT_TEXT_HEIGHT;
+    if (request->core.height == DEFAULT_TEXT_HEIGHT)
+	new->core.height = DEFAULT_TEXT_HEIGHT;
 
+    /* This is the main change for internationalization.  */
 
-  /* This is the main change for internationalization.  */
+    if (w->simple.international == True) {	/* The multi* are international. */
 
-  if ( w->simple.international == True ) { /* The multi* are international. */
+	w->text.source = XtCreateWidget("textSource", multiSrcObjectClass,
+					new, args, *num_args);
+	w->text.sink = XtCreateWidget("textSink", multiSinkObjectClass,
+				      new, args, *num_args);
+    } else {
 
-      w->text.source = XtCreateWidget( "textSource", multiSrcObjectClass,
-				  new, args, *num_args );
-      w->text.sink = XtCreateWidget( "textSink", multiSinkObjectClass,
-				new, args, *num_args );
-  }
-  else {
+	w->text.source = XtCreateWidget("textSource", asciiSrcObjectClass,
+					new, args, *num_args);
+	w->text.sink = XtCreateWidget("textSink", asciiSinkObjectClass,
+				      new, args, *num_args);
+    }
 
-      w->text.source = XtCreateWidget( "textSource", asciiSrcObjectClass,
-				  new, args, *num_args );
-      w->text.sink = XtCreateWidget( "textSink", asciiSinkObjectClass,
-				new, args, *num_args );
-  }
+    if (w->core.height == DEFAULT_TEXT_HEIGHT)
+	w->core.height = (Dimension) (VMargins(w) +
+									 XawTextSinkMaxHeight(w->text.sink, 1));
 
-  if (w->core.height == DEFAULT_TEXT_HEIGHT)
-    w->core.height = VMargins(w) + XawTextSinkMaxHeight(w->text.sink, 1);
+    for (i = 0, tab = 0; i < TAB_COUNT; i++)
+	tabs[i] = (tab += 8);
 
-  for (i=0, tab=0 ; i < TAB_COUNT ; i++)
-    tabs[i] = (tab += 8);
+    XawTextSinkSetTabs(w->text.sink, TAB_COUNT, tabs);
 
-  XawTextSinkSetTabs(w->text.sink, TAB_COUNT, tabs);
+    XawTextDisableRedisplay(new);
+    XawTextEnableRedisplay(new);
 
-  XawTextDisableRedisplay(new);
-  XawTextEnableRedisplay(new);
+    /* If we are using a MultiSink we need to tell the input method stuff. */
 
+    if (w->simple.international == True) {
+	Arg list[4];
+	Cardinal ac = 0;
 
-  /* If we are using a MultiSink we need to tell the input method stuff. */
-
-  if ( w->simple.international == True ) {
-    Arg list[4];
-    Cardinal ac = 0;
-
-    sink = (MultiSinkObject)w->text.sink;
-    _XawImRegister( new );
-    XtSetArg (list[ac], XtNfontSet, sink->multi_sink.fontset); ac++;
-    XtSetArg (list[ac], XtNinsertPosition, w->text.insertPos); ac++;
-    XtSetArg (list[ac], XtNforeground, sink->text_sink.foreground); ac++;
-    XtSetArg (list[ac], XtNbackground, sink->text_sink.background); ac++;
-    _XawImSetValues(new, list, ac);
-  }
+	sink = (MultiSinkObject) w->text.sink;
+	_XawImRegister(new);
+	XtSetArg(list[ac], XtNfontSet, sink->multi_sink.fontset);
+	ac++;
+	XtSetArg(list[ac], XtNinsertPosition, w->text.insertPos);
+	ac++;
+	XtSetArg(list[ac], XtNforeground, sink->text_sink.foreground);
+	ac++;
+	XtSetArg(list[ac], XtNbackground, sink->text_sink.background);
+	ac++;
+	_XawImSetValues(new, list, ac);
+    }
 }
 
 static void
@@ -209,14 +210,14 @@ Destroy(Widget w)
 {
     /* Disconnect input method */
 
-    if ( ((AsciiWidget)w)->simple.international == True )
-        _XawImUnregister( w );
+    if (((AsciiWidget) w)->simple.international == True)
+	_XawImUnregister(w);
 
-    if (w == XtParent(((AsciiWidget)w)->text.source))
-	XtDestroyWidget( ((AsciiWidget)w)->text.source );
+    if (w == XtParent(((AsciiWidget) w)->text.source))
+	XtDestroyWidget(((AsciiWidget) w)->text.source);
 
-    if (w == XtParent(((AsciiWidget)w)->text.sink))
-	XtDestroyWidget( ((AsciiWidget)w)->text.sink );
+    if (w == XtParent(((AsciiWidget) w)->text.sink))
+	XtDestroyWidget(((AsciiWidget) w)->text.sink);
 }
 
 #ifdef ASCII_STRING
@@ -227,51 +228,52 @@ Destroy(Widget w)
  *
  ************************************************************/
 
-AsciiStringClassRec asciiStringClassRec = {
-  { /* core fields */
-    /* superclass       */      (WidgetClass) &asciiTextClassRec,
-    /* class_name       */      "Text",
-    /* widget_size      */      sizeof(AsciiStringRec),
-    /* class_initialize */      NULL,
-    /* class_part_init  */	NULL,
-    /* class_inited     */      FALSE,
-    /* initialize       */      NULL,
-    /* initialize_hook  */	NULL,
-    /* realize          */      XtInheritRealize,
-    /* actions          */      NULL,
-    /* num_actions      */      0,
-    /* resources        */      NULL,
-    /* num_ resource    */      0,
-    /* xrm_class        */      NULLQUARK,
-    /* compress_motion  */      TRUE,
-    /* compress_exposure*/      XtExposeGraphicsExpose,
-    /* compress_enterleave*/	TRUE,
-    /* visible_interest */      FALSE,
-    /* destroy          */      NULL,
-    /* resize           */      XtInheritResize,
-    /* expose           */      XtInheritExpose,
-    /* set_values       */      NULL,
-    /* set_values_hook  */	NULL,
-    /* set_values_almost*/	XtInheritSetValuesAlmost,
-    /* get_values_hook  */	NULL,
-    /* accept_focus     */      XtInheritAcceptFocus,
-    /* version          */	XtVersion,
-    /* callback_private */      NULL,
-    /* tm_table         */      XtInheritTranslations,
-    /* query_geometry	*/	XtInheritQueryGeometry
-  },
-  { /* Simple fields */
-    /* change_sensitive	*/	XtInheritChangeSensitive
-  },
-  { /* text fields */
-    /* empty            */      0
-  },
-  { /* ascii fields */
-    /* empty            */      0
-  }
+AsciiStringClassRec asciiStringClassRec =
+{
+    {				/* core fields */
+    /* superclass       */ (WidgetClass) & asciiTextClassRec,
+    /* class_name       */ "Text",
+    /* widget_size      */ sizeof(AsciiStringRec),
+    /* class_initialize */ NULL,
+    /* class_part_init  */ NULL,
+    /* class_inited     */ FALSE,
+    /* initialize       */ NULL,
+    /* initialize_hook  */ NULL,
+    /* realize          */ XtInheritRealize,
+    /* actions          */ NULL,
+    /* num_actions      */ 0,
+    /* resources        */ NULL,
+    /* num_ resource    */ 0,
+    /* xrm_class        */ NULLQUARK,
+    /* compress_motion  */ TRUE,
+    /* compress_exposure */ XtExposeGraphicsExpose,
+    /* compress_enterleave */ TRUE,
+    /* visible_interest */ FALSE,
+    /* destroy          */ NULL,
+    /* resize           */ XtInheritResize,
+    /* expose           */ XtInheritExpose,
+    /* set_values       */ NULL,
+    /* set_values_hook  */ NULL,
+    /* set_values_almost */ XtInheritSetValuesAlmost,
+    /* get_values_hook  */ NULL,
+    /* accept_focus     */ XtInheritAcceptFocus,
+    /* version          */ XtVersion,
+    /* callback_private */ NULL,
+    /* tm_table         */ XtInheritTranslations,
+    /* query_geometry   */ XtInheritQueryGeometry
+    },
+    {				/* Simple fields */
+    /* change_sensitive */ XtInheritChangeSensitive
+    },
+    {				/* text fields */
+    /* empty            */ 0
+    },
+    {				/* ascii fields */
+    /* empty            */ 0
+    }
 };
 
-WidgetClass asciiStringWidgetClass = (WidgetClass)&asciiStringClassRec;
+WidgetClass asciiStringWidgetClass = (WidgetClass) & asciiStringClassRec;
 
 #endif /* ASCII_STRING */
 
@@ -283,62 +285,51 @@ WidgetClass asciiStringWidgetClass = (WidgetClass)&asciiStringClassRec;
  *
  ************************************************************/
 
-AsciiDiskClassRec asciiDiskClassRec = {
-  { /* core fields */
-    /* superclass       */      (WidgetClass) &asciiTextClassRec,
-    /* class_name       */      "Text",
-    /* widget_size      */      sizeof(AsciiDiskRec),
-    /* class_initialize */      NULL,
-    /* class_part_init  */	NULL,
-    /* class_inited     */      FALSE,
-    /* initialize       */      NULL,
-    /* initialize_hook  */	NULL,
-    /* realize          */      XtInheritRealize,
-    /* actions          */      NULL,
-    /* num_actions      */      0,
-    /* resources        */      NULL,
-    /* num_ resource    */      0,
-    /* xrm_class        */      NULLQUARK,
-    /* compress_motion  */      TRUE,
-    /* compress_exposure*/      XtExposeGraphicsExpose,
-    /* compress_enterleave*/	TRUE,
-    /* visible_interest */      FALSE,
-    /* destroy          */      NULL,
-    /* resize           */      XtInheritResize,
-    /* expose           */      XtInheritExpose,
-    /* set_values       */      NULL,
-    /* set_values_hook  */	NULL,
-    /* set_values_almost*/	XtInheritSetValuesAlmost,
-    /* get_values_hook  */	NULL,
-    /* accept_focus     */      XtInheritAcceptFocus,
-    /* version          */	XtVersion,
-    /* callback_private */      NULL,
-    /* tm_table         */      XtInheritTranslations,
-    /* query_geometry	*/	XtInheritQueryGeometry
-  },
-  { /* Simple fields */
-    /* change_sensitive	*/	XtInheritChangeSensitive
-  },
-  { /* text fields */
-    /* empty            */      0
-  },
-  { /* ascii fields */
-    /* empty            */      0
-  }
+AsciiDiskClassRec asciiDiskClassRec =
+{
+    {				/* core fields */
+    /* superclass       */ (WidgetClass) & asciiTextClassRec,
+    /* class_name       */ "Text",
+    /* widget_size      */ sizeof(AsciiDiskRec),
+    /* class_initialize */ NULL,
+    /* class_part_init  */ NULL,
+    /* class_inited     */ FALSE,
+    /* initialize       */ NULL,
+    /* initialize_hook  */ NULL,
+    /* realize          */ XtInheritRealize,
+    /* actions          */ NULL,
+    /* num_actions      */ 0,
+    /* resources        */ NULL,
+    /* num_ resource    */ 0,
+    /* xrm_class        */ NULLQUARK,
+    /* compress_motion  */ TRUE,
+    /* compress_exposure */ XtExposeGraphicsExpose,
+    /* compress_enterleave */ TRUE,
+    /* visible_interest */ FALSE,
+    /* destroy          */ NULL,
+    /* resize           */ XtInheritResize,
+    /* expose           */ XtInheritExpose,
+    /* set_values       */ NULL,
+    /* set_values_hook  */ NULL,
+    /* set_values_almost */ XtInheritSetValuesAlmost,
+    /* get_values_hook  */ NULL,
+    /* accept_focus     */ XtInheritAcceptFocus,
+    /* version          */ XtVersion,
+    /* callback_private */ NULL,
+    /* tm_table         */ XtInheritTranslations,
+    /* query_geometry   */ XtInheritQueryGeometry
+    },
+    {				/* Simple fields */
+    /* change_sensitive */ XtInheritChangeSensitive
+    },
+    {				/* text fields */
+    /* empty            */ 0
+    },
+    {				/* ascii fields */
+    /* empty            */ 0
+    }
 };
 
-WidgetClass asciiDiskWidgetClass = (WidgetClass)&asciiDiskClassRec;
+WidgetClass asciiDiskWidgetClass = (WidgetClass) & asciiDiskClassRec;
 
 #endif /* ASCII_DISK */
-
-
-
-
-
-
-
-
-
-
-
-

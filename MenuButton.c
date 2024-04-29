@@ -1,10 +1,10 @@
 /*
- * $XTermId: MenuButton.c,v 1.5 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: MenuButton.c,v 1.7 2024/04/28 23:57:51 tom Exp $
  * $Xorg: MenuButton.c,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
  */
 
 /*
-Copyright 2022  Thomas E. Dickey
+Copyright 2022,2024  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -58,7 +58,7 @@ This file contains modifications for XawPlus, Roland Krause 2002
 #include <X11/XawPlus/XawInit.h>
 #include <X11/XawPlus/MenuButtoP.h>
 #include <X11/XawPlus/SimpleMenP.h>
-
+/* *INDENT-OFF* */
 static void ClassInitialize(void);
 static void PopupMenu(Widget w, XEvent * event, String * params, Cardinal * num_params);
 
@@ -138,9 +138,10 @@ MenuButtonClassRec menuButtonClassRec = {
     0					/* field not used   	  */
   },  /* MenuButtonClass fields initialization */
 };
+/* *INDENT-ON* */
 
   /* for public consumption */
-WidgetClass menuButtonWidgetClass = (WidgetClass) &menuButtonClassRec;
+WidgetClass menuButtonWidgetClass = (WidgetClass) & menuButtonClassRec;
 
 /****************************************************************
  *
@@ -148,89 +149,98 @@ WidgetClass menuButtonWidgetClass = (WidgetClass) &menuButtonClassRec;
  *
  ****************************************************************/
 
-static void ClassInitialize(void)
+static void
+ClassInitialize(void)
 {
     XawInitializeWidgetSet();
     XtRegisterGrabAction(PopupMenu, True, ButtonPressMask | ButtonReleaseMask,
 			 GrabModeAsync, GrabModeAsync);
 }
 
-
-static void PopupMenu(
-Widget w,
-XEvent * event GCC_UNUSED,
-String * params GCC_UNUSED,
-Cardinal * num_params GCC_UNUSED)
+static void
+PopupMenu(
+	     Widget w,
+	     XEvent *event GCC_UNUSED,
+	     String *params GCC_UNUSED,
+	     Cardinal *num_params GCC_UNUSED)
 {
-  MenuButtonWidget mbw = (MenuButtonWidget) w;
-  SimpleMenuWidget simpleMenu;
-  Widget menu, temp;
-  Arg arglist[2];
-  Cardinal num_args;
-  int menu_x, menu_y, menu_width, menu_height, button_height;
-  Position button_x, button_y;
+    MenuButtonWidget mbw = (MenuButtonWidget) w;
+    SimpleMenuWidget simpleMenu;
+    Widget menu, temp;
+    Arg arglist[2];
+    Cardinal num_args;
+    int menu_x, menu_y, menu_width, menu_height, button_height;
+    Position button_x, button_y;
 
-  temp = w;
-  while(temp != NULL) {
-    menu = XtNameToWidget(temp, mbw->menu_button.menu_name);
-    if (menu == NULL)
-      temp = XtParent(temp);
-    else
-      break;
-  }
+    temp = w;
+    while (temp != NULL) {
+	menu = XtNameToWidget(temp, mbw->menu_button.menu_name);
+	if (menu == NULL)
+	    temp = XtParent(temp);
+	else
+	    break;
+    }
 
-  if (menu == NULL) {
-    char error_buf[BUFSIZ];
-    char* errorp;
-    int len;
-    char* fmt = "MenuButton: Could not find menu widget named %s.";
+    if (menu == NULL) {
+	char error_buf[BUFSIZ];
+	char *errorp;
+	int len;
+	char *fmt = "MenuButton: Could not find menu widget named %s.";
 
-    if ((size_t) (len = strlen (fmt) + strlen (mbw->menu_button.menu_name)) < sizeof error_buf)
-      errorp = error_buf;
-    else
-      errorp = XtMalloc (len + 1);
-    if (errorp == NULL) {
-      errorp = error_buf;
-      strcpy (errorp, "MenuButton: Could not find menu widget.");
-    } else
-      (void) sprintf(errorp, fmt, mbw->menu_button.menu_name);
-    XtAppWarning (XtWidgetToApplicationContext (w), errorp);
-    if (errorp != error_buf) XtFree (errorp);
-    return;
-  }
-  if (!XtIsRealized(menu)) XtRealizeWidget(menu);
+	if ((size_t) (len = (int) (strlen(fmt) +
+	    strlen(mbw->menu_button.menu_name))) < sizeof error_buf)
+	    errorp = error_buf;
+	else
+	    errorp = XtMalloc((Cardinal) (len + 1));
+	if (errorp == NULL) {
+	    errorp = error_buf;
+	    strcpy(errorp, "MenuButton: Could not find menu widget.");
+	} else
+	    (void) sprintf(errorp, fmt, mbw->menu_button.menu_name);
+	XtAppWarning(XtWidgetToApplicationContext(w), errorp);
+	if (errorp != error_buf)
+	    XtFree(errorp);
+	return;
+    }
+    if (!XtIsRealized(menu))
+	XtRealizeWidget(menu);
 
-  simpleMenu	= (SimpleMenuWidget)menu;
-  button_height = w->core.height + 2 * w->core.border_width;
-  menu_width	= simpleMenu->core.width + 2 * simpleMenu->core.border_width +
-		  2 * simpleMenu->simple_menu.borderWidth;
-  menu_height	= simpleMenu->core.height + 2 * simpleMenu->core.border_width +
-		  2 * simpleMenu->simple_menu.borderWidth;
+    simpleMenu = (SimpleMenuWidget) menu;
+    button_height = w->core.height + 2 * w->core.border_width;
+    menu_width = simpleMenu->core.width + 2 * simpleMenu->core.border_width +
+	2 * simpleMenu->simple_menu.borderWidth;
+    menu_height = simpleMenu->core.height + 2 *
+	simpleMenu->core.border_width +
+	2 * simpleMenu->simple_menu.borderWidth;
 
-  XtTranslateCoords(w, 0, 0, &button_x, &button_y);
-  menu_x = button_x;
-  menu_y = button_y + button_height;
+    XtTranslateCoords(w, 0, 0, &button_x, &button_y);
+    menu_x = button_x;
+    menu_y = button_y + button_height;
 
-  if (menu_x >= 0) {
-    int scr_width = WidthOfScreen(XtScreen(menu));
-    if (menu_x + menu_width > scr_width)
-      menu_x = scr_width - menu_width;
-  }
-  if (menu_x < 0) menu_x = 0;
+    if (menu_x >= 0) {
+	int scr_width = WidthOfScreen(XtScreen(menu));
+	if (menu_x + menu_width > scr_width)
+	    menu_x = scr_width - menu_width;
+    }
+    if (menu_x < 0)
+	menu_x = 0;
 
-  if (menu_y >= 0) {
-    int scr_height = HeightOfScreen(XtScreen(menu));
-    if (menu_y + menu_height > scr_height)
-      menu_y = scr_height - menu_height;
-  }
-  if (menu_y < 0) menu_y = 0;
+    if (menu_y >= 0) {
+	int scr_height = HeightOfScreen(XtScreen(menu));
+	if (menu_y + menu_height > scr_height)
+	    menu_y = scr_height - menu_height;
+    }
+    if (menu_y < 0)
+	menu_y = 0;
 
-  num_args = 0;
-  XtSetArg(arglist[num_args], XtNx, menu_x); num_args++;
-  XtSetArg(arglist[num_args], XtNy, menu_y); num_args++;
-  XtSetValues(menu, arglist, num_args);
+    num_args = 0;
+    XtSetArg(arglist[num_args], XtNx, menu_x);
+    num_args++;
+    XtSetArg(arglist[num_args], XtNy, menu_y);
+    num_args++;
+    XtSetValues(menu, arglist, num_args);
 
-  /* Popup the menu */
+    /* Popup the menu */
 
-  XtPopupSpringLoaded(menu);
+    XtPopupSpringLoaded(menu);
 }

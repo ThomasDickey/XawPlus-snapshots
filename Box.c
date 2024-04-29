@@ -1,11 +1,11 @@
 /*
- * $XTermId: Box.c,v 1.5 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: Box.c,v 1.7 2024/04/29 00:05:43 tom Exp $
  * $Xorg: Box.c,v 1.4 2001/02/09 02:03:43 xorgcvs Exp $
  */
 
 /***********************************************************************
 
-Copyright 2022  Thomas E. Dickey
+Copyright 2022,2024  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -27,7 +27,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
-
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
@@ -65,7 +64,7 @@ This file contains modifications for XawPlus, Roland Krause 2002
 #include <X11/Xmu/Misc.h>
 #include <X11/XawPlus/XawInit.h>
 #include <X11/XawPlus/BoxP.h>
-
+/* *INDENT-OFF* */
 /****************************************************************
  *
  * Box Resources
@@ -145,9 +144,9 @@ BoxClassRec boxClassRec = {
     /* empty		  */	0,
   }
 };
+/* *INDENT-ON* */
 
-WidgetClass boxWidgetClass = (WidgetClass)&boxClassRec;
-
+WidgetClass boxWidgetClass = (WidgetClass) & boxClassRec;
 
 /****************************************************************
  *
@@ -162,58 +161,61 @@ WidgetClass boxWidgetClass = (WidgetClass)&boxClassRec;
  *
  */
 
-static void DoLayout(
-    BoxWidget	bbw,
-    Dimension	width,
-    Dimension	height,
-    Dimension	*reply_width, /* bounding box */
-    Dimension	*reply_height,
-    Boolean	position)	/* actually reposition the windows? */
+static void
+DoLayout(
+	    BoxWidget bbw,
+	    Dimension width,
+	    Dimension height,
+	    Dimension *reply_width,	/* bounding box */
+	    Dimension *reply_height,
+	    Boolean position)	/* actually reposition the windows? */
 {
     Boolean vbox = (bbw->box.orientation == XtorientVertical);
-    Cardinal  i;
-    Dimension w, h;	/* Width and height needed for box 		*/
-    Dimension lw, lh;	/* Width and height needed for current line 	*/
-    Dimension bw, bh;	/* Width and height needed for current widget 	*/
-    Dimension h_space;  /* Local copy of bbw->box.h_space 		*/
-    Widget widget;	/* Current widget	 			*/
+    Cardinal i;
+    Dimension w, h;		/* Width and height needed for box              */
+    Dimension lw, lh;		/* Width and height needed for current line     */
+    Dimension bw, bh;		/* Width and height needed for current widget   */
+    Dimension h_space;		/* Local copy of bbw->box.h_space               */
+    Widget widget;		/* Current widget                               */
     int num_mapped_children = 0;
- 
+
     /* Box width and height */
     h_space = bbw->box.h_space;
 
     w = 0;
     for (i = 0; i < bbw->composite.num_children; i++) {
-	if ( bbw->composite.children[i]->core.width > w )
-            w = bbw->composite.children[i]->core.width;
+	if (bbw->composite.children[i]->core.width > w)
+	    w = bbw->composite.children[i]->core.width;
     }
     w += h_space;
-    if ( w > width ) width = w;
+    if (w > width)
+	width = w;
     h = bbw->box.v_space;
-   
+
     /* Line width and height */
     lh = 0;
     lw = h_space;
-  
+
     for (i = 0; i < bbw->composite.num_children; i++) {
 	widget = bbw->composite.children[i];
 	if (widget->core.managed) {
-	    if (widget->core.mapped_when_managed) num_mapped_children++;
+	    if (widget->core.mapped_when_managed)
+		num_mapped_children++;
 	    /* Compute widget width */
-	    bw = widget->core.width + 2*widget->core.border_width + h_space;
-	    if ((Dimension)(lw + bw) > width) {
+	    bw = (Dimension) (widget->core.width + 2 *
+			      widget->core.border_width + h_space);
+	    if ((Dimension) (lw + bw) > width) {
 		if (lw > h_space) {
 		    /* At least one widget on this line, and
 		     * can't fit any more.  Start new line if vbox.
 		     */
 		    AssignMax(w, lw);
 		    if (vbox) {
-			h += lh + bbw->box.v_space;
+			h += (Dimension) (lh + bbw->box.v_space);
 			lh = 0;
 			lw = h_space;
 		    }
-		}
-		else if (!position) {
+		} else if (!position) {
 		    /* too narrow for this widget; we'll assume we can grow */
 		    DoLayout(bbw, lw + bw, height, reply_width,
 			     reply_height, position);
@@ -234,14 +236,14 @@ static void DoLayout(
 		 * force extra exposures as children occlude each other.
 		 */
 		if (XtIsRealized(widget) && widget->core.mapped_when_managed)
-		    XUnmapWindow( XtDisplay(widget), XtWindow(widget) );
-		XtMoveWidget(widget, (int)lw, (int)h);
+		    XUnmapWindow(XtDisplay(widget), XtWindow(widget));
+		XtMoveWidget(widget, (Position) lw, (Position) h);
 	    }
 	    lw += bw;
-	    bh = widget->core.height + 2*widget->core.border_width;
+	    bh = (Dimension) (widget->core.height + 2 * widget->core.border_width);
 	    AssignMax(lh, bh);
-	} /* if managed */
-    } /* for */
+	}			/* if managed */
+    }				/* for */
 
     if (!vbox && width && lw > width && lh < height) {
 	/* reduce width if too wide and height not filled */
@@ -251,26 +253,27 @@ static void DoLayout(
 	bbw->box.orientation = XtorientVertical;
 	while (sh < height && sw > width) {
 	    width_needed = sw;
-	    DoLayout(bbw, sw-1, height, &sw, &sh, False);
+	    DoLayout(bbw, sw - 1, height, &sw, &sh, False);
 	}
-	if (sh < height) width_needed = sw;
+	if (sh < height)
+	    width_needed = sw;
 	if (width_needed != lw) {
-	    DoLayout(bbw,width_needed,height,reply_width,reply_height,position);
+	    DoLayout(bbw, width_needed, height, reply_width, reply_height, position);
 	    bbw->box.orientation = orientation;
 	    return;
 	}
 	bbw->box.orientation = orientation;
     }
-   if ( vbox && ( ( width < w ) || ( width < lw ) ) ) {
-        AssignMax(w, lw);
-        DoLayout( bbw, w, height, reply_width, reply_height, position );
-        return;
+    if (vbox && ((width < w) || (width < lw))) {
+	AssignMax(w, lw);
+	DoLayout(bbw, w, height, reply_width, reply_height, position);
+	return;
     }
-    if (position && XtIsRealized((Widget)bbw)) {
+    if (position && XtIsRealized((Widget) bbw)) {
 	if (bbw->composite.num_children == (Cardinal) num_mapped_children)
-	    XMapSubwindows( XtDisplay((Widget)bbw), XtWindow((Widget)bbw) );
+	    XMapSubwindows(XtDisplay((Widget) bbw), XtWindow((Widget) bbw));
 	else {
-	    int i2 = bbw->composite.num_children;
+	    int i2 = (int) bbw->composite.num_children;
 	    Widget *childP = bbw->composite.children;
 	    for (; i2 > 0; childP++, i2--)
 		if (XtIsRealized(*childP) && XtIsManaged(*childP) &&
@@ -282,7 +285,7 @@ static void DoLayout(
     /* Finish off last line */
     if (lw > h_space) {
 	AssignMax(w, lw);
-        h += lh + bbw->box.v_space;
+	h += (Dimension) (lh + bbw->box.v_space);
     }
 
     *reply_width = Max(w, 1);
@@ -295,13 +298,14 @@ static void DoLayout(
  *
  */
 
-static XtGeometryResult PreferredSize(
-    Widget widget,
-    XtWidgetGeometry *constraint,
-    XtWidgetGeometry *preferred)
+static XtGeometryResult
+PreferredSize(
+		 Widget widget,
+		 XtWidgetGeometry * constraint,
+		 XtWidgetGeometry * preferred)
 {
-    BoxWidget w = (BoxWidget)widget;
-    Dimension width /*, height */;
+    BoxWidget w = (BoxWidget) widget;
+    Dimension width /*, height */ ;
     Dimension preferred_width = w->box.preferred_width;
     Dimension preferred_height = w->box.preferred_height;
 
@@ -327,7 +331,7 @@ static XtGeometryResult PreferredSize(
 	else
 	    return XtGeometryAlmost;
     }
-	
+
     /* else gotta do it the long way...
        I have a preference for tall and narrow, so if my width is
        constrained, I'll accept it; otherwise, I'll compute the minimum
@@ -335,21 +339,21 @@ static XtGeometryResult PreferredSize(
 
     w->box.last_query_mode = constraint->request_mode;
     w->box.last_query_width = constraint->width;
-    w->box.last_query_height= constraint->height;
+    w->box.last_query_height = constraint->height;
 
     if (constraint->request_mode & CWWidth)
 	width = constraint->width;
-    else /* if (constraint->request_mode & CWHeight) */ {
-	 /* let's see if I can become any narrower */
+    else {			/* if (constraint->request_mode & CWHeight) */
+	/* let's see if I can become any narrower */
 	width = 0;
 	constraint->width = 65535;
     }
 
     /* height is currently ignored by DoLayout.
        height = (constraint->request_mode & CWHeight) ? constraint->height
-		       : *preferred_height;
+       : *preferred_height;
      */
-    DoLayout(w, width, (Dimension)0,
+    DoLayout(w, width, (Dimension) 0,
 	     &preferred_width, &preferred_height, FALSE);
 
     if (constraint->request_mode & CWHeight &&
@@ -357,19 +361,19 @@ static XtGeometryResult PreferredSize(
 	/* find minimum width for this height */
 	if (preferred_width > constraint->width) {
 	    /* punt; over-constrained */
-	}
-	else {
+	} else {
 	    width = preferred_width;
-	    do { /* find some width big enough to stay within this height */
+	    do {		/* find some width big enough to stay within this height */
 		width *= 2;
-		if (width > constraint->width) width = constraint->width;
+		if (width > constraint->width)
+		    width = constraint->width;
 		DoLayout(w, width, 0, &preferred_width, &preferred_height, FALSE);
 	    } while (preferred_height > constraint->height &&
 		     width < constraint->width);
 	    if (width != constraint->width) {
-		do { /* find minimum width */
+		do {		/* find minimum width */
 		    width = preferred_width;
-		    DoLayout(w, preferred_width-1, 0,
+		    DoLayout(w, preferred_width - 1, 0,
 			     &preferred_width, &preferred_height, FALSE);
 		} while (preferred_height < constraint->height);
 		/* one last time */
@@ -382,7 +386,7 @@ static XtGeometryResult PreferredSize(
     preferred->width = w->box.preferred_width = preferred_width;
     preferred->height = w->box.preferred_height = preferred_height;
 
-    if (constraint->request_mode == (CWWidth|CWHeight)
+    if (constraint->request_mode == (CWWidth | CWHeight)
 	&& constraint->width == preferred_width
 	&& constraint->height == preferred_height)
 	return XtGeometryYes;
@@ -397,13 +401,14 @@ static XtGeometryResult PreferredSize(
  *
  */
 
-static void Resize(Widget w)
+static void
+Resize(Widget w)
 {
     Dimension junk;
 
-    DoLayout((BoxWidget)w, w->core.width, w->core.height, &junk, &junk, TRUE);
+    DoLayout((BoxWidget) w, w->core.width, w->core.height, &junk, &junk, TRUE);
 
-} /* Resize */
+}				/* Resize */
 
 /*
  *
@@ -414,14 +419,15 @@ static void Resize(Widget w)
  * TryNewLayout just says if it's possible, and doesn't actually move the kids
  */
 
-static Boolean TryNewLayout(BoxWidget bbw)
+static Boolean
+TryNewLayout(BoxWidget bbw)
 {
-    Dimension 	preferred_width, preferred_height;
-    Dimension	proposed_width, proposed_height;
-    int		iterations;
+    Dimension preferred_width, preferred_height;
+    Dimension proposed_width, proposed_height;
+    int iterations;
 
-    DoLayout( bbw, bbw->core.width, bbw->core.height,
-	      &preferred_width, &preferred_height, FALSE );
+    DoLayout(bbw, bbw->core.width, bbw->core.height,
+	     &preferred_width, &preferred_height, FALSE);
 
     /* at this point, preferred_width is guaranteed to not be greater
        than bbw->core.width unless some child is larger, so there's no
@@ -429,7 +435,7 @@ static Boolean TryNewLayout(BoxWidget bbw)
 
     if ((bbw->core.width == preferred_width) &&
 	(bbw->core.height == preferred_height)) {
-        /* Same size */
+	/* Same size */
 	return (TRUE);
     }
 
@@ -438,53 +444,50 @@ static Boolean TryNewLayout(BoxWidget bbw)
     proposed_width = preferred_width;
     proposed_height = preferred_height;
     do {
-	switch (XtMakeResizeRequest((Widget)bbw,proposed_width,proposed_height,
-				     &proposed_width, &proposed_height))
-	{
-	    case XtGeometryYes:
-	    case XtGeometryDone:
+	switch (XtMakeResizeRequest((Widget) bbw, proposed_width, proposed_height,
+				    &proposed_width, &proposed_height)) {
+	case XtGeometryYes:
+	case XtGeometryDone:
+	    return (TRUE);
+
+	case XtGeometryNo:
+	    if (iterations > 0)
+		/* protect from malicious parents who change their minds */
+		DoLayout(bbw, bbw->core.width, bbw->core.height,
+			 &preferred_width, &preferred_height, FALSE);
+	    if ((preferred_width <= bbw->core.width) &&
+		(preferred_height <= bbw->core.height))
 		return (TRUE);
+	    else
+		return (FALSE);
 
-	    case XtGeometryNo:
-		if (iterations > 0)
-		    /* protect from malicious parents who change their minds */
-		    DoLayout( bbw, bbw->core.width, bbw->core.height,
-			      &preferred_width, &preferred_height, FALSE );
-		if ((preferred_width <= bbw->core.width) &&
-		    (preferred_height <= bbw->core.height))
-		    return (TRUE);
-		else
-		    return (FALSE);
+	case XtGeometryAlmost:
+	    if (proposed_height >= preferred_height &&
+		proposed_width >= preferred_width) {
 
-	    case XtGeometryAlmost:
-		if (proposed_height >= preferred_height &&
-		    proposed_width >= preferred_width) {
-
-		    /*
-		     * Take it, and assume the parent knows what it is doing.
-		     *
-		     * The parent must accept this since it was returned in
-		     * almost.
-		     *
-		     */
-		    (void) XtMakeResizeRequest( (Widget)bbw,
-				       proposed_width, proposed_height,
-				       &proposed_width, &proposed_height);
-		    return(TRUE);
-		}
-		else if (proposed_width != preferred_width) {
-		    /* recalc bounding box; height might change */
-		    DoLayout(bbw, proposed_width, 0,
-			     &preferred_width, &preferred_height, FALSE);
-		    proposed_height = preferred_height;
-		}
-		else { /* proposed_height != preferred_height */
-		    XtWidgetGeometry constraints, reply;
-		    constraints.request_mode = CWHeight;
-		    constraints.height = proposed_height;
-		    (void)PreferredSize((Widget)bbw, &constraints, &reply);
-		    proposed_width = preferred_width;
-		}
+		/*
+		 * Take it, and assume the parent knows what it is doing.
+		 *
+		 * The parent must accept this since it was returned in
+		 * almost.
+		 *
+		 */
+		(void) XtMakeResizeRequest((Widget) bbw,
+					   proposed_width, proposed_height,
+					   &proposed_width, &proposed_height);
+		return (TRUE);
+	    } else if (proposed_width != preferred_width) {
+		/* recalc bounding box; height might change */
+		DoLayout(bbw, proposed_width, 0,
+			 &preferred_width, &preferred_height, FALSE);
+		proposed_height = preferred_height;
+	    } else {		/* proposed_height != preferred_height */
+		XtWidgetGeometry constraints, reply;
+		constraints.request_mode = CWHeight;
+		constraints.height = proposed_height;
+		(void) PreferredSize((Widget) bbw, &constraints, &reply);
+		proposed_width = preferred_width;
+	    }
 	}
 	iterations++;
     } while (iterations < 10);
@@ -500,18 +503,19 @@ static Boolean TryNewLayout(BoxWidget bbw)
  */
 
 /*ARGSUSED*/
-static XtGeometryResult GeometryManager(
-    Widget		w,
-    XtWidgetGeometry	*request,
-    XtWidgetGeometry	*reply GCC_UNUSED)	/* RETURN */
+static XtGeometryResult
+GeometryManager(
+		   Widget w,
+		   XtWidgetGeometry * request,
+		   XtWidgetGeometry * reply GCC_UNUSED)		/* RETURN */
 {
-    Dimension	width, height, borderWidth;
+    Dimension width, height, borderWidth;
     BoxWidget bbw;
 
     /* Position request always denied */
     if ((request->request_mode & CWX && request->x != w->core.x) ||
 	(request->request_mode & CWY && request->y != w->core.y))
-        return (XtGeometryNo);
+	return (XtGeometryNo);
 
     /* Size changes must see if the new size can be accomodated */
     if (request->request_mode & (CWWidth | CWHeight | CWBorderWidth)) {
@@ -521,7 +525,7 @@ static XtGeometryResult GeometryManager(
 	    request->width = w->core.width;
 	if ((request->request_mode & CWHeight) == 0)
 	    request->height = w->core.height;
-        if ((request->request_mode & CWBorderWidth) == 0)
+	if ((request->request_mode & CWBorderWidth) == 0)
 	    request->border_width = w->core.border_width;
 
 	/* Save current size and set to new size */
@@ -548,7 +552,7 @@ static XtGeometryResult GeometryManager(
  */
 	if (TryNewLayout(bbw)) {
 	    /* Fits in existing or new space, relayout */
-	    (*XtClass((Widget)bbw)->core_class.resize)((Widget)bbw);
+	    (*XtClass((Widget) bbw)->core_class.resize) ((Widget) bbw);
 	    return (XtGeometryYes);
 	} else {
 	    /* Cannot satisfy request, change back to original geometry */
@@ -557,40 +561,48 @@ static XtGeometryResult GeometryManager(
 	    w->core.border_width = borderWidth;
 	    return (XtGeometryNo);
 	}
-    }; /* if any size changes requested */
+    };				/* if any size changes requested */
 
     /* Any stacking changes don't make a difference, so allow if that's all */
     return (XtGeometryYes);
 }
 
-static void ChangeManaged(Widget w)
+static void
+ChangeManaged(Widget w)
 {
     /* Reconfigure the box */
-    (void) TryNewLayout((BoxWidget)w);
+    (void) TryNewLayout((BoxWidget) w);
     Resize(w);
 }
 
-static void ClassInitialize(void)
+static void
+ClassInitialize(void)
 {
-   static XtConvertArgRec colConvertArg[] = {
-     {XtWidgetBaseOffset, (XtPointer)XtOffsetOf(WidgetRec, core.screen), sizeof(Screen *)},
-     {XtWidgetBaseOffset, (XtPointer)XtOffsetOf(WidgetRec, core.colormap), sizeof(Colormap)}
-   };
+    static XtConvertArgRec colConvertArg[] =
+    {
+	{XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.screen),
+	 sizeof(Screen *)},
+	{XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec,
+	 core.colormap), sizeof(Colormap)}
+    };
 
-   XawInitializeWidgetSet();
-   XtAddConverter(XtRString, XtROrientation, XmuCvtStringToOrientation, NULL, (Cardinal)0);
-   XtSetTypeConverter(XtRString, XtRPixel, XtCvtStringToPixel,
-	colConvertArg, XtNumber(colConvertArg), XtCacheByDisplay, NULL);
+    XawInitializeWidgetSet();
+    XtAddConverter(XtRString, XtROrientation, XmuCvtStringToOrientation,
+		   NULL, (Cardinal) 0);
+    XtSetTypeConverter(XtRString, XtRPixel, XtCvtStringToPixel,
+		       colConvertArg, XtNumber(colConvertArg),
+		       XtCacheByDisplay, NULL);
 }
 
 /* ARGSUSED */
-static void Initialize(
-Widget request GCC_UNUSED,
-Widget new,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+static void
+Initialize(
+	      Widget request GCC_UNUSED,
+	      Widget new,
+	      ArgList args GCC_UNUSED,
+	      Cardinal *num_args GCC_UNUSED)
 {
-    BoxWidget newbbw = (BoxWidget)new;
+    BoxWidget newbbw = (BoxWidget) new;
 
     newbbw->box.last_query_mode = CWWidth | CWHeight;
     newbbw->box.last_query_width = newbbw->box.last_query_height = 0;
@@ -598,34 +610,36 @@ Cardinal *num_args GCC_UNUSED)
     newbbw->box.preferred_height = Max(newbbw->box.v_space, 1);
 
     if (newbbw->core.width == 0)
-        newbbw->core.width = newbbw->box.preferred_width;
+	newbbw->core.width = newbbw->box.preferred_width;
 
     if (newbbw->core.height == 0)
 	newbbw->core.height = newbbw->box.preferred_height;
 
-} /* Initialize */
+}				/* Initialize */
 
-static void Realize(
-    Widget w,
-    Mask *valueMask,
-    XSetWindowAttributes *attributes)
+static void
+Realize(
+	   Widget w,
+	   Mask * valueMask,
+	   XSetWindowAttributes * attributes)
 {
     attributes->bit_gravity = NorthWestGravity;
     *valueMask |= CWBitGravity;
 
-    XtCreateWindow( w, (unsigned)InputOutput, (Visual *)CopyFromParent,
-		    *valueMask, attributes);
-} /* Realize */
+    XtCreateWindow(w, (unsigned) InputOutput, (Visual *) CopyFromParent,
+		   *valueMask, attributes);
+}				/* Realize */
 
 /* ARGSUSED */
-static Boolean SetValues(
-Widget current GCC_UNUSED,
-Widget request GCC_UNUSED,
-Widget new GCC_UNUSED,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+static Boolean
+SetValues(
+	     Widget current GCC_UNUSED,
+	     Widget request GCC_UNUSED,
+	     Widget new GCC_UNUSED,
+	     ArgList args GCC_UNUSED,
+	     Cardinal *num_args GCC_UNUSED)
 {
-   /* need to relayout if h_space or v_space change */
+    /* need to relayout if h_space or v_space change */
 
     return False;
 }

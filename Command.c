@@ -1,11 +1,11 @@
 /*
- * $XTermId: Command.c,v 1.5 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: Command.c,v 1.7 2024/04/29 00:04:37 tom Exp $
  * $Xorg: Command.c,v 1.5 2001/02/09 02:03:43 xorgcvs Exp $
  */
 
 /************************************************************************
 
-Copyright 2022  Thomas E. Dickey
+Copyright 2022,2024  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -27,7 +27,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
-
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
@@ -72,7 +71,7 @@ This file contains modifications for XawPlus, Roland Krause 2002
  * Full class record constant
  *
  ****************************************************************/
-
+/* *INDENT-OFF* */
 /* Private Data */
 
 static char defaultTranslations[] =
@@ -171,10 +170,10 @@ CommandClassRec commandClassRec = {
     0					/* field not used	*/
   }   /* CommandClass fields initialization */
 };
+/* *INDENT-ON* */
 
   /* for public consumption */
-WidgetClass commandWidgetClass = (WidgetClass) &commandClassRec;
-
+WidgetClass commandWidgetClass = (WidgetClass) & commandClassRec;
 
 /***********************************************************************
  *
@@ -185,22 +184,23 @@ WidgetClass commandWidgetClass = (WidgetClass) &commandClassRec;
  *
  ***********************************************************************/
 
-static void PaintCommandWidget(
-Widget w,
-Region region)
+static void
+PaintCommandWidget(
+		      Widget w,
+		      Region region)
 {
-  CommandWidget cbw = (CommandWidget) w;
-  int offset = (int)cbw->command.highlight_thickness;
-  unsigned int width = w->core.width - 2*offset;
-  unsigned int height= w->core.height - 2*offset;
+    CommandWidget cbw = (CommandWidget) w;
+    int offset = (int) cbw->command.highlight_thickness;
+    unsigned int width = (unsigned) (w->core.width - 2 * offset);
+    unsigned int height = (unsigned) (w->core.height - 2 * offset);
 
-  (*SuperClass->core_class.expose) (w, (XEvent *) NULL, region);
-  if (cbw->command.set) XawSunkenRectangle(w, offset, offset, width, height);
-  else
-  {
-    if (cbw->command.highlightMode == FALSE)
-	XawRaisedRectangle(w, offset, offset, width, height);
-  }
+    (*SuperClass->core_class.expose) (w, (XEvent *) NULL, region);
+    if (cbw->command.set)
+	XawSunkenRectangle(w, offset, offset, width, height);
+    else {
+	if (cbw->command.highlightMode == FALSE)
+	    XawRaisedRectangle(w, offset, offset, width, height);
+    }
 }
 
 /***********************************************************************
@@ -213,17 +213,21 @@ Region region)
  *
  ***********************************************************************/
 
-static Dimension CalcWidth(CommandWidget cbw)
+static Dimension
+CalcWidth(CommandWidget cbw)
 {
-  return(LEFT_OFFSET(cbw) + cbw->label.label_width +
-	 2*(cbw->label.internal_width + cbw->command.highlight_thickness +
-	   cbw->simple.borderWidth));
+    return (LEFT_OFFSET(cbw) + (unsigned) (cbw->label.label_width +
+					   2 * (cbw->label.internal_width +
+						cbw->command.highlight_thickness +
+						cbw->simple.borderWidth)));
 }
 
-static Dimension CalcHeight(CommandWidget cbw)
+static Dimension
+CalcHeight(CommandWidget cbw)
 {
-  return(cbw->label.label_height + 2*(cbw->label.internal_height +
-	 cbw->command.highlight_thickness + cbw->simple.borderWidth));
+    return (Dimension) (cbw->label.label_height + 2 *
+			(cbw->label.internal_height +
+			 cbw->command.highlight_thickness + cbw->simple.borderWidth));
 }
 
 /***********************************************************************
@@ -237,51 +241,54 @@ static Dimension CalcHeight(CommandWidget cbw)
  *
  ***********************************************************************/
 
-static void RepositionLabel(
-Widget current,
-Widget new)
+static void
+RepositionLabel(
+		   Widget current,
+		   Widget new)
 {
-  CommandWidget cbw = (CommandWidget)new;
-  Position newPos, leftedge;
+    CommandWidget cbw = (CommandWidget) new;
+    Position newPos, leftedge;
 
-  leftedge = LEFT_OFFSET(cbw) + cbw->label.internal_width +
-	     cbw->command.highlight_thickness + cbw->simple.borderWidth;
-  switch (cbw->label.justify)
-  {
-	case XtJustifyLeft:
-	    newPos = leftedge;
-	    break;
+    leftedge = (Position) (LEFT_OFFSET(cbw) + cbw->label.internal_width +
+			   cbw->command.highlight_thickness + cbw->simple.borderWidth);
+    switch (cbw->label.justify) {
+    case XtJustifyLeft:
+	newPos = leftedge;
+	break;
 
-	case XtJustifyRight:
-	    newPos = current->core.width - cbw->label.label_width - cbw->label.internal_width -
-		     cbw->command.highlight_thickness - cbw->simple.borderWidth;
-	    break;
+    case XtJustifyRight:
+	newPos = (Position) (current->core.width - cbw->label.label_width -
+			     cbw->label.internal_width -
+			     cbw->command.highlight_thickness - cbw->simple.borderWidth);
+	break;
 
-	case XtJustifyCenter:
-	default:
-	    newPos = (Position)(current->core.width - cbw->label.label_width /* + LEFT_OFFSET(cbw)*/)/2;
-	    break;
-  }
-  /* Justify the label on the left side, if there is not enough space
-   * in the widget. Don't do that with pixmaps.
-   */
-  if ((newPos < leftedge) && (cbw->label.pixmap == None)) newPos = leftedge;
-  cbw->label.label_x = newPos;
-  cbw->label.label_y = (int)(current->core.height - cbw->label.label_height)/2;
+    case XtJustifyCenter:
+    default:
+	newPos = (Position) (current->core.width - cbw->label.label_width /* + LEFT_OFFSET(cbw) */
+	    ) / 2;
+	break;
+    }
+    /* Justify the label on the left side, if there is not enough space
+     * in the widget. Don't do that with pixmaps.
+     */
+    if ((newPos < leftedge) && (cbw->label.pixmap == None))
+	newPos = leftedge;
+    cbw->label.label_x = newPos;
+    cbw->label.label_y = (Position) ((int) (current->core.height -
+				     cbw->label.label_height) / 2);
 
     /*
      * Left bitmap will be displayed at
      * (internal_width + border width, internal_height + border height + lbm_y)
      */
-    if (cbw->label.lbm_height != 0)
-    {
-	cbw->label.lbm_y = (int)((current->core.height - cbw->label.lbm_height)/2 -
-			         cbw->label.internal_height);
-	cbw->label.lbm_x = (int)(cbw->label.internal_width + cbw->command.highlight_thickness +
-				 cbw->simple.borderWidth);
-    }
-    else
-    {
+    if (cbw->label.lbm_height != 0) {
+	cbw->label.lbm_y = (int) ((current->core.height -
+				  cbw->label.lbm_height) / 2 -
+				  cbw->label.internal_height);
+	cbw->label.lbm_x = (int) (cbw->label.internal_width +
+				  cbw->command.highlight_thickness +
+				  cbw->simple.borderWidth);
+    } else {
 	cbw->label.lbm_y = 0;
 	cbw->label.lbm_x = 0;
     }
@@ -293,18 +300,17 @@ Widget new)
  *
  ***********************************************************************/
 
-static void DestroyHelpWidget(CommandWidget w)
+static void
+DestroyHelpWidget(CommandWidget w)
 {
-  if (w->command.helpTimer != 0)
-  {
-     XtRemoveTimeOut(w->command.helpTimer);
-     w->command.helpTimer = 0;
-  }
-  if (w->command.helpWidget != NULL)
-  {
-    XtDestroyWidget(w->command.helpWidget);
-    w->command.helpWidget = NULL;
-  }
+    if (w->command.helpTimer != 0) {
+	XtRemoveTimeOut(w->command.helpTimer);
+	w->command.helpTimer = 0;
+    }
+    if (w->command.helpWidget != NULL) {
+	XtDestroyWidget(w->command.helpWidget);
+	w->command.helpWidget = NULL;
+    }
 }
 
 /***********************************************************************
@@ -313,17 +319,20 @@ static void DestroyHelpWidget(CommandWidget w)
  *
  ***********************************************************************/
 
-static void CreateHelpWidget(CommandWidget cw)
+static void
+CreateHelpWidget(CommandWidget cw)
 {
-  cw->command.helpWidget = XtVaCreatePopupShell("helpWindow",
-				overrideShellWidgetClass, (Widget)cw,
-				XtNallowShellResize, TRUE, NULL);
+    cw->command.helpWidget = XtVaCreatePopupShell("helpWindow",
+						  overrideShellWidgetClass,
+						  (Widget) cw,
+						  XtNallowShellResize, TRUE, NULL);
 
-  cw->command.helpLabel = XtVaCreateManagedWidget("helpLabel",
-				labelWidgetClass, cw->command.helpWidget,
-				XtNtruncLabel, False,
-				XtNlabel, cw->command.helpText,
-				XtNbackground, cw->command.helpBackground, NULL);
+    cw->command.helpLabel = XtVaCreateManagedWidget("helpLabel",
+						    labelWidgetClass, cw->command.helpWidget,
+						    XtNtruncLabel, False,
+						    XtNlabel, cw->command.helpText,
+						    XtNbackground,
+						    cw->command.helpBackground, NULL);
 }
 
 /***********************************************************************
@@ -332,36 +341,36 @@ static void CreateHelpWidget(CommandWidget cw)
  *
  ***********************************************************************/
 
-static void PopupHelper(
-XtPointer    widget,
-XtIntervalId *timer GCC_UNUSED)
+static void
+PopupHelper(
+	       XtPointer widget,
+	       XtIntervalId * timer GCC_UNUSED)
 {
-  Widget	w	= (Widget)widget;
-  CommandWidget cw	= (CommandWidget)widget;
-  Display      *display = XtDisplay(w);
-  Window	root, child;
-  int		XCoord, YCoord, XRel, YRel, XWidth;
-  unsigned int	mask;
+    Widget w = (Widget) widget;
+    CommandWidget cw = (CommandWidget) widget;
+    Display *display = XtDisplay(w);
+    Window root, child;
+    int XCoord, YCoord, XRel, YRel, XWidth;
+    unsigned int mask;
 
-  /* Determine the position of the helper */
+    /* Determine the position of the helper */
 
-  XWidth = XDisplayWidth(display, XDefaultScreen(display));
-  XQueryPointer(display, XtWindow(w), &root, &child, &XCoord, &YCoord,
-		&XRel, &YRel, &mask);
-  XCoord += 10;
-  YCoord += 10;
-  XtVaSetValues(cw->command.helpWidget, XtNx, XCoord, XtNy, YCoord, NULL);
-  XtPopup(cw->command.helpWidget, XtGrabNone);
+    XWidth = XDisplayWidth(display, XDefaultScreen(display));
+    XQueryPointer(display, XtWindow(w), &root, &child, &XCoord, &YCoord,
+		  &XRel, &YRel, &mask);
+    XCoord += 10;
+    YCoord += 10;
+    XtVaSetValues(cw->command.helpWidget, XtNx, XCoord, XtNy, YCoord, NULL);
+    XtPopup(cw->command.helpWidget, XtGrabNone);
 
-  /* Move the helper window to the left, if the right border is
-   * outside of the screen
-   */
-  if ((XCoord + cw->command.helpWidget->core.width) > XWidth)
-  {
-     XCoord = XWidth - cw->command.helpWidget->core.width - 2;
-     XtMoveWidget(cw->command.helpWidget, XCoord, YCoord);
-  }
-  cw->command.helpTimer = 0;
+    /* Move the helper window to the left, if the right border is
+     * outside of the screen
+     */
+    if ((XCoord + cw->command.helpWidget->core.width) > XWidth) {
+	XCoord = XWidth - cw->command.helpWidget->core.width - 2;
+	XtMoveWidget(cw->command.helpWidget, (Position) XCoord, (Position) YCoord);
+    }
+    cw->command.helpTimer = 0;
 }
 
 /***********************************************************************
@@ -380,33 +389,35 @@ XtIntervalId *timer GCC_UNUSED)
  *
  ***********************************************************************/
 
-static void Initialize(
-Widget request GCC_UNUSED,
-Widget new,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+static void
+Initialize(
+	      Widget request GCC_UNUSED,
+	      Widget new,
+	      ArgList args GCC_UNUSED,
+	      Cardinal *num_args GCC_UNUSED)
 {
-  Dimension Add, OldWidth;
-  CommandWidget cbw = (CommandWidget)new;
+    Dimension Add, OldWidth;
+    CommandWidget cbw = (CommandWidget) new;
 
-  cbw->command.set = FALSE;
+    cbw->command.set = FALSE;
 
-  /* Calculate the correct size of the widget */
+    /* Calculate the correct size of the widget */
 
-  Add = 2 * (cbw->simple.borderWidth + cbw->command.highlight_thickness);
-  OldWidth = cbw->core.width;
-  cbw->core.width  += Add;
-  cbw->core.height += Add;
-  RepositionLabel(new, new);
-  if (cbw->label.truncLabel)
-    TruncateLabelString((LabelWidget)new, OldWidth - LEFT_OFFSET((LabelWidget)new));
+    Add = (Dimension) (2 * (cbw->simple.borderWidth + cbw->command.highlight_thickness));
+    OldWidth = cbw->core.width;
+    cbw->core.width += Add;
+    cbw->core.height += Add;
+    RepositionLabel(new, new);
+    if (cbw->label.truncLabel)
+	TruncateLabelString((LabelWidget) new, (OldWidth -
+								       LEFT_OFFSET((LabelWidget) new)));
 
-  /* Initialize the help widget, if required */
+    /* Initialize the help widget, if required */
 
-  cbw->command.helpTimer = 0;
-  cbw->command.helpWidget = NULL;
-  if ((cbw->command.useHelp == TRUE) && (cbw->command.helpText != NULL))
-    CreateHelpWidget(cbw);
+    cbw->command.helpTimer = 0;
+    cbw->command.helpWidget = NULL;
+    if ((cbw->command.useHelp == TRUE) && (cbw->command.helpText != NULL))
+	CreateHelpWidget(cbw);
 }
 
 /***********************************************************************
@@ -415,12 +426,13 @@ Cardinal *num_args GCC_UNUSED)
  *
  ***********************************************************************/
 
-static void Redisplay(
-Widget w,
-XEvent *event GCC_UNUSED,
-Region region)
+static void
+Redisplay(
+	     Widget w,
+	     XEvent *event GCC_UNUSED,
+	     Region region)
 {
-  PaintCommandWidget(w, region);
+    PaintCommandWidget(w, region);
 }
 
 /***********************************************************************
@@ -430,10 +442,11 @@ Region region)
  *
  ***********************************************************************/
 
-static void Destroy(Widget w)
+static void
+Destroy(Widget w)
 {
-   CommandWidget cbw = (CommandWidget)w;
-   DestroyHelpWidget(cbw);
+    CommandWidget cbw = (CommandWidget) w;
+    DestroyHelpWidget(cbw);
 }
 
 /***********************************************************************
@@ -443,20 +456,22 @@ static void Destroy(Widget w)
  *
  ***********************************************************************/
 
-static void Resize(Widget w)
+static void
+Resize(Widget w)
 {
-  CommandWidget cbw = (CommandWidget)w;
-  int offset         = (int)cbw->command.highlight_thickness;
-  unsigned int width = w->core.width - 2*offset;
-  unsigned int height= w->core.height - 2*offset;
+    CommandWidget cbw = (CommandWidget) w;
+    int offset = (int) cbw->command.highlight_thickness;
+    unsigned int width = (unsigned) (w->core.width - 2 * offset);
+    unsigned int height = (unsigned) (w->core.height - 2 * offset);
 
-  RepositionLabel(w, w);
-  if (cbw->label.truncLabel)
-    TruncateLabelString((LabelWidget)w, width - 2*cbw->simple.borderWidth -
-    			 LEFT_OFFSET(cbw));
+    RepositionLabel(w, w);
+    if (cbw->label.truncLabel)
+	TruncateLabelString((LabelWidget) w, (width - 2 *
+					      cbw->simple.borderWidth -
+					      LEFT_OFFSET(cbw)));
 
-  if (XtIsRealized(w) && (cbw->command.highlightMode == FALSE))
-    XawRaisedRectangle(w, offset, offset, width, height);
+    if (XtIsRealized(w) && (cbw->command.highlightMode == FALSE))
+	XawRaisedRectangle(w, offset, offset, width, height);
 }
 
 /***********************************************************************
@@ -465,88 +480,87 @@ static void Resize(Widget w)
  *
  ***********************************************************************/
 
-static Boolean SetValues (
-Widget current,
-Widget request GCC_UNUSED,
-Widget new,
-ArgList args,
-Cardinal *num_args)
+static Boolean
+SetValues(
+	     Widget current,
+	     Widget request GCC_UNUSED,
+	     Widget new,
+	     ArgList args,
+	     Cardinal *num_args)
 {
-  CommandWidget oldcbw = (CommandWidget)current;
-  CommandWidget cbw = (CommandWidget)new;
-  Boolean	redisplay = FALSE,
-		NoWidthArg = TRUE, NoHeightArg = TRUE, DoResize = FALSE;
-  int		i;
+    CommandWidget oldcbw = (CommandWidget) current;
+    CommandWidget cbw = (CommandWidget) new;
+    Boolean redisplay = FALSE, NoWidthArg = TRUE, NoHeightArg = TRUE,
+    DoResize = FALSE;
+    int i;
 
-  if (oldcbw->command.useHelp != cbw->command.useHelp)
-  {
-    if (cbw->command.useHelp == TRUE)	/* helper becomes activated */
-    {
-	if (cbw->command.helpText != NULL) CreateHelpWidget(cbw);
+    if (oldcbw->command.useHelp != cbw->command.useHelp) {
+	if (cbw->command.useHelp == TRUE)	/* helper becomes activated */
+	{
+	    if (cbw->command.helpText != NULL)
+		CreateHelpWidget(cbw);
+	} else
+	    DestroyHelpWidget(cbw);	/* helper becomes deactivated */
     }
-    else DestroyHelpWidget(cbw);	/* helper becomes deactivated */
-  }
 
-  if (oldcbw->command.helpText != cbw->command.helpText)
-  {
-    /* Help text is changed: If the helper widget is created, we have to change
-     * the text resource. If not, we may be have to create the widget if the
-     * useHelp resource is set to true and the text is not NULL. If the text
-     * changes to NULL, we have to destroy the widget if it exists.
+    if (oldcbw->command.helpText != cbw->command.helpText) {
+	/* Help text is changed: If the helper widget is created, we have to change
+	 * the text resource. If not, we may be have to create the widget if the
+	 * useHelp resource is set to true and the text is not NULL. If the text
+	 * changes to NULL, we have to destroy the widget if it exists.
+	 */
+	if (cbw->command.helpWidget != NULL)
+	    if (cbw->command.helpText != NULL)
+		XtVaSetValues(cbw->command.helpLabel, XtNlabel,
+			      cbw->command.helpText, NULL);
+	    else
+		DestroyHelpWidget(cbw);
+	else {
+	    if ((cbw->command.helpText != NULL) && (cbw->command.useHelp == TRUE))
+		CreateHelpWidget(cbw);
+	}
+    }
+    if (oldcbw->command.highlight_thickness != cbw->command.highlight_thickness)
+	DoResize = TRUE;
+
+    if (oldcbw->core.sensitive != cbw->core.sensitive && !cbw->core.sensitive) {
+	cbw->command.set = FALSE;	/* about to become insensitive */
+	redisplay = TRUE;
+    }
+
+    if (oldcbw->command.highlightMode != cbw->command.highlightMode)
+	redisplay = TRUE;
+
+    /* We have to resize width and height if the widget geometry
+     * is recalculated by the underlying label. In this case the label shrinks.
      */
-    if (cbw->command.helpWidget != NULL)
-      if (cbw->command.helpText != NULL)
-        XtVaSetValues(cbw->command.helpLabel, XtNlabel, cbw->command.helpText, NULL);
-      else DestroyHelpWidget(cbw);
-    else
-    {
-      if ((cbw->command.helpText != NULL) && (cbw->command.useHelp == TRUE))
-	CreateHelpWidget(cbw);
+    for (i = 0; (Cardinal) i < *num_args; i++) {
+	if (strcmp(XtNwidth, args[i].name) == 0)
+	    NoWidthArg = FALSE;
+	if (strcmp(XtNheight, args[i].name) == 0)
+	    NoHeightArg = FALSE;
     }
-  }
-  if (oldcbw->command.highlight_thickness != cbw->command.highlight_thickness)
-    DoResize = TRUE;
 
-  if ( oldcbw->core.sensitive != cbw->core.sensitive && !cbw->core.sensitive)
-  {
-    cbw->command.set = FALSE;			/* about to become insensitive */
-    redisplay = TRUE;
-  }
+    if ((oldcbw->core.width != cbw->core.width) && NoWidthArg) {
+	cbw->core.width = CalcWidth(cbw);
+	DoResize = TRUE;
+    }
+    if ((oldcbw->core.height != cbw->core.height) && NoHeightArg) {
+	cbw->core.height = CalcHeight(cbw);
+	DoResize = TRUE;
+    }
+    if (DoResize || (oldcbw->label.label != cbw->label.label)) {
+	RepositionLabel(current, new);
+	if (cbw->label.truncLabel)
+	    TruncateLabelString((LabelWidget) new, oldcbw->core.width -
+				(unsigned) (2 * (cbw->simple.borderWidth +
+				cbw->command.highlight_thickness)) -
+				LEFT_OFFSET(cbw));
 
-  if (oldcbw->command.highlightMode != cbw->command.highlightMode)
-    redisplay = TRUE;
+	redisplay = TRUE;
+    }
 
- /* We have to resize width and height if the widget geometry
-  * is recalculated by the underlying label. In this case the label shrinks.
-  */
-  for (i = 0; (Cardinal) i < *num_args; i++)
-  {
-    if (strcmp(XtNwidth, args[i].name) == 0) NoWidthArg = FALSE;
-    if (strcmp(XtNheight, args[i].name) == 0) NoHeightArg = FALSE;
-  }
-
-  if ((oldcbw->core.width != cbw->core.width) && NoWidthArg)
-  {
-    cbw->core.width = CalcWidth(cbw);
-    DoResize = TRUE;
-  }
-  if ((oldcbw->core.height != cbw->core.height) && NoHeightArg)
-  {
-    cbw->core.height = CalcHeight(cbw);
-    DoResize = TRUE;
-  }
-  if (DoResize || (oldcbw->label.label != cbw->label.label))
-  {
-    RepositionLabel(current, new);
-    if (cbw->label.truncLabel)
-      TruncateLabelString((LabelWidget)new, oldcbw->core.width -
-        2*(cbw->simple.borderWidth + cbw->command.highlight_thickness) -
-	LEFT_OFFSET(cbw));
-
-    redisplay = TRUE;
-  }
-
-  return (redisplay);
+    return (redisplay);
 }
 
 /***********************************************************************
@@ -562,35 +576,35 @@ Cardinal *num_args)
  *
  ***********************************************************************/
 
-static void Set(
-Widget w,
-XEvent *event GCC_UNUSED,
-String *params GCC_UNUSED,
-Cardinal *num_params GCC_UNUSED)
+static void
+Set(
+       Widget w,
+       XEvent *event GCC_UNUSED,
+       String *params GCC_UNUSED,
+       Cardinal *num_params GCC_UNUSED)
 {
-  CommandWidget cbw = (CommandWidget)w;
-  unsigned int width, height;
-  int offset;
+    CommandWidget cbw = (CommandWidget) w;
+    unsigned int width, height;
+    int offset;
 
-  if (cbw->command.set == FALSE)
-  {
-     cbw->command.set = TRUE;
+    if (cbw->command.set == FALSE) {
+	cbw->command.set = TRUE;
 
-     if (XtIsRealized(w))
-     {
-       if (cbw->command.helpWidget)
-       {
-         if (cbw->command.helpTimer == 0) XtPopdown(cbw->command.helpWidget);
-         else XtRemoveTimeOut(cbw->command.helpTimer);
-         cbw->command.helpTimer = 0;
-       }
-       offset = (int)cbw->command.highlight_thickness;
-       width  = w->core.width - 2*offset;
-       height = w->core.height - 2*offset;
+	if (XtIsRealized(w)) {
+	    if (cbw->command.helpWidget) {
+		if (cbw->command.helpTimer == 0)
+		    XtPopdown(cbw->command.helpWidget);
+		else
+		    XtRemoveTimeOut(cbw->command.helpTimer);
+		cbw->command.helpTimer = 0;
+	    }
+	    offset = (int) cbw->command.highlight_thickness;
+	    width = (unsigned) (w->core.width - 2 * offset);
+	    height = (unsigned) (w->core.height - 2 * offset);
 
-       XawSunkenRectangle(w, offset, offset, width, height);
-     }
-  }
+	    XawSunkenRectangle(w, offset, offset, width, height);
+	}
+    }
 }
 
 /***********************************************************************
@@ -600,28 +614,27 @@ Cardinal *num_params GCC_UNUSED)
  *
  ***********************************************************************/
 
-static void Unset(
-Widget w,
-XEvent *event GCC_UNUSED,
-String *params GCC_UNUSED,
-Cardinal *num_params GCC_UNUSED)
+static void
+Unset(
+	 Widget w,
+	 XEvent *event GCC_UNUSED,
+	 String *params GCC_UNUSED,
+	 Cardinal *num_params GCC_UNUSED)
 {
-  CommandWidget cbw = (CommandWidget)w;
-  unsigned int width, height;
-  int offset;
+    CommandWidget cbw = (CommandWidget) w;
+    unsigned int width, height;
+    int offset;
 
-  if (cbw->command.set == TRUE)
-  {
-     cbw->command.set = FALSE;
-     if (XtIsRealized(w))
-     {
-	offset = (int)cbw->command.highlight_thickness;
-	width  = w->core.width - 2*offset;
-	height = w->core.height - 2*offset;
+    if (cbw->command.set == TRUE) {
+	cbw->command.set = FALSE;
+	if (XtIsRealized(w)) {
+	    offset = (int) cbw->command.highlight_thickness;
+	    width = (unsigned) (w->core.width - 2 * offset);
+	    height = (unsigned) (w->core.height - 2 * offset);
 
-	XawRaisedRectangle(w, offset, offset, width, height);
-     }
-  }
+	    XawRaisedRectangle(w, offset, offset, width, height);
+	}
+    }
 }
 
 /***********************************************************************
@@ -630,16 +643,18 @@ Cardinal *num_params GCC_UNUSED)
  *
  ***********************************************************************/
 
-static void Reset(
-Widget w,
-XEvent *event,
-String *params,
-Cardinal *num_params)
+static void
+Reset(
+	 Widget w,
+	 XEvent *event,
+	 String *params,
+	 Cardinal *num_params)
 {
-  CommandWidget cbw = (CommandWidget)w;
+    CommandWidget cbw = (CommandWidget) w;
 
-  if (cbw->command.set) Unset(w, event, params, num_params);
-  Unhighlight(w, event, params, num_params);
+    if (cbw->command.set)
+	Unset(w, event, params, num_params);
+    Unhighlight(w, event, params, num_params);
 }
 
 /***********************************************************************
@@ -649,30 +664,32 @@ Cardinal *num_params)
  *
  ***********************************************************************/
 
-static void Highlight(
-Widget w,
-XEvent *event GCC_UNUSED,
-String *params GCC_UNUSED,
-Cardinal *num_params GCC_UNUSED)
+static void
+Highlight(
+	     Widget w,
+	     XEvent *event GCC_UNUSED,
+	     String *params GCC_UNUSED,
+	     Cardinal *num_params GCC_UNUSED)
 {
-  CommandWidget cbw = (CommandWidget)w;
-  unsigned int width, height;
-  int offset;
+    CommandWidget cbw = (CommandWidget) w;
+    unsigned int width, height;
+    int offset;
 
-  if (XtIsRealized(w))
-  {
-    if ((cbw->command.set == FALSE) &&
-        (cbw->command.highlightMode))	/* New highlight mode */
-    {
-	offset = (int)cbw->command.highlight_thickness;
-	width  = w->core.width - 2*offset;
-	height = w->core.height - 2*offset;
+    if (XtIsRealized(w)) {
+	if ((cbw->command.set == FALSE) &&
+	    (cbw->command.highlightMode))	/* New highlight mode */
+	{
+	    offset = (int) cbw->command.highlight_thickness;
+	    width = (unsigned) (w->core.width - 2 * offset);
+	    height = (unsigned) (w->core.height - 2 * offset);
 
-	XawRaisedRectangle(w, offset, offset, width, height);
+	    XawRaisedRectangle(w, offset, offset, width, height);
+	}
+	if (cbw->command.helpWidget)
+	    cbw->command.helpTimer =
+		XtAppAddTimeOut(XtWidgetToApplicationContext(w), HELP_TIMER,
+				PopupHelper, w);
     }
-    if (cbw->command.helpWidget) cbw->command.helpTimer =
-	XtAppAddTimeOut(XtWidgetToApplicationContext(w), HELP_TIMER, PopupHelper, w);
-  }
 }
 
 /***********************************************************************
@@ -682,35 +699,33 @@ Cardinal *num_params GCC_UNUSED)
  *
  ***********************************************************************/
 
-static void Unhighlight(
-Widget w,
-XEvent *event GCC_UNUSED,
-String *params GCC_UNUSED,
-Cardinal *num_params GCC_UNUSED)
+static void
+Unhighlight(
+	       Widget w,
+	       XEvent *event GCC_UNUSED,
+	       String *params GCC_UNUSED,
+	       Cardinal *num_params GCC_UNUSED)
 {
-  CommandWidget cbw = (CommandWidget)w;
-  unsigned int width, height;
-  int offset;
+    CommandWidget cbw = (CommandWidget) w;
+    unsigned int width, height;
+    int offset;
 
-  if (XtIsRealized(w))
-  {
-    if ((cbw->command.set == FALSE) &&
-        (cbw->command.highlightMode))	/* New highlight mode */
-    {
-	offset = (int)cbw->command.highlight_thickness;
-	width  = w->core.width - 2*offset;
-	height = w->core.height - 2*offset;
+    if (XtIsRealized(w)) {
+	if ((cbw->command.set == FALSE) &&
+	    (cbw->command.highlightMode))	/* New highlight mode */
+	{
+	    offset = (int) cbw->command.highlight_thickness;
+	    width = (unsigned) (w->core.width - 2 * offset);
+	    height = (unsigned) (w->core.height - 2 * offset);
 
-	XawFlatRectangle(w, offset, offset, width, height);
+	    XawFlatRectangle(w, offset, offset, width, height);
+	}
+	if (cbw->command.helpTimer) {
+	    XtRemoveTimeOut(cbw->command.helpTimer);
+	    cbw->command.helpTimer = 0;
+	} else if (cbw->command.helpWidget)
+	    XtPopdown(cbw->command.helpWidget);
     }
-    if (cbw->command.helpTimer)
-    {
-        XtRemoveTimeOut(cbw->command.helpTimer);
-        cbw->command.helpTimer = 0;
-    }
-    else
-      if (cbw->command.helpWidget) XtPopdown(cbw->command.helpWidget);
-  }
 }
 
 /***********************************************************************
@@ -719,20 +734,21 @@ Cardinal *num_params GCC_UNUSED)
  *
  ***********************************************************************/
 
-static void Notify(
-Widget w,
-XEvent *event GCC_UNUSED,
-String *params GCC_UNUSED,
-Cardinal *num_params GCC_UNUSED)
+static void
+Notify(
+	  Widget w,
+	  XEvent *event GCC_UNUSED,
+	  String *params GCC_UNUSED,
+	  Cardinal *num_params GCC_UNUSED)
 {
-  CommandWidget cbw = (CommandWidget)w;
+    CommandWidget cbw = (CommandWidget) w;
 
-  /* check to be sure state is still Set so that user can cancel
-     the action (e.g. by moving outside the window, in the default
-     bindings.
-  */
-  if (cbw->command.set)
-    XtCallCallbackList(w, cbw->command.callbacks, NULL);
+    /* check to be sure state is still Set so that user can cancel
+       the action (e.g. by moving outside the window, in the default
+       bindings.
+     */
+    if (cbw->command.set)
+	XtCallCallbackList(w, cbw->command.callbacks, NULL);
 }
 
 /***********************************************************************
@@ -742,32 +758,37 @@ Cardinal *num_params GCC_UNUSED)
  *
  ***********************************************************************/
 
-static XtGeometryResult QueryGeometry(
-Widget w,
-XtWidgetGeometry *intended,
-XtWidgetGeometry *preferred)
+static XtGeometryResult
+QueryGeometry(
+		 Widget w,
+		 XtWidgetGeometry * intended,
+		 XtWidgetGeometry * preferred)
 {
-  CommandWidget cbw = (CommandWidget)w;
-  Boolean widthOk, heightOk;
+    CommandWidget cbw = (CommandWidget) w;
+    Boolean widthOk, heightOk;
 
-  /* This is commands preferred width and height */
+    /* This is commands preferred width and height */
 
-  preferred->request_mode = CWWidth | CWHeight;
-  preferred->width = cbw->label.label_width + 2*cbw->label.internal_width + LEFT_OFFSET(cbw) +
-		     2*cbw->simple.borderWidth + 2*cbw->command.highlight_thickness;
-  preferred->height= cbw->label.label_height + 2*cbw->label.internal_height +
-		     2*cbw->simple.borderWidth + 2*cbw->command.highlight_thickness;
+    preferred->request_mode = CWWidth | CWHeight;
+    preferred->width = (Dimension) (cbw->label.label_width + 2 *
+				    cbw->label.internal_width + (int)
+				    LEFT_OFFSET(cbw) +
+				    2 * cbw->simple.borderWidth + 2 * cbw->command.highlight_thickness);
+    preferred->height = (Dimension) (cbw->label.label_height + 2 *
+				     cbw->label.internal_height +
+				     2 * cbw->simple.borderWidth + 2 * cbw->command.highlight_thickness);
 
-  /* Now let us see, if the geometry request is acceptable in any way */
+    /* Now let us see, if the geometry request is acceptable in any way */
 
-  if ((intended->request_mode & (CWWidth|CWHeight)) == (CWWidth|CWHeight))
-  {
-     widthOk  = (intended->width >= preferred->width);
-     heightOk = (intended->height >= preferred->height);
+    if ((intended->request_mode & (CWWidth | CWHeight)) == (CWWidth | CWHeight)) {
+	widthOk = (intended->width >= preferred->width);
+	heightOk = (intended->height >= preferred->height);
 
-     if (widthOk && heightOk) return(XtGeometryYes);
-     if (widthOk || heightOk) return(XtGeometryAlmost);
-     return(XtGeometryNo);
-  }
-  return(XtGeometryYes);
+	if (widthOk && heightOk)
+	    return (XtGeometryYes);
+	if (widthOk || heightOk)
+	    return (XtGeometryAlmost);
+	return (XtGeometryNo);
+    }
+    return (XtGeometryYes);
 }

@@ -1,10 +1,10 @@
 /*
- * $XTermId: List.c,v 1.7 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: List.c,v 1.9 2024/04/29 00:01:15 tom Exp $
  * $Xorg: List.c,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
  */
 
 /*
-Copyright 2015, 2022	Thomas E. Dickey
+Copyright 2015-2022,2024	Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -52,7 +52,7 @@ in this Software without prior written authorization from The Open Group.
 
 #include <X11/XawPlus/XawInit.h>
 #include <X11/XawPlus/ListP.h>
-
+/* *INDENT-OFF* */
 /* These added so widget knows whether its height, width are user selected.
 I also added the freedoms member of the list widget part. */
 
@@ -188,9 +188,10 @@ ListClassRec listClassRec = {
     /* not used			*/	0
   },
 };
+/* *INDENT-ON* */
 
-WidgetClass listWidgetClass = (WidgetClass)&listClassRec;
-WidgetClass iconListWidgetClass = (WidgetClass)&listClassRec;
+WidgetClass listWidgetClass = (WidgetClass) & listClassRec;
+WidgetClass iconListWidgetClass = (WidgetClass) & listClassRec;
 
 /****************************************************************
  *
@@ -198,32 +199,34 @@ WidgetClass iconListWidgetClass = (WidgetClass)&listClassRec;
  *
  ****************************************************************/
 
-static void GetGCs(Widget w)
+static void
+GetGCs(Widget w)
 {
-    XGCValues	values;
+    XGCValues values;
     ListWidget lw = (ListWidget) w;
 
     values.foreground = lw->list.foreground;
     values.background = lw->core.background_pixel;
-    values.font	      = lw->list.font->fid;
+    values.font = lw->list.font->fid;
 
-    if (lw->simple.international == True)
-    {
-      lw->list.normgc = XtAllocateGC(w, 0, GCForeground|GCBackground, &values, GCFont, 0);
-      lw->list.iconGc = XtAllocateGC(w, 0, GCForeground|GCBackground, &values, 0, 0);
-    }
-    else
-    {
-      lw->list.normgc = XtGetGC(w, GCForeground|GCBackground|GCFont, &values);
-      lw->list.iconGc = XtGetGC(w, GCForeground|GCBackground, &values);
+    if (lw->simple.international == True) {
+	lw->list.normgc = XtAllocateGC(w, 0, GCForeground | GCBackground,
+				       &values, GCFont, 0);
+	lw->list.iconGc = XtAllocateGC(w, 0, GCForeground | GCBackground,
+				       &values, 0, 0);
+    } else {
+	lw->list.normgc = XtGetGC(w, GCForeground | GCBackground | GCFont, &values);
+	lw->list.iconGc = XtGetGC(w, GCForeground | GCBackground, &values);
     }
 
     values.foreground = lw->core.background_pixel;
     values.background = lw->list.foreground;
 
     if (lw->simple.international == True)
-      lw->list.revgc = XtAllocateGC(w, 0, GCForeground|GCBackground, &values, GCFont, 0);
-    else lw->list.revgc = XtGetGC(w, GCForeground|GCFont|GCBackground, &values);
+	lw->list.revgc = XtAllocateGC(w, 0, GCForeground | GCBackground,
+				      &values, GCFont, 0);
+    else
+	lw->list.revgc = XtGetGC(w, GCForeground | GCFont | GCBackground, &values);
 
     values.tile = XmuCreateStippledPixmap(XtScreen(w),
 					  lw->list.foreground,
@@ -232,8 +235,10 @@ static void GetGCs(Widget w)
     values.fill_style = FillTiled;
 
     if (lw->simple.international == True)
-      lw->list.graygc = XtAllocateGC(w, 0, GCTile|GCFillStyle, &values, GCFont, 0);
-    else lw->list.graygc = XtGetGC( w, GCFont|GCTile|GCFillStyle, &values);
+	lw->list.graygc = XtAllocateGC(w, 0, GCTile | GCFillStyle, &values,
+				       GCFont, 0);
+    else
+	lw->list.graygc = XtGetGC(w, GCFont | GCTile | GCFillStyle, &values);
 }
 
 /* CalculatedValues()
@@ -246,7 +251,8 @@ static void GetGCs(Widget w)
  * MAY NOT change your geometry from within a SetValues. (Xt man,
  * sect. 9.7.2)  So, I factored these changes out. */
 
-static void CalculatedValues(Widget w)
+static void
+CalculatedValues(Widget w)
 {
     int i, len;
 
@@ -255,54 +261,57 @@ static void CalculatedValues(Widget w)
     /* If both lists are NULL then the list will just be the name of the widget. */
 
     if ((lw->list.list == NULL) && (lw->list.iconList == NULL)) {
-      lw->list.list = &(lw->core.name);
-      lw->list.nitems = 1;
+	lw->list.list = &(lw->core.name);
+	lw->list.nitems = 1;
     }
 
     /* Get the number of items. One list is always defined here ! */
 
-    if (lw->list.iconList)
-    {
-     /* If an icon list is available we use it with a
-      * higher priority as the text list.
-      */
-      if (lw->list.nitems == 0)
-        for ( ; lw->list.iconList[lw->list.nitems].string != NULL; lw->list.nitems++);
-    }
-    else if ((lw->list.list) && (lw->list.nitems == 0))
-        for ( ; lw->list.list[lw->list.nitems] != NULL; lw->list.nitems++);
+    if (lw->list.iconList) {
+	/* If an icon list is available we use it with a
+	 * higher priority as the text list.
+	 */
+	if (lw->list.nitems == 0)
+	    for (; lw->list.iconList[lw->list.nitems].string != NULL;
+		 lw->list.nitems++) ;
+    } else if ((lw->list.list) && (lw->list.nitems == 0))
+	for (; lw->list.list[lw->list.nitems] != NULL; lw->list.nitems++) ;
 
     /* Get column width. */
 
-    if (LongestFree(lw))
-    {
-        lw->list.longest = 0; /* so it will accumulate real longest below */
+    if (LongestFree(lw)) {
+	lw->list.longest = 0;	/* so it will accumulate real longest below */
 
-	if (lw->list.iconList)
-	{
-          for ( i = 0 ; i < lw->list.nitems; i++)
-	  {
-            if (lw->simple.international == True)
-	      len = XmbTextEscapement(lw->list.fontset, lw->list.iconList[i].string,
-				      strlen(lw->list.iconList[i].string));
-            else len = XTextWidth(lw->list.font, lw->list.iconList[i].string,
-				  strlen(lw->list.iconList[i].string));
-            if (len > lw->list.longest) lw->list.longest = len;
-          }
-	}
-	else
-	{
-          for ( i = 0 ; i < lw->list.nitems; i++)
-	  {
-            if (lw->simple.international == True)
-	      len = XmbTextEscapement(lw->list.fontset, lw->list.list[i], strlen(lw->list.list[i]));
-            else len = XTextWidth(lw->list.font, lw->list.list[i], strlen(lw->list.list[i]));
-            if (len > lw->list.longest) lw->list.longest = len;
-          }
+	if (lw->list.iconList) {
+	    for (i = 0; i < lw->list.nitems; i++) {
+		if (lw->simple.international == True)
+		    len = XmbTextEscapement(lw->list.fontset,
+					    lw->list.iconList[i].string,
+					    (int)
+							 strlen(lw->list.iconList[i].string));
+		else
+		    len = XTextWidth(lw->list.font, lw->list.iconList[i].string,
+				     (int) strlen(lw->list.iconList[i].string));
+		if (len > lw->list.longest)
+		    lw->list.longest = len;
+	    }
+	} else {
+	    for (i = 0; i < lw->list.nitems; i++) {
+		if (lw->simple.international == True)
+		    len = XmbTextEscapement(lw->list.fontset,
+					    lw->list.list[i], (int)
+									   strlen(lw->list.list[i]));
+		else
+		    len = XTextWidth(lw->list.font, lw->list.list[i], (int)
+				     strlen(lw->list.list[i]));
+		if (len > lw->list.longest)
+		    lw->list.longest = len;
+	    }
 	}
     }
     lw->list.col_width = lw->list.longest + lw->list.column_space;
-    if (lw->list.iconList) lw->list.col_width += lw->list.icon_width;
+    if (lw->list.iconList)
+	lw->list.col_width += lw->list.icon_width;
 }
 
 /*	Function Name: ResetList
@@ -315,17 +324,17 @@ static void CalculatedValues(Widget w)
 
 static void
 ResetList(
-Widget w,
-Boolean changex,
-Boolean changey)
+	     Widget w,
+	     Boolean changex,
+	     Boolean changey)
 {
     Dimension width = w->core.width;
     Dimension height = w->core.height;
 
-    CalculatedValues( w );
+    CalculatedValues(w);
 
-    if( Layout( w, changex, changey, &width, &height ) )
-      ChangeSize( w, width, height );
+    if (Layout(w, changex, changey, &width, &height))
+	ChangeSize(w, width, height);
 }
 
 /*	Function Name: ChangeSize.
@@ -336,9 +345,9 @@ Boolean changey)
 
 static void
 ChangeSize(
-Widget w,
-Dimension width,
-Dimension height)
+	      Widget w,
+	      Dimension width,
+	      Dimension height)
 {
     XtWidgetGeometry request, reply;
 
@@ -346,17 +355,17 @@ Dimension height)
     request.width = width;
     request.height = height;
 
-    switch ( XtMakeGeometryRequest(w, &request, &reply) ) {
+    switch (XtMakeGeometryRequest(w, &request, &reply)) {
     case XtGeometryYes:
-        break;
+	break;
     case XtGeometryNo:
-        break;
+	break;
     case XtGeometryAlmost:
 	Layout(w, (request.height != reply.height),
-	          (request.width != reply.width),
+	       (request.width != reply.width),
 	       &(reply.width), &(reply.height));
 	request = reply;
-	switch (XtMakeGeometryRequest(w, &request, &reply) ) {
+	switch (XtMakeGeometryRequest(w, &request, &reply)) {
 	case XtGeometryYes:
 	case XtGeometryNo:
 	    break;
@@ -368,9 +377,9 @@ Dimension height)
 	    break;
 	case XtGeometryDone:
 	default:
-	  XtAppWarning(XtWidgetToApplicationContext(w),
-		       "List Widget: Unknown geometry return.");
-	  break;
+	    XtAppWarning(XtWidgetToApplicationContext(w),
+			 "List Widget: Unknown geometry return.");
+	    break;
 	}
 	break;
     case XtGeometryDone:
@@ -388,11 +397,12 @@ Dimension height)
  *	Returns: none
  */
 
-static void Initialize(
-Widget junk GCC_UNUSED,
-Widget new,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+static void
+Initialize(
+	      Widget junk GCC_UNUSED,
+	      Widget new,
+	      ArgList args GCC_UNUSED,
+	      Cardinal *num_args GCC_UNUSED)
 {
     ListWidget lw = (ListWidget) new;
 
@@ -402,25 +412,27 @@ Cardinal *num_args GCC_UNUSED)
 
     /* record for posterity if we are free */
     lw->list.freedoms = (lw->core.width != 0) * WidthLock +
-                        (lw->core.height != 0) * HeightLock +
-                        (lw->list.longest != 0) * LongestLock;
+	(lw->core.height != 0) * HeightLock +
+	(lw->list.longest != 0) * LongestLock;
 
     GetGCs(new);
 
     /* Set row height. based on font or fontset */
 
     if (lw->simple.international == True)
-      lw->list.row_height = XExtentsOfFontSet(lw->list.fontset)->max_ink_extent.height;
-    else lw->list.row_height = lw->list.font->max_bounds.ascent + lw->list.font->max_bounds.descent;
+	lw->list.row_height = XExtentsOfFontSet(lw->list.fontset)->max_ink_extent.height;
+    else
+	lw->list.row_height = lw->list.font->max_bounds.ascent + lw->list.font->max_bounds.descent;
 
     if (lw->list.iconList && (lw->list.row_height < lw->list.icon_height))
 	lw->list.row_height = lw->list.icon_height + lw->list.row_space;
-    else lw->list.row_height += lw->list.row_space;
+    else
+	lw->list.row_height += lw->list.row_space;
 
     ResetList(new, WidthFree(lw), HeightFree(lw));
     lw->list.highlight = lw->list.is_highlighted = NO_HIGHLIGHT;
 
-} /* Initialize */
+}				/* Initialize */
 
 /*	Function Name: CvtToItem
  *	Description: Converts Xcoord to item number of item containing that
@@ -432,43 +444,45 @@ Cardinal *num_args GCC_UNUSED)
 
 static int
 CvtToItem(
-Widget w,
-int xloc,
-int yloc,
-int *item)
+	     Widget w,
+	     int xloc,
+	     int yloc,
+	     int *item)
 {
     int one, another;
     ListWidget lw = (ListWidget) w;
     int ret_val = OKAY;
 
     if (lw->list.vertical_cols) {
-        one = lw->list.nrows * ((xloc - (int) lw->list.internal_width)
-	    / lw->list.col_width);
-        another = (yloc - (int) lw->list.internal_height)
-	        / lw->list.row_height;
-	 /* If out of range, return minimum possible value. */
+	one = lw->list.nrows * ((xloc - (int) lw->list.internal_width)
+				/ lw->list.col_width);
+	another = (yloc - (int) lw->list.internal_height)
+	    / lw->list.row_height;
+	/* If out of range, return minimum possible value. */
 	if (another >= lw->list.nrows) {
 	    another = lw->list.nrows - 1;
 	    ret_val = OUT_OF_RANGE;
 	}
-    }
-    else {
-        one = (lw->list.ncols * ((yloc - (int) lw->list.internal_height)
-              / lw->list.row_height)) ;
+    } else {
+	one = (lw->list.ncols * ((yloc - (int) lw->list.internal_height)
+				 / lw->list.row_height));
 	/* If in right margin handle things right. */
-        another = (xloc - (int) lw->list.internal_width) / lw->list.col_width;
+	another = (xloc - (int) lw->list.internal_width) / lw->list.col_width;
 	if (another >= lw->list.ncols) {
 	    another = lw->list.ncols - 1;
 	    ret_val = OUT_OF_RANGE;
 	}
     }
     if ((xloc < 0) || (yloc < 0))
-        ret_val = OUT_OF_RANGE;
-    if (one < 0) one = 0;
-    if (another < 0) another = 0;
+	ret_val = OUT_OF_RANGE;
+    if (one < 0)
+	one = 0;
+    if (another < 0)
+	another = 0;
     *item = one + another;
-    if (*item >= lw->list.nitems) return(OUT_OF_RANGE);
-    return(ret_val);
+    if (*item >= lw->list.nitems)
+	return (OUT_OF_RANGE);
+    return (ret_val);
 }
 
 /*	Function Name: FindCornerItems.
@@ -481,10 +495,10 @@ int *item)
 
 static void
 FindCornerItems(
-Widget w,
-XEvent * event,
-int *ul_ret,
-int *lr_ret)
+		   Widget w,
+		   XEvent *event,
+		   int *ul_ret,
+		   int *lr_ret)
 {
     int xloc, yloc;
 
@@ -506,26 +520,26 @@ int *lr_ret)
 
 static Boolean
 ItemInRectangle(
-Widget w,
-int ul,
-int lr,
-int item)
+		   Widget w,
+		   int ul,
+		   int lr,
+		   int item)
 {
     ListWidget lw = (ListWidget) w;
     int mod_item;
     int things;
 
     if (item < ul || item > lr)
-        return(FALSE);
+	return (FALSE);
     if (lw->list.vertical_cols)
-        things = lw->list.nrows;
+	things = lw->list.nrows;
     else
-        things = lw->list.ncols;
+	things = lw->list.ncols;
 
     mod_item = item % things;
-    if ( (mod_item >= ul % things) && (mod_item <= lr % things ) )
-        return(TRUE);
-    return(FALSE);
+    if ((mod_item >= ul % things) && (mod_item <= lr % things))
+	return (TRUE);
+    return (FALSE);
 }
 
 /*	Function Name: HighlightBackground
@@ -538,19 +552,20 @@ int item)
 
 static void
 HighlightBackground(
-Widget w,
-int x,
-int y,
-GC gc)
+		       Widget w,
+		       int x,
+		       int y,
+		       GC gc)
 {
     ListWidget lw = (ListWidget) w;
     int hl_x, hl_y, width;
 
-    hl_x   = x - lw->list.column_space/2;
-    width  = lw->list.col_width + lw->list.column_space/2;
-    hl_y   = y - lw->list.row_space/2;
+    hl_x = x - lw->list.column_space / 2;
+    width = lw->list.col_width + lw->list.column_space / 2;
+    hl_y = y - lw->list.row_space / 2;
 
-    XFillRectangle(XtDisplay(w), XtWindow(w), gc, hl_x, hl_y, width, lw->list.row_height);
+    XFillRectangle(XtDisplay(w), XtWindow(w), gc, hl_x, hl_y, (unsigned)
+		   width, (unsigned) lw->list.row_height);
 }
 
 /*  PaintItemName()
@@ -563,114 +578,123 @@ GC gc)
 
 static void
 PaintItemName(
-Widget w,
-int item)
+		 Widget w,
+		 int item)
 {
-    char * str;
+    char *str;
     GC gc;
     int x, y, str_x, str_y, h_x, delta;
     ListWidget lw = (ListWidget) w;
-    XFontSetExtents *ext  = XExtentsOfFontSet(lw->list.fontset);
+    XFontSetExtents *ext = XExtentsOfFontSet(lw->list.fontset);
 
-    if (!XtIsRealized(w)) return; /* Just in case... */
+    if (!XtIsRealized(w))
+	return;			/* Just in case... */
 
     if (lw->list.vertical_cols) {
 	x = (lw->list.col_width + lw->list.internal_width) * (item / lw->list.nrows);
-        y = lw->list.row_height * (item % lw->list.nrows) + lw->list.internal_height;
-    }
-    else {
-        x = (lw->list.col_width + lw->list.internal_width) * (item % lw->list.ncols);
-        y = lw->list.row_height * (item / lw->list.ncols) + lw->list.internal_height;
+	y = lw->list.row_height * (item % lw->list.nrows) + lw->list.internal_height;
+    } else {
+	x = (lw->list.col_width + lw->list.internal_width) * (item % lw->list.ncols);
+	y = lw->list.row_height * (item / lw->list.ncols) + lw->list.internal_height;
     }
     /* Determine the string and the icon position */
 
     if (lw->list.iconList)
-      str_x  = x + lw->list.icon_width + lw->list.internal_width;
-    else str_x = x;
+	str_x = x + lw->list.icon_width + lw->list.internal_width;
+    else
+	str_x = x;
     h_x = x + lw->list.internal_width;
 
     if (lw->simple.international) {
-	delta = (lw->list.row_height - ext->max_ink_extent.height)/2 - lw->list.internal_height;
+	delta = (lw->list.row_height - ext->max_ink_extent.height) / 2 - lw->list.internal_height;
 	str_y = y + abs(ext->max_ink_extent.y) + delta;
-    }
-    else {
+    } else {
 	delta = (lw->list.row_height - lw->list.font->max_bounds.ascent -
-		 lw->list.font->max_bounds.descent)/2 - lw->list.internal_height;
+		 lw->list.font->max_bounds.descent) / 2 - lw->list.internal_height;
 	str_y = y + lw->list.font->max_bounds.ascent + delta;
     }
     /* Paint or erase the highlighted background */
 
     if (item == lw->list.is_highlighted) {
-        if (item == lw->list.highlight) {
-            gc = lw->list.revgc;
+	if (item == lw->list.highlight) {
+	    gc = lw->list.revgc;
 	    HighlightBackground(w, h_x, y, lw->list.normgc);
-	}
-        else {
-	    if (XtIsSensitive(w)) gc = lw->list.normgc;
-	    else gc = lw->list.graygc;
+	} else {
+	    if (XtIsSensitive(w))
+		gc = lw->list.normgc;
+	    else
+		gc = lw->list.graygc;
 	    HighlightBackground(w, h_x, y, lw->list.revgc);
 	    lw->list.is_highlighted = NO_HIGHLIGHT;
-        }
-    }
-    else {
-        if (item == lw->list.highlight) {
-            gc = lw->list.revgc;
+	}
+    } else {
+	if (item == lw->list.highlight) {
+	    gc = lw->list.revgc;
 	    HighlightBackground(w, h_x, y, lw->list.normgc);
 	    lw->list.is_highlighted = item;
-	}
-	else {
-	    if (XtIsSensitive(w)) gc = lw->list.normgc;
-	    else gc = lw->list.graygc;
+	} else {
+	    if (XtIsSensitive(w))
+		gc = lw->list.normgc;
+	    else
+		gc = lw->list.graygc;
 	}
     }
-    /*	Paint the icon if there is one. The icon will only be painted, if
- 	width and height are greater than 0 and if an icon is defined for
-	this entry. The depth of the icon has to be 1 (normal bitmap)
-	or of the same color depth as your display */
+    /*  Paint the icon if there is one. The icon will only be painted, if
+       width and height are greater than 0 and if an icon is defined for
+       this entry. The depth of the icon has to be 1 (normal bitmap)
+       or of the same color depth as your display */
 
     if ((lw->list.iconList) &&
 	(lw->list.icon_width > 0) && (lw->list.icon_height > 0)) {
-      x += lw->list.column_space/2;
-      if (lw->list.iconList[item].bitmap != XtUnspecifiedPixmap)
-	if (lw->list.icon_depth == 1)
-          XCopyPlane(XtDisplay(w),lw->list.iconList[item].bitmap,XtWindow(w),
-		lw->list.normgc,0,0,lw->list.icon_width,lw->list.icon_height, x, y, 1L);
+	x += lw->list.column_space / 2;
+	if (lw->list.iconList[item].bitmap != XtUnspecifiedPixmap)
+	    if (lw->list.icon_depth == 1)
+		XCopyPlane(XtDisplay(w), lw->list.iconList[item].bitmap,
+			   XtWindow(w),
+			   lw->list.normgc, 0, 0, lw->list.icon_width,
+			   lw->list.icon_height, x, y, 1L);
+	    else if (lw->list.iconList[item].clipMask != XtUnspecifiedPixmap) {
+		/* Support of a clip mask for non rectangular or transparent
+		 * pixmaps: Manipulate the GC with a clip mask
+		 */
+		XSetClipMask(XtDisplay(w), lw->list.iconGc,
+			     lw->list.iconList[item].clipMask);
+		XSetClipOrigin(XtDisplay(w), lw->list.iconGc, x, y);
+		XCopyArea(XtDisplay(w), lw->list.iconList[item].bitmap,
+			  XtWindow(w),
+			  lw->list.iconGc, 0, 0, lw->list.icon_width,
+			  lw->list.icon_height, x, y);
+	    } else
+		XCopyArea(XtDisplay(w), lw->list.iconList[item].bitmap,
+			  XtWindow(w),
+			  lw->list.normgc, 0, 0, lw->list.icon_width,
+			  lw->list.icon_height, x, y);
 	else
-	  if (lw->list.iconList[item].clipMask != XtUnspecifiedPixmap)
-          {
-	    /* Support of a clip mask for non rectangular or transparent
-	     * pixmaps: Manipulate the GC with a clip mask
-	     */
-	     XSetClipMask(XtDisplay(w),lw->list.iconGc,lw->list.iconList[item].clipMask);
-	     XSetClipOrigin(XtDisplay(w),lw->list.iconGc, x, y);
-             XCopyArea(XtDisplay(w),lw->list.iconList[item].bitmap,XtWindow(w),
-		 lw->list.iconGc,0,0,lw->list.icon_width,lw->list.icon_height, x, y);
-          }
-	  else
-            XCopyArea(XtDisplay(w),lw->list.iconList[item].bitmap,XtWindow(w),
-		 lw->list.normgc,0,0,lw->list.icon_width,lw->list.icon_height, x, y);
-      else XClearArea(XtDisplay(w), XtWindow(w), x, y,
-		 lw->list.icon_width,lw->list.icon_height,FALSE);
+	    XClearArea(XtDisplay(w), XtWindow(w), x, y,
+		       lw->list.icon_width, lw->list.icon_height, FALSE);
     }
     /* List's overall width contains the same number of inter-column
        column_space's as columns.  There should thus be a half
        column_width margin on each side of each column.
        The row case is symmetric. */
 
-    str_x  += lw->list.column_space/2;
-    str_y  += lw->list.row_space/2;
+    str_x += lw->list.column_space / 2;
+    str_y += lw->list.row_space / 2;
 
     /* Draw the String */
 
-    if (lw->list.iconList) str = DeConst(lw->list.iconList[item].string);
-    else str = DeConst(lw->list.list[item]);
+    if (lw->list.iconList)
+	str = DeConst(lw->list.iconList[item].string);
+    else
+	str = DeConst(lw->list.list[item]);
 
     if (lw->simple.international)
-        XmbDrawString(XtDisplay(w), XtWindow(w), lw->list.fontset,
-		      gc, str_x, str_y, str, strlen(str));
-    else XDrawString(XtDisplay(w), XtWindow(w), gc, str_x, str_y, str, strlen(str));
+	XmbDrawString(XtDisplay(w), XtWindow(w), lw->list.fontset,
+		      gc, str_x, str_y, str, (int) strlen(str));
+    else
+	XDrawString(XtDisplay(w), XtWindow(w), gc, str_x, str_y, str, (int)
+		    strlen(str));
 }
-
 
 /* Redisplay()
  *
@@ -682,27 +706,25 @@ int item)
 /* ARGSUSED */
 static void
 Redisplay(
-Widget w,
-XEvent *event,
-Region junk GCC_UNUSED)
+	     Widget w,
+	     XEvent *event,
+	     Region junk GCC_UNUSED)
 {
     int item;			/* an item to work with. */
-    int ul_item, lr_item;       /* corners of items we need to paint. */
+    int ul_item, lr_item;	/* corners of items we need to paint. */
     ListWidget lw = (ListWidget) w;
 
     if (event == NULL) {	/* repaint all. */
-        ul_item = 0;
+	ul_item = 0;
 	lr_item = lw->list.nrows * lw->list.ncols - 1;
 	XClearWindow(XtDisplay(w), XtWindow(w));
-    }
-    else
-        FindCornerItems(w, event, &ul_item, &lr_item);
+    } else
+	FindCornerItems(w, event, &ul_item, &lr_item);
 
-    for (item = ul_item; (item <= lr_item && item < lw->list.nitems) ; item++)
-      if (ItemInRectangle(w, ul_item, lr_item, item))
-	PaintItemName(w, item);
+    for (item = ul_item; (item <= lr_item && item < lw->list.nitems); item++)
+	if (ItemInRectangle(w, ul_item, lr_item, item))
+	    PaintItemName(w, item);
 }
-
 
 /* PreferredGeom()
  *
@@ -714,9 +736,9 @@ Region junk GCC_UNUSED)
 
 static XtGeometryResult
 PreferredGeom(
-Widget w,
-XtWidgetGeometry *intended,
-XtWidgetGeometry *requested)
+		 Widget w,
+		 XtWidgetGeometry * intended,
+		 XtWidgetGeometry * requested)
 {
     Dimension new_width, new_height;
     Boolean change, width_req, height_req;
@@ -725,14 +747,14 @@ XtWidgetGeometry *requested)
     height_req = intended->request_mode & CWHeight;
 
     if (width_req)
-      new_width = intended->width;
+	new_width = intended->width;
     else
-      new_width = w->core.width;
+	new_width = w->core.width;
 
     if (height_req)
-      new_height = intended->height;
+	new_height = intended->height;
     else
-      new_height = w->core.height;
+	new_height = w->core.height;
 
     requested->request_mode = 0;
 
@@ -740,8 +762,8 @@ XtWidgetGeometry *requested)
  * We only care about our height and width.
  */
 
-    if ( !width_req && !height_req)
-      return(XtGeometryYes);
+    if (!width_req && !height_req)
+	return (XtGeometryYes);
 
     change = Layout(w, !width_req, !height_req, &new_width, &new_height);
 
@@ -751,10 +773,9 @@ XtWidgetGeometry *requested)
     requested->height = new_height;
 
     if (change)
-        return(XtGeometryAlmost);
-    return(XtGeometryYes);
+	return (XtGeometryAlmost);
+    return (XtGeometryYes);
 }
-
 
 /* Resize()
  *
@@ -770,9 +791,8 @@ Resize(Widget w)
 
     if (Layout(w, FALSE, FALSE, &width, &height))
 	XtAppWarning(XtWidgetToApplicationContext(w),
-	   "List Widget: Size changed when it shouldn't have when resising.");
+		     "List Widget: Size changed when it shouldn't have when resising.");
 }
-
 
 /* Layout()
  *
@@ -788,11 +808,11 @@ Resize(Widget w)
 
 static Boolean
 Layout(
-Widget w,
-Boolean xfree,
-Boolean yfree,
-Dimension *width,
-Dimension *height)
+	  Widget w,
+	  Boolean xfree,
+	  Boolean yfree,
+	  Dimension *width,
+	  Dimension *height)
 {
     ListWidget lw = (ListWidget) w;
     Boolean change = FALSE;
@@ -803,26 +823,27 @@ Dimension *height)
  */
 
     if (lw->list.force_cols) {
-        lw->list.ncols = lw->list.default_cols;
-	if (lw->list.ncols <= 0) lw->list.ncols = 1;
+	lw->list.ncols = lw->list.default_cols;
+	if (lw->list.ncols <= 0)
+	    lw->list.ncols = 1;
 	/* 12/3 = 4 and 10/3 = 4, but 9/3 = 3 */
-	lw->list.nrows = ( ( lw->list.nitems - 1) / lw->list.ncols) + 1 ;
+	lw->list.nrows = ((lw->list.nitems - 1) / lw->list.ncols) + 1;
 	if (xfree) {		/* If allowed resize width. */
 
-            /* this counts the same number
-            of inter-column column_space 's as columns.  There should thus be a
-            half column_space margin on each side of each column...*/
+	    /* this counts the same number
+	       of inter-column column_space 's as columns.  There should thus be a
+	       half column_space margin on each side of each column... */
 
-	    *width = lw->list.ncols * lw->list.col_width
-	           + 2 * lw->list.internal_width;
+	    *width = (Dimension) ((lw->list.ncols * lw->list.col_width)
+				  + 2 * lw->list.internal_width);
 	    change = TRUE;
 	}
 	if (yfree) {		/* If allowed resize height. */
-	    *height = (lw->list.nrows * lw->list.row_height)
-                    + 2 * lw->list.internal_height;
+	    *height = (Dimension) ((lw->list.nrows * lw->list.row_height)
+				   + 2 * lw->list.internal_height);
 	    change = TRUE;
 	}
-	return(change);
+	return (change);
     }
 
 /*
@@ -832,13 +853,14 @@ Dimension *height)
  */
 
     if (xfree && yfree) {
-        lw->list.ncols = lw->list.default_cols;
-	if (lw->list.ncols <= 0) lw->list.ncols = 1;
-	lw->list.nrows = ( ( lw->list.nitems - 1) / lw->list.ncols) + 1 ;
-        *width = lw->list.ncols * lw->list.col_width
-	       + 2 * lw->list.internal_width;
-	*height = (lw->list.nrows * lw->list.row_height)
-                + 2 * lw->list.internal_height;
+	lw->list.ncols = lw->list.default_cols;
+	if (lw->list.ncols <= 0)
+	    lw->list.ncols = 1;
+	lw->list.nrows = ((lw->list.nitems - 1) / lw->list.ncols) + 1;
+	*width = (Dimension) ((lw->list.ncols * lw->list.col_width)
+			      + 2 * lw->list.internal_width);
+	*height = (Dimension) ((lw->list.nrows * lw->list.row_height)
+			       + 2 * lw->list.internal_height);
 	change = TRUE;
     }
 /*
@@ -847,13 +869,14 @@ Dimension *height)
  * of the widget to fit the current list exactly.
  */
     else if (!xfree) {
-        lw->list.ncols = ( (int)(*width - 2 * lw->list.internal_width)
-	                    / (int)lw->list.col_width);
-	if (lw->list.ncols <= 0) lw->list.ncols = 1;
-	lw->list.nrows = ( ( lw->list.nitems - 1) / lw->list.ncols) + 1 ;
-	if ( yfree ) {
-  	    *height = (lw->list.nrows * lw->list.row_height)
-		    + 2 * lw->list.internal_height;
+	lw->list.ncols = ((int) (*width - 2 * lw->list.internal_width)
+			  / (int) lw->list.col_width);
+	if (lw->list.ncols <= 0)
+	    lw->list.ncols = 1;
+	lw->list.nrows = ((lw->list.nitems - 1) / lw->list.ncols) + 1;
+	if (yfree) {
+	    *height = (Dimension) ((lw->list.nrows * lw->list.row_height)
+				   + 2 * lw->list.internal_height);
 	    change = TRUE;
 	}
     }
@@ -863,17 +886,17 @@ Dimension *height)
  * number of columns.
  */
     else if (!yfree) {		/* xfree must be TRUE. */
-        lw->list.nrows = (int)(*height - 2 * lw->list.internal_height)
-	                 / (int)lw->list.row_height;
-	if (lw->list.nrows <= 0) lw->list.nrows = 1;
-	lw->list.ncols = (( lw->list.nitems - 1 ) / lw->list.nrows) + 1;
-	*width = lw->list.ncols * lw->list.col_width
-	       + 2 * lw->list.internal_width;
+	lw->list.nrows = (int) (*height - 2 * lw->list.internal_height)
+	    / (int) lw->list.row_height;
+	if (lw->list.nrows <= 0)
+	    lw->list.nrows = 1;
+	lw->list.ncols = ((lw->list.nitems - 1) / lw->list.nrows) + 1;
+	*width = (Dimension) ((lw->list.ncols * lw->list.col_width)
+			      + 2 * lw->list.internal_width);
 	change = TRUE;
     }
-    return(change);
+    return (change);
 }
-
 
 /* Notify() - ACTION
  *
@@ -884,10 +907,10 @@ Dimension *height)
 /* ARGSUSED */
 static void
 Notify(
-Widget w,
-XEvent * event,
-String * params GCC_UNUSED,
-Cardinal *num_params GCC_UNUSED)
+	  Widget w,
+	  XEvent *event,
+	  String *params GCC_UNUSED,
+	  Cardinal *num_params GCC_UNUSED)
 {
     ListWidget lw = (ListWidget) w;
     int item;
@@ -901,25 +924,26 @@ Cardinal *num_params GCC_UNUSED)
  * notify, so unhighlight and return.
  */
 
-    if (((CvtToItem(w, event->xbutton.x, event->xbutton.y, &item)) == OUT_OF_RANGE) ||
+    if (((CvtToItem(w, event->xbutton.x, event->xbutton.y, &item)) ==
+	OUT_OF_RANGE) ||
 	(lw->list.highlight != item)) {
-        XawListUnhighlight(w);
-        return;
+	XawListUnhighlight(w);
+	return;
     }
     /* if XtNpasteBuffer is set then paste it. */
 
     str = DeConst(lw->list.iconList
-                  ? lw->list.iconList[item].string
+		  ? lw->list.iconList[item].string
 		  : lw->list.list[item]);
-    if (lw->list.paste) XStoreBytes(XtDisplay(w), str, strlen(str));
+    if (lw->list.paste)
+	XStoreBytes(XtDisplay(w), str, (int) strlen(str));
 
     /* Call Callback function. */
 
     ret_value.string = str;
     ret_value.list_index = item;
-    XtCallCallbacks( w, XtNcallback, (XtPointer) &ret_value);
+    XtCallCallbacks(w, XtNcallback, (XtPointer) &ret_value);
 }
-
 
 /* Unset() - ACTION
  *
@@ -928,14 +952,13 @@ Cardinal *num_params GCC_UNUSED)
 /* ARGSUSED */
 static void
 Unset(
-Widget w,
-XEvent * event GCC_UNUSED,
-String * params GCC_UNUSED,
-Cardinal *num_params GCC_UNUSED)
+	 Widget w,
+	 XEvent *event GCC_UNUSED,
+	 String *params GCC_UNUSED,
+	 Cardinal *num_params GCC_UNUSED)
 {
-  XawListUnhighlight(w);
+    XawListUnhighlight(w);
 }
-
 
 /* Set() - ACTION
  *
@@ -944,19 +967,19 @@ Cardinal *num_params GCC_UNUSED)
 /* ARGSUSED */
 static void
 Set(
-Widget w,
-XEvent * event,
-String * params GCC_UNUSED,
-Cardinal *num_params GCC_UNUSED)
+       Widget w,
+       XEvent *event,
+       String *params GCC_UNUSED,
+       Cardinal *num_params GCC_UNUSED)
 {
-  int item;
-  ListWidget lw = (ListWidget) w;
+    int item;
+    ListWidget lw = (ListWidget) w;
 
-  if ( (CvtToItem(w, event->xbutton.x, event->xbutton.y, &item))
-      == OUT_OF_RANGE)
-    XawListUnhighlight(w);		        /* Unhighlight current item. */
-  else if ( lw->list.is_highlighted != item )   /* If this item is not */
-    XawListHighlight(w, item);	                /* highlighted then do it. */
+    if ((CvtToItem(w, event->xbutton.x, event->xbutton.y, &item))
+	== OUT_OF_RANGE)
+	XawListUnhighlight(w);	/* Unhighlight current item. */
+    else if (lw->list.is_highlighted != item)	/* If this item is not */
+	XawListHighlight(w, item);	/* highlighted then do it. */
 }
 
 /*
@@ -965,95 +988,103 @@ Cardinal *num_params GCC_UNUSED)
 
 static Boolean
 SetValues(
-Widget current,
-Widget request,
-Widget new,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+	     Widget current,
+	     Widget request,
+	     Widget new,
+	     ArgList args GCC_UNUSED,
+	     Cardinal *num_args GCC_UNUSED)
 {
     ListWidget cl = (ListWidget) current;
     ListWidget rl = (ListWidget) request;
     ListWidget nl = (ListWidget) new;
     Boolean redraw = FALSE;
-    int	text_height;
+    int text_height;
     XFontSetExtents *ext = XExtentsOfFontSet(nl->list.fontset);
 
     /* If the request height/width is different, lock it.  Unless its 0. If */
     /* neither new nor 0, leave it as it was.  Not in R5. */
 
-    if (nl->core.width != cl->core.width) nl->list.freedoms |= WidthLock;
-    if (nl->core.width == 0) nl->list.freedoms &= ~WidthLock;
+    if (nl->core.width != cl->core.width)
+	nl->list.freedoms |= WidthLock;
+    if (nl->core.width == 0)
+	nl->list.freedoms &= ~WidthLock;
 
-    if (nl->core.height != cl->core.height) nl->list.freedoms |= HeightLock;
-    if (nl->core.height == 0) nl->list.freedoms &= ~HeightLock;
+    if (nl->core.height != cl->core.height)
+	nl->list.freedoms |= HeightLock;
+    if (nl->core.height == 0)
+	nl->list.freedoms &= ~HeightLock;
 
-    if (nl->list.longest != cl->list.longest) nl->list.freedoms |= LongestLock;
-    if (nl->list.longest == 0) nl->list.freedoms &= ~LongestLock;
+    if (nl->list.longest != cl->list.longest)
+	nl->list.freedoms |= LongestLock;
+    if (nl->list.longest == 0)
+	nl->list.freedoms &= ~LongestLock;
 
-    /* _DONT_ check for fontset here - it's not in GC.*/
+    /* _DONT_ check for fontset here - it's not in GC. */
 
-    if (  (cl->list.foreground       != nl->list.foreground)       ||
-	  (cl->core.background_pixel != nl->core.background_pixel) ||
-	  (cl->list.font             != nl->list.font)                ) {
+    if ((cl->list.foreground != nl->list.foreground) ||
+	(cl->core.background_pixel != nl->core.background_pixel) ||
+	(cl->list.font != nl->list.font)) {
 	XGCValues values;
 	XGetGCValues(XtDisplay(current), cl->list.graygc, GCTile, &values);
 	XmuReleaseStippledPixmap(XtScreen(current), values.tile);
 	XtReleaseGC(current, cl->list.graygc);
 	XtReleaseGC(current, cl->list.revgc);
 	XtReleaseGC(current, cl->list.normgc);
-        GetGCs(new);
-        redraw = TRUE;
+	GetGCs(new);
+	redraw = TRUE;
     }
     /* Reset row height. */
 
-    if ((cl->list.font != nl->list.font) && (cl->simple.international == False))
-    {
-      /* Check, if the row height is determined with the
-	 font or with the icon and set it */
+    if ((cl->list.font != nl->list.font) && (cl->simple.international == False)) {
+	/* Check, if the row height is determined with the
+	   font or with the icon and set it */
 
-      text_height = nl->list.font->max_bounds.ascent + nl->list.font->max_bounds.descent;
-      if (text_height > nl->list.icon_height)
-        nl->list.row_height = text_height + nl->list.row_space;
-      else nl->list.row_height = nl->list.icon_height + nl->list.row_space;
-    }
-    else if ((cl->list.fontset != nl->list.fontset) && (cl->simple.international == True))
-    {
-       if (ext->max_ink_extent.height > nl->list.icon_height)
-         nl->list.row_height = ext->max_ink_extent.height + nl->list.row_space;
-       else nl->list.row_height = nl->list.icon_height + nl->list.row_space;
+	text_height = nl->list.font->max_bounds.ascent + nl->list.font->max_bounds.descent;
+	if (text_height > nl->list.icon_height)
+	    nl->list.row_height = text_height + nl->list.row_space;
+	else
+	    nl->list.row_height = nl->list.icon_height + nl->list.row_space;
+    } else if ((cl->list.fontset != nl->list.fontset) &&
+	       (cl->simple.international == True)) {
+	if (ext->max_ink_extent.height > nl->list.icon_height)
+	    nl->list.row_height = ext->max_ink_extent.height + nl->list.row_space;
+	else
+	    nl->list.row_height = nl->list.icon_height + nl->list.row_space;
     }
     /* ...If the above two font(set) change checkers above both failed, check
-    if row_space was altered.  If one of the above passed, row_height will
-    already have been re-calculated. */
+       if row_space was altered.  If one of the above passed, row_height will
+       already have been re-calculated. */
 
     else if (cl->list.row_space != nl->list.row_space)
-      nl->list.row_height = cl->list.row_height + nl->list.row_space - cl->list.row_space;
+	nl->list.row_height = cl->list.row_height + nl->list.row_space - cl->list.row_space;
 
-    if ((cl->core.width           != nl->core.width) ||
-	(cl->core.height          != nl->core.height) ||
-	(cl->list.iconList        != nl->list.iconList) ||
-	((cl->list.list           != nl->list.list) && (nl->list.iconList == FALSE)) ||
-	((cl->list.icon_height	  != nl->list.icon_height) && nl->list.iconList) ||
-	((cl->list.icon_width	  != nl->list.icon_width)  && nl->list.iconList) ||
-	(cl->list.internal_width  != nl->list.internal_width) ||
+    if ((cl->core.width != nl->core.width) ||
+	(cl->core.height != nl->core.height) ||
+	(cl->list.iconList != nl->list.iconList) ||
+	((cl->list.list != nl->list.list) && (nl->list.iconList == FALSE)) ||
+	((cl->list.icon_height != nl->list.icon_height) &&
+	nl->list.iconList) ||
+	((cl->list.icon_width != nl->list.icon_width) && nl->list.iconList) ||
+	(cl->list.internal_width != nl->list.internal_width) ||
 	(cl->list.internal_height != nl->list.internal_height) ||
-	(cl->list.column_space    != nl->list.column_space) ||
-	(cl->list.row_space       != nl->list.row_space) ||
-	(cl->list.default_cols    != nl->list.default_cols) ||
-	((cl->list.force_cols     != nl->list.force_cols) && (rl->list.force_cols != nl->list.ncols)) ||
-	(cl->list.vertical_cols   != nl->list.vertical_cols) ||
-	(cl->list.longest         != nl->list.longest) ||
-	(cl->list.nitems          != nl->list.nitems) ||
-	((cl->list.font           != nl->list.font) && (nl->simple.international == FALSE)) ||
+	(cl->list.column_space != nl->list.column_space) ||
+	(cl->list.row_space != nl->list.row_space) ||
+	(cl->list.default_cols != nl->list.default_cols) ||
+	((cl->list.force_cols != nl->list.force_cols) &&
+	 (rl->list.force_cols != nl->list.ncols)) ||
+	(cl->list.vertical_cols != nl->list.vertical_cols) ||
+	(cl->list.longest != nl->list.longest) ||
+	(cl->list.nitems != nl->list.nitems) ||
+	((cl->list.font != nl->list.font) && (nl->simple.international ==
+	FALSE)) ||
 
-   /* Equiv. fontsets might have different values, but the same fonts, so the
-      next comparison is sloppy but not dangerous.  */
+    /* Equiv. fontsets might have different values, but the same fonts, so the
+       next comparison is sloppy but not dangerous.  */
 
-	((cl->list.fontset        != nl->list.fontset) && nl->simple.international))
-    {
-        CalculatedValues(new);
-        Layout(new, WidthFree(nl), HeightFree(nl), &nl->core.width, &nl->core.height);
-        redraw = TRUE;
+	((cl->list.fontset != nl->list.fontset) && nl->simple.international)) {
+	CalculatedValues(new);
+	Layout(new, WidthFree(nl), HeightFree(nl), &nl->core.width, &nl->core.height);
+	redraw = TRUE;
     }
 
     if ((cl->list.list != nl->list.list) || (cl->list.iconList != nl->list.iconList))
@@ -1061,16 +1092,18 @@ Cardinal *num_args GCC_UNUSED)
 
     if ((cl->core.sensitive != nl->core.sensitive) ||
 	(cl->core.ancestor_sensitive != nl->core.ancestor_sensitive)) {
-        nl->list.highlight = NO_HIGHLIGHT;
+	nl->list.highlight = NO_HIGHLIGHT;
 	redraw = TRUE;
     }
 
-    if (!XtIsRealized(current)) return(FALSE);
-    return(redraw);
+    if (!XtIsRealized(current))
+	return (FALSE);
+    return (redraw);
 }
 
-static void Destroy(
-    Widget w)
+static void
+Destroy(
+	   Widget w)
 {
     ListWidget lw = (ListWidget) w;
     XGCValues values;
@@ -1099,37 +1132,44 @@ static void Destroy(
  *                 If nitems is <= 0 then the list needs to be NULL terminated.
  */
 
-void XawListChange(
-Widget	w,
-String  *list,
-int	nitems,
-int	longest,
-Boolean	resize_it)
+void
+XawListChange(
+		 Widget w,
+		 String *list,
+		 int nitems,
+		 int longest,
+		 Boolean resize_it)
 {
     ListWidget lw = (ListWidget) w;
 
-    if (nitems < 0) nitems = 0;
-    if (longest < 0) longest = 0;
+    if (nitems < 0)
+	nitems = 0;
+    if (longest < 0)
+	longest = 0;
 
-    lw->list.list     = list;
+    lw->list.list = list;
     lw->list.iconList = NULL;	/* To avoid the use of an iconList */
-    lw->list.nitems   = nitems;
-    lw->list.longest  = longest;
+    lw->list.nitems = nitems;
+    lw->list.longest = longest;
 
     /* If the user passes 0 meaning "calculate it", it must be free */
 
-    if (longest != 0) lw->list.freedoms |= LongestLock;
-    else lw->list.freedoms &= ~LongestLock;
+    if (longest != 0)
+	lw->list.freedoms |= LongestLock;
+    else
+	lw->list.freedoms &= ~LongestLock;
 
     /* else - still resize if its not locked */
 
-    if (resize_it) lw->list.freedoms &= ~WidthLock & ~HeightLock;
+    if (resize_it)
+	lw->list.freedoms &= ~WidthLock & ~HeightLock;
 
     /* Redisplay the list */
 
     ResetList(w, WidthFree(w), HeightFree(w));
     lw->list.is_highlighted = lw->list.highlight = NO_HIGHLIGHT;
-    if (XtIsRealized(w)) Redisplay(w, (XEvent *)NULL, (Region)NULL);
+    if (XtIsRealized(w))
+	Redisplay(w, (XEvent *) NULL, (Region) NULL);
 }
 
 /*	Function Name: XawIconListChange.
@@ -1149,52 +1189,59 @@ Boolean	resize_it)
  *                 If nitems is <= 0 then the list needs to be NULL terminated.
  */
 
-void XawIconListChange(
-Widget		w,
-XawIconList	*iconlist,
-int		nitems,
-int		longest,
-int		icon_w,
-int		icon_h,
-int		icon_d,
-Boolean		resize_it)
+void
+XawIconListChange(
+		     Widget w,
+		     XawIconList * iconlist,
+		     int nitems,
+		     int longest,
+		     int icon_w,
+		     int icon_h,
+		     int icon_d,
+		     Boolean resize_it)
 {
     ListWidget lw = (ListWidget) w;
-    int		   text_height;
+    int text_height;
 
     /* Store the new values */
 
-    if (nitems < 0) nitems = 0;
-    if (longest < 0) longest = 0;
+    if (nitems < 0)
+	nitems = 0;
+    if (longest < 0)
+	longest = 0;
 
-    lw->list.iconList	 = iconlist;
-    lw->list.list	 = NULL;
-    lw->list.nitems	 = nitems;
-    lw->list.longest	 = longest;
-    lw->list.icon_width  = icon_w;
-    lw->list.icon_height = icon_h;
-    lw->list.icon_depth  = icon_d;
+    lw->list.iconList = iconlist;
+    lw->list.list = NULL;
+    lw->list.nitems = nitems;
+    lw->list.longest = longest;
+    lw->list.icon_width = (Dimension) icon_w;
+    lw->list.icon_height = (Dimension) icon_h;
+    lw->list.icon_depth = (Dimension) icon_d;
 
     /* If the user passes 0 meaning "calculate it", it must be free */
 
-    if (longest != 0) lw->list.freedoms |= LongestLock;
-    else lw->list.freedoms &= ~LongestLock;
+    if (longest != 0)
+	lw->list.freedoms |= LongestLock;
+    else
+	lw->list.freedoms &= ~LongestLock;
 
     /* else - still resize if its not locked */
 
-    if (resize_it) lw->list.freedoms &= ~WidthLock & ~HeightLock;
+    if (resize_it)
+	lw->list.freedoms &= ~WidthLock & ~HeightLock;
 
     /* Set row height, if required */
 
     text_height = lw->list.font->max_bounds.ascent + lw->list.font->max_bounds.descent;
     if (lw->list.icon_height > text_height)
-      lw->list.row_height = lw->list.icon_height + lw->list.row_space;
+	lw->list.row_height = lw->list.icon_height + lw->list.row_space;
 
     /* Redisplay the list */
 
     ResetList(w, WidthFree(w), HeightFree(w));
     lw->list.is_highlighted = lw->list.highlight = NO_HIGHLIGHT;
-    if (XtIsRealized(w)) Redisplay(w, (XEvent *)NULL, (Region)NULL);
+    if (XtIsRealized(w))
+	Redisplay(w, (XEvent *) NULL, (Region) NULL);
 }
 
 /*	Function Name: XawListUnhighlight
@@ -1203,14 +1250,15 @@ Boolean		resize_it)
  *	Returns: none.
  */
 
-void XawListUnhighlight(
-Widget w)
+void
+XawListUnhighlight(
+		      Widget w)
 {
-    ListWidget lw = ( ListWidget ) w;
+    ListWidget lw = (ListWidget) w;
 
     lw->list.highlight = NO_HIGHLIGHT;
     if (lw->list.is_highlighted != NO_HIGHLIGHT)
-        PaintItemName(w, lw->list.is_highlighted); /* unhighlight this one. */
+	PaintItemName(w, lw->list.is_highlighted);	/* unhighlight this one. */
 }
 
 /*	Function Name: XawListHighlight
@@ -1220,17 +1268,18 @@ Widget w)
  *	Returns: none.
  */
 
-void XawListHighlight(
-Widget w,
-int item)
+void
+XawListHighlight(
+		    Widget w,
+		    int item)
 {
-    ListWidget lw = ( ListWidget ) w;
+    ListWidget lw = (ListWidget) w;
 
     if (XtIsSensitive(w)) {
-        lw->list.highlight = item;
-        if (lw->list.is_highlighted != NO_HIGHLIGHT)
-            PaintItemName(w, lw->list.is_highlighted);  /* Unhighlight. */
-	PaintItemName(w, item);				/* HIGHLIGHT this one. */
+	lw->list.highlight = item;
+	if (lw->list.is_highlighted != NO_HIGHLIGHT)
+	    PaintItemName(w, lw->list.is_highlighted);	/* Unhighlight. */
+	PaintItemName(w, item);	/* HIGHLIGHT this one. */
     }
 }
 
@@ -1240,20 +1289,24 @@ int item)
  *	Returns: the info about the currently highlighted object.
  */
 
-XawListReturnStruct *XawListShowCurrent(Widget w)
+XawListReturnStruct *
+XawListShowCurrent(Widget w)
 {
     ListWidget lw = (ListWidget) w;
-    XawListReturnStruct * ret_val;
+    XawListReturnStruct *ret_val;
 
-    ret_val = (XawListReturnStruct *)XtMalloc(sizeof (XawListReturnStruct));
+    ret_val = (XawListReturnStruct *) XtMalloc(sizeof(XawListReturnStruct));
 
     /* With this change we let it crash outside instead of inside Xaw :o) */
 
     if (ret_val) {
-      ret_val->list_index = lw->list.highlight;
-      if (ret_val->list_index == XAW_LIST_NONE) ret_val->string = "";
-      else ret_val->string = lw->list.iconList ? lw->list.iconList[ret_val->list_index].string
-					       : lw->list.list[ret_val->list_index];
+	ret_val->list_index = lw->list.highlight;
+	if (ret_val->list_index == XAW_LIST_NONE)
+	    ret_val->string = "";
+	else
+	    ret_val->string = lw->list.iconList ?
+		lw->list.iconList[ret_val->list_index].string
+		: lw->list.list[ret_val->list_index];
     }
-    return(ret_val);
+    return (ret_val);
 }

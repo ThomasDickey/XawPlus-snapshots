@@ -1,3 +1,43 @@
+2024-04-28  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* AsciiSink.c, AsciiSrc.c, AsciiText.c, Box.c, Command.c, DrawingArea.c,
+	  Form.c, Label.c, List.c, LocPixmap.c, MultiSrc.c, MultiSink.c,
+	  MenuButton.c, Paned.c, Panner.c, Scrollbar.c, Simple.c, SimpleMenu.c,
+	  SmeBSB.c, StripChart.c, Text.c, TextAction.c, TextPop.c, Tree.c,
+	  TextSink.c, TextSrc.c, Viewport.c, Vendor.c:
+	update copyright, re-indent
+
+	* UTF8.c: fix an overlooked prototype
+
+	* UTF8.c, XawIm.c: update copyright, re-indent
+
+	* XawIm.c, UTF8.c, Vendor.c, Viewport.c, TextSrc.c, TextSink.c, Tree.c,
+	  TextPop.c, TextAction.c, Text.c, StripChart.c, SmeBSB.c, SimpleMenu.c,
+	  Simple.c, Scrollbar.c, Panner.c, Paned.c, MenuButton.c, MultiSink.c,
+	  MultiSrc.c, LocPixmap.c, List.c, Label.c, Form.c, DrawingArea.c,
+	  Command.c, Box.c, AsciiText.c, AsciiSrc.c, AsciiSink.c:
+	reduce type-conversion warnings using casts (no object change)
+
+	* SmeBSB.c, MultiSink.c, AsciiSink.c:
+	fix incompatible-pointer warnings, which are fatal now
+
+	* package/debian/changelog, VERSION, package/XawPlus.spec: bump
+
+2024-03-29  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* configure: regen
+
+	* aclocal.m4:
+	resync with my-autoconf, to fix compiler-warnings in configure-checks
+
+2023-12-27  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.sub: 2023-12-27
+
+2023-12-02  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.guess: 2023-12-02
+
 2022-12-12  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* package/debian/changelog, VERSION, package/XawPlus.spec: bump

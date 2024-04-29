@@ -1,16 +1,16 @@
 Summary: XawPlus widget set development package
 %global AppProgram XawPlus
 %global AppVersion 3.1.0
-%global AppRelease 20221212
+%global AppPatched 20240428
 %global ActualProg c%{AppProgram}
-# $XTermId: XawPlus.spec,v 1.5 2022/12/13 01:02:07 tom Exp $
+# $XTermId: XawPlus.spec,v 1.6 2024/04/28 10:02:26 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
-Release: %{AppRelease}
+Release: %{AppPatched}
 License: X11
 Group: Applications/Development
 URL: ftp://invisible-island.net/%{AppProgram}
-Source0: %{AppProgram}-%{AppVersion}-%{AppRelease}.tgz
+Source0: %{AppProgram}-%{AppVersion}-%{AppPatched}.tgz
 Packager: Thomas Dickey <dickey@invisible-island.net>
 
 %description
@@ -27,7 +27,7 @@ code of your application.
 
 %define debug_package %{nil}
 
-%setup -q -n %{AppProgram}-%{AppVersion}-%{AppRelease}
+%setup -q -n %{AppProgram}-%{AppVersion}-%{AppPatched}
 
 %build
 

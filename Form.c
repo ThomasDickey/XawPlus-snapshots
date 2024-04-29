@@ -1,11 +1,11 @@
 /*
- * $XTermId: Form.c,v 1.7 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: Form.c,v 1.9 2024/04/29 00:02:54 tom Exp $
  * $Xorg: Form.c,v 1.4 2001/02/09 02:03:43 xorgcvs Exp $
  */
 
 /**************************************************************************
 
-Copyright 2015, 2022  Thomas E. Dickey
+Copyright 2015-2022,2024  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -27,7 +27,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
-
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
@@ -61,7 +60,7 @@ This file contains modifications for XawPlus, Roland Krause 2002
 #include <X11/Xmu/CharSet.h>
 #include <X11/XawPlus/XawInit.h>
 #include <X11/XawPlus/FormP.h>
-
+/* *INDENT-OFF* */
 /* Private Definitions */
 
 static int default_value = -99999;
@@ -168,8 +167,9 @@ FormClassRec formClassRec = {
     /* layout             */   Layout
   }
 };
+/* *INDENT-ON* */
 
-WidgetClass formWidgetClass = (WidgetClass)&formClassRec;
+WidgetClass formWidgetClass = (WidgetClass) & formClassRec;
 
 /****************************************************************
  *
@@ -177,84 +177,97 @@ WidgetClass formWidgetClass = (WidgetClass)&formClassRec;
  *
  ****************************************************************/
 
-
-static XrmQuark	XtQChainLeft, XtQChainRight, XtQChainTop,
-		XtQChainBottom, XtQRubber;
+static XrmQuark XtQChainLeft, XtQChainRight, XtQChainTop, XtQChainBottom, XtQRubber;
 
 /* ARGSUSED */
-static void _CvtStringToEdgeType(
-    XrmValuePtr args GCC_UNUSED,
-    Cardinal    *num_args GCC_UNUSED,
-    XrmValuePtr fromVal,
-    XrmValuePtr toVal)
+static void
+_CvtStringToEdgeType(
+			XrmValuePtr args GCC_UNUSED,
+			Cardinal *num_args GCC_UNUSED,
+			XrmValuePtr fromVal,
+			XrmValuePtr toVal)
 {
-  static XtEdgeType edgeType;
-  XrmQuark q;
-  char lowerName[40];
+    static XtEdgeType edgeType;
+    XrmQuark q;
+    char lowerName[40];
 
-  if (strlen ((char*) fromVal->addr) < sizeof lowerName) {
-    XmuCopyISOLatin1Lowered (lowerName, (char*)fromVal->addr);
-    q = XrmStringToQuark(lowerName);
-    if (q == XtQChainLeft)        edgeType = XtChainLeft;
-    else if (q == XtQChainRight)  edgeType = XtChainRight;
-    else if (q == XtQChainTop)    edgeType = XtChainTop;
-    else if (q == XtQChainBottom) edgeType = XtChainBottom;
-    else if (q == XtQRubber)      edgeType = XtRubber;
-    else {
-      toVal->size = 0;
-      toVal->addr = NULL;
-      return;
+    if (strlen((char *) fromVal->addr) < sizeof lowerName) {
+	XmuCopyISOLatin1Lowered(lowerName, (char *) fromVal->addr);
+	q = XrmStringToQuark(lowerName);
+	if (q == XtQChainLeft)
+	    edgeType = XtChainLeft;
+	else if (q == XtQChainRight)
+	    edgeType = XtChainRight;
+	else if (q == XtQChainTop)
+	    edgeType = XtChainTop;
+	else if (q == XtQChainBottom)
+	    edgeType = XtChainBottom;
+	else if (q == XtQRubber)
+	    edgeType = XtRubber;
+	else {
+	    toVal->size = 0;
+	    toVal->addr = NULL;
+	    return;
+	}
+	toVal->size = sizeof edgeType;
+	toVal->addr = (XPointer) & edgeType;
+	return;
     }
-    toVal->size = sizeof edgeType;
-    toVal->addr = (XPointer) &edgeType;
-    return;
-  }
-  toVal->addr = NULL;
-  toVal->size = 0;
+    toVal->addr = NULL;
+    toVal->size = 0;
 }
 
-static void ClassInitialize(void)
+static void
+ClassInitialize(void)
 {
-   static XtConvertArgRec parentCvtArgs[] = {
-     {XtBaseOffset, (XtPointer)XtOffsetOf(WidgetRec, core.parent), sizeof(Widget)}
-   };
-   static XtConvertArgRec colConvertArg[] = {
-     {XtWidgetBaseOffset, (XtPointer)XtOffsetOf(WidgetRec, core.screen), sizeof(Screen *)},
-     {XtWidgetBaseOffset, (XtPointer)XtOffsetOf(WidgetRec, core.colormap), sizeof(Colormap)}
-   };
+    static XtConvertArgRec parentCvtArgs[] =
+    {
+	{XtBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.parent),
+	 sizeof(Widget)}
+    };
+    static XtConvertArgRec colConvertArg[] =
+    {
+	{XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.screen),
+	 sizeof(Screen *)},
+	{XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec,
+	 core.colormap), sizeof(Colormap)}
+    };
 
     XawInitializeWidgetSet();
-    XtQChainLeft   = XrmPermStringToQuark("chainleft");
-    XtQChainRight  = XrmPermStringToQuark("chainright");
-    XtQChainTop    = XrmPermStringToQuark("chaintop");
+    XtQChainLeft = XrmPermStringToQuark("chainleft");
+    XtQChainRight = XrmPermStringToQuark("chainright");
+    XtQChainTop = XrmPermStringToQuark("chaintop");
     XtQChainBottom = XrmPermStringToQuark("chainbottom");
-    XtQRubber      = XrmPermStringToQuark("rubber");
+    XtQRubber = XrmPermStringToQuark("rubber");
 
-    XtAddConverter( XtRString, XtREdgeType, _CvtStringToEdgeType, NULL, 0 );
-    XtSetTypeConverter( XtRString, XtRWidget, XmuNewCvtStringToWidget,
-			parentCvtArgs, XtNumber(parentCvtArgs), XtCacheNone, NULL);
-    XtSetTypeConverter( XtRString, XtRPixel, XtCvtStringToPixel,
-			colConvertArg, XtNumber(colConvertArg), XtCacheByDisplay, NULL);
+    XtAddConverter(XtRString, XtREdgeType, _CvtStringToEdgeType, NULL, 0);
+    XtSetTypeConverter(XtRString, XtRWidget, XmuNewCvtStringToWidget,
+		       parentCvtArgs, XtNumber(parentCvtArgs), XtCacheNone, NULL);
+    XtSetTypeConverter(XtRString, XtRPixel, XtCvtStringToPixel,
+		       colConvertArg, XtNumber(colConvertArg),
+		       XtCacheByDisplay, NULL);
 }
 
-static void ClassPartInitialize(WidgetClass class)
+static void
+ClassPartInitialize(WidgetClass class)
 {
-    FormWidgetClass c = (FormWidgetClass)class;
+    FormWidgetClass c = (FormWidgetClass) class;
     FormWidgetClass super = (FormWidgetClass)
-	c->core_class.superclass;
+    c->core_class.superclass;
 
     if (c->form_class.layout == XtInheritLayout)
 	c->form_class.layout = super->form_class.layout;
 }
 
 /* ARGSUSED */
-static void Initialize(
-Widget request GCC_UNUSED,
-Widget new,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+static void
+Initialize(
+	      Widget request GCC_UNUSED,
+	      Widget new,
+	      ArgList args GCC_UNUSED,
+	      Cardinal *num_args GCC_UNUSED)
 {
-    FormWidget fw = (FormWidget)new;
+    FormWidget fw = (FormWidget) new;
 
     fw->form.old_width = fw->core.width;
     fw->form.old_height = fw->core.height;
@@ -276,12 +289,12 @@ Cardinal *num_args GCC_UNUSED)
 
 static Boolean
 ChangeFormGeometry(
-Widget w,
-Boolean query_only,
-Dimension width,
-Dimension height,
-Dimension *ret_width,
-Dimension *ret_height)
+		      Widget w,
+		      Boolean query_only,
+		      Dimension width,
+		      Dimension height,
+		      Dimension *ret_width,
+		      Dimension *ret_height)
 {
     FormWidget fw = (FormWidget) w;
     Boolean always_resize_children;
@@ -293,8 +306,8 @@ Dimension *ret_height)
      * to ask our parent of we can change size.
      */
 
-    if ( (width == fw->core.width) && (height == fw->core.height) )
-	return(TRUE);
+    if ((width == fw->core.width) && (height == fw->core.height))
+	return (TRUE);
 
     request.width = width;
     request.height = height;
@@ -313,8 +326,7 @@ Dimension *ret_height)
 	request = return_request;
 	(void) XtMakeGeometryRequest(w, &request, &return_request);
 	always_resize_children = FALSE;
-    }
-    else
+    } else
 	always_resize_children = (result == XtGeometryYes);
 
     fw->form.resize_is_no_op = FALSE;
@@ -324,7 +336,7 @@ Dimension *ret_height)
     if (ret_height != NULL)
 	*ret_height = request.height;
 
-    return(always_resize_children);
+    return (always_resize_children);
 }
 
 /*	Function Name: Layout
@@ -339,20 +351,21 @@ Dimension *ret_height)
  */
 
 /* ARGSUSED */
-static Boolean Layout(
-    FormWidget fw,
-    unsigned width GCC_UNUSED,
-    unsigned height GCC_UNUSED,
-    Bool force_relayout)
+static Boolean
+Layout(
+	  FormWidget fw,
+	  unsigned width GCC_UNUSED,
+	  unsigned height GCC_UNUSED,
+	  Bool force_relayout)
 {
-    int num_children = fw->composite.num_children;
+    int num_children = (int) fw->composite.num_children;
     WidgetList children = fw->composite.children;
     Widget *childP;
     Dimension maxx, maxy;
     Boolean ret_val;
 
     for (childP = children; childP - children < num_children; childP++) {
-	FormConstraints form = (FormConstraints)(*childP)->core.constraints;
+	FormConstraints form = (FormConstraints) (*childP)->core.constraints;
 	form->form.layout_state = LayoutPending;
     }
 
@@ -362,36 +375,36 @@ static Boolean Layout(
 	    FormConstraints form;
 	    Position x, y;
 
-	    form = (FormConstraints)(*childP)->core.constraints;
+	    form = (FormConstraints) (*childP)->core.constraints;
 
 	    LayoutChild(*childP);
 
-	    x = form->form.new_x + (*childP)->core.width +
-		((*childP)->core.border_width << 1);
-	    if (x > (int)maxx)
-		maxx = x;
+	    x = (Position) (form->form.new_x + (*childP)->core.width +
+			    ((*childP)->core.border_width << 1));
+	    if (x > (int) maxx)
+		maxx = (Dimension) x;
 
-	    y = form->form.new_y + (*childP)->core.height +
-		((*childP)->core.border_width << 1);
-	    if (y > (int)maxy)
-		maxy = y;
+	    y = (Position) (form->form.new_y + (*childP)->core.height +
+			    ((*childP)->core.border_width << 1));
+	    if (y > (int) maxy)
+		maxy = (Dimension) y;
 	}
     }
 
-    fw->form.preferred_width = (maxx += fw->form.default_spacing);
-    fw->form.preferred_height = (maxy += fw->form.default_spacing);
+    fw->form.preferred_width = (maxx += (Dimension) fw->form.default_spacing);
+    fw->form.preferred_height = (maxy += (Dimension) fw->form.default_spacing);
 
     if (fw->form.resize_in_layout) {
 	Boolean always_resize_children;
 
 	always_resize_children =
-	    ChangeFormGeometry( (Widget) fw, FALSE, maxx, maxy,
-				(Dimension *)NULL, (Dimension *)NULL);
+	    ChangeFormGeometry((Widget) fw, FALSE, maxx, maxy,
+			       (Dimension *) NULL, (Dimension *) NULL);
 
-	fw->form.old_width  = fw->core.width;
+	fw->form.old_width = fw->core.width;
 	fw->form.old_height = fw->core.height;
 
-	ret_val = (always_resize_children || ( (fw->core.width >= maxx) &&
+	ret_val = (always_resize_children || ((fw->core.width >= maxx) &&
 					      (fw->core.height >= maxy)));
 
 	if (force_relayout)
@@ -399,8 +412,7 @@ static Boolean Layout(
 
 	if (ret_val)
 	    ResizeChildren((Widget) fw);
-    }
-    else
+    } else
 	ret_val = False;
 
     fw->form.needs_relayout = False;
@@ -413,10 +425,11 @@ static Boolean Layout(
  *	Returns: none.
  */
 
-static void ResizeChildren(Widget w)
+static void
+ResizeChildren(Widget w)
 {
     FormWidget fw = (FormWidget) w;
-    int num_children = fw->composite.num_children;
+    int num_children = (int) fw->composite.num_children;
     WidgetList children = fw->composite.children;
     Widget *childP;
 
@@ -426,7 +439,7 @@ static void ResizeChildren(Widget w)
 	if (!XtIsManaged(*childP))
 	    continue;
 
-	form = (FormConstraints)(*childP)->core.constraints;
+	form = (FormConstraints) (*childP)->core.constraints;
 	if (fw->form.no_refigure) {
 /*
  * I am changing the widget wrapper w/o modifing the window.  This is
@@ -437,121 +450,124 @@ static void ResizeChildren(Widget w)
  */
 	    (*childP)->core.x = form->form.new_x;
 	    (*childP)->core.y = form->form.new_y;
-	}
-	else
+	} else
 	    XtMoveWidget(*childP, form->form.new_x, form->form.new_y);
     }
 }
 
-
-static void LayoutChild(Widget w)
+static void
+LayoutChild(Widget w)
 {
-    FormConstraints form = (FormConstraints)w->core.constraints;
+    FormConstraints form = (FormConstraints) w->core.constraints;
     Widget ref;
 
     switch (form->form.layout_state) {
 
-      case LayoutPending:
+    case LayoutPending:
 	form->form.layout_state = LayoutInProgress;
 	break;
 
-      case LayoutDone:
+    case LayoutDone:
 	return;
 
-      case LayoutInProgress:
+    case LayoutInProgress:
 	{
-	String subs[2];
-	Cardinal num_subs = 2;
-	subs[0] = w->core.name;
-	subs[1] = w->core.parent->core.name;
-	XtAppWarningMsg(XtWidgetToApplicationContext(w),
-			"constraintLoop","xawFormLayout","XawToolkitError",
-   "constraint loop detected while laying out child '%s' in FormWidget '%s'",
-			subs, &num_subs);
-	return;
+	    String subs[2];
+	    Cardinal num_subs = 2;
+	    subs[0] = w->core.name;
+	    subs[1] = w->core.parent->core.name;
+	    XtAppWarningMsg(XtWidgetToApplicationContext(w),
+			    "constraintLoop", "xawFormLayout",
+			    "XawToolkitError",
+			    "constraint loop detected while laying out child '%s' in FormWidget '%s'",
+			    subs, &num_subs);
+	    return;
 	}
     }
 
-    form->form.new_x = form->form.dx;
-    form->form.new_y = form->form.dy;
-    if ((ref = form->form.horiz_base) != (Widget)NULL) {
+    form->form.new_x = (Position) form->form.dx;
+    form->form.new_y = (Position) form->form.dy;
+    if ((ref = form->form.horiz_base) != (Widget) NULL) {
 	FormConstraints ref_form = (FormConstraints) ref->core.constraints;
 
 	LayoutChild(ref);
-	form->form.new_x += (ref_form->form.new_x +
-			     ref->core.width + (ref->core.border_width << 1));
+	form->form.new_x += (Position) (ref_form->form.new_x +
+					ref->core.width +
+					(ref->core.border_width << 1));
     }
-    if ((ref = form->form.vert_base) != (Widget)NULL) {
+    if ((ref = form->form.vert_base) != (Widget) NULL) {
 	FormConstraints ref_form = (FormConstraints) ref->core.constraints;
 
 	LayoutChild(ref);
-	form->form.new_y += (ref_form->form.new_y +
-			     ref->core.height + (ref->core.border_width << 1));
+	form->form.new_y += (Position) (ref_form->form.new_y +
+					ref->core.height +
+					(ref->core.border_width << 1));
     }
 
     form->form.layout_state = LayoutDone;
 }
 
-
-static Position TransformCoord(
-    Position loc,
-    Dimension old,
-    Dimension new,
-    XtEdgeType type)
+static Position
+TransformCoord(
+		  Position loc,
+		  Dimension old,
+		  Dimension new,
+		  XtEdgeType type)
 {
     if (type == XtRubber) {
-        if ( ((int) old) > 0)
-	    loc = (int)(loc * new) / (int)old;
-    }
-    else if (type == XtChainBottom || type == XtChainRight)
-      loc += (Position)new - (Position)old;
+	if (((int) old) > 0)
+	    loc = (Position) ((int) (loc * new) / (int) old);
+    } else if (type == XtChainBottom || type == XtChainRight)
+	loc += (Position) ((Position) new - (Position) old);
 
     /* I don't see any problem with returning values less than zero. */
 
     return (loc);
 }
 
-static void Resize(Widget w)
+static void
+Resize(Widget w)
 {
-    FormWidget fw = (FormWidget)w;
+    FormWidget fw = (FormWidget) w;
     WidgetList children = fw->composite.children;
-    int num_children = fw->composite.num_children;
+    int num_children = (int) fw->composite.num_children;
     Widget *childP;
     Position x, y;
     Dimension width, height;
 
     if (!fw->form.resize_is_no_op)
 	for (childP = children; childP - children < num_children; childP++) {
-	    FormConstraints form= (FormConstraints)(*childP)->core.constraints;
-	    if (!XtIsManaged(*childP)) continue;
-	    x = TransformCoord( (*childP)->core.x, fw->form.old_width,
-			       fw->core.width, form->form.left );
-	    y = TransformCoord( (*childP)->core.y, fw->form.old_height,
-			       fw->core.height, form->form.top );
+	    FormConstraints form = (FormConstraints) (*childP)->core.constraints;
+	    if (!XtIsManaged(*childP))
+		continue;
+	    x = TransformCoord((*childP)->core.x, fw->form.old_width,
+			       fw->core.width, form->form.left);
+	    y = TransformCoord((*childP)->core.y, fw->form.old_height,
+			       fw->core.height, form->form.top);
 
 	    form->form.virtual_width =
-		TransformCoord((Position)((*childP)->core.x
-					  + form->form.virtual_width
-					  + 2 * (*childP)->core.border_width),
+		TransformCoord((Position) ((*childP)->core.x
+					   + form->form.virtual_width
+					   + 2 * (*childP)->core.border_width),
 			       fw->form.old_width, fw->core.width,
-			       form->form.right )
-		    - (x + 2 * (*childP)->core.border_width);
+			       form->form.right)
+		- (x + 2 * (*childP)->core.border_width);
 
 	    form->form.virtual_height =
-		TransformCoord((Position)((*childP)->core.y
-					  + form->form.virtual_height
-					  + 2 * (*childP)->core.border_width),
+		TransformCoord((Position) ((*childP)->core.y
+					   + form->form.virtual_height
+					   + 2 * (*childP)->core.border_width),
 			       fw->form.old_height, fw->core.height,
-			       form->form.bottom )
-		    - ( y + 2 * (*childP)->core.border_width);
+			       form->form.bottom)
+		- (y + 2 * (*childP)->core.border_width);
 
-	    width = (Dimension)
-		(form->form.virtual_width < 1) ? 1 : form->form.virtual_width;
-	    height = (Dimension)
-	       (form->form.virtual_height < 1) ? 1 : form->form.virtual_height;
+	    width = ((Dimension)
+		     (form->form.virtual_width < 1) ? 1 : form->form.virtual_width);
+	    height = ((Dimension)
+		      (form->form.virtual_height < 1) ? 1 : form->form.virtual_height);
 
-	    XtConfigureWidget(*childP,x,y, (Dimension)width, (Dimension)height,
-			      (*childP)->core.border_width );
+	    XtConfigureWidget(*childP, x, y, (Dimension) width, (Dimension) height,
+			      (*childP)->core.border_width);
 	}
 
     fw->form.old_width = fw->core.width;
@@ -563,10 +579,11 @@ static void Resize(Widget w)
  */
 
 /* ARGSUSED */
-static XtGeometryResult GeometryManager(
-    Widget w,
-    XtWidgetGeometry *request,
-    XtWidgetGeometry *reply GCC_UNUSED)	/* RETURN */
+static XtGeometryResult
+GeometryManager(
+		   Widget w,
+		   XtWidgetGeometry * request,
+		   XtWidgetGeometry * reply GCC_UNUSED)		/* RETURN */
 {
     Dimension old_width, old_height;
     FormWidget fw = (FormWidget) XtParent(w);
@@ -574,17 +591,18 @@ static XtGeometryResult GeometryManager(
     XtWidgetGeometry allowed;
     XtGeometryResult ret_val;
 
-    if ((request->request_mode & ~(XtCWQueryOnly | CWWidth | CWHeight)) ||
+    if ((request->request_mode & (XtGeometryMask) ~ (XtCWQueryOnly | CWWidth
+						     | CWHeight)) ||
 	!form->form.allow_resize) {
 
 	/* If GeometryManager is invoked during a SetValues call on a child
-         * then it is necessary to compute a new layout if ConstraintSetValues
-         * allowed any constraint changes. */
+	 * then it is necessary to compute a new layout if ConstraintSetValues
+	 * allowed any constraint changes. */
 
 	if (fw->form.needs_relayout)
-	    (*((FormWidgetClass)fw->core.widget_class)->form_class.layout)
+	    (*((FormWidgetClass) fw->core.widget_class)->form_class.layout)
 		(fw, 0, 0, True);
-	return(XtGeometryNo);
+	return (XtGeometryNo);
     }
 
     if (request->request_mode & CWWidth)
@@ -600,13 +618,13 @@ static XtGeometryResult GeometryManager(
     if (allowed.width == w->core.width && allowed.height == w->core.height) {
 
 	/* If GeometryManager is invoked during a SetValues call on a child
-         * then it is necessary to compute a new layout if ConstraintSetValues
-         * allowed any constraint changes. */
+	 * then it is necessary to compute a new layout if ConstraintSetValues
+	 * allowed any constraint changes. */
 
 	if (fw->form.needs_relayout)
-	    (*((FormWidgetClass)fw->core.widget_class)->form_class.layout)
+	    (*((FormWidgetClass) fw->core.widget_class)->form_class.layout)
 		(fw, 0, 0, True);
-	return(XtGeometryNo);
+	return (XtGeometryNo);
     }
 
     /*
@@ -624,9 +642,9 @@ static XtGeometryResult GeometryManager(
 
 	fw->form.resize_in_layout = FALSE;
 
-	(*((FormWidgetClass)fw->core.widget_class)->form_class.layout)
-  	                                 ( fw, w->core.width, w->core.height,
-					   FALSE );
+	(*((FormWidgetClass) fw->core.widget_class)->form_class.layout)
+	    (fw, w->core.width, w->core.height,
+	     FALSE);
 
 	/*
 	 * Reset the size of this child back to what it used to be.
@@ -638,26 +656,22 @@ static XtGeometryResult GeometryManager(
 	fw->form.resize_in_layout = TRUE;
 
 	always_resize_children = ChangeFormGeometry(w, TRUE,
-				   fw->form.preferred_width,
-				   fw->form.preferred_height,
-				   &ret_width, &ret_height);
+						    fw->form.preferred_width,
+						    fw->form.preferred_height,
+						    &ret_width, &ret_height);
 
 	if (always_resize_children ||
 	    ((ret_width >= fw->form.preferred_width) &&
-	     (ret_height >= fw->form.preferred_height)))
-	{
+	     (ret_height >= fw->form.preferred_height))) {
 	    ret_val = XtGeometryYes;
-	}
-	else
+	} else
 	    ret_val = XtGeometryNo;
-    }
-    else {
-	if ((*((FormWidgetClass)fw->core.widget_class)->form_class.layout)
-	                                  ( fw, w->core.width, w->core.height,
-					    FALSE))
-	{
-	    form->form.virtual_width = w->core.width;   /* reset virtual */
-	    form->form.virtual_height = w->core.height; /* width and height. */
+    } else {
+	if ((*((FormWidgetClass) fw->core.widget_class)->form_class.layout)
+	    (fw, w->core.width, w->core.height,
+	     FALSE)) {
+	    form->form.virtual_width = (short) w->core.width;	/* reset virtual */
+	    form->form.virtual_height = (short) w->core.height;		/* width and height. */
 	    if (fw->form.no_refigure) {
 /*
  * I am changing the widget wrapper w/o modifing the window.  This is
@@ -668,110 +682,111 @@ static XtGeometryResult GeometryManager(
  */
 		form->form.deferred_resize = True;
 		ret_val = XtGeometryDone;
-	    }
-	    else
+	    } else
 		ret_val = XtGeometryYes;
-	}
-	else {
+	} else {
 	    w->core.width = old_width;
 	    w->core.height = old_height;
 	    ret_val = XtGeometryNo;
 	}
     }
 
-    return(ret_val);
+    return (ret_val);
 }
 
-
 /* ARGSUSED */
-static Boolean SetValues(
-Widget current GCC_UNUSED,
-Widget request GCC_UNUSED,
-Widget new GCC_UNUSED,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+static Boolean
+SetValues(
+	     Widget current GCC_UNUSED,
+	     Widget request GCC_UNUSED,
+	     Widget new GCC_UNUSED,
+	     ArgList args GCC_UNUSED,
+	     Cardinal *num_args GCC_UNUSED)
 {
-    return( FALSE );
+    return (FALSE);
 }
 
-
 /* ARGSUSED */
-static void ConstraintInitialize(
-    Widget request GCC_UNUSED,
-    Widget new,
-    ArgList args GCC_UNUSED,
-    Cardinal *num_args GCC_UNUSED)
+static void
+ConstraintInitialize(
+			Widget request GCC_UNUSED,
+			Widget new,
+			ArgList args GCC_UNUSED,
+			Cardinal *num_args GCC_UNUSED)
 {
-    FormConstraints form = (FormConstraints)new->core.constraints;
-    FormWidget fw = (FormWidget)new->core.parent;
+    FormConstraints form = (FormConstraints) new->core.constraints;
+    FormWidget fw = (FormWidget) new->core.parent;
 
-    form->form.virtual_width = (int) new->core.width;
-    form->form.virtual_height = (int) new->core.height;
+    form->form.virtual_width = (short) (int) new->core.width;
+    form->form.virtual_height = (short) (int) new->core.height;
 
     if (form->form.dx == default_value)
-        form->form.dx = fw->form.default_spacing;
+	form->form.dx = fw->form.default_spacing;
 
     if (form->form.dy == default_value)
-        form->form.dy = fw->form.default_spacing;
+	form->form.dy = fw->form.default_spacing;
 
     form->form.deferred_resize = False;
 }
 
 /*ARGSUSED*/
-static Boolean ConstraintSetValues(
-Widget current,
-Widget request GCC_UNUSED,
-Widget new,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+static Boolean
+ConstraintSetValues(
+		       Widget current,
+		       Widget request GCC_UNUSED,
+		       Widget new,
+		       ArgList args GCC_UNUSED,
+		       Cardinal *num_args GCC_UNUSED)
 {
-  FormConstraints cfc = (FormConstraints) current->core.constraints;
-  FormConstraints nfc = (FormConstraints) new->core.constraints;
+    FormConstraints cfc = (FormConstraints) current->core.constraints;
+    FormConstraints nfc = (FormConstraints) new->core.constraints;
 
-  if (cfc->form.top          != nfc->form.top         ||
-      cfc->form.bottom       != nfc->form.bottom      ||
-      cfc->form.left         != nfc->form.left        ||
-      cfc->form.right        != nfc->form.right       ||
-      cfc->form.dx           != nfc->form.dx          ||
-      cfc->form.dy           != nfc->form.dy          ||
-      cfc->form.horiz_base   != nfc->form.horiz_base  ||
-      cfc->form.vert_base    != nfc->form.vert_base) {
+    if (cfc->form.top != nfc->form.top ||
+	cfc->form.bottom != nfc->form.bottom ||
+	cfc->form.left != nfc->form.left ||
+	cfc->form.right != nfc->form.right ||
+	cfc->form.dx != nfc->form.dx ||
+	cfc->form.dy != nfc->form.dy ||
+	cfc->form.horiz_base != nfc->form.horiz_base ||
+	cfc->form.vert_base != nfc->form.vert_base) {
 
-      FormWidget fp = (FormWidget) XtParent(new);
+	FormWidget fp = (FormWidget) XtParent(new);
 
-    /* If there are no subclass ConstraintSetValues procedures remaining
-     * to be invoked, and if there is no geometry request about to be
-     * made, then invoke the new layout now; else defer it. */
+	/* If there are no subclass ConstraintSetValues procedures remaining
+	 * to be invoked, and if there is no geometry request about to be
+	 * made, then invoke the new layout now; else defer it. */
 
-    if (XtClass(XtParent(new))  == formWidgetClass	&&
-	current->core.x		== new->core.x		&&
-	current->core.y		== new->core.y		&&
-	current->core.width	== new->core.width	&&
-	current->core.height	== new->core.height	&&
-	current->core.border_width == new->core.border_width)
-	Layout(fp, 0, 0, True);
-    else fp->form.needs_relayout = True;
-  }
-  return( FALSE );
+	if (XtClass(XtParent(new)) == formWidgetClass &&
+	    current->core.x == new->core.x &&
+	    current->core.y == new->core.y &&
+	    current->core.width == new->core.width &&
+	    current->core.height == new->core.height &&
+	    current->core.border_width == new->core.border_width)
+	    Layout(fp, 0, 0, True);
+	else
+	    fp->form.needs_relayout = True;
+    }
+    return (FALSE);
 }
 
-static void ChangeManaged(Widget w)
+static void
+ChangeManaged(Widget w)
 {
-  FormWidget fw = (FormWidget)w;
-  FormConstraints form;
-  WidgetList children, childP;
-  int num_children = fw->composite.num_children;
-  Widget child;
+    FormWidget fw = (FormWidget) w;
+    FormConstraints form;
+    WidgetList children, childP;
+    int num_children = (int) fw->composite.num_children;
+    Widget child;
 
-  /*
-   * Reset virtual width and height for all children.
-   */
+    /*
+     * Reset virtual width and height for all children.
+     */
 
-  for (children = childP = fw->composite.children ;
-       childP - children < num_children; childP++) {
-    child = *childP;
-    if (XtIsManaged(child)) {
-      form = (FormConstraints)child->core.constraints;
+    for (children = childP = fw->composite.children;
+	 childP - children < num_children; childP++) {
+	child = *childP;
+	if (XtIsManaged(child)) {
+	    form = (FormConstraints) child->core.constraints;
 
 /*
  * If the size is one (1) then we must not change the virtual sizes, as
@@ -781,37 +796,37 @@ static void ChangeManaged(Widget w)
  * Chris D. Peterson 2/9/89.
  */
 
-      if ( child->core.width != 1)
-	form->form.virtual_width = (int) child->core.width;
-      if ( child->core.height != 1)
-	form->form.virtual_height = (int) child->core.height;
+	    if (child->core.width != 1)
+		form->form.virtual_width = (short) child->core.width;
+	    if (child->core.height != 1)
+		form->form.virtual_height = (short) child->core.height;
+	}
     }
-  }
-  (*((FormWidgetClass)w->core.widget_class)->form_class.layout)
-  	                                 ((FormWidget) w, w->core.width,
-					  w->core.height, TRUE);
+    (*((FormWidgetClass) w->core.widget_class)->form_class.layout)
+	((FormWidget) w, w->core.width,
+	 w->core.height, TRUE);
 }
 
-
-static XtGeometryResult PreferredGeometry(
-    Widget widget,
-    XtWidgetGeometry *request,
-    XtWidgetGeometry *reply)
+static XtGeometryResult
+PreferredGeometry(
+		     Widget widget,
+		     XtWidgetGeometry * request,
+		     XtWidgetGeometry * reply)
 {
-    FormWidget w = (FormWidget)widget;
+    FormWidget w = (FormWidget) widget;
 
     reply->width = w->form.preferred_width;
     reply->height = w->form.preferred_height;
     reply->request_mode = CWWidth | CWHeight;
-    if ((request->request_mode & (CWWidth|CWHeight)) == (CWWidth|CWHeight) &&
+    if ((request->request_mode & (CWWidth | CWHeight)) == (CWWidth |
+	CWHeight) &&
 	(request->width == reply->width) && (request->height == reply->height))
-      return XtGeometryYes;
+	return XtGeometryYes;
     else if ((reply->width == w->core.width) && (reply->height == w->core.height))
-      return XtGeometryNo;
+	return XtGeometryNo;
     else
-      return XtGeometryAlmost;
+	return XtGeometryAlmost;
 }
-
 
 /**********************************************************************
  *
@@ -828,17 +843,17 @@ XawFormDoLayout(Widget w,
 		Boolean doit)
 {
     Widget *childP;
-    FormWidget fw = (FormWidget)w;
-    int num_children = fw->composite.num_children;
+    FormWidget fw = (FormWidget) w;
+    int num_children = (int) fw->composite.num_children;
     WidgetList children = fw->composite.children;
 
-    if ( ((fw->form.no_refigure = !doit) == TRUE) || !XtIsRealized(w) )
+    if (((fw->form.no_refigure = !doit) == TRUE) || !XtIsRealized(w))
 	return;
 
     for (childP = children; childP - children < num_children; childP++) {
 	Widget w2 = *childP;
 	if (XtIsManaged(w2)) {
-	    FormConstraints form = (FormConstraints)w2->core.constraints;
+	    FormConstraints form = (FormConstraints) w2->core.constraints;
 
 	    /*
 	     * Xt Configure widget is too smart, and optimizes out
@@ -851,7 +866,7 @@ XawFormDoLayout(Widget w,
 
 	    if (form->form.deferred_resize &&
 		XtClass(w2)->core_class.resize != (XtWidgetProc) NULL) {
-		(*(XtClass(w2)->core_class.resize))(w2);
+		(*(XtClass(w2)->core_class.resize)) (w2);
 		form->form.deferred_resize = False;
 	    }
 	}

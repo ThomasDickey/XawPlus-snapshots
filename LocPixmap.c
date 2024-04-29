@@ -1,9 +1,9 @@
 /*
- * $XTermId: LocPixmap.c,v 1.6 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: LocPixmap.c,v 1.8 2024/04/29 00:00:19 tom Exp $
  */
 
 /*
- * Copyright 2022  Thomas E. Dickey
+ * Copyright 2022,2024  Thomas E. Dickey
  *
  * I hacked this up from LocBitmap.c.  Since they (MIT X Consortium) did
  * most of the work and I only hacked it a little bit, I'm including
@@ -50,7 +50,7 @@
 #include <X11/Xresource.h>
 #include <X11/Xutil.h>
 #include <X11/StringDefs.h>
-#include <sys/param.h>			/* get MAXPATHLEN if possible */
+#include <sys/param.h>		/* get MAXPATHLEN if possible */
 #ifndef MAXPATHLEN
 #define MAXPATHLEN 256
 #endif
@@ -62,7 +62,7 @@
 
 #include <X11/XawPlus/StrToPmap.h>
 
-static char	**PIXMAPFILEPATHCACHE = NULL;
+static char **PIXMAPFILEPATHCACHE = NULL;
 
 /* This is the default pixmap path used for pixmaps, which are defined
  * in resouce files of XawPlus applications.
@@ -75,26 +75,30 @@ static char	**PIXMAPFILEPATHCACHE = NULL;
  * split_path_string - split a colon-separated list into its constituent
  * parts; to release, free list[0] and list.
  */
-static char **split_path_string (char *src)
+static char **
+split_path_string(char *src)
 {
     int nelems = 1;
     register char *dst;
     char **elemlist, **elem;
 
     /* count the number of elements */
-    for (dst = src; *dst; dst++) if (*dst == ':') nelems++;
+    for (dst = src; *dst; dst++)
+	if (*dst == ':')
+	    nelems++;
 
     /* get memory for everything */
-    dst = (char *) malloc (dst - src + 1);
-    if (!dst) return NULL;
-    elemlist = (char **) calloc ((nelems + 1), sizeof (char *));
+    dst = (char *) malloc((size_t) (dst - src + 1));
+    if (!dst)
+	return NULL;
+    elemlist = (char **) calloc((size_t) (nelems + 1), sizeof(char *));
     if (!elemlist) {
-	free (dst);
+	free(dst);
 	return NULL;
     }
 
     /* copy to new list and walk up nulling colons and setting list pointers */
-    strcpy (dst, src);
+    strcpy(dst, src);
     for (elem = elemlist, src = dst; *src; src++) {
 	if (*src == ':') {
 	    *elem++ = dst;
@@ -107,119 +111,127 @@ static char **split_path_string (char *src)
     return elemlist;
 }
 
-static XpmColorSymbol *ExtractXPMColorOverrides(
-char		*string,	/* !CONTENTS ARE MODIFIED! */
-int		*numsymbols)
+static XpmColorSymbol *
+ExtractXPMColorOverrides(
+			    char *string,	/* !CONTENTS ARE MODIFIED! */
+			    int *numsymbols)
 {
-  XpmColorSymbol *colorsymbols = NULL;
-  char	*s;	/* string scanning pointer */
-  int	asize;	/* allocated size for colorsymbols */
+    XpmColorSymbol *colorsymbols = NULL;
+    char *s;			/* string scanning pointer */
+    int asize;			/* allocated size for colorsymbols */
 
-  asize = 4;	/* allocate 4 at first, expand as necessary */
-  colorsymbols = (XpmColorSymbol *)malloc(sizeof(XpmColorSymbol) * asize);
+    asize = 4;			/* allocate 4 at first, expand as necessary */
+    colorsymbols = (XpmColorSymbol *) malloc(sizeof(XpmColorSymbol) *
+					     (size_t) asize);
 
-  *numsymbols = 0;	/* how many color replacements have we read */
+    *numsymbols = 0;		/* how many color replacements have we read */
 
-  /* I'm not using any of the more advanced string utilities, because I
-     don't know what OS's they are available in.  Sue me */
+    /* I'm not using any of the more advanced string utilities, because I
+       don't know what OS's they are available in.  Sue me */
 
-  /* scan past filename and terminate with \0 */
-  for (s=string; *s && !isspace(*s); s++);
-  if (*s) {
-    char	*p;	/* placeholder */
-    int		len;	/* length of color or symbol name */
+    /* scan past filename and terminate with \0 */
+    for (s = string; *s && !isspace(*s); s++) ;
+    if (*s) {
+	char *p;		/* placeholder */
+	int len;		/* length of color or symbol name */
 
-    *s = '\0'; /* filename is now separated from the rest of the string */
-    s++;
+	*s = '\0';		/* filename is now separated from the rest of the string */
+	s++;
 
-    while (*s) {
+	while (*s) {
 
-      for (; *s && isspace(*s); s++);	/* skip over whitespace */
-      if (*s == '\0')
-	break;			/* bail if no symbol name */
+	    for (; *s && isspace(*s); s++) ;	/* skip over whitespace */
+	    if (*s == '\0')
+		break;		/* bail if no symbol name */
 
-      p = s; 				/* stash the beginning of the symbol */
-      for (; *s && !isspace(*s); s++); 	/* scan past symbol */
-      len = s-p;			/* store length */
-      for (; *s && isspace(*s); s++);	/* skip whitespace between symbol and color name */
+	    p = s;		/* stash the beginning of the symbol */
+	    for (; *s && !isspace(*s); s++) ;	/* scan past symbol */
+	    len = (int) (s - p);	/* store length */
+	    for (; *s && isspace(*s); s++) ;	/* skip whitespace between symbol and color name */
 
-      if (*s == '\0')
-	{
-	  /* complain. I should find a better mechanism than this. */
-	  fprintf(stderr,"Warning: ExtractXPMColorOverrides: symbol name without replacement color name. (%s, %s)\n", string, p);
-	  break;
-	}
+	    if (*s == '\0') {
+		/* complain. I should find a better mechanism than this. */
+		fprintf(stderr,
+			"Warning: ExtractXPMColorOverrides: symbol name without replacement color name. (%s, %s)\n",
+			string, p);
+		break;
+	    }
 
-      if ( *numsymbols >= asize ) {
-	colorsymbols = (XpmColorSymbol *)realloc(colorsymbols, sizeof(XpmColorSymbol) * (asize*=2));
-	if (colorsymbols == NULL) {
-	  fprintf(stderr,"ERROR: ExtractXPMColorOverrides: Out of space for colorsymbols table (%s)\n", string);
-	  break;
-	}
-      }
-      /* store symbol name */
+	    if (*numsymbols >= asize) {
+		colorsymbols = (XpmColorSymbol *) realloc(colorsymbols,
+							  sizeof(XpmColorSymbol)
+							  * (size_t) (asize
+								      *= 2));
+		if (colorsymbols == NULL) {
+		    fprintf(stderr,
+			    "ERROR: ExtractXPMColorOverrides: Out of space for colorsymbols table (%s)\n", string);
+		    break;
+		}
+	    }
+	    /* store symbol name */
 
-      colorsymbols[*numsymbols].name = (char*)malloc(len+1);
-      strncpy(colorsymbols[*numsymbols].name, p, len);
-      colorsymbols[*numsymbols].name[len] = '\0';
+	    colorsymbols[*numsymbols].name = (char *) malloc((size_t) (len + 1));
+	    strncpy(colorsymbols[*numsymbols].name, p, (size_t) len);
+	    colorsymbols[*numsymbols].name[len] = '\0';
 
-      p = s;	/* we are at the beginning of the replacement color name */
-      for (; *s && !isspace(*s); s++);	/* scan to the end of the color name */
-      len = s-p;
+	    p = s;		/* we are at the beginning of the replacement color name */
+	    for (; *s && !isspace(*s); s++) ;	/* scan to the end of the color name */
+	    len = (int) (s - p);
 
-      /* store the color name */
-      colorsymbols[*numsymbols].value = (char*)malloc(len+1);
-      strncpy(colorsymbols[*numsymbols].value, p, len);
-      colorsymbols[*numsymbols].value[len] = '\0';
+	    /* store the color name */
+	    colorsymbols[*numsymbols].value = (char *) malloc((size_t) (len
+									+ 1));
+	    strncpy(colorsymbols[*numsymbols].value, p, (size_t) len);
+	    colorsymbols[*numsymbols].value[len] = '\0';
 
-      (*numsymbols)++;	/* one more replacement in the array */
+	    (*numsymbols)++;	/* one more replacement in the array */
 
-      /* go around for another shot. */
-    } /* while */
+	    /* go around for another shot. */
+	}			/* while */
 
-  } /* if */
-  return colorsymbols;
+    }				/* if */
+    return colorsymbols;
 }
-
 
 /*
  * XawLocatePixmapFile - read a pixmap file using the normal defaults
  */
 
-Pixmap XawLocatePixmapFile(
-Screen *screen,
-Colormap colormap,
-char *PixmapName,
-char *srcname,			/* RETURN */
-int srcnamelen,
-int *widthp,
-int *heightp,		/* RETURN */
-Pixmap *clipmask)		/* RETURN */
+Pixmap
+XawLocatePixmapFile(
+		       Screen *screen,
+		       Colormap colormap,
+		       char *PixmapName,
+		       char *srcname,	/* RETURN */
+		       int srcnamelen,
+		       int *widthp,
+		       int *heightp,	/* RETURN */
+		       Pixmap * clipmask)	/* RETURN */
 {
-    Display *dpy = DisplayOfScreen (screen);
-    Window root = RootWindowOfScreen (screen);
+    Display *dpy = DisplayOfScreen(screen);
+    Window root = RootWindowOfScreen(screen);
     Bool try_plain_name = True;
-    XmuCvtCache *cache = _XmuCCLookupDisplay (dpy);
+    XmuCvtCache *cache = _XmuCCLookupDisplay(dpy);
     char **file_paths = NULL;
     char filename[MAXPATHLEN];
     int i;
     char *name;
 
     XpmAttributes attributes;
-    XpmColorSymbol	*colorsymbols;
-    int	numsymbols;
+    XpmColorSymbol *colorsymbols;
+    int numsymbols;
 
     attributes.visual = screen->root_visual;
-    attributes.depth = screen->root_depth;
+    attributes.depth = (unsigned) screen->root_depth;
     attributes.colormap = colormap;
     attributes.valuemask = XpmColormap | XpmDepth | XpmVisual;
 
-    name = (char *)malloc(strlen(PixmapName) + 1);
-    (void)strcpy(name, PixmapName);
+    name = (char *) malloc(strlen(PixmapName) + 1);
+    (void) strcpy(name, PixmapName);
     colorsymbols = ExtractXPMColorOverrides(name, &numsymbols);
 
     if (numsymbols) {
-	attributes.numsymbols = numsymbols;
+	attributes.numsymbols = (unsigned) numsymbols;
 	attributes.colorsymbols = colorsymbols;
 	attributes.valuemask |= XpmColorSymbols;
     }
@@ -235,26 +247,26 @@ Pixmap *clipmask)		/* RETURN */
 	    XrmRepresentation rep_type;
 	    XrmValue value;
 
-            xrm_name[0] = XrmPermStringToQuark ("pixmapFilePath");
-            xrm_name[1] = NULLQUARK;
-            xrm_class[0] = XrmPermStringToQuark ("PixmapFilePath");
-            xrm_class[1] = NULLQUARK;
+	    xrm_name[0] = XrmPermStringToQuark("pixmapFilePath");
+	    xrm_name[1] = NULLQUARK;
+	    xrm_class[0] = XrmPermStringToQuark("PixmapFilePath");
+	    xrm_class[1] = NULLQUARK;
 
 	    /*
 	     * XXX - warning, derefing Display * until XDisplayDatabase
 	     */
 	    if (!XrmGetDatabase(dpy)) {
 		/* what a hack; need to initialize dpy->db */
-		(void) XGetDefault (dpy, "", "");
+		(void) XGetDefault(dpy, "", "");
 	    }
-	    if (XrmQGetResource(XrmGetDatabase(dpy),xrm_name,xrm_class,&rep_type,&value) &&
+	    if (XrmQGetResource(XrmGetDatabase(dpy), xrm_name, xrm_class,
+				&rep_type, &value) &&
 		rep_type == XrmPermStringToQuark("String")) {
-		  PIXMAPFILEPATHCACHE = split_path_string (value.addr);
+		PIXMAPFILEPATHCACHE = split_path_string(value.addr);
 	    }
 	}
 	file_paths = PIXMAPFILEPATHCACHE;
     }
-
 
     /*
      * Search order:
@@ -269,46 +281,51 @@ Pixmap *clipmask)		/* RETURN */
 	Pixmap pixmap;
 
 	switch (i) {
-	  case 1:
+	case 1:
 	    if (!((name[0] == '/') || ((name[0] == '.') && (name[1] == '/'))))
-	      continue;
+		continue;
 	    fn = name;
 	    try_plain_name = False;
 	    break;
-	  case 2:
+	case 2:
 	    if (file_paths && *file_paths) {
-		sprintf (filename, "%s/%s", *file_paths, name);
+		sprintf(filename, "%s/%s", *file_paths, name);
 		file_paths++;
 		i--;
 		break;
 	    }
 	    continue;
-	  case 3:
-	    sprintf (filename, "%s/%s", PIXMAPDIR, name);
+	case 3:
+	    sprintf(filename, "%s/%s", PIXMAPDIR, name);
 	    break;
-	  case 4:
-	    if (!try_plain_name) continue;
+	case 4:
+	    if (!try_plain_name)
+		continue;
 	    fn = name;
 	    break;
 	}
 
 	if (XpmReadPixmapFile(dpy, root, fn,
 			      &pixmap, clipmask, &attributes) == XpmSuccess) {
-	    if (widthp) *widthp = (int)attributes.width;
-	    if (heightp) *heightp = (int)attributes.height;
+	    if (widthp)
+		*widthp = (int) attributes.width;
+	    if (heightp)
+		*heightp = (int) attributes.height;
 	    if (srcname && srcnamelen > 0) {
-		strncpy (srcname, fn, srcnamelen - 1);
+		strncpy(srcname, fn, (size_t) (srcnamelen - 1));
 		srcname[srcnamelen - 1] = '\0';
 	    }
 	    /*free up colorsymbol info */
 	    free(name);
-	    if (numsymbols) free(colorsymbols);
+	    if (numsymbols)
+		free(colorsymbols);
 	    return pixmap;
 	}
     }
     /*free up colorsymbol info */
 
     free(name);
-    if (numsymbols) free(colorsymbols);
+    if (numsymbols)
+	free(colorsymbols);
     return None;
 }

@@ -1,5 +1,5 @@
 /*
- * $XTermId: DrawingArea.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: DrawingArea.c,v 1.6 2024/04/29 00:03:55 tom Exp $
  */
 
 /***********************************************************************
@@ -9,7 +9,7 @@
  * This widget adds a backing store to the simple widget and defines
  * all(?) drawing functions known from the Xlib for this widget.
  *
- * Copyright 2022  Thomas E. Dickey
+ * Copyright 2022,2024  Thomas E. Dickey
  * Copyright (c) Roland Krause 2002, roland_krause@freenet.de
  *
  * This module is free software; you can redistribute it and/or modify
@@ -34,7 +34,7 @@
 #include <X11/StringDefs.h>
 #include <X11/XawPlus/XawInit.h>
 #include <X11/XawPlus/DrawingAreaP.h>
-
+/* *INDENT-OFF* */
 /* Prototypes */
 
 static void Initialize(Widget junk, Widget new, ArgList args, Cardinal *num_args);
@@ -85,8 +85,9 @@ DrawingAreaClassRec drawingAreaClassRec = {
     /* dummy 			*/	0
   }
 };
+/* *INDENT-ON* */
 
-WidgetClass drawingAreaWidgetClass = (WidgetClass)&drawingAreaClassRec;
+WidgetClass drawingAreaWidgetClass = (WidgetClass) & drawingAreaClassRec;
 
 /***********************************************************************
  *
@@ -102,21 +103,22 @@ WidgetClass drawingAreaWidgetClass = (WidgetClass)&drawingAreaClassRec;
  *			initialize pixmaps.
  ***********************************************************************/
 
-static void Initialize(
-Widget junk GCC_UNUSED,
-Widget new,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+static void
+Initialize(
+	      Widget junk GCC_UNUSED,
+	      Widget new,
+	      ArgList args GCC_UNUSED,
+	      Cardinal *num_args GCC_UNUSED)
 {
-    DrawingAreaWidget daw  = (DrawingAreaWidget)new;
-    XGCValues	      values;
+    DrawingAreaWidget daw = (DrawingAreaWidget) new;
+    XGCValues values;
 
     daw->draw.BackingStore = XtUnspecifiedPixmap;
-    daw->draw.max_width    = 0;
-    daw->draw.max_height   = 0;
+    daw->draw.max_width = 0;
+    daw->draw.max_height = 0;
 
-    values.foreground	   = new->core.background_pixel;
-    daw->draw.gc	   = XtGetGC(new, GCForeground, &values);
+    values.foreground = new->core.background_pixel;
+    daw->draw.gc = XtGetGC(new, GCForeground, &values);
 }
 
 /***********************************************************************
@@ -125,44 +127,46 @@ Cardinal *num_args GCC_UNUSED)
  *
  ***********************************************************************/
 
-static void Destroy(Widget w)
+static void
+Destroy(Widget w)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  XFreePixmap(XtDisplay(w), daw->draw.BackingStore);
-  XtReleaseGC(w, daw->draw.gc);
+    XFreePixmap(XtDisplay(w), daw->draw.BackingStore);
+    XtReleaseGC(w, daw->draw.gc);
 }
+
 /***********************************************************************
  *
  * SetValues method:	Handle changes of the background color
  *
  ***********************************************************************/
 
-static Boolean SetValues(
-Widget current,
-Widget request GCC_UNUSED,
-Widget new,
-ArgList args GCC_UNUSED,
-Cardinal *num_args GCC_UNUSED)
+static Boolean
+SetValues(
+	     Widget current,
+	     Widget request GCC_UNUSED,
+	     Widget new,
+	     ArgList args GCC_UNUSED,
+	     Cardinal *num_args GCC_UNUSED)
 {
-  DrawingAreaWidget NewDaw     = (DrawingAreaWidget)new;
-  DrawingAreaWidget CurrentDaw = (DrawingAreaWidget)current;
-  XGCValues	    values;
+    DrawingAreaWidget NewDaw = (DrawingAreaWidget) new;
+    DrawingAreaWidget CurrentDaw = (DrawingAreaWidget) current;
+    XGCValues values;
 
-  if (CurrentDaw->core.background_pixel != NewDaw->core.background_pixel)
-  {
-     /* Changing of the background color: Release the GC for
-      * deleting the drawing area and create a new one with the
-      * new background color as foreground color
-      */
-     XtReleaseGC(new, NewDaw->draw.gc);
-     values.foreground = NewDaw->core.background_pixel;
-     NewDaw->draw.gc = XtGetGC(new, GCForeground, &values);
-  }
-  /* Repainting the drawing area is not required. The new
-   * background color is used after the next XawClearWindow().
-   */
-  return(FALSE);
+    if (CurrentDaw->core.background_pixel != NewDaw->core.background_pixel) {
+	/* Changing of the background color: Release the GC for
+	 * deleting the drawing area and create a new one with the
+	 * new background color as foreground color
+	 */
+	XtReleaseGC(new, NewDaw->draw.gc);
+	values.foreground = NewDaw->core.background_pixel;
+	NewDaw->draw.gc = XtGetGC(new, GCForeground, &values);
+    }
+    /* Repainting the drawing area is not required. The new
+     * background color is used after the next XawClearWindow().
+     */
+    return (FALSE);
 }
 /***********************************************************************
  *
@@ -175,40 +179,42 @@ Cardinal *num_args GCC_UNUSED)
  *
  ***********************************************************************/
 
-static void Resize(Widget w)
+static void
+Resize(Widget w)
 {
-  DrawingAreaWidget daw  = (DrawingAreaWidget)w;
-  Display 	   *disp = XtDisplay(w);
-  Pixmap	   new;
-  Dimension	   width_max, height_max;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
+    Display *disp = XtDisplay(w);
+    Pixmap new;
+    Dimension width_max, height_max;
 
-  if ((daw->draw.max_width < daw->core.width) || (daw->draw.max_height < daw->core.height))
-  {
-    /* Determine minimum and maximum values for width and height */
+    if ((daw->draw.max_width < daw->core.width) || (daw->draw.max_height < daw->core.height)) {
+	/* Determine minimum and maximum values for width and height */
 
-    if (daw->draw.max_width < daw->core.width)
-	 width_max = daw->core.width;
-    else width_max = daw->draw.max_width;
+	if (daw->draw.max_width < daw->core.width)
+	    width_max = daw->core.width;
+	else
+	    width_max = daw->draw.max_width;
 
-    if (daw->draw.max_height < daw->core.height)
-	 height_max = daw->core.height;
-    else height_max = daw->draw.max_height;
+	if (daw->draw.max_height < daw->core.height)
+	    height_max = daw->core.height;
+	else
+	    height_max = daw->draw.max_height;
 
-    /* Create the new pixmap, clear it, copy the contents of the old pixmap
-     * in it and destroy the old pixmap
-     */
-    new = XCreatePixmap(disp, daw->core.window, width_max, height_max, daw->core.depth);
-    XFillRectangle(disp, new, daw->draw.gc, 0, 0, width_max, height_max);
-    XCopyArea(disp, daw->draw.BackingStore, new, daw->draw.gc, 0, 0,
-		daw->draw.max_width, daw->draw.max_height, 0, 0);
-    XFreePixmap(disp,daw->draw.BackingStore);
+	/* Create the new pixmap, clear it, copy the contents of the old pixmap
+	 * in it and destroy the old pixmap
+	 */
+	new = XCreatePixmap(disp, daw->core.window, width_max, height_max, daw->core.depth);
+	XFillRectangle(disp, new, daw->draw.gc, 0, 0, width_max, height_max);
+	XCopyArea(disp, daw->draw.BackingStore, new, daw->draw.gc, 0, 0,
+		  daw->draw.max_width, daw->draw.max_height, 0, 0);
+	XFreePixmap(disp, daw->draw.BackingStore);
 
-    /* Store the new values */
+	/* Store the new values */
 
-    daw->draw.BackingStore = new;
-    daw->draw.max_width    = width_max;
-    daw->draw.max_height   = height_max;
-  }
+	daw->draw.BackingStore = new;
+	daw->draw.max_width = width_max;
+	daw->draw.max_height = height_max;
+    }
 }
 
 /***********************************************************************
@@ -219,35 +225,36 @@ static void Resize(Widget w)
  *
  ***********************************************************************/
 
-static void Redisplay(
-Widget w,
-XEvent *event,
-Region reg GCC_UNUSED)
+static void
+Redisplay(
+	     Widget w,
+	     XEvent *event,
+	     Region reg GCC_UNUSED)
 {
-  DrawingAreaWidget daw  = (DrawingAreaWidget)w;
-  Display 	   *disp = XtDisplay(w);
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
+    Display *disp = XtDisplay(w);
 
-  /* Create a backing store pixmap if none exist */
+    /* Create a backing store pixmap if none exist */
 
-  if (daw->draw.BackingStore == XtUnspecifiedPixmap)
-  {
-    daw->draw.BackingStore = XCreatePixmap(disp, daw->core.window,
-				daw->core.width, daw->core.height, daw->core.depth);
-    XFillRectangle(disp, daw->draw.BackingStore, daw->draw.gc,
-		   0, 0, daw->core.width, daw->core.height);
+    if (daw->draw.BackingStore == XtUnspecifiedPixmap) {
+	daw->draw.BackingStore = XCreatePixmap(disp, daw->core.window,
+					       daw->core.width,
+					       daw->core.height, daw->core.depth);
+	XFillRectangle(disp, daw->draw.BackingStore, daw->draw.gc,
+		       0, 0, daw->core.width, daw->core.height);
 
-    /* Save the actual height and width values */
+	/* Save the actual height and width values */
 
-    daw->draw.max_width  = daw->core.width;
-    daw->draw.max_height = daw->core.height;
-  }
-  /* Restore a part of the window if an event is given */
+	daw->draw.max_width = daw->core.width;
+	daw->draw.max_height = daw->core.height;
+    }
+    /* Restore a part of the window if an event is given */
 
-  if (event != NULL)
-      XCopyArea(disp, daw->draw.BackingStore, daw->core.window,
-		daw->draw.gc, event->xexpose.x, event->xexpose.y,
-		event->xexpose.width, event->xexpose.height,
-		event->xexpose.x, event->xexpose.y);
+    if (event != NULL)
+	XCopyArea(disp, daw->draw.BackingStore, daw->core.window,
+		  daw->draw.gc, event->xexpose.x, event->xexpose.y,
+		  (unsigned) event->xexpose.width, (unsigned) event->xexpose.height,
+		  event->xexpose.x, event->xexpose.y);
 }
 
 /***********************************************************************
@@ -260,346 +267,391 @@ Region reg GCC_UNUSED)
  *
  ***********************************************************************/
 
-void XawClearWindow(Widget w)
+void
+XawClearWindow(Widget w)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
-  Pixmap	    new;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
+    Pixmap new;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible) XClearWindow(XtDisplay(w), XtWindow(w));
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XClearWindow(XtDisplay(w), XtWindow(w));
 
-    /* Set the backing store pixmap to the minimum width and height */
+	/* Set the backing store pixmap to the minimum width and height */
 
-    new = XCreatePixmap(XtDisplay(w), daw->core.window, daw->core.width, daw->core.height, daw->core.depth);
-    XFillRectangle(XtDisplay(w), new, daw->draw.gc, 0, 0, daw->core.width, daw->core.height);
-    XFreePixmap(XtDisplay(w), daw->draw.BackingStore);
+	new = XCreatePixmap(XtDisplay(w), daw->core.window, daw->core.width,
+			    daw->core.height, daw->core.depth);
+	XFillRectangle(XtDisplay(w), new, daw->draw.gc, 0, 0,
+		       daw->core.width, daw->core.height);
+	XFreePixmap(XtDisplay(w), daw->draw.BackingStore);
 
-    /* Store the new values */
+	/* Store the new values */
 
-    daw->draw.BackingStore = new;
-    daw->draw.max_width  = daw->core.width;
-    daw->draw.max_height = daw->core.height;
-  }
+	daw->draw.BackingStore = new;
+	daw->draw.max_width = daw->core.width;
+	daw->draw.max_height = daw->core.height;
+    }
 }
 
-void XawDrawPoint(
-Widget	w,
-GC	gc,
-int	x,
-int	y)
+void
+XawDrawPoint(
+		Widget w,
+		GC gc,
+		int x,
+		int y)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible) XDrawPoint(XtDisplay(w), XtWindow(w), gc, x, y);
-    XDrawPoint(XtDisplay(w), daw->draw.BackingStore, gc, x, y);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawPoint(XtDisplay(w), XtWindow(w), gc, x, y);
+	XDrawPoint(XtDisplay(w), daw->draw.BackingStore, gc, x, y);
+    }
 }
 
-void XawDrawPoints(
-Widget	w,
-GC	gc,
-XPoint	*points,
-int	npoints,
-int	mode)
+void
+XawDrawPoints(
+		 Widget w,
+		 GC gc,
+		 XPoint * points,
+		 int npoints,
+		 int mode)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XDrawPoints(XtDisplay(w), XtWindow(w), gc, points, npoints, mode);
-    XDrawPoints(XtDisplay(w), daw->draw.BackingStore, gc, points, npoints, mode);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawPoints(XtDisplay(w), XtWindow(w), gc, points, npoints, mode);
+	XDrawPoints(XtDisplay(w), daw->draw.BackingStore, gc, points,
+		    npoints, mode);
+    }
 }
 
-void XawDrawLine(
-Widget	w,
-GC	gc,
-int	x1,
-int	y1,
-int	x2,
-int	y2)
+void
+XawDrawLine(
+	       Widget w,
+	       GC gc,
+	       int x1,
+	       int y1,
+	       int x2,
+	       int y2)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible) XDrawLine(XtDisplay(w), XtWindow(w), gc, x1, y1, x2, y2);
-    XDrawLine(XtDisplay(w), daw->draw.BackingStore, gc, x1, y1, x2, y2);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawLine(XtDisplay(w), XtWindow(w), gc, x1, y1, x2, y2);
+	XDrawLine(XtDisplay(w), daw->draw.BackingStore, gc, x1, y1, x2, y2);
+    }
 }
 
-void XawDrawLines(
-Widget	w,
-GC	gc,
-XPoint	*points,
-int	npoints,
-int	mode)
+void
+XawDrawLines(
+		Widget w,
+		GC gc,
+		XPoint * points,
+		int npoints,
+		int mode)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible) XDrawLines(XtDisplay(w), XtWindow(w), gc, points, npoints, mode);
-    XDrawLines(XtDisplay(w), daw->draw.BackingStore, gc, points, npoints, mode);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawLines(XtDisplay(w), XtWindow(w), gc, points, npoints, mode);
+	XDrawLines(XtDisplay(w), daw->draw.BackingStore, gc, points,
+		   npoints, mode);
+    }
 }
 
-void XawDrawSegments(
-Widget	  w,
-GC	  gc,
-XSegment *segments,
-int	  n)
+void
+XawDrawSegments(
+		   Widget w,
+		   GC gc,
+		   XSegment * segments,
+		   int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible) XDrawSegments(XtDisplay(w), XtWindow(w), gc, segments, n);
-    XDrawSegments(XtDisplay(w), daw->draw.BackingStore, gc, segments, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawSegments(XtDisplay(w), XtWindow(w), gc, segments, n);
+	XDrawSegments(XtDisplay(w), daw->draw.BackingStore, gc, segments, n);
+    }
 }
 
-void XawDrawRectangle(
-Widget		w,
-GC		gc,
-int		x,
-int		y,
-unsigned int	width,
-unsigned int	height)
+void
+XawDrawRectangle(
+		    Widget w,
+		    GC gc,
+		    int x,
+		    int y,
+		    unsigned int width,
+		    unsigned int height)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XDrawRectangle(XtDisplay(w), XtWindow(w), gc, x, y, width, height);
-    XDrawRectangle(XtDisplay(w), daw->draw.BackingStore, gc, x, y, width, height);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawRectangle(XtDisplay(w), XtWindow(w), gc, x, y, width, height);
+	XDrawRectangle(XtDisplay(w), daw->draw.BackingStore, gc, x, y,
+		       width, height);
+    }
 }
 
-void XawDrawRectangles(
-Widget	    w,
-GC	    gc,
-XRectangle *rectangles,
-int	    n)
+void
+XawDrawRectangles(
+		     Widget w,
+		     GC gc,
+		     XRectangle * rectangles,
+		     int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible) XDrawRectangles(XtDisplay(w), XtWindow(w), gc, rectangles, n);
-    XDrawRectangles(XtDisplay(w), daw->draw.BackingStore, gc, rectangles, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawRectangles(XtDisplay(w), XtWindow(w), gc, rectangles, n);
+	XDrawRectangles(XtDisplay(w), daw->draw.BackingStore, gc,
+			rectangles, n);
+    }
 }
 
-void XawDrawArc(
-Widget		w,
-GC		gc,
-int		x,
-int		y,
-unsigned int	width,
-unsigned int	height,
-int		angle1,
-int		angle2)
+void
+XawDrawArc(
+	      Widget w,
+	      GC gc,
+	      int x,
+	      int y,
+	      unsigned int width,
+	      unsigned int height,
+	      int angle1,
+	      int angle2)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XDrawArc(XtDisplay(w), XtWindow(w), gc, x, y, width, height, angle1, angle2);
-    XDrawArc(XtDisplay(w), daw->draw.BackingStore, gc, x, y, width, height, angle1, angle2);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawArc(XtDisplay(w), XtWindow(w), gc, x, y, width, height,
+		     angle1, angle2);
+	XDrawArc(XtDisplay(w), daw->draw.BackingStore, gc, x, y, width,
+		 height, angle1, angle2);
+    }
 }
 
-void XawDrawArcs(
-Widget	    w,
-GC	    gc,
-XArc	   *arcs,
-int	    n)
+void
+XawDrawArcs(
+	       Widget w,
+	       GC gc,
+	       XArc * arcs,
+	       int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible) XDrawArcs(XtDisplay(w), XtWindow(w), gc, arcs, n);
-    XDrawArcs(XtDisplay(w), daw->draw.BackingStore, gc, arcs, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawArcs(XtDisplay(w), XtWindow(w), gc, arcs, n);
+	XDrawArcs(XtDisplay(w), daw->draw.BackingStore, gc, arcs, n);
+    }
 }
 
-void XawFillRectangle(
-Widget		w,
-GC		gc,
-int		x,
-int		y,
-unsigned int	width,
-unsigned int	height)
+void
+XawFillRectangle(
+		    Widget w,
+		    GC gc,
+		    int x,
+		    int y,
+		    unsigned int width,
+		    unsigned int height)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-       XFillRectangle(XtDisplay(w), XtWindow(w), gc, x, y, width, height);
-    XFillRectangle(XtDisplay(w), daw->draw.BackingStore, gc, x, y, width, height);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XFillRectangle(XtDisplay(w), XtWindow(w), gc, x, y, width, height);
+	XFillRectangle(XtDisplay(w), daw->draw.BackingStore, gc, x, y,
+		       width, height);
+    }
 }
 
-void XawFillRectangles(
-Widget	    w,
-GC	    gc,
-XRectangle *rectangles,
-int	    n)
+void
+XawFillRectangles(
+		     Widget w,
+		     GC gc,
+		     XRectangle * rectangles,
+		     int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible) XFillRectangles(XtDisplay(w), XtWindow(w), gc, rectangles, n);
-    XFillRectangles(XtDisplay(w), daw->draw.BackingStore, gc, rectangles, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XFillRectangles(XtDisplay(w), XtWindow(w), gc, rectangles, n);
+	XFillRectangles(XtDisplay(w), daw->draw.BackingStore, gc,
+			rectangles, n);
+    }
 }
 
-void XawFillArc(
-Widget		w,
-GC		gc,
-int		x,
-int		y,
-unsigned int	width,
-unsigned int	height,
-int		angle1,
-int		angle2)
+void
+XawFillArc(
+	      Widget w,
+	      GC gc,
+	      int x,
+	      int y,
+	      unsigned int width,
+	      unsigned int height,
+	      int angle1,
+	      int angle2)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XFillArc(XtDisplay(w), XtWindow(w), gc, x, y, width, height, angle1, angle2);
-    XFillArc(XtDisplay(w), daw->draw.BackingStore, gc, x, y, width, height, angle1, angle2);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XFillArc(XtDisplay(w), XtWindow(w), gc, x, y, width, height,
+		     angle1, angle2);
+	XFillArc(XtDisplay(w), daw->draw.BackingStore, gc, x, y, width,
+		 height, angle1, angle2);
+    }
 }
 
-void XawFillArcs(
-Widget	    w,
-GC	    gc,
-XArc	   *arcs,
-int	    n)
+void
+XawFillArcs(
+	       Widget w,
+	       GC gc,
+	       XArc * arcs,
+	       int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible) XFillArcs(XtDisplay(w), XtWindow(w), gc, arcs, n);
-    XFillArcs(XtDisplay(w), daw->draw.BackingStore, gc, arcs, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XFillArcs(XtDisplay(w), XtWindow(w), gc, arcs, n);
+	XFillArcs(XtDisplay(w), daw->draw.BackingStore, gc, arcs, n);
+    }
 }
 
-void XawFillPolygon(
-Widget	    w,
-GC	    gc,
-XPoint	   *points,
-int	    n,
-int	    shape,
-int	    mode)
+void
+XawFillPolygon(
+		  Widget w,
+		  GC gc,
+		  XPoint * points,
+		  int n,
+		  int shape,
+		  int mode)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XFillPolygon(XtDisplay(w), XtWindow(w), gc, points, n, shape, mode);
-    XFillPolygon(XtDisplay(w), daw->draw.BackingStore, gc, points, n, shape, mode);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XFillPolygon(XtDisplay(w), XtWindow(w), gc, points, n, shape, mode);
+	XFillPolygon(XtDisplay(w), daw->draw.BackingStore, gc, points, n,
+		     shape, mode);
+    }
 }
 
-void XawDrawString(
-Widget	    w,
-GC	    gc,
-int	    x,
-int	    y,
-char	   *str,
-int	    n)
+void
+XawDrawString(
+		 Widget w,
+		 GC gc,
+		 int x,
+		 int y,
+		 char *str,
+		 int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XDrawString(XtDisplay(w), XtWindow(w), gc, x, y, str, n);
-    XDrawString(XtDisplay(w), daw->draw.BackingStore, gc, x, y, str, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawString(XtDisplay(w), XtWindow(w), gc, x, y, str, n);
+	XDrawString(XtDisplay(w), daw->draw.BackingStore, gc, x, y, str, n);
+    }
 }
 
-void XawDrawImageString(
-Widget	    w,
-GC	    gc,
-int	    x,
-int	    y,
-char	   *str,
-int	    n)
+void
+XawDrawImageString(
+		      Widget w,
+		      GC gc,
+		      int x,
+		      int y,
+		      char *str,
+		      int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XDrawImageString(XtDisplay(w), XtWindow(w), gc, x, y, str, n);
-    XDrawImageString(XtDisplay(w), daw->draw.BackingStore, gc, x, y, str, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawImageString(XtDisplay(w), XtWindow(w), gc, x, y, str, n);
+	XDrawImageString(XtDisplay(w), daw->draw.BackingStore, gc, x, y,
+			 str, n);
+    }
 }
 
-void XawDrawText(
-Widget	    w,
-GC	    gc,
-int	    x,
-int	    y,
-XTextItem   *item,
-int	    n)
+void
+XawDrawText(
+	       Widget w,
+	       GC gc,
+	       int x,
+	       int y,
+	       XTextItem * item,
+	       int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XDrawText(XtDisplay(w), XtWindow(w), gc, x, y, item, n);
-    XDrawText(XtDisplay(w), daw->draw.BackingStore, gc, x, y, item, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawText(XtDisplay(w), XtWindow(w), gc, x, y, item, n);
+	XDrawText(XtDisplay(w), daw->draw.BackingStore, gc, x, y, item, n);
+    }
 }
 
-void XawDrawString16(
-Widget		w,
-GC		gc,
-int		x,
-int		y,
-_Xconst XChar2b	*str,
-int		n)
+void
+XawDrawString16(
+		   Widget w,
+		   GC gc,
+		   int x,
+		   int y,
+		   _Xconst XChar2b * str,
+		   int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XDrawString16(XtDisplay(w), XtWindow(w), gc, x, y, str, n);
-    XDrawString16(XtDisplay(w), daw->draw.BackingStore, gc, x, y, str, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawString16(XtDisplay(w), XtWindow(w), gc, x, y, str, n);
+	XDrawString16(XtDisplay(w), daw->draw.BackingStore, gc, x, y, str, n);
+    }
 }
 
-void XawDrawImageString16(
-Widget		w,
-GC		gc,
-int		x,
-int		y,
-_Xconst XChar2b	*str,
-int		n)
+void
+XawDrawImageString16(
+			Widget w,
+			GC gc,
+			int x,
+			int y,
+			_Xconst XChar2b * str,
+			int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XDrawImageString16(XtDisplay(w), XtWindow(w), gc, x, y, str, n);
-    XDrawImageString16(XtDisplay(w), daw->draw.BackingStore, gc, x, y, str, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawImageString16(XtDisplay(w), XtWindow(w), gc, x, y, str, n);
+	XDrawImageString16(XtDisplay(w), daw->draw.BackingStore, gc, x, y,
+			   str, n);
+    }
 }
 
-void XawDrawText16(
-Widget	    w,
-GC	    gc,
-int	    x,
-int	    y,
-XTextItem16 *item,
-int	    n)
+void
+XawDrawText16(
+		 Widget w,
+		 GC gc,
+		 int x,
+		 int y,
+		 XTextItem16 * item,
+		 int n)
 {
-  DrawingAreaWidget daw = (DrawingAreaWidget)w;
+    DrawingAreaWidget daw = (DrawingAreaWidget) w;
 
-  if (XtIsRealized(w)) {
-    if (daw->core.visible)
-      XDrawText16(XtDisplay(w), XtWindow(w), gc, x, y, item, n);
-    XDrawText16(XtDisplay(w), daw->draw.BackingStore, gc, x, y, item, n);
-  }
+    if (XtIsRealized(w)) {
+	if (daw->core.visible)
+	    XDrawText16(XtDisplay(w), XtWindow(w), gc, x, y, item, n);
+	XDrawText16(XtDisplay(w), daw->draw.BackingStore, gc, x, y, item, n);
+    }
 }
