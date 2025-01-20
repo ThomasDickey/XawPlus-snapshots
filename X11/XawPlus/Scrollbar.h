@@ -1,9 +1,11 @@
-
-/* $Xorg: Scrollbar.h,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $ */
+/*
+ * $XTermId: Scrollbar.h,v 1.4 2025/01/19 14:11:32 tom Exp $
+ * $Xorg: Scrollbar.h,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
+ */
 
 /**************************************************************************
 
-Copyright 2015	Thomas E. Dickey
+Copyright 2015,2025	Thomas E. Dickey
 Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1998  The Open Group
 
@@ -32,13 +34,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -101,7 +103,7 @@ SOFTWARE.
  shown		     Shown		Float		0.0
  topOfThumb	     TopOfThumb		Float		0.0
  pickTop	     PickTop		Boolean		False
- 
+
  accelerators	     Accelerators	AcceleratorTable NULL
  ancestorSensitive   AncestorSensitive	Boolean		True
  jumpProc	     Callback		XtCallbackList	NULL
@@ -111,8 +113,8 @@ SOFTWARE.
 
 */
 
-/* 
- * Most things we need are in StringDefs.h 
+/*
+ * Most things we need are in StringDefs.h
  */
 
 #define XtCMinimumThumb "MinimumThumb"

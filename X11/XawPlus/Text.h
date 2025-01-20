@@ -1,8 +1,11 @@
-/* $Xorg: Text.h,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $ */
+/*
+ * $XTermId: Text.h,v 1.4 2025/01/19 14:11:32 tom Exp $
+ * $Xorg: Text.h,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $
+ */
 
 /***********************************************************
 
-Copyright 2015	Thomas E. Dickey
+Copyright 2015,2025	Thomas E. Dickey
 Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
@@ -31,13 +34,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -88,7 +91,7 @@ typedef long XawTextPosition;
 typedef enum { XawtextScrollNever,
 	       XawtextScrollWhenNeeded, XawtextScrollAlways} XawTextScrollMode;
 
-typedef enum { XawtextWrapNever, 
+typedef enum { XawtextWrapNever,
 	       XawtextWrapLine, XawtextWrapWord} XawTextWrapMode;
 
 typedef enum { XawtextResizeNever, XawtextResizeWidth,
@@ -104,7 +107,7 @@ typedef struct {
     int  length;
     char *ptr;
     unsigned long format;
-    } XawTextBlock, *XawTextBlockPtr; 
+    } XawTextBlock, *XawTextBlockPtr;
 
 #include <X11/XawPlus/TextSink.h>
 #include <X11/XawPlus/TextSrc.h>
@@ -178,7 +181,7 @@ extern XrmQuark _XawTextFormat(
 
 extern void XawTextDisplay(
     Widget		/* w */
-); 
+);
 
 extern void XawTextEnableRedisplay(
     Widget		/* w */
@@ -259,7 +262,7 @@ extern void XawTextDisplayCaret(
 _XFUNCPROTOEND
 
 /*
- * For R3 compatability only. 
+ * For R3 compatability only.
  */
 
 #include <X11/XawPlus/AsciiSrc.h>

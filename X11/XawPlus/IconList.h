@@ -1,11 +1,15 @@
+/*
+ * $XTermId: IconList.h,v 1.3 2025/01/19 15:20:11 tom Exp $
+ */
 
 /* This is the replacement for the old IconList header file.
  * Since the IconList code is merged into the list widget,
  * this header file remains only for compatibility.
  *
  * If you try create an IconList widget as in XawPlus 2.x in fact
- * a compatible List widget will be created. 
+ * a compatible List widget will be created.
  *
+ * Copyright 2022,2025  Thomas E. Dickey
  * Copyright (c) Roland Krause 2002, roland_krause@freenet.de
  *
  * This module is free software; you can redistribute it and/or modify

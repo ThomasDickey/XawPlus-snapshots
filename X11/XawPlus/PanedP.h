@@ -1,8 +1,10 @@
 /*************************************************************************
 
+  $XTermId: PanedP.h,v 1.3 2025/01/19 15:20:11 tom Exp $
   $Xorg: PanedP.h,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
 
 
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1987, 1988, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -30,13 +32,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -104,7 +106,7 @@ typedef struct _PanedConstraintsPart {
     Dimension   preferred_size;	/* The Preferred size of the pane.
 				   Iff this is zero then ask child for size.*/
     Boolean     resize_to_pref;	/* resize this pane to its preferred size
-				   on a resize or change managed after 
+				   on a resize or change managed after
 				   realize. */
 
   /* Private state. */
@@ -112,7 +114,7 @@ typedef struct _PanedConstraintsPart {
     Position	olddelta;	/* The last value of dy. */
     Boolean     paned_adjusted_me; /* Has the vpaned adjusted this widget w/o
 				     user interaction to make things fit? */
-    Dimension	wp_size;	/* widget's preferred size */ 
+    Dimension	wp_size;	/* widget's preferred size */
     int         size;		/* the size the widget will actually get. */
     Widget	grip;		/* The grip for this child */
 
@@ -136,9 +138,9 @@ typedef struct _PaneStack {
 /* New Fields for the Paned widget record */
 typedef struct {
     /* resources */
-    Position    grip_indent;               /* Location of grips (offset	
+    Position    grip_indent;               /* Location of grips (offset
 					      from right margin) */
-    Boolean     refiguremode;              /* Whether to refigure changes 
+    Boolean     refiguremode;              /* Whether to refigure changes
 					      right now */
     XtTranslations grip_translations;      /* grip translation table */
     Pixel       intBorderHighlight;        /* color of internal borders. */

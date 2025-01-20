@@ -1,7 +1,11 @@
-/* $Xorg: ToggleP.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $ */
+/*
+ * $XTermId: ToggleP.h,v 1.3 2025/01/19 15:20:11 tom Exp $
+ * $Xorg: ToggleP.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
+ */
 
 /*
 
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1989, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -26,13 +30,13 @@ in this Software without prior written authorization from The Open Group.
 
 */
 
-/* 
+/*
  * ToggleP.h - Private definitions for Toggle widget
- * 
+ *
  * Author: Chris D. Peterson
  *         MIT X Consortium
  *         kit@expo.lcs.mit.edu
- *  
+ *
  * Date:   January 12, 1989
  *
  * This file contains modifications for XawPlus, Roland Krause 2002
@@ -83,7 +87,7 @@ extern ToggleClassRec toggleClassRec;
 
 /***************************************
  *
- *  Instance (widget) structure 
+ *  Instance (widget) structure
  *
  **************************************/
 

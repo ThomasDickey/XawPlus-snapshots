@@ -1,11 +1,11 @@
 /*
- * $XTermId: AsciiSrc.c,v 1.13 2024/04/29 00:07:30 tom Exp $
+ * $XTermId: AsciiSrc.c,v 1.15 2025/01/19 21:23:09 tom Exp $
  * $Xorg: AsciiSrc.c,v 1.4 2001/02/09 02:03:42 xorgcvs Exp $
  */
 
 /*
 
-Copyright 2015-2022,2024  Thomas E. Dickey
+Copyright 2015-2024,2025  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -272,7 +272,7 @@ ReadText(
     text->firstPos = (int) pos;
     text->ptr = piece->text + (pos - start);
     count = piece->used - (pos - start);
-    text->length = ((length > count) ? count : length);
+    text->length = (int) ((length > count) ? count : length);
     return (pos + text->length);
 }
 
@@ -387,7 +387,7 @@ ReplaceText(
 
 	    ptr = start_piece->text + (startPos - start_first);
 	    MyStrncpy(ptr + fill, ptr,
-		      (int) start_piece->used - (startPos - start_first));
+		      (int) start_piece->used - (int) (startPos - start_first));
 	    strncpy(ptr, text->ptr + firstPos, (size_t) fill);
 
 	    startPos += fill;
@@ -1010,14 +1010,17 @@ InitStringOrFile(
 	if (src->ascii_src.string == NULL)
 	    XtErrorMsg("NoFile", "asciiSourceCreate", "XawError",
 		       "Creating a read only disk widget and no file specified.",
-		       NULL, 0);
+		       NULL, NULL);
 	open_mode = "r";
 	break;
     case XawtextAppend:
     case XawtextEdit:
 	if (src->ascii_src.string == NULL) {
 	    src->ascii_src.string = fileName;
-	    (void) tmpnam(src->ascii_src.string);
+	    if (tmpnam(src->ascii_src.string) == NULL)
+		XtErrorMsg("NoFile", "asciiSourceCreate", "XawError",
+			   "Creating a temporary file.",
+			   NULL, NULL);
 	    src->ascii_src.is_tempfile = TRUE;
 	    open_mode = "w";
 	} else
@@ -1040,7 +1043,7 @@ InitStringOrFile(
     }
 
     if (!src->ascii_src.is_tempfile) {
-	if ((file = fopen(src->ascii_src.string, open_mode)) != 0) {
+	if ((file = fopen(src->ascii_src.string, open_mode)) != NULL) {
 	    (void) fseek(file, (Off_t) 0, 2);
 	    src->ascii_src.length = (XawTextPosition) ftell(file);
 	    return file;
@@ -1225,6 +1228,7 @@ FindPiece(
 	if ((temp + piece->used) > position)
 	    return (piece);
     }
+    *first = position;
     return (old_piece);		/* if we run off the end the return the last piece */
 }
 

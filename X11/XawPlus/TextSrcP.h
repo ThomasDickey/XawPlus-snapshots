@@ -1,10 +1,10 @@
 /*
- * $XTermId: TextSrcP.h,v 1.4 2022/12/13 01:01:00 tom Exp $
+ * $XTermId: TextSrcP.h,v 1.5 2025/01/19 14:06:01 tom Exp $
  * $Xorg: TextSrcP.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  */
 
 /**************************************************************************
-Copyright 2015, 2022 Thomas E. Dickey
+Copyright 2015-2022,2025 Thomas E. Dickey
 Copyright 2002  Roland Krause
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
@@ -33,13 +33,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -51,9 +51,9 @@ SOFTWARE.
 
 **************************************************************************/
 
-/* 
+/*
  * TextSrcP.h - Private definitions for TextSrc object
- * 
+ *
  */
 
 #ifndef _XawTextSrcP_h

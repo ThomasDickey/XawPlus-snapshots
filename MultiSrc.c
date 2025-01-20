@@ -1,10 +1,10 @@
 /*
- * $XTermId: MultiSrc.c,v 1.12 2024/04/28 23:59:36 tom Exp $
+ * $XTermId: MultiSrc.c,v 1.14 2025/01/19 21:24:09 tom Exp $
  * $Xorg: MultiSrc.c,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
  */
 
 /*
- * Copyright 2022,2024  Thomas E. Dickey
+ * Copyright 2022-2024,2025  Thomas E. Dickey
  * Copyright 1991 by OMRON Corporation
  *
  * Permission to use, copy, modify, distribute, and sell this software and its
@@ -282,7 +282,7 @@ ReadText(
     text->firstPos = (int) pos;
     text->ptr = (char *) (piece->text + (pos - start));
     count = piece->used - (pos - start);
-    text->length = ((length > count) ? count : length);
+    text->length = (int) ((length > count) ? count : length);
     return (pos + text->length);
 }
 
@@ -756,7 +756,7 @@ SetValues(
 			 != src->multi_src.piece_size)) {
 	char *mb_string = StorePiecesInString(old_src);
 
-	if (mb_string != 0) {
+	if (mb_string != NULL) {
 	    FreeAllPieces(old_src);
 	    LoadPieces(src, NULL, mb_string);
 	    XtFree(mb_string);
@@ -879,7 +879,7 @@ _XawMultiSave(
 
 	mb_string = StorePiecesInString(src);
 
-	if (mb_string != 0) {
+	if (mb_string != NULL) {
 	    if (WriteToFile(mb_string, src->multi_src.string) == FALSE) {
 		XtFree(mb_string);
 		return (FALSE);
@@ -902,7 +902,7 @@ _XawMultiSave(
 
 	mb_string = StorePiecesInString(src);
 
-	if (mb_string == 0) {
+	if (mb_string == NULL) {
 	    /* If the buffer holds bad chars, don't touch it... */
 	    XtAppWarningMsg(app_con,
 			    "convertError", "multiSource", "XawError",
@@ -942,7 +942,7 @@ _XawMultiSaveAsFile(
 
     mb_string = StorePiecesInString(src);
 
-    if (mb_string != 0) {
+    if (mb_string != NULL) {
 	ret = WriteToFile(mb_string, name);
 	XtFree(mb_string);
 	return (ret);
@@ -1105,7 +1105,7 @@ InitStringOrFile(
 	if (src->multi_src.string == NULL)
 	    XtErrorMsg("NoFile", "multiSourceCreate", "XawError",
 		       "Creating a read only disk widget and no file specified.",
-		       NULL, 0);
+		       NULL, NULL);
 	open_mode = "r";
 	break;
     case XawtextAppend:
@@ -1117,7 +1117,10 @@ InitStringOrFile(
 	    src->multi_src.allocated_string = False;
 	    src->multi_src.string = fileName;
 
-	    (void) tmpnam(src->multi_src.string);
+	    if (tmpnam(src->multi_src.string) == NULL)
+		XtErrorMsg("NoFile", "multiSourceCreate", "XawError",
+			   "Creating a temporary file.",
+			   NULL, NULL);
 	    src->multi_src.is_tempfile = TRUE;
 	    open_mode = "w";
 	} else
@@ -1141,7 +1144,7 @@ InitStringOrFile(
     }
 
     if (!src->multi_src.is_tempfile) {
-	if ((file = fopen(src->multi_src.string, open_mode)) != 0) {
+	if ((file = fopen(src->multi_src.string, open_mode)) != NULL) {
 	    (void) fseek(file, (Off_t) 0, 2);
 	    src->multi_src.length = ftell(file);
 	    return file;
@@ -1222,7 +1225,7 @@ LoadPieces(
 	    local_str = _XawTextMBToWC(d, temp_mb_holder, &local_length);
 	    src->multi_src.length = local_length;
 
-	    if (local_str == 0) {
+	    if (local_str == NULL) {
 		String params[2];
 		Cardinal num_params;
 		static char err_text[] =
@@ -1365,7 +1368,7 @@ FindPiece(
 	     XawTextPosition position,
 	     XawTextPosition * first)
 {
-    MultiPiece *old_piece = 0;
+    MultiPiece *old_piece = NULL;
     MultiPiece *piece = src->multi_src.first_piece;
     XawTextPosition temp;
 

@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Panner.h,v 1.3 2025/01/19 15:20:11 tom Exp $
  * $Xorg: Panner.h,v 1.5 2001/02/09 02:03:45 xorgcvs Exp $
  *
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1989, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -35,13 +37,13 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/XawPlus/Reports.h>
 
 /*****************************************************************************
- 
+
  Panner Widget (subclass of Simple)
- 
+
  This widget is used to represent navigation in a 2d coordinate system.
- 
+
  Resources:
- 
+
  Name		     Class		Type		Default
  ----		     -----		----		-------
  OBJECT:

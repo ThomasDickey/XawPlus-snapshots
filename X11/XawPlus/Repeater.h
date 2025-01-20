@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Repeater.h,v 1.3 2025/01/19 15:20:11 tom Exp $
  * $Xorg: Repeater.h,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
  *
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1989, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -34,13 +36,13 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/XawPlus/Command.h>
 
 /*****************************************************************************
- 
+
  Repeater Widget (subclass of Command)
- 
+
  This widget is a push button that repeatedly fires when held down.
- 
+
  Parameters:
- 
+
  Name		     Class		Type		Default
  ----		     -----		----		-------
  OBJECT:

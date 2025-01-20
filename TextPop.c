@@ -1,11 +1,11 @@
 /*
- * $XTermId: TextPop.c,v 1.7 2024/04/28 23:43:36 tom Exp $
+ * $XTermId: TextPop.c,v 1.8 2025/01/19 22:33:18 tom Exp $
  * $Xorg: TextPop.c,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $
  */
 
 /*
 
-Copyright 2022,2024  Thomas E. Dickey
+Copyright 2022-2024,2025  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -1581,7 +1581,7 @@ static void
 SetWMProtocolTranslations(
 			     Widget w)	/* realized popup shell */
 {
-    int i;
+    Cardinal i;
     XtAppContext app_context;
     Atom wm_delete_window;
     static XtTranslations compiled_table;	/* initially 0 */
@@ -1596,7 +1596,7 @@ SetWMProtocolTranslations(
 	    ("<Message>WM_PROTOCOLS: XawWMProtocols()\n");
 
     /* add actions once per application context */
-    for (i = 0; (Cardinal) i < list_size && app_context_list[i] !=
+    for (i = 0; i < list_size && app_context_list[i] !=
 	 app_context; i++) ;
     if (i == list_size) {
 	XtActionsRec actions[1];

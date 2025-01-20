@@ -1,10 +1,10 @@
 /*
- * $XTermId: Scrollbar.c,v 1.7 2024/04/28 23:53:04 tom Exp $
+ * $XTermId: Scrollbar.c,v 1.8 2025/01/19 21:18:57 tom Exp $
  */
 
 /****************************************************************************
 
-Copyright 2015-2022,2024  Thomas E. Dickey
+Copyright 2015-2024,2025  Thomas E. Dickey
 
 MODIFIED ATHENA SCROLLBAR (USING ARROWHEADS AT ENDS OF TRAVEL)
 Modifications Copyright 1992 by Mitch Trachtenberg
@@ -939,7 +939,10 @@ NotifyThumb(
 	       Cardinal *num_params GCC_UNUSED)
 {
     register ScrollbarWidget sbw = (ScrollbarWidget) w;
-    float top = sbw->scrollbar.top;
+    union {
+	float top;
+	XtPointer loc;
+    } limits;
 
     if (LookAhead(w, event))
 	return;
@@ -948,8 +951,9 @@ NotifyThumb(
        compatibility on those architectures for which it work{s,ed};
        the intent is to pass a (truncated) float by value. */
 
-    XtCallCallbacks(w, XtNthumbProc, *(XtPointer *) &top);
-    XtCallCallbacks(w, XtNjumpProc, (XtPointer) &top);
+    limits.top = sbw->scrollbar.top;
+    XtCallCallbacks(w, XtNthumbProc, *(XtPointer *) &limits.loc);
+    XtCallCallbacks(w, XtNjumpProc, (XtPointer) &limits.loc);
 }
 
 /************************************************************

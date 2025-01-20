@@ -1,3 +1,7 @@
+/*
+ * $XTermId: test_scrbar.c,v 1.2 2025/01/19 14:12:49 tom Exp $
+ */
+
 /* Scrollbar test
  * (c) Roland Krause, 2000
  */
@@ -58,7 +62,7 @@ void ScrollProc(Widget w, XtPointer client_data, XtPointer position)
 	/* Set the slider position and put the position value
 	 * into the label.
 	 */
-	XawScrollbarSetThumb(w, newpos, -1.0); 
+	XawScrollbarSetThumb(w, newpos, -1.0);
 /*	XtVaSetValues(w, XtNtopOfThumb, &newpos, NULL); */
 
 	sprintf(str, "%f", newpos);
@@ -81,9 +85,9 @@ int main(int argc, char *argv[])
         lw = XtVaCreateManagedWidget("value", labelWidgetClass, bw,
 		XtNlabel, "0.500000", XtNwidth, WidgetWidth, XtNjustify, XtJustifyCenter, NULL);
 
-        sw = XtVaCreateManagedWidget("slider", scrollbarWidgetClass, bw, 
+        sw = XtVaCreateManagedWidget("slider", scrollbarWidgetClass, bw,
 		XtNwidth, WidgetWidth, XtNorientation, XtorientHorizontal, NULL);
-	
+
 	XtAddCallback(sw, XtNjumpProc, JumpProc, (XtPointer)lw);
 	XtAddCallback(sw, XtNscrollProc, ScrollProc, (XtPointer)lw);
 

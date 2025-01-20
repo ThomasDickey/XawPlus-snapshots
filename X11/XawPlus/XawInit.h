@@ -1,4 +1,8 @@
-/* $Xorg: XawInit.h,v 1.5 2001/02/09 02:03:47 xorgcvs Exp $
+/*
+ * $XTermId: XawInit.h,v 1.3 2015/01/03 01:05:13 tom Exp $
+ * $Xorg: XawInit.h,v 1.5 2001/02/09 02:03:47 xorgcvs Exp
+ *
+ * Copyright 2015  Thomas E. Dickey
  *
 Copyright 1989, 1994, 1998  The Open Group
 

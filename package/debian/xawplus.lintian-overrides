@@ -1,0 +1,2 @@
+# xawplus: link-to-shared-library-in-wrong-package usr/lib/x86_64-linux-gnu/libXawPlus.so.3.1.0
+xawplus: package-name-doesnt-match-sonames libXawPlus1.0.0

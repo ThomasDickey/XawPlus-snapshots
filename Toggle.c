@@ -1,11 +1,11 @@
 /*
- * $XTermId: Toggle.c,v 1.6 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: Toggle.c,v 1.7 2025/01/19 14:28:15 tom Exp $
  * $Xorg: Toggle.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  */
 
 /*
 
-Copyright 2015, 2022  Thomas E. Dickey
+Copyright 2015-2022,2025  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -262,7 +262,7 @@ Cardinal *num_params GCC_UNUSED)
     ToggleWidgetClass class = (ToggleWidgetClass) w->core.widget_class;
 
     TurnOffRadioSiblings(w);
-    class->toggle_class.Set(w, event, NULL, 0);
+    class->toggle_class.Set(w, event, NULL, NULL);
 }
 
 /* ARGSUSED */
@@ -277,7 +277,7 @@ Cardinal *num_params)
   ToggleWidgetClass class = (ToggleWidgetClass) w->core.widget_class;
 
   if (tw->command.set)
-    class->toggle_class.Reset(w, event, NULL, 0);
+    class->toggle_class.Reset(w, event, NULL, NULL);
   else
     ToggleSet(w, event, params, num_params);
 }
@@ -441,7 +441,7 @@ TurnOffRadioSiblings(Widget w)
   while ( group != NULL ) {
     ToggleWidget local_tog = (ToggleWidget) group->widget;
     if ( local_tog->command.set ) {
-      class->toggle_class.Reset(group->widget, NULL, NULL, 0);
+      class->toggle_class.Reset(group->widget, NULL, NULL, NULL);
       Notify(group->widget, (XEvent *)NULL, (String *)NULL, (Cardinal *)NULL);
     }
     group = group->next;
@@ -592,7 +592,7 @@ XawToggleUnsetCurrent(Widget radio_group)
 
   if (local_tog->command.set) {
     class = (ToggleWidgetClass) local_tog->core.widget_class;
-    class->toggle_class.Reset(radio_group, NULL, NULL, 0);
+    class->toggle_class.Reset(radio_group, NULL, NULL, NULL);
     Notify(radio_group, (XEvent *)NULL, (String *)NULL, (Cardinal *)NULL);
   }
   if ( GetRadioGroup(radio_group) == NULL) return;

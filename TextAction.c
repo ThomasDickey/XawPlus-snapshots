@@ -1,11 +1,11 @@
 /*
- * $XTermId: TextAction.c,v 1.7 2024/04/28 23:45:49 tom Exp $
+ * $XTermId: TextAction.c,v 1.8 2025/01/19 14:28:15 tom Exp $
  * $Xorg: TextAction.c,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $
  */
 
 /*
 
-Copyright 2022,2024  Thomas E. Dickey
+Copyright 2022-2024,2025  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -831,7 +831,7 @@ LoseSelection(
     int i;
     XawTextSelectionSalt *salt, *prevSalt, *nextSalt;
 
-    prevSalt = 0;
+    prevSalt = NULL;
     for (salt = ctx->text.salt2; salt; salt = nextSalt) {
 	atomP = salt->s.selections;
 	nextSalt = salt->next;

@@ -1,3 +1,7 @@
+/*
+ * $XTermId: test_pixmap.c,v 1.2 2025/01/19 14:12:49 tom Exp $
+ */
+
 /* Test the use of a pixmap and a clip mask.
  * (c) Roland Krause, 2000
  */
@@ -24,7 +28,7 @@ int main(int argc, char **argv)
 	 * but not the window. To get a widgets window it has to be realized, otherwise
 	 * there is no window defined. This is the reason I take the root window here.
 	 * The root window always exists if there is a display.
-	 */ 
+	 */
 	disp = XtDisplay(topLevel);
 	win  = RootWindow(disp, XDefaultScreen(disp));
         (void)XpmCreatePixmapFromData(disp, win, exit_xpm, &exitPix, &exitClip, NULL);

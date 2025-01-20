@@ -1,6 +1,10 @@
-/* $Xorg: ListP.h,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $ */
+/*
+ * $XTermId: ListP.h,v 1.3 2025/01/19 15:20:11 tom Exp $
+ * $Xorg: ListP.h,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
+ */
 
 /*
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -25,9 +29,9 @@ in this Software without prior written authorization from The Open Group.
 */
 
 
-/* 
+/*
  * ListP.h - Private definitions for List widget
- * 
+ *
  * This is a List widget.  It allows the user to select an item in a list and
  * notifies the application through a callback function.
  *

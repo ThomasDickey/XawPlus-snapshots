@@ -1,7 +1,10 @@
-/* $Xorg: List.h,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $ */
+/*
+ * $XTermId: List.h,v 1.5 2025/01/19 14:11:32 tom Exp $
+ * $Xorg: List.h,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
+ */
 
 /*
-Copyright 2015	Thomas E. Dickey
+Copyright 2015,2025	Thomas E. Dickey
 Copyright 2002  Roland Krause
 Copyright 1989, 1994, 1998  The Open Group
 
@@ -27,7 +30,7 @@ in this Software without prior written authorization from The Open Group.
 */
 
 /*  This is the List widget, it is useful to display a list, without the
- *  overhead of having a widget for each item in the list.  It allows 
+ *  overhead of having a widget for each item in the list.  It allows
  *  the user to select an item in a list and notifies the application through
  *  a callback function.
  *
@@ -41,11 +44,11 @@ in this Software without prior written authorization from The Open Group.
  * iconHeight	     Height		Dimension	0
  * iconWidth	     Width		Dimension	0
  * iconDepth	     Depth		Dimension	1
- * 
+ *
  * The iconList is an array of strings and pixmaps. It is not required to support
  * all pixmap entries. Initialize unused pixmap entries with `XtUnspecifiedPixmap'.
  * If the resources iconWidth and/or iconHeight are set to 0 the widget don't
- * display any icon. 
+ * display any icon.
  * At this time, the icon is used as `left bitmap'. I plan to realize a new
  * ressource to define the position of the icon. Possible values are `left
  * bitmap', `right bitmap', `top bitmap' and `bottom bitmap'.
@@ -119,28 +122,28 @@ in this Software without prior written authorization from The Open Group.
        is set to the minimum size necessay to fit the entire list.
 
        If both Width and Height are zero then they are adjusted to fit the
-       entire list that is created width the number of default columns 
+       entire list that is created width the number of default columns
        specified in the defaultColumns resource.
 
  **2 - This is an array of strings the specify elements of the list.
-       This resource must be specified if there is no icon list. 
+       This resource must be specified if there is no icon list.
        (What good is a list widget without a list??  :-)
 
  **3 - Longest is the length of the widest string in pixels.
 
  **4 - If either of these values are zero (0) then the list widget calculates
-       the correct value. 
+       the correct value.
 
-       (This allows you to make startup faster if you already have 
+       (This allows you to make startup faster if you already have
         this information calculated)
 
-       NOTE: If the numberStrings value is zero the list must 
+       NOTE: If the numberStrings value is zero the list must
              be NULL terminated.
 
  **5 - By setting the List.Columns resource you can force the application to
-       have a given number of columns.	     
-        
- **6 - This returns the name and index of the item selected in an 
+       have a given number of columns.
+
+ **6 - This returns the name and index of the item selected in an
        XawListReturnStruct that is pointed to by the client_data
        in the CallbackProc.
 
@@ -150,10 +153,10 @@ in this Software without prior written authorization from The Open Group.
 
 
 /*
- * Value returned when there are no highlighted objects. 
+ * Value returned when there are no highlighted objects.
  */
 
-#define XAW_LIST_NONE -1	
+#define XAW_LIST_NONE -1
 
 #define XtCList 		"List"
 #define XtCSpacing 		"Spacing"
@@ -175,7 +178,7 @@ in this Software without prior written authorization from The Open Group.
 #define XtNpasteBuffer 		"pasteBuffer"
 #define XtNrowSpacing 		"rowSpacing"
 #define XtNverticalList 	"verticalList"
- 
+
 #ifndef XtNfontSet
 #define XtNfontSet "fontSet"
 #endif
@@ -282,7 +285,7 @@ extern XawListReturnStruct * XawListShowCurrent(
  *                           	in the list.
  *		   icon_w -	width of all icons
  *		   icon_h -	height of all icons
- *		   icon_d -	depth of all icons		   	    	
+ *		   icon_d -	depth of all icons
  *                 resize - 	if TRUE the the list widget will
  *                          	try to resize itself.
  *	Returns: none.

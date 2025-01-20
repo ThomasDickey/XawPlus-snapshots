@@ -1,5 +1,7 @@
 /*
- * Copyright 2015 Thomas E. Dickey
+ * $XTermId: DrawingArea.h,v 1.3 2025/01/19 14:12:49 tom Exp $
+ *
+ * Copyright 2015,2025 Thomas E. Dickey
  * Copyright 2002 Roland Krause
  *
  * This module is free software; you can redistribute it and/or modify
@@ -24,7 +26,7 @@
 /*
  *
  * Drawing Area Widget
- * 
+ *
  * This widget adds a backing store machanism to the simple
  * widget. So it becomes usable as a drawing area for any
  * painting. Note that all Xlib painting functions are replaced

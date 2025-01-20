@@ -1,4 +1,4 @@
-# $Id: makefile.in,v 1.13 2022/12/08 00:18:48 tom Exp $
+# $Id: makefile.in,v 1.14 2025/01/19 20:48:10 tom Exp $
 
 SHELL		= /bin/sh
 
@@ -9,6 +9,7 @@ exec_prefix	= @exec_prefix@
 datarootdir	= @datarootdir@
 
 THIS		= XawPlus
+PACKAGE		= @PACKAGE@
 
 CFG_ROOTNAME	= @CFG_ROOTNAME@
 HDR_ROOTNAME	= @HDR_ROOTNAME@
@@ -48,6 +49,11 @@ LINT_OPTS	= @LINT_OPTS@
 
 CTAGS		= @CTAGS@
 ETAGS		= @ETAGS@
+
+RPATH_LIST	= @RPATH_LIST@
+RESULTING_SYMS	= @RESULTING_SYMS@
+VERSIONED_SYMS	= @VERSIONED_SYMS@
+MK_SHARED_LIB	= @MK_SHARED_LIB@
 
 LIBTOOL		= @LIBTOOL@ @ECHO_LT@
 LIBTOOL_OPTS	= @LIBTOOL_OPTS@

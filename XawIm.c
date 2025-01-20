@@ -1,5 +1,5 @@
 /*
- * $XTermId: XawIm.c,v 1.13 2024/04/28 23:31:24 tom Exp $
+ * $XTermId: XawIm.c,v 1.14 2025/01/19 21:37:28 tom Exp $
  * $Xorg: XawIm.c,v 1.6 2001/02/09 02:03:47 xorgcvs Exp $
  */
 
@@ -87,6 +87,18 @@ This file contains modifications for XawPlus, Roland Krause 2000
         (maxHeightOfFontSet(fontset) - maxAscentOfFontSet(fontset))
 
 #define Offset(field) (XtOffsetOf(XawIcTablePart, field))
+
+#define ADD_IC(value) ic_a[ic_cnt] = (XPointer) value; ic_cnt++
+#define USE_IC(count) (ic_cnt > count) ? ic_a[count] : NULL
+#define END_IC()      ic_a[ic_cnt] = (XPointer) NULL
+
+#define ADD_PE(value) pe_a[pe_cnt] = (XPointer) value; pe_cnt++
+#define USE_PE(count) (pe_cnt > count) ? pe_a[count] : NULL
+#define END_PE()      pe_a[pe_cnt] = (XPointer) NULL
+
+#define ADD_ST(value) st_a[st_cnt] = (XPointer) value; st_cnt++
+#define USE_ST(count) (st_cnt > count) ? st_a[count] : NULL
+#define END_ST()      st_a[st_cnt] = (XPointer) NULL
 
 /*****************************************************
  *
@@ -734,7 +746,7 @@ SizeNegotiation(XawIcTableList p,
     }
 
     if (ic_cnt > 0) {		/* ic_cnt is 0, 2 or 4 */
-	XGetICValues(p->xic, ic_a[0], ic_a[1], ic_a[2], ic_a[3], ic_a[4], NULL);
+	XGetICValues(p->xic, USE_IC(0), USE_IC(1), USE_IC(2), USE_IC(3), USE_IC(4), NULL);
 	if (pe_attr)
 	    XFree(pe_attr);
 	if (st_attr)
@@ -780,7 +792,7 @@ SizeNegotiation(XawIcTableList p,
 	    ic_cnt++;
 	}
 	SetVaArg(&ic_a[ic_cnt], (XPointer) NULL);
-	XSetICValues(p->xic, ic_a[0], ic_a[1], ic_a[2], ic_a[3], ic_a[4], NULL);
+	XSetICValues(p->xic, USE_IC(0), USE_IC(1), USE_IC(2), USE_IC(3), USE_IC(4), NULL);
 	if (pe_attr)
 	    XFree(pe_attr);
 	if (st_attr)
@@ -932,12 +944,12 @@ CreateIC(Widget w,
 
     if (pe_cnt > 0) {
 	SetVaArg(&pe_a[pe_cnt], (XPointer) NULL);
-	pe_attr = XVaCreateNestedList(0, pe_a[0], pe_a[1], pe_a[2], pe_a[3],
-				      pe_a[4], pe_a[5], pe_a[6], pe_a[7],
-				      pe_a[8],
-				      pe_a[9], pe_a[10], pe_a[11], pe_a[12],
-				      pe_a[13], pe_a[14], pe_a[15], pe_a[16],
-				      pe_a[17], pe_a[18], pe_a[19], NULL);
+	pe_attr = XVaCreateNestedList(0, USE_PE(0), USE_PE(1), USE_PE(2), USE_PE(3),
+				      USE_PE(4), USE_PE(5), USE_PE(6), USE_PE(7),
+				      USE_PE(8),
+				      USE_PE(9), USE_PE(10), USE_PE(11), USE_PE(12),
+				      USE_PE(13), USE_PE(14), USE_PE(15), USE_PE(16),
+				      USE_PE(17), USE_PE(18), USE_PE(19), NULL);
 	SetVaArg(&ic_a[ic_cnt], (XPointer) XNPreeditAttributes);
 	ic_cnt++;
 	SetVaArg(&ic_a[ic_cnt], (XPointer) pe_attr);
@@ -946,12 +958,12 @@ CreateIC(Widget w,
 
     if (st_cnt > 0) {
 	SetVaArg(&st_a[st_cnt], (XPointer) NULL);
-	st_attr = XVaCreateNestedList(0, st_a[0], st_a[1], st_a[2], st_a[3],
-				      st_a[4], st_a[5], st_a[6], st_a[7],
-				      st_a[8],
-				      st_a[9], st_a[10], st_a[11], st_a[12],
-				      st_a[13], st_a[14], st_a[15], st_a[16],
-				      st_a[17], st_a[18], st_a[19], NULL);
+	st_attr = XVaCreateNestedList(0, USE_ST(0), USE_ST(1), USE_ST(2), USE_ST(3),
+				      USE_ST(4), USE_ST(5), USE_ST(6), USE_ST(7),
+				      USE_ST(8),
+				      USE_ST(9), USE_ST(10), USE_ST(11), USE_ST(12),
+				      USE_ST(13), USE_ST(14), USE_ST(15), USE_ST(16),
+				      USE_ST(17), USE_ST(18), USE_ST(19), NULL);
 	SetVaArg(&ic_a[ic_cnt], (XPointer) XNStatusAttributes);
 	ic_cnt++;
 	SetVaArg(&ic_a[ic_cnt], (XPointer) st_attr);
@@ -959,10 +971,10 @@ CreateIC(Widget w,
     }
     SetVaArg(&ic_a[ic_cnt], (XPointer) NULL);
 
-    p->xic = XCreateIC(ve->im.xim, ic_a[0], ic_a[1], ic_a[2], ic_a[3],
-		       ic_a[4], ic_a[5], ic_a[6], ic_a[7], ic_a[8], ic_a[9],
-		       ic_a[10], ic_a[11], ic_a[12], ic_a[13], ic_a[14],
-		       ic_a[15], ic_a[16], ic_a[17], ic_a[18], ic_a[19], NULL);
+    p->xic = XCreateIC(ve->im.xim, USE_IC(0), USE_IC(1), USE_IC(2), USE_IC(3),
+		       USE_IC(4), USE_IC(5), USE_IC(6), USE_IC(7), USE_IC(8), USE_IC(9),
+		       USE_IC(10), USE_IC(11), USE_IC(12), USE_IC(13), USE_IC(14),
+		       USE_IC(15), USE_IC(16), USE_IC(17), USE_IC(18), USE_IC(19), NULL);
     if (pe_attr)
 	XtFree(pe_attr);
     if (st_attr)
@@ -1108,11 +1120,11 @@ SetICValues(Widget w,
 
     if (pe_cnt > 0) {
 	SetVaArg(&pe_a[pe_cnt], (XPointer) NULL);
-	pe_attr = XVaCreateNestedList(0, pe_a[0], pe_a[1], pe_a[2], pe_a[3],
-				      pe_a[4], pe_a[5], pe_a[6], pe_a[7],
-				      pe_a[8], pe_a[9], pe_a[10], pe_a[11],
-				      pe_a[12], pe_a[13], pe_a[14], pe_a[15],
-				      pe_a[16], pe_a[17], pe_a[18], pe_a[19],
+	pe_attr = XVaCreateNestedList(0, USE_PE(0), USE_PE(1), USE_PE(2), USE_PE(3),
+				      USE_PE(4), USE_PE(5), USE_PE(6), USE_PE(7),
+				      USE_PE(8), USE_PE(9), USE_PE(10), USE_PE(11),
+				      USE_PE(12), USE_PE(13), USE_PE(14), USE_PE(15),
+				      USE_PE(16), USE_PE(17), USE_PE(18), USE_PE(19),
 				      NULL);
 	SetVaArg(&ic_a[ic_cnt], (XPointer) XNPreeditAttributes);
 	ic_cnt++;
@@ -1121,11 +1133,11 @@ SetICValues(Widget w,
     }
     if (st_cnt > 0) {
 	SetVaArg(&st_a[st_cnt], (XPointer) NULL);
-	st_attr = XVaCreateNestedList(0, st_a[0], st_a[1], st_a[2], st_a[3],
-				      st_a[4], st_a[5], st_a[6], st_a[7],
-				      st_a[8], st_a[9], st_a[10], st_a[11],
-				      st_a[12], st_a[13], st_a[14], st_a[15],
-				      st_a[16], st_a[17], st_a[18], st_a[19],
+	st_attr = XVaCreateNestedList(0, USE_ST(0), USE_ST(1), USE_ST(2), USE_ST(3),
+				      USE_ST(4), USE_ST(5), USE_ST(6), USE_ST(7),
+				      USE_ST(8), USE_ST(9), USE_ST(10), USE_ST(11),
+				      USE_ST(12), USE_ST(13), USE_ST(14), USE_ST(15),
+				      USE_ST(16), USE_ST(17), USE_ST(18), USE_ST(19),
 				      NULL);
 	SetVaArg(&ic_a[ic_cnt], (XPointer) XNStatusAttributes);
 	ic_cnt++;
@@ -1140,10 +1152,10 @@ SetICValues(Widget w,
     }
     if (ic_cnt > 0) {
 	SetVaArg(&ic_a[ic_cnt], (XPointer) NULL);
-	XSetICValues(p->xic, ic_a[0], ic_a[1], ic_a[2], ic_a[3], ic_a[4],
-		     ic_a[5], ic_a[6], ic_a[7], ic_a[8], ic_a[9], ic_a[10],
-		     ic_a[11], ic_a[12], ic_a[13], ic_a[14], ic_a[15],
-		     ic_a[16], ic_a[17], ic_a[18], ic_a[19],
+	XSetICValues(p->xic, USE_IC(0), USE_IC(1), USE_IC(2), USE_IC(3), USE_IC(4),
+		     USE_IC(5), USE_IC(6), USE_IC(7), USE_IC(8), USE_IC(9), USE_IC(10),
+		     USE_IC(11), USE_IC(12), USE_IC(13), USE_IC(14), USE_IC(15),
+		     USE_IC(16), USE_IC(17), USE_IC(18), USE_IC(19),
 		     NULL);
 	if (pe_attr)
 	    XtFree(pe_attr);

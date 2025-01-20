@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Porthole.h,v 1.3 2025/01/19 15:20:11 tom Exp $
  * $Xorg: Porthole.h,v 1.5 2001/02/09 02:03:45 xorgcvs Exp $
  *
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1990, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -35,14 +37,14 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/XawPlus/Reports.h>
 
 /*****************************************************************************
- * 
+ *
  * Porthole Widget (subclass of Composite)
- * 
+ *
  * This widget is similar to a viewport without scrollbars.  Child movement
  * is done by external panners or scrollbars.
- * 
+ *
  * Parameters:
- * 
+ *
  *  Name		Class		Type		Default
  *  ----		-----		----		-------
  *  OBJECT:
@@ -63,7 +65,7 @@ in this Software without prior written authorization from The Open Group.
  *
  *  PORTHOLE:
  *  reportCallback	ReportCallback	   Pointer	   NULL
- * 
+ *
  *****************************************************************************/
 
 					/* external declarations */

@@ -1,8 +1,8 @@
-dnl $XTermId: aclocal.m4,v 1.6 2024/03/30 00:08:49 tom Exp $
+dnl $XTermId: aclocal.m4,v 1.8 2025/01/19 20:40:11 tom Exp $
 dnl
 dnl ---------------------------------------------------------------------------
 dnl
-dnl Copyright 2015-2022,2024 by Thomas E. Dickey
+dnl Copyright 2015-2024,2025 by Thomas E. Dickey
 dnl
 dnl                         All Rights Reserved
 dnl
@@ -420,7 +420,7 @@ AC_TRY_LINK([#include <stdio.h>],[printf("Hello world");],,
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_CHECK_LIBTOOL_VERSION version: 2 updated: 2021/05/01 16:24:34
+dnl CF_CHECK_LIBTOOL_VERSION version: 3 updated: 2024/06/12 04:19:01
 dnl ------------------------
 dnl Show the version of libtool
 dnl
@@ -436,6 +436,7 @@ then
 	AC_MSG_CHECKING(version of $LIBTOOL)
 	CF_LIBTOOL_VERSION
 	AC_MSG_RESULT($cf_cv_libtool_version)
+	ifdef([LT_PACKAGE_VERSION],,[
 	if test -n "$cf_cv_libtool_version"
 	then
 		cf_check_libtool_version=`$LIBTOOL --version 2>&1 | sed -e '/^$/d' -e 's,[[()]],...,g' -e 's,[[ ]],-,g' -e '2,$d'`
@@ -449,6 +450,7 @@ then
 	else
 		AC_MSG_ERROR(No version found for $LIBTOOL)
 	fi
+	])
 else
 	AC_MSG_ERROR(GNU libtool has not been found)
 fi
@@ -522,7 +524,7 @@ if test "x$ifelse([$2],,CLANG_COMPILER,[$2])" = "xyes" ; then
 fi
 ])
 dnl ---------------------------------------------------------------------------
-dnl CF_CONST_X_STRING version: 8 updated: 2023/12/01 17:22:50
+dnl CF_CONST_X_STRING version: 9 updated: 2024/12/04 03:49:57
 dnl -----------------
 dnl The X11R4-X11R6 Xt specification uses an ambiguous String type for most
 dnl character-strings.
@@ -549,7 +551,7 @@ CF_SAVE_XTRA_FLAGS([CF_CONST_X_STRING])
 
 AC_TRY_COMPILE(
 [
-#include <stdlib.h>
+$ac_includes_default
 #include <X11/Intrinsic.h>
 ],
 [String foo = malloc(1); free((void*)foo)],[
@@ -560,7 +562,7 @@ AC_CACHE_CHECK(for X11/Xt const-feature,cf_cv_const_x_string,[
 #undef  _CONST_X_STRING
 #define _CONST_X_STRING	/* X11R7.8 (perhaps) */
 #undef  XTSTRINGDEFINES	/* X11R5 and later */
-#include <stdlib.h>
+$ac_includes_default
 #include <X11/Intrinsic.h>
 		],[String foo = malloc(1); *foo = 0],[
 			cf_cv_const_x_string=no
@@ -861,7 +863,7 @@ CF_INTEL_COMPILER(GCC,INTEL_COMPILER,CFLAGS)
 CF_CLANG_COMPILER(GCC,CLANG_COMPILER,CFLAGS)
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_GCC_WARNINGS version: 41 updated: 2021/01/01 16:53:59
+dnl CF_GCC_WARNINGS version: 43 updated: 2024/12/21 08:44:12
 dnl ---------------
 dnl Check if the compiler supports useful warning options.  There's a few that
 dnl we don't use, simply because they're too noisy:
@@ -973,6 +975,26 @@ fi
 rm -rf ./conftest*
 
 AC_SUBST(EXTRA_CFLAGS)
+])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_GLOB_FULLPATH version: 2 updated: 2024/08/03 12:34:02
+dnl ----------------
+dnl Use this in case-statements to check for pathname syntax, i.e., absolute
+dnl pathnames.  The "x" is assumed since we provide an alternate form for DOS.
+AC_DEFUN([CF_GLOB_FULLPATH],[
+AC_REQUIRE([CF_WITH_SYSTYPE])dnl
+case "$cf_cv_system_name" in
+(cygwin*|msys*|mingw32*|mingw64|os2*)
+	GLOB_FULLPATH_POSIX='/*'
+	GLOB_FULLPATH_OTHER='[[a-zA-Z]]:[[\\/]]*'
+	;;
+(*)
+	GLOB_FULLPATH_POSIX='/*'
+	GLOB_FULLPATH_OTHER=$GLOB_FULLPATH_POSIX
+	;;
+esac
+AC_SUBST(GLOB_FULLPATH_POSIX)
+AC_SUBST(GLOB_FULLPATH_OTHER)
 ])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_GNU_SOURCE version: 10 updated: 2018/12/10 20:09:41
@@ -1189,9 +1211,12 @@ then
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_LIBTOOL_VERSION version: 1 updated: 2013/04/06 18:03:09
+dnl CF_LIBTOOL_VERSION version: 2 updated: 2024/06/12 04:19:01
 dnl ------------------
 AC_DEFUN([CF_LIBTOOL_VERSION],[
+ifdef([LT_PACKAGE_VERSION],[
+	cf_cv_libtool_version=LT_PACKAGE_VERSION
+],[
 if test -n "$LIBTOOL" && test "$LIBTOOL" != none
 then
 	cf_cv_libtool_version=`$LIBTOOL --version 2>&1 | sed -e '/^$/d' |sed -e '2,$d' -e 's/([[^)]]*)//g' -e 's/^[[^1-9]]*//' -e 's/[[^0-9.]].*//'`
@@ -1199,6 +1224,7 @@ else
 	cf_cv_libtool_version=
 fi
 test -z "$cf_cv_libtool_version" && unset cf_cv_libtool_version
+])dnl
 ])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_LIB_PREFIX version: 14 updated: 2021/01/01 13:31:04
@@ -1492,35 +1518,35 @@ else
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_PATH_SYNTAX version: 18 updated: 2020/12/31 18:40:20
+dnl CF_PATH_SYNTAX version: 19 updated: 2024/08/03 13:08:58
 dnl --------------
 dnl Check the argument to see that it looks like a pathname.  Rewrite it if it
 dnl begins with one of the prefix/exec_prefix variables, and then again if the
 dnl result begins with 'NONE'.  This is necessary to work around autoconf's
 dnl delayed evaluation of those symbols.
 AC_DEFUN([CF_PATH_SYNTAX],[
+AC_REQUIRE([CF_GLOB_FULLPATH])dnl
+
 if test "x$prefix" != xNONE; then
 	cf_path_syntax="$prefix"
 else
 	cf_path_syntax="$ac_default_prefix"
 fi
 
-case ".[$]$1" in
-(.\[$]\(*\)*|.\'*\'*)
+case "x[$]$1" in
+(x\[$]\(*\)*|x\'*\'*)
 	;;
-(..|./*|.\\*)
+(x.|x$GLOB_FULLPATH_POSIX|x$GLOB_FULLPATH_OTHER)
 	;;
-(.[[a-zA-Z]]:[[\\/]]*) # OS/2 EMX
-	;;
-(.\[$]\{*prefix\}*|.\[$]\{*dir\}*)
+(x\[$]\{*prefix\}*|x\[$]\{*dir\}*)
 	eval $1="[$]$1"
-	case ".[$]$1" in
-	(.NONE/*)
+	case "x[$]$1" in
+	(xNONE/*)
 		$1=`echo "[$]$1" | sed -e s%NONE%$cf_path_syntax%`
 		;;
 	esac
 	;;
-(.no|.NONE/*)
+(xno|xNONE/*)
 	$1=`echo "[$]$1" | sed -e s%NONE%$cf_path_syntax%`
 	;;
 (*)
@@ -1690,14 +1716,17 @@ CF_ACVERSION_CHECK(2.52,
 CF_CC_ENV_FLAGS
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_PROG_LINT version: 5 updated: 2022/08/20 15:44:13
+dnl CF_PROG_LINT version: 7 updated: 2024/11/30 14:37:45
 dnl ------------
 AC_DEFUN([CF_PROG_LINT],
 [
 AC_CHECK_PROGS(LINT, lint cppcheck splint)
 case "x$LINT" in
+(xlint|x*/lint) # NetBSD 10
+	test -z "$LINT_OPTS" && LINT_OPTS="-chapbrxzgFS -v -Ac11"
+	;;
 (xcppcheck|x*/cppcheck)
-	test -z "$LINT_OPTS" && LINT_OPTS="--enable=all"
+	test -z "$LINT_OPTS" && LINT_OPTS="--enable=all -D__CPPCHECK__"
 	;;
 esac
 AC_SUBST(LINT_OPTS)
@@ -1737,6 +1766,30 @@ define([CF_REMOVE_DEFINE],
 $1=`echo "$2" | \
 	sed	-e 's/-[[UD]]'"$3"'\(=[[^ 	]]*\)\?[[ 	]]/ /g' \
 		-e 's/-[[UD]]'"$3"'\(=[[^ 	]]*\)\?[$]//g'`
+])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_REQUIRE_PKG version: 1 updated: 2025/01/10 19:55:54
+dnl --------------
+dnl Update $REQUIRE_PKG, which lists the known required packages for this
+dnl program.
+dnl
+dnl $1 = package(s) to require, e.g., in the generated ".pc" file
+define([CF_REQUIRE_PKG],
+[
+for cf_required in $1
+do
+	# check for duplicates
+	for cf_require_pkg in $REQUIRE_PKG
+	do
+		if test "$cf_required" = "$cf_require_pkg"
+		then
+			cf_required=
+			break
+		fi
+	done
+	test -n "$cf_required" && REQUIRE_PKG="$REQUIRE_PKG $cf_required"
+done
+AC_SUBST(REQUIRE_PKG)
 ])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_RESTORE_XTRA_FLAGS version: 1 updated: 2020/01/11 16:47:45
@@ -1893,7 +1946,7 @@ do
 done
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_SHARED_OPTS version: 111 updated: 2024/03/29 20:08:49
+dnl CF_SHARED_OPTS version: 112 updated: 2024/12/14 16:09:34
 dnl --------------
 dnl --------------
 dnl Attempt to determine the appropriate CC/LD options for creating a shared
@@ -2409,7 +2462,7 @@ cat > conftest.$ac_ext <<EOF
 int main(int argc, char *argv[[]])
 {
 	printf("hello\\n");
-	return (argv[[argc-1]] == 0) ;
+	return (argv[[argc-1]] == NULL) ;
 }
 EOF
 		cf_save_CFLAGS="$CFLAGS"
@@ -2472,7 +2525,7 @@ define([CF_SHARED_SONAME],
 	fi
 ])
 dnl ---------------------------------------------------------------------------
-dnl CF_TRY_PKG_CONFIG version: 6 updated: 2020/12/31 10:54:15
+dnl CF_TRY_PKG_CONFIG version: 7 updated: 2025/01/10 19:55:54
 dnl -----------------
 dnl This is a simple wrapper to use for pkg-config, for libraries which may be
 dnl available in that form.
@@ -2489,6 +2542,7 @@ if test "$PKG_CONFIG" != none && "$PKG_CONFIG" --exists "$1"; then
 	cf_pkgconfig_libs="`$PKG_CONFIG --libs   "$1" 2>/dev/null`"
 	CF_VERBOSE(package $1 CFLAGS: $cf_pkgconfig_incs)
 	CF_VERBOSE(package $1 LIBS: $cf_pkgconfig_libs)
+	CF_REQUIRE_PKG($1)
 	CF_ADD_CFLAGS($cf_pkgconfig_incs)
 	CF_ADD_LIBS($cf_pkgconfig_libs)
 	ifelse([$2],,:,[$2])
@@ -2541,7 +2595,7 @@ AC_DEFUN([CF_VERBOSE],
 CF_MSG_LOG([$1])
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_VERSION_INFO version: 8 updated: 2021/01/01 13:31:04
+dnl CF_VERSION_INFO version: 10 updated: 2025/01/10 19:55:54
 dnl ---------------
 dnl Define several useful symbols derived from the VERSION file.  A separate
 dnl file is preferred to embedding the version numbers in various scripts.
@@ -2619,13 +2673,15 @@ AC_SUBST(VERSION_PATCH)
 dnl if a package name is given, define its corresponding version info.  We
 dnl need the package name to ensure that the defined symbols are unique.
 ifelse($1,,,[
-	cf_PACKAGE=$1
+	PROGRAM=$1
 	PACKAGE=ifelse($2,,$1,$2)
 	AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE",[Define to the package-name])
+	AC_SUBST(PROGRAM)
 	AC_SUBST(PACKAGE)
-	CF_UPPER(cf_PACKAGE,$cf_PACKAGE)
-	AC_DEFINE_UNQUOTED(${cf_PACKAGE}_VERSION,"${VERSION_MAJOR}.${VERSION_MINOR}")
-	AC_DEFINE_UNQUOTED(${cf_PACKAGE}_PATCHDATE,${VERSION_PATCH})
+	AH_TEMPLATE([AS_TR_CPP($1[_VERSION])],[version of package])
+	AC_DEFINE_UNQUOTED(AS_TR_CPP($1[_VERSION]),"${VERSION_MAJOR}.${VERSION_MINOR}")
+	AH_TEMPLATE([AS_TR_CPP($1[_PATCHDATE])],[patchdate of package])
+	AC_DEFINE_UNQUOTED(AS_TR_CPP($1[_PATCHDATE]),${VERSION_PATCH})
 ])
 ])dnl
 dnl ---------------------------------------------------------------------------
@@ -2907,14 +2963,14 @@ ifelse($1,,[
 ])
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_WITH_SHARED_OR_LIBTOOL version: 7 updated: 2014/11/02 16:11:49
+dnl CF_WITH_SHARED_OR_LIBTOOL version: 9 updated: 2025/01/19 05:13:05
 dnl -------------------------
 dnl Provide shared libraries using either autoconf macros (--with-shared) or
 dnl using the external libtool script (--with-libtool).
 dnl
 dnl $1 = program name (all caps preferred)
-dnl $1 = release version
-dnl $2 = ABI version
+dnl $2 = release version
+dnl $3 = ABI version
 define([CF_WITH_SHARED_OR_LIBTOOL],[
 
 REL_VERSION=$2
@@ -2964,7 +3020,7 @@ else
 		LIB_MODEL=shared
 		DFT_LWR_MODEL=$LIB_MODEL
 		CF_SHARED_OPTS
-		CF_WITH_VERSIONED_SYMS
+		dnl CF_WITH_VERSIONED_SYMS was here...
 		LIB_PREP=:
 		LIB_CREATE="[$]MK_SHARED_LIB"
 		CFLAGS="$CFLAGS $CC_SHARED_OPTS"
@@ -2991,6 +3047,26 @@ AC_SUBST(MAKE_SHARED)
 AC_SUBST(MAKE_STATIC)
 ])dnl
 dnl ---------------------------------------------------------------------------
+dnl CF_WITH_SYSTYPE version: 1 updated: 2013/01/26 16:26:12
+dnl ---------------
+dnl For testing, override the derived host system-type which is used to decide
+dnl things such as the linker commands used to build shared libraries.  This is
+dnl normally chosen automatically based on the type of system which you are
+dnl building on.  We use it for testing the configure script.
+dnl
+dnl This is different from the --host option: it is used only for testing parts
+dnl of the configure script which would not be reachable with --host since that
+dnl relies on the build environment being real, rather than mocked up.
+AC_DEFUN([CF_WITH_SYSTYPE],[
+CF_CHECK_CACHE([AC_CANONICAL_SYSTEM])
+AC_ARG_WITH(system-type,
+	[  --with-system-type=XXX  test: override derived host system-type],
+[AC_MSG_WARN(overriding system type to $withval)
+	cf_cv_system_name=$withval
+	host_os=$withval
+])
+])dnl
+dnl ---------------------------------------------------------------------------
 dnl CF_WITH_VALGRIND version: 1 updated: 2006/12/14 18:00:21
 dnl ----------------
 AC_DEFUN([CF_WITH_VALGRIND],[
@@ -2999,7 +3075,7 @@ CF_NO_LEAKS_OPTION(valgrind,
 	[USE_VALGRIND])
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_WITH_VERSIONED_SYMS version: 13 updated: 2023/12/03 09:24:04
+dnl CF_WITH_VERSIONED_SYMS version: 16 updated: 2025/01/19 15:27:13
 dnl ----------------------
 dnl Use this when building shared library with ELF, to markup symbols with the
 dnl version identifier from the given input file.  Generally that identifier is
@@ -3009,7 +3085,11 @@ dnl $1 = basename of the ".map" file (default $PACKAGE)
 AC_DEFUN([CF_WITH_VERSIONED_SYMS],
 [AC_REQUIRE([AC_PROG_FGREP])dnl
 AC_REQUIRE([AC_PROG_EGREP])dnl
+AC_REQUIRE([CF_GLOB_FULLPATH])dnl
 
+if test "$with_libtool" = "yes" ; then
+	:
+elif test "$with_shared" = "yes" ; then
 AC_MSG_CHECKING(if versioned-symbols file should be used)
 AC_ARG_WITH(versioned-syms,
 	[[  --with-versioned-syms[=MAP-FILE] version ELF shared library symbols per MAP-FILE]],
@@ -3022,7 +3102,7 @@ case "x$with_versioned_syms" in
 	;;
 (xno)
 	;;
-(x/*)
+(x$GLOB_FULLPATH_POSIX|x$GLOB_FULLPATH_OTHER)
 	test -f "$with_versioned_syms" || AC_MSG_ERROR(expected a filename: $with_versioned_syms)
 	;;
 (*)
@@ -3044,11 +3124,13 @@ then
 		VERSIONED_SYMS="-Wl,--version-script,\${RESULTING_SYMS}"
 		MK_SHARED_LIB=`echo "$MK_SHARED_LIB" | sed -e "s%-Wl,%\\[$]{VERSIONED_SYMS} -Wl,%"`
 		CF_VERBOSE(MK_SHARED_LIB:  $MK_SHARED_LIB)
+		LIB_CREATE="[$]MK_SHARED_LIB"
 		;;
 	(*-dy\ *)
 		VERSIONED_SYMS="-Wl,-M,\${RESULTING_SYMS}"
 		MK_SHARED_LIB=`echo "$MK_SHARED_LIB" | sed -e "s%-dy%\\[$]{VERSIONED_SYMS} -dy%"`
 		CF_VERBOSE(MK_SHARED_LIB:  $MK_SHARED_LIB)
+		LIB_CREATE="[$]MK_SHARED_LIB"
 		;;
 	(*)
 		AC_MSG_WARN(this system does not support versioned-symbols)
@@ -3133,6 +3215,8 @@ EOF
 		rm -f conftest.*
 	fi
 fi
+
+fi
 AC_SUBST(RESULTING_SYMS)
 AC_SUBST(VERSIONED_SYMS)
 AC_SUBST(WILDCARD_SYMS)
@@ -3176,7 +3260,7 @@ fi
 AC_SUBST(ICON_SUFFIX)
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_XOPEN_SOURCE version: 67 updated: 2023/09/06 18:55:27
+dnl CF_XOPEN_SOURCE version: 68 updated: 2024/11/09 18:07:29
 dnl ---------------
 dnl Try to get _XOPEN_SOURCE defined properly that we can use POSIX functions,
 dnl or adapt to the vendor's definitions to get equivalent functionality,
@@ -3238,6 +3322,9 @@ case "$host_os" in
 	;;
 (linux*gnu|linux*gnuabi64|linux*gnuabin32|linux*gnueabi|linux*gnueabihf|linux*gnux32|uclinux*|gnu*|mint*|k*bsd*-gnu|cygwin|msys|mingw*|linux*uclibc)
 	CF_GNU_SOURCE($cf_XOPEN_SOURCE)
+	;;
+linux*musl)
+	cf_xopen_source="-D_BSD_SOURCE"
 	;;
 (minix*)
 	cf_xopen_source="-D_NETBSD_SOURCE" # POSIX.1-2001 features are ifdef'd with this...
@@ -3587,7 +3674,7 @@ fi
 LIB_TARGET=$cf_libname
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF__DEFINE_SHLIB_VARS version: 4 updated: 2015/09/28 17:49:10
+dnl CF__DEFINE_SHLIB_VARS version: 5 updated: 2024/06/13 20:56:25
 dnl ---------------------
 dnl Substitute makefile variables useful for CF__ADD_SHLIB_RULES.
 dnl
@@ -3599,12 +3686,12 @@ dnl		REL_VERSION - "5.0"
 dnl		ABI_VERSION - "4.2.4"
 define([CF__DEFINE_SHLIB_VARS],[
 CF__DEFINE_LIB_TARGET
-SET_SHLIB_VARS="# begin CF__DEFINE_SHLIB_VARS\\
-LIB_BASENAME	= \${LIB_PREFIX}\${LIB_ROOTNAME}\${LIB_SUFFIX}\\
-LIB_REL_NAME	= \${LIB_BASENAME}.\${REL_VERSION}\\
-LIB_ABI_NAME	= \${LIB_BASENAME}.\${ABI_VERSION}\\
-LIB_TARGET	= $LIB_TARGET\\
-RM_SHARED_OPTS	= $RM_SHARED_OPTS\\
+SET_SHLIB_VARS="# begin CF__DEFINE_SHLIB_VARS
+LIB_BASENAME	= \${LIB_PREFIX}\${LIB_ROOTNAME}\${LIB_SUFFIX}
+LIB_REL_NAME	= \${LIB_BASENAME}.\${REL_VERSION}
+LIB_ABI_NAME	= \${LIB_BASENAME}.\${ABI_VERSION}
+LIB_TARGET	= $LIB_TARGET
+RM_SHARED_OPTS	= $RM_SHARED_OPTS
 # end CF__DEFINE_SHLIB_VARS"
 AC_SUBST(SET_SHLIB_VARS)
 AC_SUBST(LIB_TARGET)

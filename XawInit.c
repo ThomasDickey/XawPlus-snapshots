@@ -1,8 +1,8 @@
 /*
- * $XTermId: XawInit.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: XawInit.c,v 1.5 2025/01/19 11:52:08 tom Exp $
  * $Xorg: XawInit.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  *
-Copyright 2022  Thomas E. Dickey
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1989, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -24,10 +24,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
- * 
- * 
+ *
+ *
  * 			    XawInitializeWidgetSet
- * 
+ *
  * This routine forces a reference to vendor shell so that the one in this
  * widget is installed.  Any other cross-widget set initialization should be
  * done here as well.  All Athena widgets should include "XawInit.h" and

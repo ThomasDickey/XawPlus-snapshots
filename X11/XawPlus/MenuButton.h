@@ -1,6 +1,8 @@
 /*
+ * $XTermId: MenuButton.h,v 1.3 2025/01/19 15:20:11 tom Exp $
  * $Xorg: MenuButton.h,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
  *
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -42,7 +44,7 @@ This file contains modifications for XawPlus, Roland Krause 2002
  * Date:    May 2, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 

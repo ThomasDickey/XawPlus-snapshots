@@ -1,5 +1,5 @@
 /*
- * $XTermId: XawI18n.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: XawI18n.c,v 1.5 2025/01/19 21:28:27 tom Exp $
  * $Xorg: XawI18n.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  */
 
@@ -41,7 +41,7 @@ wchar_t _Xaw_atowc(unsigned char c)
     wchar_t  wc;
     char str[2];
 
-    str[0] = c;
+    str[0] = (char) c;
     str[1] = '\0';
 
     mbtowc(&wc, str, 1);

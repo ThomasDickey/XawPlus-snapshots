@@ -1,11 +1,11 @@
 /*
- * $XTermId: Text.c,v 1.11 2024/04/28 23:46:59 tom Exp $
+ * $XTermId: Text.c,v 1.14 2025/01/19 22:30:41 tom Exp $
  * $Xorg: Text.c,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $
  */
 
 /***********************************************************
 
-Copyright 2015-2022,2024  Thomas E. Dickey
+Copyright 2015-2024,2025  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -519,8 +519,8 @@ DestroyHScrollBar(TextWidget ctx)
 static void
 warn_msg(
 	    Widget w,
-	    char *dir,
-	    char *desc)
+	    const char *dir,
+	    const char *desc)
 {
     char *fmt = "Xaw Text Widget \"%s\": %s scrolling not allowed with %s.\n%s scrolling has been DEACTIVATED.";
     char error_buf[BUFSIZ];
@@ -1794,7 +1794,7 @@ LoseSelection(
     if (ctx->text.old_insert >= 0)	/* Update in progress. */
 	_XawTextExecuteUpdate(ctx);
 
-    prevSalt = 0;
+    prevSalt = NULL;
     for (salt = ctx->text.salt; salt; salt = nextSalt) {
 	atomP = salt->s.selections;
 	nextSalt = salt->next;
@@ -2563,8 +2563,8 @@ _XawTextSetSelection(
     if (nelems == 1 && !strcmp(list[0], "none"))
 	return;
     if (nelems == 0) {
-	String defaultSel = "PRIMARY";
-	list = &defaultSel;
+	static String defaultSel[2] = { "PRIMARY", NULL };
+	list = defaultSel;
 	nelems = 1;
     }
     _SetSelection(ctx, l, r, _XawTextSelectionList(ctx, list, nelems), nelems);

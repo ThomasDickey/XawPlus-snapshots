@@ -1,5 +1,5 @@
 /*
- * $XTermId: UTF8.h,v 1.4 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: UTF8.h,v 1.5 2025/01/19 14:06:01 tom Exp $
  */
 
 /**********************************************************************
@@ -21,7 +21,7 @@
  * int mbStrLen()	Calc # of characters in an UTF8 string
  * char16 *UTF8toUCS2() Convert UTF8 string to UCS2/UNICODE
  *
- * Copyright 2015, 2022  Thomas E. Dickey
+ * Copyright 2015-2022,2025  Thomas E. Dickey
  * Copyright (c) Roland Krause 2002, roland_krause@freenet.de
  *
  * This module is free software; you can redistribute it and/or modify
@@ -91,7 +91,7 @@ extern void str16cpy(
  *	Arguments:	dest	- Destination string
  *			src	- Source string
  *			n	- # of characters to copy
- *	Returns:	None	
+ *	Returns:	None
  */
 extern void str16ncpy(
 	char16 *,	/* dest */

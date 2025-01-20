@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Sme.h,v 1.3 2025/01/19 15:20:11 tom Exp $
  * $Xorg: Sme.h,v 1.5 2001/02/09 02:03:45 xorgcvs Exp $
  *
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -28,12 +30,12 @@ in this Software without prior written authorization from The Open Group.
  * Sme.h - Public Header file for Sme object.
  *
  * This is the public header file for the Athena Sme object.
- * It is intended to be used with the simple menu widget.  
+ * It is intended to be used with the simple menu widget.
  *
  * Date:    April 3, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  *
  * This file contains modifications for XawPlus, Roland Krause 2000

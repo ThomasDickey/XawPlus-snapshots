@@ -1,11 +1,11 @@
 /*
- * $XTermId: Vendor.c,v 1.8 2024/04/28 23:38:56 tom Exp $
+ * $XTermId: Vendor.c,v 1.10 2025/01/19 14:25:28 tom Exp $
  * $Xorg: Vendor.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  */
 
 /***********************************************************
 
-Copyright 2022,2024  Thomas E. Dickey
+Copyright 2022-2024,2025  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -32,13 +32,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -118,7 +118,7 @@ externaldef(vendorshellclassrec) VendorShellClassRec vendorShellClassRec = {
     /* class_part_init	  */	XawVendorShellClassPartInit,
     /* Class init'ed ?	  */	FALSE,
     /* initialize         */	XawVendorShellInitialize,
-    /* initialize_hook	  */	NULL,		
+    /* initialize_hook	  */	NULL,
     /* realize		  */	Realize,
     /* actions		  */	NULL,
     /* num_actions	  */	0,
@@ -133,8 +133,8 @@ externaldef(vendorshellclassrec) VendorShellClassRec vendorShellClassRec = {
     /* resize		  */	XawVendorShellExtResize,
     /* expose		  */	NULL,
     /* set_values	  */	XawVendorShellSetValues,
-    /* set_values_hook	  */	NULL,			
-    /* set_values_almost  */	XtInheritSetValuesAlmost,  
+    /* set_values_hook	  */	NULL,
+    /* set_values_almost  */	XtInheritSetValuesAlmost,
     /* get_values_hook	  */	NULL,
     /* accept_focus	  */	NULL,
     /* intrinsics version */	XtVersion,
@@ -201,7 +201,7 @@ externaldef(vendorshellextclassrec) XawVendorShellExtClassRec
     /* class_part_initialize*/	NULL,
     /* Class init'ed ?	  */	FALSE,
     /* initialize	  */	XawVendorShellExtInitialize,
-    /* initialize_hook	  */	NULL,		
+    /* initialize_hook	  */	NULL,
     /* pad		  */	NULL,
     /* pad		  */	NULL,
     /* pad		  */	0,
@@ -216,8 +216,8 @@ externaldef(vendorshellextclassrec) XawVendorShellExtClassRec
     /* pad		  */	NULL,
     /* pad		  */	NULL,
     /* set_values	  */	XawVendorShellExtSetValues,
-    /* set_values_hook	  */	NULL,			
-    /* pad		  */	NULL,  
+    /* set_values_hook	  */	NULL,
+    /* pad		  */	NULL,
     /* get_values_hook	  */	NULL,
     /* pad		  */	NULL,
     /* version		  */	XtVersion,
@@ -260,7 +260,7 @@ XawCvtCompoundTextToString(
     if (XmbTextPropertyToTextList(dpy, &prop, &list, &count) < Success) {
 	XtAppWarningMsg(XtDisplayToApplicationContext(dpy),
 			"converter", "XmbTextPropertyToTextList", "XawError",
-			"conversion from CT to MB failed.", NULL, 0);
+			"conversion from CT to MB failed.", NULL, NULL);
 	return False;
     }
     len = (int) strlen(*list);

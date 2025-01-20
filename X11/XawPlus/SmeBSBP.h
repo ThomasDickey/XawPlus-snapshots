@@ -1,6 +1,8 @@
 /*
+ * $XTermId: SmeBSBP.h,v 1.3 2025/01/19 15:20:11 tom Exp $
  * $Xorg: SmeBSBP.h,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
  *
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -24,13 +26,13 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  *
  * Author:  Chris D. Peterson, MIT X Consortium
- * 
+ *
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
-/* 
+/*
  * SmeP.h - Private definitions for Sme object
- * 
+ *
  */
 
 #ifndef _XawSmeBSBP_h

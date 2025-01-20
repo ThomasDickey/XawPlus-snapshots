@@ -1,8 +1,9 @@
 /*
+ * $XTermId: Tree.h,v 1.3 2025/01/19 14:11:32 tom Exp $
  * $Xorg: Tree.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  *
 
-Copyright 2015 Thomas E. Dickey
+Copyright 2015,2025 Thomas E. Dickey
 Copyright 2002  Roland Krause
 Copyright 1990, 1994, 1998  The Open Group
 
@@ -32,7 +33,7 @@ in this Software without prior written authorization from The Open Group.
  * purpose and without fee is hereby granted, provided that the above
  * copyright notice appear in all copies and that both the copyright notice
  * and this permission notice appear in supporting documentation.
- * 
+ *
  * Prentice Hall and the authors disclaim all warranties with regard
  * to this software, including all implied warranties of merchantability and
  * fitness.  In no event shall Prentice Hall or the authors be liable
@@ -40,12 +41,12 @@ in this Software without prior written authorization from The Open Group.
  * resulting from loss of use, data or profits, whether in an action of
  * contract, negligence or other tortious action, arising out of or in
  * connection with the use or performance of this software.
- * 
+ *
  * Authors:  Jim Fulton, MIT X Consortium,
  *           based on a version by Douglas Young, Prentice Hall
- * 
+ *
  * This widget is based on the Tree widget described on pages 397-419 of
- * Douglas Young's book "The X Window System, Programming and Applications 
+ * Douglas Young's book "The X Window System, Programming and Applications
  * with Xt OSF/Motif Edition."  The layout code has been rewritten to use
  * additional blank space to make the structure of the graph easier to see
  * as well as to support vertical trees.
@@ -58,13 +59,13 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Xmu/Converters.h>
 
 /******************************************************************************
- * 
+ *
  * Tree Widget (subclass of ConstraintClass)
- * 
+ *
  ******************************************************************************
- * 
+ *
  * Parameters:
- * 
+ *
  *  Name                Class              Type            Default
  *  ----                -----              ----            -------
  *  OBJECT:
@@ -90,13 +91,13 @@ in this Software without prior written authorization from The Open Group.
  *  hSpace              HSpace             Dimension       20
  *  lineWidth           LineWidth          Dimension       0
  *  vSpace              VSpace             Dimension       6
- * 
- * 
+ *
+ *
  * Constraint Resources attached to children:
- * 
+ *
  *  treeGC              TreeGC             GC              NULL
  *  treeParent          TreeParent         Widget          NULL
- * 
+ *
  *****************************************************************************/
 
                                         /* new instance field names */

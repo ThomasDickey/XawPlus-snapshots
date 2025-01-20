@@ -1,8 +1,11 @@
-/* $Xorg: AsciiSrc.h,v 1.4 2001/02/09 02:03:42 xorgcvs Exp $ */
+/*
+ * $XTermId: AsciiSrc.h,v 1.3 2025/01/19 14:11:32 tom Exp $
+ * $Xorg: AsciiSrc.h,v 1.4 2001/02/09 02:03:42 xorgcvs Exp $
+ */
 
 /*
 
-Copyright 2015 Thomas E. Dickey
+Copyright 2015,2025 Thomas E. Dickey
 Copyright 2002 Roland Krause
 Copyright 1989, 1994, 1998  The Open Group
 
@@ -38,7 +41,7 @@ in this Software without prior written authorization from The Open Group.
  * Date:    June 29, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 
@@ -61,7 +64,7 @@ in this Software without prior written authorization from The Open Group.
  useStringInPlace    UseStringInPlace	Boolean		False
 
 */
- 
+
 /* Class record constants */
 
 extern WidgetClass asciiSrcObjectClass;
@@ -99,7 +102,7 @@ typedef enum {XawAsciiFile, XawAsciiString} XawAsciiType;
 
 /************************************************************
  *
- * Public routines 
+ * Public routines
  *
  ************************************************************/
 

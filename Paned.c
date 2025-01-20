@@ -1,11 +1,11 @@
 /*
- * $XTermId: Paned.c,v 1.9 2024/04/28 23:56:59 tom Exp $
+ * $XTermId: Paned.c,v 1.11 2025/01/19 14:24:46 tom Exp $
  * $Xorg: Paned.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
  */
 
 /*************************************************************************
 
-Copyright 2015-2022,2024  Thomas E. Dickey
+Copyright 2015-2024,2025  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -32,13 +32,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -146,16 +146,16 @@ static XtResource resources[] = {
     /* Cursors - both horiz and vertical have to work. */
 
     {XtNcursor, XtCCursor, XtRCursor, sizeof(Cursor),
-         offset(cursor), XtRImmediate, None},
+         offset(cursor), XtRImmediate, NULL},
     {XtNgripCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-         offset(grip_cursor), XtRImmediate, None},
+         offset(grip_cursor), XtRImmediate, NULL},
     {XtNverticalGripCursor, XtCCursor, XtRCursor, sizeof(Cursor),
          offset(v_grip_cursor), XtRString, "sb_v_double_arrow"},
     {XtNhorizontalGripCursor, XtCCursor, XtRCursor, sizeof(Cursor),
          offset(h_grip_cursor), XtRString, "sb_h_double_arrow"},
 
     {XtNbetweenCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-         offset(adjust_this_cursor), XtRString, None},
+         offset(adjust_this_cursor), XtRString, NULL},
     {XtNverticalBetweenCursor, XtCCursor, XtRCursor, sizeof(Cursor),
          offset(v_adjust_this_cursor), XtRString, "sb_left_arrow"},
     {XtNhorizontalBetweenCursor, XtCCursor, XtRCursor, sizeof(Cursor),
@@ -188,7 +188,7 @@ static XtResource subresources[] = {
     {XtNmax, XtCMax, XtRDimension, sizeof(Dimension),
          offset(max), XtRImmediate, (XtPointer) ~0},
     {XtNpreferredPaneSize, XtCPreferredPaneSize, XtRDimension,
-	 sizeof(Dimension), offset(preferred_size), 
+	 sizeof(Dimension), offset(preferred_size),
          XtRImmediate, (XtPointer) PANED_ASK_CHILD},
     {XtNresizeToPreferred, XtCBoolean, XtRBoolean, sizeof(Boolean),
          offset(resize_to_pref), XtRImmediate, (XtPointer) FALSE},
@@ -411,14 +411,14 @@ GetRequestInfo(
  *                   3) widget not its prefered height &&
  *                      this change will bring it closer &&
  *                      The user has not resized this pane.
- *           
+ *
  *                   If no widgets are found that fits all the rules then
  *                      rule #3 is broken.
  *                   If there are still no widgets found than
  *                      rule #2 is broken.
  *                   Rule #1 is never broken.
  *                   If no widgets are found then NULL is returned.
- * 
+ *
  *	Arguments: pw - the paned widget.
  *                 paneindex - the index of the current pane.
  *                 dir - direction to search first.
@@ -524,7 +524,7 @@ SatisfiesRule3(Pane pane, Boolean shrink)
  *	Arguments: pw - the paned widget.
  *                 paneindex - the number of the pane border we are moving.
  *                 dir - the pane to move (either UpLeftPane or LowRightPane).
- *                 sizeused - current amount of space used. 
+ *                 sizeused - current amount of space used.
  *                            THIS VALUE IS USED AND RETURNED.
  *	Returns: none.
  */
@@ -640,7 +640,7 @@ RefigureLocations(
     if ((dir != ThisBorderOnly) && (sizeused != pane_size))
 	LoopAndRefigureChildren(pw, paneindex, dir, &sizeused);
 
-/* 
+/*
  * If we still are not the right size, then tell the pane that
  * wanted to resize that it can't.
  */
@@ -711,7 +711,7 @@ CommitNewLocations(PanedWidget pw)
 	}
 
 /*
- * This should match XtMoveWidget, except that we're also insuring the 
+ * This should match XtMoveWidget, except that we're also insuring the
  * grip is Raised in the same request.
  */
 
@@ -808,7 +808,7 @@ _DrawInternalBorders(PanedWidget pw, GC gc1, GC gc2)
     }
 }
 
-/* 
+/*
  * This allows good reuse of code, as well as descriptive function names.
  */
 
@@ -857,7 +857,7 @@ _DrawTrackLines(PanedWidget pw, Boolean erase)
     }
 }
 
-/* 
+/*
  * This allows good reuse of code, as well as descriptive function names.
  */
 
@@ -960,7 +960,7 @@ StartGripAdjustment(
 }
 
 /*	Function Name: MoveGripAdjustment
- *	Description: This routine moves all panes around when a grip is moved. 
+ *	Description: This routine moves all panes around when a grip is moved.
  *	Arguments: pw - the paned widget.
  *                 grip - the grip that we are moving.
  *                 dir - the direction the pane we are interested is w.r.t the
@@ -1038,7 +1038,7 @@ CommitGripAdjustment(PanedWidget pw)
 	}
     }
 /*
- * Since the user selected this size then use it as the preferred size. 
+ * Since the user selected this size then use it as the preferred size.
  */
 
     if (pw->paned.whichadd) {
@@ -1135,7 +1135,7 @@ ResortChildren(PanedWidget pw)
 		unmanagedP = childP;
 	} else {		/* must be a managed pane */
 	    /*
-	     * If an earlier widget was not a managed pane, then swap 
+	     * If an earlier widget was not a managed pane, then swap
 	     */
 	    if (unmanagedP != NULL) {
 		Widget child = *unmanagedP;
@@ -1231,7 +1231,7 @@ GetGCs(Widget w)
     XGCValues values;
 
 /*
- * Draw pane borders in internal border colors. 
+ * Draw pane borders in internal border colors.
  */
 
     values.foreground = pw->paned.intBorderShadow;
@@ -1242,7 +1242,7 @@ GetGCs(Widget w)
     pw->paned.highGC = XtGetGC(w, valuemask, &values);
 
 /*
- * Erase pane borders with background color. 
+ * Erase pane borders with background color.
  */
 
     values.foreground = pw->core.background_pixel;
@@ -1358,7 +1358,7 @@ PushPaneStack(PanedWidget pw, Pane pane)
  *                 shrink - TRUE if we want to shrink this pane,
  *                          FALSE otherwise.
  * ** RETURNED **  pane - the pane that we are popping.
- * ** RETURNED **  start_size - the size that this pane started at. 
+ * ** RETURNED **  start_size - the size that this pane started at.
  *	Returns: none.
  */
 static void
@@ -1446,8 +1446,8 @@ ClassInitialize(void)
 }
 
 /* The Geometry Manager only allows changes after Realize if
- * allow_resize is True in the constraints record.  
- * 
+ * allow_resize is True in the constraints record.
+ *
  * For vertically paned widgets:
  *
  * It only allows height changes, but offers the requested height
@@ -1513,7 +1513,7 @@ GeometryManager(
 
     RefigureLocations(pw, PaneIndex(w), AnyPane);
 
-/* 
+/*
  * Set up reply struct and reset core on_size.
  */
 
@@ -1533,9 +1533,9 @@ GeometryManager(
  * o There was a "off_size" request and the new "off_size" is different
  *   from that requested.
  * o There was no "off_size" request and the new "off_size" is different
- * 
+ *
  * o The "on_size" we will allow is different from that requested.
- * 
+ *
  * THEN: set almost
  */
 
@@ -1721,7 +1721,7 @@ ChangeManaged(Widget w)
     SetChildrenPrefSizes((PanedWidget) w, size);
 
 /*
- * ForAllPanes can now be used. 
+ * ForAllPanes can now be used.
  */
 
     if (PaneSize((Widget) pw, vert) == 0)
@@ -1880,7 +1880,7 @@ PaneSetValues(
 
 /************************************************************
  *
- * Public routines. 
+ * Public routines.
  *
  ************************************************************/
 
@@ -1918,7 +1918,7 @@ XawPanedGetMinMax(Widget widget, int *min, int *max)
 }
 
 /*	Function Name: XawPanedSetRefigureMode
- *	Description: Allows a flag to be set the will inhibit 
+ *	Description: Allows a flag to be set the will inhibit
  *                   the paned widgets relayout routine.
  *	Arguments: w - the paned widget.
  *                 mode - if FALSE then inhibit refigure.

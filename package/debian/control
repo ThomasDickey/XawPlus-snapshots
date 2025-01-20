@@ -2,14 +2,14 @@ Source: xawplus
 Maintainer: Thomas E. Dickey <dickey@invisible-island.net>
 Section: misc
 Priority: optional
-Standards-Version: 3.8.4
-Build-Depends: debhelper (>= 5), libncursesw5-dev (>= 5.3), groff-base
+Standards-Version: 4.6.1
+Build-Depends: debhelper-compat (= 13)
 Homepage: https://invisible-island.net/xterm/
 
 Package: xawplus
 Architecture: any
-Depends: libncursesw5 (>= 5.3)
-Description: XawPlus widget set development package
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: improved Xaw widget set development package
  XawPlus is a clone of the original Xaw library, providing a more up to date
  look and some extensions to the original Athena widget set. This library is
  as compatible as possible to the original. It should  be possible to compile

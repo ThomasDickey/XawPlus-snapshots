@@ -1,10 +1,10 @@
 /*
- * $XTermId: TextSinkP.h,v 1.3 2022/12/13 01:01:00 tom Exp $
+ * $XTermId: TextSinkP.h,v 1.4 2025/01/19 14:06:01 tom Exp $
  * $Xorg: TextSinkP.h,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $
  */
 
 /**************************************************************************
-Copyright 2022 Thomas E. Dickey
+Copyright 2022,2025 Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -32,13 +32,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -52,9 +52,9 @@ This file contains modifications for XawPlus, Roland Krause 2002
 
 ************************************************************************/
 
-/* 
+/*
  * TextSinkP.h - Private definitions for TextSink object
- * 
+ *
  */
 
 #ifndef _XawTextSinkP_h

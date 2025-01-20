@@ -1,89 +1,37 @@
 #!/usr/bin/make -f
-# MAde with the aid of dh_make, by Craig Small
-# Sample debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
-# Some lines taken from debmake, by Cristoph Lameter.
+# $XTermId: rules,v 1.6 2025/01/20 01:11:05 tom Exp $
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
+export DEB_BUILD_MAINT_OPTIONS := hardening=+all qa=+bug reproducible=+all
+# export DH_VERBOSE=1
 
-# These are used for cross-compiling and for saving the configure script
-# from having to guess our platform (since we know it already)
-DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+%:
+	dh $@
 
-CFLAGS =
+configure_flags = \
+	--enable-echo \
+	--enable-warnings \
+	--with-shared \
+	--with-versioned-syms \
+	--disable-rpath-hack
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-        CFLAGS += -O0
-else
-        CFLAGS += -O2
-endif
-ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-        INSTALL_PROGRAM += -s
-endif
+# dh_autoreconf interferes with portability -- skip it
+override_dh_autoreconf:
+	echo "skip: dh_autoreconf autoreconf-dickey -- -f -i"
 
+override_dh_auto_configure:
+	LIBS="-lXmu" dh_auto_configure -- $(configure_flags)
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
+override_dh_auto_install:
+	dh_auto_install -- install
 
-	CFLAGS="$(CFLAGS)" ./configure \
-		--host=$(DEB_HOST_GNU_TYPE) \
-		--build=$(DEB_BUILD_GNU_TYPE) \
-		--prefix=/usr \
-		--with-shared \
-		--disable-rpath-hack
+override_dh_installdocs:
+	dh_installdocs README
 
-	touch configure-stamp
-
-build: build-stamp
-build-stamp: configure-stamp
-	dh_testdir
-
-	$(MAKE)
-
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-
-	[ ! -f makefile ] || $(MAKE) distclean
-
-	rm -f configure-stamp build-stamp install-stamp
-
-	dh_clean
-
-install: install-stamp
-install-stamp: build-stamp
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_installdirs
-
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/xawplus
-
-	touch install-stamp
-
-# Build architecture-independent files here.
-binary-indep: build install
-# No binary-indep target.
-
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installexamples
+override_dh_installchangelogs:
 	dh_installchangelogs CHANGES
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install install-stamp
+override_dh_installman:
+	# dh_install does this
+
+override_dh_shlibdeps:
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info

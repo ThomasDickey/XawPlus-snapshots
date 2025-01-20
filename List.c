@@ -1,10 +1,10 @@
 /*
- * $XTermId: List.c,v 1.9 2024/04/29 00:01:15 tom Exp $
+ * $XTermId: List.c,v 1.10 2025/01/19 14:28:15 tom Exp $
  * $Xorg: List.c,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
  */
 
 /*
-Copyright 2015-2022,2024	Thomas E. Dickey
+Copyright 2015-2024,2025  Thomas E. Dickey
 Copyright 1989, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -1061,7 +1061,7 @@ SetValues(
     if ((cl->core.width != nl->core.width) ||
 	(cl->core.height != nl->core.height) ||
 	(cl->list.iconList != nl->list.iconList) ||
-	((cl->list.list != nl->list.list) && (nl->list.iconList == FALSE)) ||
+	((cl->list.list != nl->list.list) && (nl->list.iconList == NULL)) ||
 	((cl->list.icon_height != nl->list.icon_height) &&
 	nl->list.iconList) ||
 	((cl->list.icon_width != nl->list.icon_width) && nl->list.iconList) ||

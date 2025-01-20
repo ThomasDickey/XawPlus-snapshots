@@ -1,6 +1,8 @@
 /*
+ * $XTermId: SmeLineP.h,v 1.3 2025/01/19 15:20:11 tom Exp $
  * $Xorg: SmeLineP.h,v 1.4 2001/02/09 02:03:46 xorgcvs Exp $
  *
+Copyright 2022,2025  Thomas E. Dickey
 Copyright 1989, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -28,9 +30,9 @@ in this Software without prior written authorization from The Open Group.
  * This file contains modifications for XawPlus, Roland Krause 2002
  */
 
-/* 
+/*
  * SmeLineP.h - Private definitions for SmeLine widget
- * 
+ *
  */
 
 #ifndef _XawSmeLineP_h

@@ -1,5 +1,5 @@
 /*
- * $XTermId: Sme.c,v 1.4 2022/12/13 00:53:17 tom Exp $
+ * $XTermId: Sme.c,v 1.5 2025/01/19 21:25:00 tom Exp $
  * $Xorg: Sme.c,v 1.4 2001/02/09 02:03:45 xorgcvs Exp $
  */
 
@@ -68,7 +68,7 @@ static XtResource resources[] = {
  */
 
 static void Unhighlight(Widget w);
-static void Highlight(Widget w);;
+static void Highlight(Widget w);
 static void Notify(Widget w);
 static void ClassPartInitialize(WidgetClass class);
 static void ClassInit(void);

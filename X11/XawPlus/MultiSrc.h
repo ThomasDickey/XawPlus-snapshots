@@ -1,8 +1,11 @@
-/* $Xorg: MultiSrc.h,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $ */
+/*
+ * $XTermId: MultiSrc.h,v 1.3 2025/01/19 14:11:32 tom Exp $
+ * $Xorg: MultiSrc.h,v 1.4 2001/02/09 02:03:44 xorgcvs Exp $
+ */
 
 /*
 
-Copyright 2015 Thomas E. Dickey
+Copyright 2015,2025 Thomas E. Dickey
 Copyright 2002 Roland Krause
 Copyright 1989, 1991, 1994, 1998  The Open Group
 
@@ -76,7 +79,7 @@ in this Software without prior written authorization from The Open Group.
  useStringInPlace    UseStringInPlace	Boolean		False
 
 */
- 
+
 /* Class record constants */
 
 extern WidgetClass multiSrcObjectClass;

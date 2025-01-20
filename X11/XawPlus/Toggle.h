@@ -1,7 +1,8 @@
 /*
+ * $XTermId: Toggle.h,v 1.3 2025/01/19 14:11:32 tom Exp $
  * $Xorg: Toggle.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  *
-Copyright 2015 Thomas E. Dickey
+Copyright 2015,2025 Thomas E. Dickey
 Copyright 2002  Roland Krause
 Copyright 1989, 1994, 1998  The Open Group
 
@@ -32,7 +33,7 @@ in this Software without prior written authorization from The Open Group.
  * Author: Chris D. Peterson
  *         MIT X Consortium
  *         kit@expo.lcs.mit.edu
- *  
+ *
  * Date:   January 12, 1989
  */
 
@@ -106,7 +107,7 @@ in this Software without prior written authorization from The Open Group.
  translations	     Translations	TranslationTable see doc or source
  accelerators	     Accelerators	AcceleratorTable NULL
  ancestorSensitive   AncestorSensitive	Boolean		True
- 
+
  TOGGLE:
  radioGroup          RadioGroup         Widget          NULL              +
  radioData           RadioData          Pointer         (caddr_t) Widget  ++
@@ -149,13 +150,13 @@ typedef struct _ToggleRec        *ToggleWidget;
 
 
 /************************************************************
- * 
+ *
  * Public Functions
  *
  ************************************************************/
 
 _XFUNCPROTOBEGIN
-   
+
 /*	Function Name: XawToggleChangeRadioGroup
  *	Description: Allows a toggle widget to change radio lists.
  *	Arguments: w - The toggle widget to change lists.
@@ -191,7 +192,7 @@ extern void XawToggleSetCurrent(
     Widget		/* radio_group */,
     XtPointer		/* radio_data */
 );
- 
+
 /*	Function Name: XawToggleUnsetCurrent
  *	Description: Unsets all Toggles in the radio_group specified.
  *	Arguments: radio_group - any toggle widget in the toggle list.

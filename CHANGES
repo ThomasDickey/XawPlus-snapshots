@@ -1,3 +1,100 @@
+2025-01-19  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* package/debian/rules:
+	workaround for problem with dpkg-shlibdeps, which is not able to see that
+	Xmu library is a dependency of the dependencies.
+
+	* TextPop.c, Text.c: gcc warnings
+
+	* package/debian/rules: compile with warnings enabled
+
+	* package/XawPlus.map: hide UTF8toUCS2
+
+	* package/debian/rules: use versioned symbols
+
+	* XawIm.c, XawI18n.c, Text.c, Sme.c, MultiSrc.c, AsciiSrc.c:
+	gcc warnings
+
+	* Scrollbar.c: fix a type-mismatch warning
+
+	* configure: regen
+
+	* package/XawPlus.map: RCS_BASE
+
+	* configure.in: specify name of versioned-symbol map
+
+	* makefile.in: set up for versioned symbols
+
+	* package/XawPlus.sym: RCS_BASE
+
+	* aclocal.m4:
+	fix for CF_WITH_VERSIONED_SYMS in case it follows CF_SHARED_OR_LIBTOOL
+
+	* package/debian/xawplus.lintian-overrides: RCS_BASE
+
+	* package/debian/rules:
+	revised to get hardening flags and put the library in the multiarch directory
+
+	* package/debian/control: fix lintian warnings
+
+	* package/debian/copyright, X11/XawPlus/ScrollbarP.h,
+	  X11/XawPlus/AsciiSink.h, X11/XawPlus/AsciiSinkP.h,
+	  X11/XawPlus/AsciiSrcP.h, X11/XawPlus/AsciiText.h,
+	  X11/XawPlus/AsciiTextP.h, X11/XawPlus/Box.h, X11/XawPlus/BoxP.h,
+	  X11/XawPlus/Command.h, X11/XawPlus/CommandP.h, X11/XawPlus/DialogP.h,
+	  X11/XawPlus/Grip.h, X11/XawPlus/GripP.h, X11/XawPlus/IconList.h,
+	  X11/XawPlus/LabelP.h, X11/XawPlus/ListP.h, X11/XawPlus/MenuButtoP.h,
+	  X11/XawPlus/MenuButton.h, X11/XawPlus/MultiSink.h,
+	  X11/XawPlus/PanedP.h, X11/XawPlus/Panner.h, X11/XawPlus/Porthole.h,
+	  X11/XawPlus/Repeater.h, X11/XawPlus/Sme.h, X11/XawPlus/SmeBSB.h,
+	  X11/XawPlus/SmeBSBP.h, X11/XawPlus/SmeLine.h, X11/XawPlus/SmeLineP.h,
+	  X11/XawPlus/StripCharP.h, X11/XawPlus/StripChart.h,
+	  X11/XawPlus/ToggleP.h, X11/XawPlus/TreeP.h, X11/XawPlus/ViewportP.h:
+	copyright
+
+	* AsciiSrc.c, List.c, MultiSrc.c, Text.c, TextAction.c, Toggle.c,
+	  Tree.c, Vendor.c, Paned.c:
+	zero/NULL
+
+	* X11/XawPlus/LabelP.h, X11/XawPlus/DrawingArea.h,
+	  X11/XawPlus/IconList.h, test/test_pixmap.c, test/test_scrbar.c,
+	  X11/XawPlus/AsciiSink.h, X11/XawPlus/AsciiSinkP.h,
+	  X11/XawPlus/AsciiSrc.h, X11/XawPlus/AsciiSrcP.h,
+	  X11/XawPlus/AsciiText.h, X11/XawPlus/AsciiTextP.h, X11/XawPlus/Box.h,
+	  X11/XawPlus/BoxP.h, X11/XawPlus/Command.h, X11/XawPlus/CommandP.h,
+	  X11/XawPlus/Dialog.h, X11/XawPlus/DialogP.h, X11/XawPlus/Form.h,
+	  X11/XawPlus/Grip.h, X11/XawPlus/GripP.h, X11/XawPlus/Label.h,
+	  X11/XawPlus/List.h, X11/XawPlus/ListP.h, X11/XawPlus/MenuButtoP.h,
+	  X11/XawPlus/MenuButton.h, X11/XawPlus/MultiSink.h,
+	  X11/XawPlus/MultiSinkP.h, X11/XawPlus/MultiSrc.h,
+	  X11/XawPlus/MultiSrcP.h, X11/XawPlus/Paned.h, X11/XawPlus/PanedP.h,
+	  X11/XawPlus/Panner.h, X11/XawPlus/Porthole.h, X11/XawPlus/Repeater.h,
+	  X11/XawPlus/Scrollbar.h, X11/XawPlus/ScrollbarP.h,
+	  X11/XawPlus/Simple.h, X11/XawPlus/SimpleMenu.h, X11/XawPlus/Sme.h,
+	  X11/XawPlus/SmeBSB.h, X11/XawPlus/SmeBSBP.h, X11/XawPlus/SmeLine.h,
+	  X11/XawPlus/SmeLineP.h, X11/XawPlus/StripCharP.h,
+	  X11/XawPlus/StripChart.h, X11/XawPlus/Text.h, X11/XawPlus/TextSink.h,
+	  X11/XawPlus/TextSrc.h, X11/XawPlus/Toggle.h, X11/XawPlus/ToggleP.h,
+	  X11/XawPlus/Tree.h, X11/XawPlus/TreeP.h, X11/XawPlus/Viewport.h,
+	  X11/XawPlus/ViewportP.h, X11/XawPlus/XawImP.h, Box.c, Dialog.c,
+	  Grip.c, Paned.c, UTF8.h, Vendor.c, X11/XawPlus/SimpleP.h,
+	  X11/XawPlus/TextSinkP.h, X11/XawPlus/TextSrcP.h, AsciiSink.c, XawInit.c:
+	trim-blanks
+
+	* configure: regen
+
+	* configure.in, aclocal.m4: resync with my-autoconf
+
+	* VERSION, package/XawPlus.spec, package/debian/changelog: bump
+
+2024-07-28  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.guess: 2024/07/27
+
+2024-06-03  Thomas E. Dickey  <dickey@invisible-island.net>
+
+	* config.sub: 2024/05/27
+
 2024-04-28  Thomas E. Dickey  <dickey@invisible-island.net>
 
 	* AsciiSink.c, AsciiSrc.c, AsciiText.c, Box.c, Command.c, DrawingArea.c,
@@ -51,8 +148,12 @@
 	  Scrollbar.c, Simple.c, SimpleMenu.c, Sme.c, SmeBSB.c, SmeLine.c,
 	  StrToPmap.c, StripChart.c, TextAction.c, TextPop.c, TextSink.c,
 	  TextSrc.c, Toggle.c, Tree.c, UTF8.c, UTF8.h, Vendor.c, Viewport.c,
-	  XawI18n.c, XawIm.c, XawInit.c, TextTr.c, private.h:
+	  XawI18n.c, XawIm.c, XawInit.c, TextTr.c:
 	add ident...
+
+	* TextTr.c: copyright
+
+	* private.h: add ident...
 
 	* XawIm.c: gcc-warning: uninitialized variables
 
@@ -296,8 +397,11 @@
 	  package/debian/copyright, package/debian/changelog:
 	build-script
 
-	* X11/XawPlus/SimpleP.h, X11/XawPlus/XawInit.h, X11/XawPlus/TextP.h:
-	gcc-warnings
+	* X11/XawPlus/SimpleP.h: gcc-warnings
+
+	* X11/XawPlus/XawInit.h: copyright
+
+	* X11/XawPlus/XawInit.h, X11/XawPlus/TextP.h: gcc-warnings
 
 	* X11/XawPlus/Form.h, X11/XawPlus/List.h, X11/XawPlus/Paned.h,
 	  X11/XawPlus/Scrollbar.h, X11/XawPlus/Text.h, X11/XawPlus/TextSink.h,

@@ -1,11 +1,11 @@
 /*
- * $XTermId: AsciiSink.c,v 1.9 2024/04/29 00:08:11 tom Exp $
+ * $XTermId: AsciiSink.c,v 1.10 2025/01/19 11:52:08 tom Exp $
  * $Xorg: AsciiSink.c,v 1.4 2001/02/09 02:03:42 xorgcvs Exp $
  */
 
 /***********************************************************
 
-Copyright 2022,2024  Thomas E. Dickey
+Copyright 2022-2024,2025  Thomas E. Dickey
 Copyright 1987, 1988, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -32,13 +32,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -97,7 +97,7 @@ static XtResource resources[] = {
 #define SuperClass		(&textSinkClassRec)
 AsciiSinkClassRec asciiSinkClassRec = {
   {
-/* core_class fields */	
+/* core_class fields */
     /* superclass	  	*/	(WidgetClass) SuperClass,
     /* class_name	  	*/	"AsciiSink",
     /* widget_size	  	*/	sizeof(AsciiSinkRec),
@@ -554,7 +554,7 @@ Initialize(
 }
 
 /*	Function Name: Destroy
- *	Description: This function cleans up when the object is 
+ *	Description: This function cleans up when the object is
  *                   destroyed.
  *	Arguments: w - the AsciiSink Object.
  *	Returns: none.
@@ -630,7 +630,7 @@ MaxLines(
 }
 
 /*	Function Name: MaxHeight
- *	Description: Finds the Minium height that will contain a given number 
+ *	Description: Finds the Minium height that will contain a given number
  *                   lines.
  *	Arguments: w - the AsciiSink Object.
  *                 lines - the number of lines.

@@ -1,9 +1,9 @@
 /*
- * $XTermId: Tree.c,v 1.8 2024/04/28 23:42:43 tom Exp $
+ * $XTermId: Tree.c,v 1.9 2025/01/19 14:28:15 tom Exp $
  * $Xorg: Tree.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  *
 
-Copyright 2015-2022,2024  Thomas E. Dickey
+Copyright 2015-2024,2025  Thomas E. Dickey
 Copyright 1990, 1994, 1998  The Open Group
 
 Permission to use, copy, modify, distribute, and sell this software and its
@@ -309,7 +309,7 @@ delete_node(
     for (i = pos; i < pc->tree.n_children; i++)
 	pc->tree.children[i] = pc->tree.children[i + 1];
 
-    pc->tree.children[pc->tree.n_children] = 0;
+    pc->tree.children[pc->tree.n_children] = NULL;
 }
 
 static void
